@@ -1,0 +1,27 @@
+{
+    "id": "90858a76-8d52-4168-941b-a7c4b37b1198-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for all Fe2O3 entries (element_set=Fe,O AND ntypes=2 AND natoms=5), get the first result, extract name/delta_e/stability/spacegroup/volume, and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_1.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_1.txt",
+            "dest": "oqmd_task_1.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_1.txt",
+            "dest": "oqmd_task_1_right.txt"
+        }
+    }
+}

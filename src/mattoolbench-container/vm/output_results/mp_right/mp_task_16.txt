@@ -1,0 +1,1 @@
+band_gap: 0.13140000000000002; ordering: NM; is_magnetic: False

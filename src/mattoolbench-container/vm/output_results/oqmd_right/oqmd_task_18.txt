@@ -1,0 +1,8 @@
+Total Ce-O binary compounds with band_gap>0: 14
+=== Largest band gap entry ===
+entry_id:   19840
+name:       Ce2O3
+band_gap:   3.967 eV
+delta_e:    -3.49303088452725 eV/atom
+stability:  0.027348625249999703 eV/atom
+spacegroup: P-3m1

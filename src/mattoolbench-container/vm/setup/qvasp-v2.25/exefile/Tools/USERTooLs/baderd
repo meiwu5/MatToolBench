@@ -1,0 +1,14 @@
+#!/bin/bash
+
+  echo ''
+if [ -s $qvasppath/exefile/Tools/USERTooLs/vtstscripts/chgsum.pl ]; then
+  $qvasppath/exefile/Tools/USERTooLs/vtstscripts/chgsum.pl  AECCAR0  AECCAR2
+  $qvasppath/exefile/Tools/USERTooLs/bader.x CHGCAR -ref CHGCAR_sum
+  echo "Got it, please check ACF.dat AVF.dat BCF.dat"
+else
+ echo "There are no vtst scripts in $qvasppath/exefile/Tools/USERTooLs/, try to fix it by follow step:"
+ echo "1. Please download vtstscripts.tgz from http://theory.cm.utexas.edu/vtsttools/download.html"
+ echo "2. And then use 'tar -zxvf vtstscripts.tgz to exact it' at $qvasppath/exefile/Tools/USERTooLs/"
+ echo "3. Finally use 'mv vtstscripts* vtstscripts' to rename it, Good Luck!"
+fi
+ echo ''

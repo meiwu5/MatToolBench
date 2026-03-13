@@ -1,0 +1,24 @@
+ SYSTEM =  qvasp 
+
+INCAR-basic
+   PREC   = Normal
+   ENCUT  = 400 eV
+   NELMIN= 5
+   LREAL = F    ## set to Auto if the valance electron number > 20
+
+#   ALGO = Fast
+   EDIFF  = 1E-5
+#  ISMEAR = 0
+   SIGMA = 0.2
+
+#   LDAU=.TRUE.  ## For LDA + U set
+#   LDAUTYPE=2
+#   LDAUL=-1 2   ## -1,0,1,2,3 for none,s,p,d,f
+#   LDAUU=0  3
+#   LDAUJ=0  0
+
+   ISPIN = 1    ## For magnetism set
+#  MAGMOM = 3*1 -4 16*0  # Antiferromagnetism needs to be set
+
+#   NCORE = 2
+#   KPAR = 2

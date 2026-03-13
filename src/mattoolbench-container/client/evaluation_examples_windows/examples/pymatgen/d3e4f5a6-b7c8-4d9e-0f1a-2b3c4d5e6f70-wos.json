@@ -1,0 +1,26 @@
+{
+  "id": "d3e4f5a6-b7c8-4d9e-0f1a-2b3c4d5e6f70-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create a CsCl structure and execute make_supercell([2,2,1]), record the number of supercell sites (should be 8), and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt",
+      "dest": "task7.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task7.txt",
+      "dest": "task7_right.txt"
+    }
+  }
+}

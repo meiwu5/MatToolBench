@@ -1,0 +1,27 @@
+{
+    "id": "c7b6cd93-bfb1-4d4d-9e7d-530578c55914-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for stable La-Mn-O ternary compounds (element_set=La,Mn,O AND ntypes=3), sorted by delta_e, save total count and the lowest delta_e entry to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_15.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 18,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_15.txt",
+            "dest": "oqmd_task_15.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_15.txt",
+            "dest": "oqmd_task_15_right.txt"
+        }
+    }
+}

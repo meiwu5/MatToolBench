@@ -1,0 +1,26 @@
+{
+  "id": "b2c3d4e5-f6a7-4890-abcd-ef1234567890-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to get the mp-126 structure, use SlabGenerator with Miller index (1,1,1), min_slab_size=5 and min_vacuum_size=10 to build a slab, record the total number of atoms, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_10.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_10.txt",
+      "dest": "mp_task_10.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_10.txt",
+      "dest": "mp_task_10_right.txt"
+    }
+  }
+}

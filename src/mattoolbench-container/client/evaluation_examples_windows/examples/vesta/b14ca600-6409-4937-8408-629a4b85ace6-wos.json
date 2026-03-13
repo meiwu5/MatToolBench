@@ -1,0 +1,83 @@
+{
+    "id": "b14ca600-6409-4937-8408-629a4b85ace6-wos",
+    "snapshot": "vestalab",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-13_Fe.cif', select two Fe atoms and view the bonding structure between them.",
+    "source": "https:\\www.example.com/software/vesta",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for VESTA to fully load",
+            "parameters": {
+                "seconds": 20
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories/vesta/",
+    "related_apps": [
+        "Vesta"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_opened",
+                "expected_filename": "mp-13_Fe.cif"
+            },
+            {
+                "type": "check_bond_display",
+                "possible_pairs": [
+                    [
+                        "Fe1",
+                        "Fe1"
+                    ],
+                    [
+                        "Fe0",
+                        "Fe0"
+                    ]
+                ]
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

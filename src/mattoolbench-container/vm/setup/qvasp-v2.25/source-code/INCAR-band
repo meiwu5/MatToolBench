@@ -1,0 +1,14 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+
+ Energy Band
+   NELM = 100
+   ICHARG = 11
+   NSW    = 0
+   IBRION = -1
+#  NBANDS=223    ## users should set this parameter if there is too few conduction band
+
+   LCHARG = F
+   LWAVE  =  F
+
+# KPOINTS need Line-mode
+# Use 'qvasp -bandd' to get the results (OriginPro)

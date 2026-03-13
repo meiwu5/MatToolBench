@@ -1,0 +1,15 @@
+#!/bin/bash
+
+## check wether exit python3
+test=`which python3 2> /dev/null`
+if [ $test ]; then
+  python3  $qvasppath/exefile/Tools/redefine-lattice3.py
+else
+  test=`which python2 2> /dev/null`
+  if [ $test ]; then
+    python2  $qvasppath/exefile/Tools/redefine-lattice2.py
+  else
+    echo "There is no python2 or python3 in environment,stop!"
+  fi
+fi
+

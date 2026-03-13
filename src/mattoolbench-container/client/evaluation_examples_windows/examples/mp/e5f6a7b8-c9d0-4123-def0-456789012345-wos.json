@@ -1,0 +1,26 @@
+{
+  "id": "e5f6a7b8-c9d0-4123-def0-456789012345-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to query mp-149 phonon method and obtain its phonon band structure; record the maximum phonon frequency (or None if unavailable) and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt",
+      "dest": "mp_task_13.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_13.txt",
+      "dest": "mp_task_13_right.txt"
+    }
+  }
+}

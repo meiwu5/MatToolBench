@@ -1,0 +1,16 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+ 
+Molecular Dynamics
+   NSW = 2000
+   IBRION = 0
+   POTIM = 1.5     Time step: fs
+   ISYM=0
+
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+   NBLOCK= 1
+   KBLOCK=50
+   TEBEG = 1000   Start temperature
+   TEEND=1000     End temperature 
+   SMASS=0  ! NVT

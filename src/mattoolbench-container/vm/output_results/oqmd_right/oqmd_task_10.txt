@@ -1,0 +1,8 @@
+Total GaN entries with band_gap 1-2 eV: 45
+First result:
+  name:       MgMn2GaAsP6N12
+  entry_id:   2164918
+  band_gap:   1.6600000000000001 eV
+  delta_e:    -0.6734712906362859 eV/atom
+  stability:  0.0 eV/atom
+  spacegroup: Cm

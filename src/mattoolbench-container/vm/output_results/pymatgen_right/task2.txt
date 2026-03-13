@@ -1,0 +1,9 @@
+Full Formula (Ti1)
+Reduced Formula: Ti
+abc   :   4.000000   4.000000   6.000000
+angles:  90.000000  90.000000 120.000000
+pbc   :       True       True       True
+Sites (1)
+  #  SP      a    b    c
+---  ----  ---  ---  ---
+  0  Ti      0    0    0

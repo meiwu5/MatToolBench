@@ -1,0 +1,77 @@
+{
+    "id": "7db2a58a-e2c6-4f5b-ab4c-5b1a51bdc24c-wos",
+    "snapshot": "dmlab",
+    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm3.dm3', drag the dm3 file to the center position.",
+    "source": "https:\\www.example.com/software/dm",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for DigitalMicrograph to fully load",
+            "parameters": {
+                "seconds": 1
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 1
+            }
+        }
+    ],
+    "trajectory": "trajectories/dm/",
+    "related_apps": [
+        "Dm"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_import",
+                "expected_filename": "dm3.dm3"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "nm"
+                ],
+                "region": "bottom 30%"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

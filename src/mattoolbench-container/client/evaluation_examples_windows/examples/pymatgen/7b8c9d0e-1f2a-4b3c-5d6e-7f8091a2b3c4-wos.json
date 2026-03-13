@@ -1,0 +1,26 @@
+{
+  "id": "7b8c9d0e-1f2a-4b3c-5d6e-7f8091a2b3c4-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Use pymatgen to parse C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\vasprun.xml, extract the stress tensor from the last ionic step (varray name 'stress'), and save the matrix to C:\\Users\\Docker\\Desktop\\setup\\output_result\\task17.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task17.txt",
+      "dest": "task17.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\task17.txt",
+      "dest": "task17_right.txt"
+    }
+  }
+}

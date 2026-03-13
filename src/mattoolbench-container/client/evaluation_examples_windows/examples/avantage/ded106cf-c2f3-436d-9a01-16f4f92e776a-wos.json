@@ -1,0 +1,179 @@
+{
+    "id": "ded106cf-c2f3-436d-9a01-16f4f92e776a-wos",
+    "snapshot": "avantagelab",
+    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', intelligently add baseline and perform automatic peak fitting, accept the results, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Fitted.vgp'.",
+    "source": "https:\\www.example.com/software/avantage",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Avantage to load",
+            "parameters": {
+                "seconds": 8
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('right')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('enter')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        }
+    ],
+    "trajectory": "trajectories/avantage/",
+    "related_apps": [
+        "Avantage"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Fitted.vgp"
+            },
+            {
+                "type": "check_multiple_files_imported",
+                "expected_files": [
+                    "C1s Scan"
+                ]
+            },
+            {
+                "type": "check_file_duplicated",
+                "original_file": "C1s Scan",
+                "expected_copies": 2
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Add Constant",
+                "region": "50% of the center"
+            },
+            {
+                "type": "check_dialog_parameter",
+                "dialog_title": "Add Constant",
+                "parameter_name": [
+                    "Constant"
+                ],
+                "expected_value": [
+                    "3333"
+                ],
+                "region": "50% of the center"
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "LightBox",
+                "region": "20% on the left"
+            },
+            {
+                "type": "check_dialog_parameter",
+                "dialog_title": "LightBox",
+                "parameter_name": [
+                    "C1s Scan",
+                    "C1s Scan_01"
+                ],
+                "expected_value": [],
+                "region": "20% on the left"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

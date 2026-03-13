@@ -1,0 +1,7 @@
+Total stable Fe binary compounds: 4065
+Top 5 by delta_e:
+  AcFe             delta_e=0.30743113875 eV/atom  spacegroup=Pmma
+  AcFe             delta_e=0.33318909125 eV/atom  spacegroup=P63/mmc
+  AcFe             delta_e=0.48405285125 eV/atom  spacegroup=Pm-3m
+  AcFe             delta_e=0.56176429125 eV/atom  spacegroup=P4/mmm
+  AcFe             delta_e=0.68903454625 eV/atom  spacegroup=R-3m

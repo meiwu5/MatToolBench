@@ -1,0 +1,5 @@
+1. Upload the potential files in folders (from vasp) by yourself, rescpectively.
+2. Decompress them in their folders, respectively.
+3. If you could not remove paw_pbe,please execute ./fix-remove.sh firstly.
+
+Enjoy your use!

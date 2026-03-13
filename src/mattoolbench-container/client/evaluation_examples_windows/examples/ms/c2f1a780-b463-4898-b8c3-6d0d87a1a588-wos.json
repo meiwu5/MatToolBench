@@ -1,0 +1,91 @@
+{
+    "id": "c2f1a780-b463-4898-b8c3-6d0d87a1a588-wos",
+    "snapshot": "MSlab",
+    "instruction": "Use Materials Studio to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\untitled.stp', import the file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\SuperSi.xsd', and build a supercell using the symmetry supercell range function.",
+    "source": "https://www.example.com/software/MS",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\BIOVIA\\Materials Studio 23.1\\bin\\MatStudio.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Materials Studio to fully load",
+            "parameters": {
+                "seconds": 120
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Maximize the Materials Studio window",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pygetwindow as gw; ws=[w for w in gw.getAllWindows() if \"Materials Studio\" in w.title]; ws[0].maximize() if ws else None"
+                ]
+            }
+        }
+    ],
+    "trajectory": "trajectories/MS/",
+    "related_apps": [
+        "Materials Studio"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_in_title",
+                "expected_filename": "untitled",
+                "region": "Top5%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "SuperSi",
+                "forbidden_keywords": [
+                    "Import Document"
+                ],
+                "region": "Top50%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "supercell range",
+                "forbidden_keywords": [
+                    "Unbuild Crystal",
+                    "Add Atoms",
+                    "Make P1"
+                ]
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

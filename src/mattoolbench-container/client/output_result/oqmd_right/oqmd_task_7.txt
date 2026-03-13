@@ -1,0 +1,6 @@
+name:      Cu
+entry_id:  592441
+band_gap:  0.0 eV
+volume:    11.7266 A^3/atom
+delta_e:   0.000342550000000053 eV/atom
+stability: 0.000342550000000053 eV/atom

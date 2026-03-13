@@ -1,0 +1,22 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+ 
+Transition State Search
+   ICHARG = 2
+   NSW    = 1000 
+   IBRION = 3
+   POTIM = 0        Zero time step so that VASP does not move the ions
+   ISIF   = 2
+   PSTRESS= 0
+   EDIFFG = -0.05    
+
+   IMAGES = 6              # have to modify by yourself
+   ICHAIN = 0
+   LCLIMB = .TRUE.
+   SPRING = -5
+   IOPT = 3
+
+   LWAVE = .FALSE.
+   LCHARG = .FALSE.
+
+# CINEB, need compile vtst code in VASP
+# Use the 'qvasp -e' or 'nebef.pl' to analysis results (ChemDraw or OriginPro, MS)

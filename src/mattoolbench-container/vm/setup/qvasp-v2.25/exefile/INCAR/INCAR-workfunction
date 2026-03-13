@@ -1,0 +1,18 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+
+ vaccum potential
+   NELM = 100
+   NSW    = 0
+   IBRION = -1
+   LCHARG = .FALSE.
+   LWAVE  =  F
+   LVHAR = T
+
+##IDIPOL correction
+# IDIPOL   = 3
+# LDIPOL   = .TRUE.
+# DIPOL    = 0.5 0.5 0.5
+
+
+# Attenion: better modify    PREC   = Accurate 
+# Use 'qvasp -wkd' to deal date (OriginPro)

@@ -1,0 +1,73 @@
+{
+    "id": "a4afa623-5f81-4122-9602-2bbb5b09d6e3-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt', then select Zoom from the menu bar.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_opened",
+                "expected_filename": "WRT-ZSX-5.txt"
+            },
+            {
+                "type": "check_axes_menu"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

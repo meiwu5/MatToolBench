@@ -1,0 +1,25 @@
+ Optics calculate
+   ISMEAR = -5
+   LREAL=.False. 
+   ADDGRID = .TRUE.
+   ISTART = 1
+   ICHARG = 2  
+
+   NEDOS=2000
+   CSHIFT=0.1
+   LOPTICS=.TRUE.
+#   NBANDS=56              # Increase NBANDS about 1.5 times
+
+ Usually contains HSE06
+   NELM = 100
+   LHFCALC = .TRUE.
+   HFSCREEN = 0.2
+   AEXX = 0.25
+   ALGO = D
+   TIME = 0.4
+   PRECFOCK= N
+
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+# Use 'qvasp -opticsd' to deal data (OriginPro)

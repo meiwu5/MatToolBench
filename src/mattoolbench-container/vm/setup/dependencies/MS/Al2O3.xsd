@@ -1,0 +1,1008 @@
+<?xml version="1.0" encoding="latin1"?>
+<!DOCTYPE XSD []>
+<XSD Version="3.0">
+	<AtomisticTreeRoot ID="1" NumProperties="33" NumChildren="1" Name="Al2O3" UserID="62">
+		<Property Name="AngleEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BendBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BendTorsionBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ElectrostaticEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="EquivalentAtomMatch" DefinedOn="Atom3d" Type="String"/>
+		<Property Name="Force" DefinedOn="Bondable" Type="CoDirection"/>
+		<Property Name="HydrogenBondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ImportOrder" DefinedOn="Bondable" Type="UnsignedInteger"/>
+		<Property Name="InversionEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="IsBackboneAtom" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsChiralCenter" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsOutOfPlane" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="ListIdentifier" DefinedOn="PropertyList" Type="String"/>
+		<Property Name="NonBondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="NormalMode" DefinedOn="Bondable" Type="Direction"/>
+		<Property Name="NormalModeFrequency" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="OrbitalCutoffRadius" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="PotentialEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="QuantizationValue" DefinedOn="ScalarFieldBase" Type="Double"/>
+		<Property Name="RestraintEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="SeparatedStretchStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="SimulationStep" DefinedOn="Trajectory" Type="Integer"/>
+		<Property Name="StretchBendStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="StretchStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="StretchTorsionStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionBendBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ValenceCrossTermEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ValenceDiagonalEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="VanDerWaalsEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="_Stress" DefinedOn="SymmetrySystem" Type="Matrix"/>
+		<SymmetrySystem ID="2" Mapping="3" Children="4,5,6,7,8" Normalized="1" Name="Al2O3" UserID="62" XYZ="0,0,0" OverspecificationTolerance="0.05" HasSymmetryHistory="1">
+			<MappingSet ID="9" SymmetryDefinition="6" ActiveSystem="2" NumFamilies="3" OwnsTotalConstraintMapping="1" TotalConstraintMapping="3">
+				<MappingFamily ID="10" NumImageMappings="123">
+					<IdentityMapping ID="11" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="7,8" DefectObjects="6,12" NumImages="2" NumDefects="2">
+						<Bond ID="7" Mapping="11" Parent="2" Connects="5,4"/>
+						<Bond ID="8" Mapping="11" Parent="2" Connects="5,13"/>
+						<SpaceGroup ID="6" Parent="2" Children="12" Name="R-3C" XYZ="0,0,0" AVector="4.12141489661014,-2.3795,0" BVector="0,4.759,0" CVector="0,0,12.991" OrientationBase="C along Z, B in YZ plane" Centering="3D Rhombohedral-Centered" Lattice="3D Hexagonal" GroupName="R-3C" Operators="1,0,0,0,0,1,0,0,0,0,1,0:0,-1,0,0,1,-1,0,0,0,0,1,0:-1,1,0,0,-1,0,0,0,0,0,1,0:0,1,0,0,1,0,0,0,0,0,-1,0.5:1,-1,0,0,0,-1,0,0,0,0,-1,0.5:-1,0,0,0,-1,1,0,0,0,0,-1,0.5:-1,0,0,0,0,-1,0,0,0,0,-1,0:0,1,0,0,-1,1,0,0,0,0,-1,0:1,-1,0,0,1,0,0,0,0,0,-1,0:0,-1,0,0,-1,0,0,0,0,0,1,0.5:-1,1,0,0,0,1,0,0,0,0,1,0.5:1,0,0,0,1,-1,0,0,0,0,1,0.5:1,0,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.333333333333333:0,-1,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,0.333333333333333:-1,1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.333333333333333:0,1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.833333333333333:1,-1,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.833333333333333:-1,0,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,0.833333333333333:-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333:0,1,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,0.333333333333333:1,-1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.333333333333333:0,-1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.833333333333333:-1,1,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.833333333333333:1,0,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,0.833333333333333:1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,0.666666666666667:0,-1,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,0.666666666666667:-1,1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.666666666666667:0,1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,1.166666666666667:1,-1,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,1.166666666666667:-1,0,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,1.166666666666667:-1,0,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667:0,1,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,0.666666666666667:1,-1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,0.666666666666667:0,-1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,1.166666666666667:-1,1,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,1.166666666666667:1,0,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,1.166666666666667" DisplayRange="0,1,0,1,0,1" LineThickness="2" CylinderRadius="0.2" LabelAxes="1" ActiveSystem="2" ITNumber="167" LongName="R -3 2/C" Qualifier="Hexagonal" SchoenfliesName="D3D-6" System="Trigonal" Class="-3 m"/>
+						<ReciprocalLattice3D ID="12" Parent="6"/>
+					</IdentityMapping>
+					<ImageMapping ID="14" Element="0,-1,0,0,1,-1,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="15,16" NumImages="2">
+						<Bond ID="15" Mapping="14" ImageOf="7"/>
+						<Bond ID="16" Mapping="14" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="17" Element="-1,1,0,0,-1,0,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="18,19" NumImages="2">
+						<Bond ID="18" Mapping="17" ImageOf="7"/>
+						<Bond ID="19" Mapping="17" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="20" Element="1,-1,0,0,0,-1,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="21,22" NumImages="2">
+						<Bond ID="21" Mapping="20" ImageOf="7"/>
+						<Bond ID="22" Mapping="20" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="23" Element="1,-1,0,0.333333333333333,1,0,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="24,25" DefectObjects="0,0" NumImages="2">
+						<Bond ID="24" Mapping="23" ImageOf="7" Visible="0"/>
+						<Bond ID="25" Mapping="23" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="26" Element="0,-1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="27,28" NumImages="2">
+						<Bond ID="27" Mapping="26" ImageOf="7"/>
+						<Bond ID="28" Mapping="26" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="29" Element="0,1,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="30,31" NumImages="2">
+						<Bond ID="30" Mapping="29" ImageOf="7"/>
+						<Bond ID="31" Mapping="29" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="32" Element="0,-1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="33,34" NumImages="2">
+						<Bond ID="33" Mapping="32" ImageOf="7"/>
+						<Bond ID="34" Mapping="32" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="35" Element="-1,1,0,1,-1,0,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="36,37" NumImages="2">
+						<Bond ID="36" Mapping="35" ImageOf="7"/>
+						<Bond ID="37" Mapping="35" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="38" Element="-1,0,0,1,-1,1,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="39,40" NumImages="2">
+						<Bond ID="39" Mapping="38" ImageOf="7"/>
+						<Bond ID="40" Mapping="38" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="41" Element="-1,1,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="42,43" NumImages="2">
+						<Bond ID="42" Mapping="41" ImageOf="7"/>
+						<Bond ID="43" Mapping="41" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="44" Element="0,1,0,0,1,0,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="45,46" NumImages="2">
+						<Bond ID="45" Mapping="44" ImageOf="7"/>
+						<Bond ID="46" Mapping="44" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="47" Element="-1,0,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="48,49" NumImages="2">
+						<Bond ID="48" Mapping="47" ImageOf="7"/>
+						<Bond ID="49" Mapping="47" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="50" Element="1,0,0,-0.333333333333333,1,-1,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,51" NumImages="1">
+						<Bond ID="51" Mapping="50" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="52" Element="0,-1,0,1,1,-1,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="53,54" NumImages="2">
+						<Bond ID="53" Mapping="52" ImageOf="7"/>
+						<Bond ID="54" Mapping="52" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="55" Element="0,1,0,1,1,0,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="56,57" NumImages="2">
+						<Bond ID="56" Mapping="55" ImageOf="7"/>
+						<Bond ID="57" Mapping="55" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="58" Element="-1,0,0,1.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,59" NumImages="1">
+						<Bond ID="59" Mapping="58" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="60" Element="1,0,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="61,62" NumImages="2">
+						<Bond ID="61" Mapping="60" ImageOf="7"/>
+						<Bond ID="62" Mapping="60" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="63" Element="-1,0,0,0,-1,1,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="64,65" NumImages="2">
+						<Bond ID="64" Mapping="63" ImageOf="7"/>
+						<Bond ID="65" Mapping="63" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="66" Element="0,1,0,0,1,0,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="67,68" NumImages="2">
+						<Bond ID="67" Mapping="66" ImageOf="7"/>
+						<Bond ID="68" Mapping="66" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="69" Element="1,-1,0,0,0,-1,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="70,71" NumImages="2">
+						<Bond ID="70" Mapping="69" ImageOf="7"/>
+						<Bond ID="71" Mapping="69" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="72" Element="-1,0,0,0,-1,1,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="73,74" NumImages="2">
+						<Bond ID="73" Mapping="72" ImageOf="7"/>
+						<Bond ID="74" Mapping="72" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="75" Element="1,-1,0,1,0,-1,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="76,77" NumImages="2">
+						<Bond ID="76" Mapping="75" ImageOf="7"/>
+						<Bond ID="77" Mapping="75" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="78" Element="-1,0,0,1,-1,1,0,0,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="79,80" NumImages="2">
+						<Bond ID="79" Mapping="78" ImageOf="7"/>
+						<Bond ID="80" Mapping="78" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="81" Element="0,1,0,1,1,0,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="82,83" NumImages="2">
+						<Bond ID="82" Mapping="81" ImageOf="7"/>
+						<Bond ID="83" Mapping="81" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="84" Element="1,-1,0,1,0,-1,0,1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="85,86" NumImages="2">
+						<Bond ID="85" Mapping="84" ImageOf="7"/>
+						<Bond ID="86" Mapping="84" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="87" Element="1,-1,0,0,1,0,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="88,89" NumImages="2">
+						<Bond ID="88" Mapping="87" ImageOf="7"/>
+						<Bond ID="89" Mapping="87" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="90" Element="1,0,0,0,1,-1,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="91,92" NumImages="2">
+						<Bond ID="91" Mapping="90" ImageOf="7"/>
+						<Bond ID="92" Mapping="90" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="93" Element="0,-1,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="94,95" NumImages="2">
+						<Bond ID="94" Mapping="93" ImageOf="7"/>
+						<Bond ID="95" Mapping="93" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="96" Element="1,-1,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="97,98" NumImages="2">
+						<Bond ID="97" Mapping="96" ImageOf="7"/>
+						<Bond ID="98" Mapping="96" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="99" Element="-1,0,0,1,0,-1,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="100,101" NumImages="2">
+						<Bond ID="100" Mapping="99" ImageOf="7"/>
+						<Bond ID="101" Mapping="99" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="102" Element="-1,1,0,1,0,1,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="103,104" NumImages="2">
+						<Bond ID="103" Mapping="102" ImageOf="7"/>
+						<Bond ID="104" Mapping="102" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="105" Element="-1,1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="106,107" NumImages="2">
+						<Bond ID="106" Mapping="105" ImageOf="7"/>
+						<Bond ID="107" Mapping="105" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="108" Element="0,1,0,0.333333333333333,1,0,0,-0.333333333333333,0,0,-1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,109" NumImages="1">
+						<Bond ID="109" Mapping="108" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="110" Element="-1,0,0,1,0,-1,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="111,112" NumImages="2">
+						<Bond ID="111" Mapping="110" ImageOf="7"/>
+						<Bond ID="112" Mapping="110" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="113" Element="-1,1,0,1,0,1,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="114,115" NumImages="2">
+						<Bond ID="114" Mapping="113" ImageOf="7"/>
+						<Bond ID="115" Mapping="113" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="116" Element="-1,1,0,0.666666666666667,-1,0,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,117" NumImages="1">
+						<Bond ID="117" Mapping="116" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="118" Element="0,1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="119,120" NumImages="2">
+						<Bond ID="119" Mapping="118" ImageOf="7"/>
+						<Bond ID="120" Mapping="118" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="121" Element="-1,0,0,0,0,-1,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="122,123" NumImages="2">
+						<Bond ID="122" Mapping="121" ImageOf="7"/>
+						<Bond ID="123" Mapping="121" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="124" Element="0,1,0,0,-1,1,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="125,126" NumImages="2">
+						<Bond ID="125" Mapping="124" ImageOf="7"/>
+						<Bond ID="126" Mapping="124" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="127" Element="-1,0,0,0,0,-1,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="128,129" NumImages="2">
+						<Bond ID="128" Mapping="127" ImageOf="7"/>
+						<Bond ID="129" Mapping="127" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="130" Element="0,1,0,0,-1,1,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="131,132" NumImages="2">
+						<Bond ID="131" Mapping="130" ImageOf="7"/>
+						<Bond ID="132" Mapping="130" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="133" Element="1,-1,0,0,1,0,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="134,135" NumImages="2">
+						<Bond ID="134" Mapping="133" ImageOf="7"/>
+						<Bond ID="135" Mapping="133" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="136" Element="0,1,0,1,-1,1,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="137,138" NumImages="2">
+						<Bond ID="137" Mapping="136" ImageOf="7"/>
+						<Bond ID="138" Mapping="136" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="139" Element="1,-1,0,1,1,0,0,0,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="140,141" NumImages="2">
+						<Bond ID="140" Mapping="139" ImageOf="7"/>
+						<Bond ID="141" Mapping="139" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="142" Element="0,1,0,1,-1,1,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="143,144" NumImages="2">
+						<Bond ID="143" Mapping="142" ImageOf="7"/>
+						<Bond ID="144" Mapping="142" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="145" Element="1,-1,0,1,1,0,0,1,0,0,-1,1" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="146,147" NumImages="2">
+						<Bond ID="146" Mapping="145" ImageOf="7"/>
+						<Bond ID="147" Mapping="145" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="148" Element="0,-1,0,0,-1,0,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="149,150" NumImages="2">
+						<Bond ID="149" Mapping="148" ImageOf="7"/>
+						<Bond ID="150" Mapping="148" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="151" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,152" NumImages="1">
+						<Bond ID="152" Mapping="151" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="153" Element="-1,0,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="154,155" NumImages="2">
+						<Bond ID="154" Mapping="153" ImageOf="7"/>
+						<Bond ID="155" Mapping="153" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="156" Element="0,-1,0,1,-1,0,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="157,158" NumImages="2">
+						<Bond ID="157" Mapping="156" ImageOf="7"/>
+						<Bond ID="158" Mapping="156" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="159" Element="1,0,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="160,161" NumImages="2">
+						<Bond ID="160" Mapping="159" ImageOf="7"/>
+						<Bond ID="161" Mapping="159" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="162" Element="-1,0,0,1.333333333333333,-1,1,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,163" NumImages="1">
+						<Bond ID="163" Mapping="162" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="164" Element="0,-1,0,0,-1,0,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="165,166" NumImages="2">
+						<Bond ID="165" Mapping="164" ImageOf="7"/>
+						<Bond ID="166" Mapping="164" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="167" Element="-1,1,0,0,0,1,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="168,169" NumImages="2">
+						<Bond ID="168" Mapping="167" ImageOf="7"/>
+						<Bond ID="169" Mapping="167" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="170" Element="-1,1,0,0,0,1,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="171,172" NumImages="2">
+						<Bond ID="171" Mapping="170" ImageOf="7"/>
+						<Bond ID="172" Mapping="170" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="173" Element="1,0,0,0,1,-1,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="174,175" NumImages="2">
+						<Bond ID="174" Mapping="173" ImageOf="7"/>
+						<Bond ID="175" Mapping="173" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="176" Element="0,-1,0,1,-1,0,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="177,178" NumImages="2">
+						<Bond ID="177" Mapping="176" ImageOf="7"/>
+						<Bond ID="178" Mapping="176" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="179" Element="1,0,0,1,1,-1,0,0,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="180,181" NumImages="2">
+						<Bond ID="180" Mapping="179" ImageOf="7"/>
+						<Bond ID="181" Mapping="179" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="182" Element="1,0,0,1,1,-1,0,1,0,0,1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="183,184" NumImages="2">
+						<Bond ID="183" Mapping="182" ImageOf="7"/>
+						<Bond ID="184" Mapping="182" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="185" Element="-1,0,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="186,187" NumImages="2">
+						<Bond ID="186" Mapping="185" ImageOf="7"/>
+						<Bond ID="187" Mapping="185" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="188" Element="-1,1,0,0.333333333333333,0,1,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="189,190" NumImages="2">
+						<Bond ID="189" Mapping="188" ImageOf="7" Visible="0"/>
+						<Bond ID="190" Mapping="188" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="191" Element="1,-1,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="192,193" NumImages="2">
+						<Bond ID="192" Mapping="191" ImageOf="7"/>
+						<Bond ID="193" Mapping="191" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="194" Element="0,-1,0,1.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,195" NumImages="1">
+						<Bond ID="195" Mapping="194" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="196" Element="0,1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="197,198" NumImages="2">
+						<Bond ID="197" Mapping="196" ImageOf="7"/>
+						<Bond ID="198" Mapping="196" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="199" Element="1,0,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="200,201" NumImages="2">
+						<Bond ID="200" Mapping="199" ImageOf="7"/>
+						<Bond ID="201" Mapping="199" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="202" Element="1,-1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="203,204" NumImages="2">
+						<Bond ID="203" Mapping="202" ImageOf="7"/>
+						<Bond ID="204" Mapping="202" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="205" Element="0,-1,0,1.333333333333333,1,-1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,206" NumImages="1">
+						<Bond ID="206" Mapping="205" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="207" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="208,209" NumImages="2">
+						<Bond ID="208" Mapping="207" ImageOf="7"/>
+						<Bond ID="209" Mapping="207" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="210" Element="-1,1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="211,212" NumImages="2">
+						<Bond ID="211" Mapping="210" ImageOf="7"/>
+						<Bond ID="212" Mapping="210" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="213" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="214,215" NumImages="2">
+						<Bond ID="214" Mapping="213" ImageOf="7"/>
+						<Bond ID="215" Mapping="213" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="216" Element="0,1,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="217,218" NumImages="2">
+						<Bond ID="217" Mapping="216" ImageOf="7"/>
+						<Bond ID="218" Mapping="216" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="219" Element="1,-1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="220,221" NumImages="2">
+						<Bond ID="220" Mapping="219" ImageOf="7"/>
+						<Bond ID="221" Mapping="219" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="222" Element="0,1,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="223,224" NumImages="2">
+						<Bond ID="223" Mapping="222" ImageOf="7"/>
+						<Bond ID="224" Mapping="222" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="225" Element="1,0,0,0.333333333333333,0,1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,226" NumImages="1">
+						<Bond ID="226" Mapping="225" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="227" Element="-1,1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="228,229" NumImages="2">
+						<Bond ID="228" Mapping="227" ImageOf="7"/>
+						<Bond ID="229" Mapping="227" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="230" Element="0,1,0,-0.333333333333333,-1,1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,231" NumImages="1">
+						<Bond ID="231" Mapping="230" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="232" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="233,234" NumImages="2">
+						<Bond ID="233" Mapping="232" ImageOf="7"/>
+						<Bond ID="234" Mapping="232" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="235" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="236,237" NumImages="2">
+						<Bond ID="236" Mapping="235" ImageOf="7"/>
+						<Bond ID="237" Mapping="235" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="238" Element="0,-1,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="239,240" NumImages="2">
+						<Bond ID="239" Mapping="238" ImageOf="7"/>
+						<Bond ID="240" Mapping="238" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="241" Element="0,-1,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="242,243" NumImages="2">
+						<Bond ID="242" Mapping="241" ImageOf="7"/>
+						<Bond ID="243" Mapping="241" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="244" Element="-1,0,0,0.666666666666667,0,-1,0,1.333333333333333,0,0,-1,1.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,245" NumImages="1">
+						<Bond ID="245" Mapping="244" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="246" Element="1,-1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="247,248" NumImages="2">
+						<Bond ID="247" Mapping="246" ImageOf="7"/>
+						<Bond ID="248" Mapping="246" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="249" Element="0,-1,0,1,1,-1,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="250,251" NumImages="2">
+						<Bond ID="250" Mapping="249" ImageOf="7"/>
+						<Bond ID="251" Mapping="249" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="252" Element="1,-1,0,0.666666666666667,0,-1,0,1.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,253" NumImages="1">
+						<Bond ID="253" Mapping="252" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="254" Element="-1,1,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="255,256" NumImages="2">
+						<Bond ID="255" Mapping="254" ImageOf="7"/>
+						<Bond ID="256" Mapping="254" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="257" Element="-1,1,0,0,-1,0,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="258,259" NumImages="2">
+						<Bond ID="258" Mapping="257" ImageOf="7"/>
+						<Bond ID="259" Mapping="257" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="260" Element="0,1,0,-0.333333333333333,1,0,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,261" NumImages="1">
+						<Bond ID="261" Mapping="260" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="262" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="263,264" NumImages="2">
+						<Bond ID="263" Mapping="262" ImageOf="7"/>
+						<Bond ID="264" Mapping="262" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="265" Element="0,-1,0,0.666666666666667,-1,0,0,1.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,266" NumImages="1">
+						<Bond ID="266" Mapping="265" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="267" Element="0,-1,0,0,1,-1,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="268,269" NumImages="2">
+						<Bond ID="268" Mapping="267" ImageOf="7"/>
+						<Bond ID="269" Mapping="267" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="270" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="271,272" NumImages="2">
+						<Bond ID="271" Mapping="270" ImageOf="7"/>
+						<Bond ID="272" Mapping="270" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="273" Element="-1,1,0,1,-1,0,0,0,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="274,275" NumImages="2">
+						<Bond ID="274" Mapping="273" ImageOf="7"/>
+						<Bond ID="275" Mapping="273" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="276" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="277,278" NumImages="2">
+						<Bond ID="277" Mapping="276" ImageOf="7"/>
+						<Bond ID="278" Mapping="276" ImageOf="8"/>
+					</ImageMapping>
+					<ImageMapping ID="279" Element="-1,0,0,0.333333333333333,0,-1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="280,281" NumImages="2">
+						<Bond ID="280" Mapping="279" ImageOf="7" Visible="0"/>
+						<Bond ID="281" Mapping="279" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="282" Element="0,1,0,0.333333333333333,-1,1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="283,284" NumImages="2">
+						<Bond ID="283" Mapping="282" ImageOf="7" Visible="0"/>
+						<Bond ID="284" Mapping="282" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="285" Element="0,1,0,-0.666666666666667,-1,1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,286" NumImages="1">
+						<Bond ID="286" Mapping="285" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="287" Element="-1,1,0,-0.333333333333333,0,1,0,-0.666666666666667,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,288" NumImages="1">
+						<Bond ID="288" Mapping="287" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="289" Element="1,-1,0,-0.666666666666667,1,0,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="290" NumImages="1">
+						<Bond ID="290" Mapping="289" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="291" Element="1,0,0,-0.666666666666667,1,-1,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="292" NumImages="1">
+						<Bond ID="292" Mapping="291" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="293" Element="1,-1,0,-0.333333333333333,0,-1,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,294" NumImages="1">
+						<Bond ID="294" Mapping="293" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="295" Element="0,1,0,-0.333333333333333,1,0,0,-0.666666666666667,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,296" NumImages="1">
+						<Bond ID="296" Mapping="295" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="297" Element="1,-1,0,-0.333333333333333,1,0,0,-0.666666666666667,0,0,-1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="298" NumImages="1">
+						<Bond ID="298" Mapping="297" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="299" Element="1,0,0,-0.333333333333333,1,-1,0,-0.666666666666667,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="300,301" NumImages="2">
+						<Bond ID="300" Mapping="299" ImageOf="7" Visible="0"/>
+						<Bond ID="301" Mapping="299" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="302" Element="0,-1,0,0.333333333333333,1,-1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,303" NumImages="1">
+						<Bond ID="303" Mapping="302" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="304" Element="0,1,0,-0.333333333333333,-1,1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="305" NumImages="1">
+						<Bond ID="305" Mapping="304" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="306" Element="0,-1,0,-0.333333333333333,-1,0,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="307" NumImages="1">
+						<Bond ID="307" Mapping="306" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="308" Element="1,0,0,-0.666666666666667,0,1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,309" NumImages="1">
+						<Bond ID="309" Mapping="308" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="310" Element="0,-1,0,0.333333333333333,-1,0,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="311" NumImages="1">
+						<Bond ID="311" Mapping="310" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="312" Element="1,0,0,0,0,1,0,-1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,313" NumImages="1">
+						<Bond ID="313" Mapping="312" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="314" Element="-1,0,0,0.666666666666667,-1,1,0,-0.666666666666667,0,0,-1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,315" NumImages="1">
+						<Bond ID="315" Mapping="314" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="316" Element="1,0,0,0.333333333333333,1,-1,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="317" NumImages="1">
+						<Bond ID="317" Mapping="316" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="318" Element="0,-1,0,0,1,-1,0,-1,0,0,1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="319" NumImages="1">
+						<Bond ID="319" Mapping="318" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="320" Element="0,1,0,0,1,0,0,-1,0,0,-1,0.5" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="321" NumImages="1">
+						<Bond ID="321" Mapping="320" ImageOf="7" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="322" Element="-1,1,0,0.666666666666667,0,1,0,-0.666666666666667,0,0,1,-0.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="0,323" NumImages="1">
+						<Bond ID="323" Mapping="322" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="324" Element="-1,0,0,0,0,-1,0,0,0,0,-1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="325,326" NumImages="2">
+						<Bond ID="325" Mapping="324" ImageOf="7" Visible="0"/>
+						<Bond ID="326" Mapping="324" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="327" Element="0,1,0,0,-1,1,0,0,0,0,-1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="328,329" NumImages="2">
+						<Bond ID="328" Mapping="327" ImageOf="7" Visible="0"/>
+						<Bond ID="329" Mapping="327" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="330" Element="1,-1,0,0,1,0,0,0,0,0,-1,0" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="331,332" NumImages="2">
+						<Bond ID="331" Mapping="330" ImageOf="7" Visible="0"/>
+						<Bond ID="332" Mapping="330" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="333" Element="0,-1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="334,335" NumImages="2">
+						<Bond ID="334" Mapping="333" ImageOf="7" Visible="0"/>
+						<Bond ID="335" Mapping="333" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="336" Element="0,-1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="337,338" NumImages="2">
+						<Bond ID="337" Mapping="336" ImageOf="7" Visible="0"/>
+						<Bond ID="338" Mapping="336" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="339" Element="-1,1,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="340,341" NumImages="2">
+						<Bond ID="340" Mapping="339" ImageOf="7" Visible="0"/>
+						<Bond ID="341" Mapping="339" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="342" Element="-1,1,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="343,344" NumImages="2">
+						<Bond ID="343" Mapping="342" ImageOf="7" Visible="0"/>
+						<Bond ID="344" Mapping="342" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="345" Element="1,0,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,0.833333333333333" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="346,347" NumImages="2">
+						<Bond ID="346" Mapping="345" ImageOf="7" Visible="0"/>
+						<Bond ID="347" Mapping="345" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="348" Element="1,0,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,1.166666666666667" Constraint="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="349,350" NumImages="2">
+						<Bond ID="349" Mapping="348" ImageOf="7" Visible="0"/>
+						<Bond ID="350" Mapping="348" ImageOf="8" Visible="0"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<MappingFamily ID="351" NumImageMappings="98">
+					<IdentityMapping ID="352" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,0.25" MappedObjects="4" NumImages="1">
+						<Atom3d ID="4" Mapping="352" Parent="2" Name="O" UserID="2" XYZ="0.306,-8.62591248429467e-019,0.25" Connections="7,21,25,28" Components="O"/>
+					</IdentityMapping>
+					<ImageMapping ID="353" Element="0,-1,0,0,1,-1,0,0,0,0,1,0" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,0.25" MappedObjects="354" NumImages="1">
+						<Atom3d ID="354" Mapping="353" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="355" Element="-1,1,0,0,-1,0,0,0,0,0,1,0" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,0.25" MappedObjects="356" NumImages="1">
+						<Atom3d ID="356" Mapping="355" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="357" Element="-1,0,0,0,0,-1,0,0,0,0,-1,0" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,-0.25" MappedObjects="358" NumImages="1">
+						<Atom3d ID="358" Mapping="357" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="359" Element="0,1,0,0,-1,1,0,0,0,0,-1,0" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,-0.25" MappedObjects="360" NumImages="1">
+						<Atom3d ID="360" Mapping="359" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="361" Element="1,-1,0,0,1,0,0,0,0,0,-1,0" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,-0.25" MappedObjects="362" NumImages="1">
+						<Atom3d ID="362" Mapping="361" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="363" Element="0,1,0,0,-1,1,0,0,0,0,-1,1" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,0.75" MappedObjects="364" NumImages="1">
+						<Atom3d ID="364" Mapping="363" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="365" Element="-1,0,0,0,0,-1,0,0,0,0,-1,1" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,0.75" MappedObjects="366" NumImages="1">
+						<Atom3d ID="366" Mapping="365" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="367" Element="1,-1,0,0,1,0,0,0,0,0,-1,1" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,0.75" MappedObjects="368" NumImages="1">
+						<Atom3d ID="368" Mapping="367" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="369" Element="1,0,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,0.583333333333333" MappedObjects="370" NumImages="1">
+						<Atom3d ID="370" Mapping="369" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="371" Element="0,-1,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,0.583333333333333" MappedObjects="372" NumImages="1">
+						<Atom3d ID="372" Mapping="371" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="373" Element="-1,1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,0.583333333333333" MappedObjects="374" NumImages="1">
+						<Atom3d ID="374" Mapping="373" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="375" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,0.0833333333333333" MappedObjects="376" NumImages="1">
+						<Atom3d ID="376" Mapping="375" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="377" Element="0,1,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,0.0833333333333333" MappedObjects="378" NumImages="1">
+						<Atom3d ID="378" Mapping="377" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="379" Element="1,-1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,0.0833333333333333" MappedObjects="380" NumImages="1">
+						<Atom3d ID="380" Mapping="379" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="381" Element="0,1,0,0.666666666666667,-1,1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,1.0833333333333333" MappedObjects="382" NumImages="1">
+						<Atom3d ID="382" Mapping="381" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="383" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,1.0833333333333333" MappedObjects="384" NumImages="1">
+						<Atom3d ID="384" Mapping="383" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="385" Element="1,-1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,1.0833333333333333" MappedObjects="386" NumImages="1">
+						<Atom3d ID="386" Mapping="385" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="387" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,0.916666666666667" MappedObjects="388" NumImages="1">
+						<Atom3d ID="388" Mapping="387" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="389" Element="0,-1,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,0.916666666666667" MappedObjects="390" NumImages="1">
+						<Atom3d ID="390" Mapping="389" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="391" Element="-1,1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,0.916666666666667" MappedObjects="392" NumImages="1">
+						<Atom3d ID="392" Mapping="391" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="393" Element="-1,0,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,0.416666666666667" MappedObjects="394" NumImages="1">
+						<Atom3d ID="394" Mapping="393" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="395" Element="0,1,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,0.416666666666667" MappedObjects="13" NumImages="1">
+						<Atom3d ID="13" Mapping="395" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="396" Element="1,-1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,0.416666666666667" MappedObjects="397" NumImages="1">
+						<Atom3d ID="397" Mapping="396" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="398" Element="0,1,0,0.333333333333333,-1,1,0,0.666666666666667,0,0,-1,1.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,1.416666666666667" MappedObjects="399" NumImages="1">
+						<Atom3d ID="399" Mapping="398" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="400" Element="-1,0,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,1.666666666666667" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,1.416666666666667" MappedObjects="401" NumImages="1">
+						<Atom3d ID="401" Mapping="400" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="402" Element="1,-1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,1.666666666666667" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,1.416666666666667" MappedObjects="403" NumImages="1">
+						<Atom3d ID="403" Mapping="402" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="404" Element="1,-1,0,-0.666666666666667,1,0,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,0.416666666666667" MappedObjects="405" NumImages="1">
+						<Atom3d ID="405" Mapping="404" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="406" Element="-1,0,0,0.333333333333333,0,-1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,-0.5,0,-0.166666666666667,0,0,0,-0.333333333333333,0,0,0,0.416666666666667" MappedObjects="407" NumImages="1">
+						<Atom3d ID="407" Mapping="406" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="408" Element="1,-1,0,-0.333333333333333,1,0,0,-0.666666666666667,0,0,-1,0.333333333333333" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,0.0833333333333333" MappedObjects="409" NumImages="1">
+						<Atom3d ID="409" Mapping="408" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="410" Element="0,1,0,-0.333333333333333,-1,1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,-0.5,1,0,-0.166666666666667,0,0,0,0.0833333333333333" MappedObjects="411" NumImages="1">
+						<Atom3d ID="411" Mapping="410" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="412" Element="0,-1,0,-0.333333333333333,1,-1,0,-0.666666666666667,0,0,1,-0.666666666666667" Constraint="0,0,0,-0.333333333333333,-0.5,1,0,-0.166666666666667,0,0,0,-0.416666666666667" MappedObjects="413" NumImages="1">
+						<Atom3d ID="413" Mapping="412" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="414" Element="-1,1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,-0.666666666666667" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,-0.416666666666667" MappedObjects="415" NumImages="1">
+						<Atom3d ID="415" Mapping="414" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="416" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,-0.666666666666667" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,-0.416666666666667" MappedObjects="417" NumImages="1">
+						<Atom3d ID="417" Mapping="416" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="418" Element="1,0,0,-0.666666666666667,0,1,0,-0.333333333333333,0,0,1,0.666666666666667" Constraint="1,-0.5,0,-0.166666666666667,0,0,0,-0.333333333333333,0,0,0,0.916666666666667" MappedObjects="419" NumImages="1">
+						<Atom3d ID="419" Mapping="418" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="420" Element="0,-1,0,0.333333333333333,1,-1,0,-0.333333333333333,0,0,1,0.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,0.916666666666667" MappedObjects="421" NumImages="1">
+						<Atom3d ID="421" Mapping="420" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="422" Element="0,1,0,1,-1,1,0,1,0,0,-1,1" Constraint="0,0,0,1,-0.5,1,0,0.5,0,0,0,0.75" MappedObjects="423" NumImages="1">
+						<Atom3d ID="423" Mapping="422" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="424" Element="-1,0,0,1,0,-1,0,0,0,0,-1,1" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,0.75" MappedObjects="425" NumImages="1">
+						<Atom3d ID="425" Mapping="424" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="426" Element="-1,0,0,1.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,0.416666666666667" MappedObjects="427" NumImages="1">
+						<Atom3d ID="427" Mapping="426" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="428" Element="1,-1,0,0.333333333333333,1,0,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="0.5,0.5,0,0.333333333333333,0.5,0.5,0,-0.333333333333333,0,0,0,0.416666666666667" MappedObjects="429" NumImages="1">
+						<Atom3d ID="429" Mapping="428" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="430" Element="0,-1,0,0.333333333333333,1,-1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,-0.0833333333333333" MappedObjects="431" NumImages="1">
+						<Atom3d ID="431" Mapping="430" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="432" Element="-1,1,0,1.333333333333333,-1,0,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="0.5,0.5,0,0.333333333333333,0.5,0.5,0,-0.333333333333333,0,0,0,-0.0833333333333333" MappedObjects="433" NumImages="1">
+						<Atom3d ID="433" Mapping="432" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="434" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,-0.0833333333333333" MappedObjects="435" NumImages="1">
+						<Atom3d ID="435" Mapping="434" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="436" Element="1,0,0,0,0,1,0,0,0,0,1,1" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,1.25" MappedObjects="437" NumImages="1">
+						<Atom3d ID="437" Mapping="436" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="438" Element="-1,1,0,1,-1,0,0,1,0,0,1,1" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,1.25" MappedObjects="439" NumImages="1">
+						<Atom3d ID="439" Mapping="438" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="440" Element="0,-1,0,1,1,-1,0,0,0,0,1,1" Constraint="0,0,0,1,-0.5,1,0,0.5,0,0,0,1.25" MappedObjects="441" NumImages="1">
+						<Atom3d ID="441" Mapping="440" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="442" Element="0,1,0,0.666666666666667,-1,1,0,1.333333333333333,0,0,-1,1.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,1.0833333333333333" MappedObjects="443" NumImages="1">
+						<Atom3d ID="443" Mapping="442" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="444" Element="1,-1,0,-0.333333333333333,1,0,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="0.5,0.5,0,-0.333333333333333,0.5,0.5,0,0.333333333333333,0,0,0,1.0833333333333333" MappedObjects="445" NumImages="1">
+						<Atom3d ID="445" Mapping="444" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="446" Element="-1,0,0,1,0,-1,0,1,0,0,-1,1" Constraint="1,-0.5,0,0.5,0,0,0,1,0,0,0,0.75" MappedObjects="447" NumImages="1">
+						<Atom3d ID="447" Mapping="446" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="448" Element="0,1,0,0,-1,1,0,1,0,0,-1,1" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,0.75" MappedObjects="449" NumImages="1">
+						<Atom3d ID="449" Mapping="448" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="450" Element="-1,1,0,1,-1,0,0,1,0,0,1,0" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,0.25" MappedObjects="451" NumImages="1">
+						<Atom3d ID="451" Mapping="450" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="452" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="1,-0.5,0,0.5,0,0,0,1,0,0,0,0.25" MappedObjects="453" NumImages="1">
+						<Atom3d ID="453" Mapping="452" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="454" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,1.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,1.583333333333333" MappedObjects="455" NumImages="1">
+						<Atom3d ID="455" Mapping="454" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="456" Element="-1,1,0,0.666666666666667,-1,0,0,1.333333333333333,0,0,1,1.333333333333333" Constraint="0.5,0.5,0,-0.333333333333333,0.5,0.5,0,0.333333333333333,0,0,0,1.583333333333333" MappedObjects="457" NumImages="1">
+						<Atom3d ID="457" Mapping="456" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="458" Element="0,-1,0,0.666666666666667,1,-1,0,0.333333333333333,0,0,1,1.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,1.583333333333333" MappedObjects="459" NumImages="1">
+						<Atom3d ID="459" Mapping="458" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="460" Element="0,-1,0,1,1,-1,0,0,0,0,1,0" Constraint="0,0,0,1,-0.5,1,0,0.5,0,0,0,0.25" MappedObjects="461" NumImages="1">
+						<Atom3d ID="461" Mapping="460" ImageOf="4"/>
+					</ImageMapping>
+					<ImageMapping ID="462" Element="0,1,0,0.333333333333333,-1,1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,0.416666666666667" MappedObjects="463" NumImages="1">
+						<Atom3d ID="463" Mapping="462" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="464" Element="0,-1,0,0,1,-1,0,-1,0,0,1,0" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,0.25" MappedObjects="465" NumImages="1">
+						<Atom3d ID="465" Mapping="464" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="466" Element="-1,1,0,1,-1,0,0,0,0,0,1,0" Constraint="0.5,0.5,0,0.5,0.5,0.5,0,-0.5,0,0,0,0.25" MappedObjects="467" NumImages="1">
+						<Atom3d ID="467" Mapping="466" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="468" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,0.583333333333333" MappedObjects="469" NumImages="1">
+						<Atom3d ID="469" Mapping="468" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="470" Element="0,1,0,0.666666666666667,-1,1,0,1.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,0.0833333333333333" MappedObjects="471" NumImages="1">
+						<Atom3d ID="471" Mapping="470" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="472" Element="-1,0,0,1.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="1,-0.5,0,0.166666666666667,0,0,0,0.333333333333333,0,0,0,0.0833333333333333" MappedObjects="473" NumImages="1">
+						<Atom3d ID="473" Mapping="472" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="474" Element="0,-1,0,0,1,-1,0,1,0,0,1,0" Constraint="0,0,0,0,-0.5,1,0,0,0,0,0,0.25" MappedObjects="475" NumImages="1">
+						<Atom3d ID="475" Mapping="474" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="476" Element="-1,0,0,0.666666666666667,0,-1,0,1.333333333333333,0,0,-1,0.333333333333333" Constraint="1,-0.5,0,0.666666666666667,0,0,0,1.333333333333333,0,0,0,0.0833333333333333" MappedObjects="477" NumImages="1">
+						<Atom3d ID="477" Mapping="476" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="478" Element="1,-1,0,-0.333333333333333,1,0,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0.5,0.5,0,-0.333333333333333,0.5,0.5,0,0.333333333333333,0,0,0,0.0833333333333333" MappedObjects="479" NumImages="1">
+						<Atom3d ID="479" Mapping="478" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="480" Element="-1,1,0,0,-1,0,0,1,0,0,1,0" Constraint="0.5,0.5,0,-0.5,0.5,0.5,0,0.5,0,0,0,0.25" MappedObjects="481" NumImages="1">
+						<Atom3d ID="481" Mapping="480" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="482" Element="0,1,0,-0.333333333333333,-1,1,0,1.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,-0.5,1,0,-0.166666666666667,0,0,0,0.0833333333333333" MappedObjects="483" NumImages="1">
+						<Atom3d ID="483" Mapping="482" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="484" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="1,-0.5,0,0,0,0,0,0,0,0,0,0.25" MappedObjects="485" NumImages="1">
+						<Atom3d ID="485" Mapping="484" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="486" Element="1,-1,0,0.666666666666667,1,0,0,-0.666666666666667,0,0,-1,0.333333333333333" Constraint="0.5,0.5,0,0.666666666666667,0.5,0.5,0,-0.666666666666667,0,0,0,0.0833333333333333" MappedObjects="487" NumImages="1">
+						<Atom3d ID="487" Mapping="486" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="488" Element="0,-1,0,1,1,-1,0,1,0,0,1,0" Constraint="0,0,0,1,-0.5,1,0,0.5,0,0,0,0.25" MappedObjects="489" NumImages="1">
+						<Atom3d ID="489" Mapping="488" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="490" Element="-1,0,0,1.666666666666667,0,-1,0,1.333333333333333,0,0,-1,0.333333333333333" Constraint="1,-0.5,0,0.666666666666667,0,0,0,1.333333333333333,0,0,0,0.0833333333333333" MappedObjects="491" NumImages="1">
+						<Atom3d ID="491" Mapping="490" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="492" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="1,-0.5,0,0.5,0,0,0,1,0,0,0,0.25" MappedObjects="493" NumImages="1">
+						<Atom3d ID="493" Mapping="492" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="494" Element="0,-1,0,0.666666666666667,1,-1,0,-0.666666666666667,0,0,1,0.333333333333333" Constraint="0,0,0,0.666666666666667,-0.5,1,0,0.333333333333333,0,0,0,0.583333333333333" MappedObjects="495" NumImages="1">
+						<Atom3d ID="495" Mapping="494" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="496" Element="-1,1,0,1.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="0.5,0.5,0,0.333333333333333,0.5,0.5,0,-0.333333333333333,0,0,0,0.916666666666667" MappedObjects="497" NumImages="1">
+						<Atom3d ID="497" Mapping="496" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="498" Element="-1,1,0,1.333333333333333,-1,0,0,1.666666666666667,0,0,1,0.666666666666667" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,0.916666666666667" MappedObjects="499" NumImages="1">
+						<Atom3d ID="499" Mapping="498" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="500" Element="0,-1,0,-0.333333333333333,1,-1,0,-0.666666666666667,0,0,1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,-0.5,1,0,-0.166666666666667,0,0,0,0.583333333333333" MappedObjects="501" NumImages="1">
+						<Atom3d ID="501" Mapping="500" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="502" Element="-1,0,0,0,0,-1,0,1,0,0,-1,1" Constraint="1,-0.5,0,0.5,0,0,0,1,0,0,0,0.75" MappedObjects="503" NumImages="1">
+						<Atom3d ID="503" Mapping="502" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="504" Element="0,-1,0,-0.333333333333333,1,-1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,-0.5,1,0,-0.166666666666667,0,0,0,0.583333333333333" MappedObjects="505" NumImages="1">
+						<Atom3d ID="505" Mapping="504" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="506" Element="-1,1,0,0.666666666666667,-1,0,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="0.5,0.5,0,-0.333333333333333,0.5,0.5,0,0.333333333333333,0,0,0,0.583333333333333" MappedObjects="507" NumImages="1">
+						<Atom3d ID="507" Mapping="506" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="508" Element="1,-1,0,0,1,0,0,1,0,0,-1,1" Constraint="0.5,0.5,0,-0.5,0.5,0.5,0,0.5,0,0,0,0.75" MappedObjects="509" NumImages="1">
+						<Atom3d ID="509" Mapping="508" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="510" Element="1,0,0,-0.333333333333333,0,1,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="1,-0.5,0,0.666666666666667,0,0,0,1.333333333333333,0,0,0,0.583333333333333" MappedObjects="511" NumImages="1">
+						<Atom3d ID="511" Mapping="510" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="512" Element="0,1,0,1,-1,1,0,0,0,0,-1,1" Constraint="0,0,0,1,-0.5,1,0,0.5,0,0,0,0.75" MappedObjects="513" NumImages="1">
+						<Atom3d ID="513" Mapping="512" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="514" Element="-1,1,0,1.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0.5,0.5,0,0.666666666666667,0.5,0.5,0,-0.666666666666667,0,0,0,0.583333333333333" MappedObjects="515" NumImages="1">
+						<Atom3d ID="515" Mapping="514" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="516" Element="1,-1,0,1,1,0,0,0,0,0,-1,1" Constraint="0.5,0.5,0,0.5,0.5,0.5,0,-0.5,0,0,0,0.75" MappedObjects="517" NumImages="1">
+						<Atom3d ID="517" Mapping="516" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="518" Element="-1,1,0,1.666666666666667,-1,0,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="0.5,0.5,0,0.166666666666667,0.5,0.5,0,-0.166666666666667,0,0,0,0.583333333333333" MappedObjects="519" NumImages="1">
+						<Atom3d ID="519" Mapping="518" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="520" Element="1,-1,0,1,1,0,0,1,0,0,-1,1" Constraint="0.5,0.5,0,0,0.5,0.5,0,0,0,0,0,0.75" MappedObjects="521" NumImages="1">
+						<Atom3d ID="521" Mapping="520" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="522" Element="1,0,0,0.666666666666667,0,1,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="1,-0.5,0,0.666666666666667,0,0,0,1.333333333333333,0,0,0,0.583333333333333" MappedObjects="523" NumImages="1">
+						<Atom3d ID="523" Mapping="522" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="524" Element="1,0,0,-0.666666666666667,0,1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="1,-0.5,0,0.333333333333333,0,0,0,0.666666666666667,0,0,0,0.916666666666667" MappedObjects="525" NumImages="1">
+						<Atom3d ID="525" Mapping="524" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="526" Element="-1,1,0,0.333333333333333,-1,0,0,1.666666666666667,0,0,1,0.666666666666667" Constraint="0.5,0.5,0,-0.666666666666667,0.5,0.5,0,0.666666666666667,0,0,0,0.916666666666667" MappedObjects="527" NumImages="1">
+						<Atom3d ID="527" Mapping="526" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="528" Element="1,0,0,0.333333333333333,0,1,0,-0.333333333333333,0,0,1,0.666666666666667" Constraint="1,-0.5,0,-0.166666666666667,0,0,0,-0.333333333333333,0,0,0,0.916666666666667" MappedObjects="529" NumImages="1">
+						<Atom3d ID="529" Mapping="528" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="530" Element="0,-1,0,1.333333333333333,1,-1,0,-0.333333333333333,0,0,1,0.666666666666667" Constraint="0,0,0,1.333333333333333,-0.5,1,0,0.666666666666667,0,0,0,0.916666666666667" MappedObjects="531" NumImages="1">
+						<Atom3d ID="531" Mapping="530" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="532" Element="0,-1,0,1.333333333333333,1,-1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="0,0,0,1.333333333333333,-0.5,1,0,0.666666666666667,0,0,0,0.916666666666667" MappedObjects="533" NumImages="1">
+						<Atom3d ID="533" Mapping="532" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="534" Element="-1,1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="0.5,0.5,0,-0.166666666666667,0.5,0.5,0,0.166666666666667,0,0,0,-0.0833333333333333" MappedObjects="535" NumImages="1">
+						<Atom3d ID="535" Mapping="534" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="536" Element="0,-1,0,0.333333333333333,1,-1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,-0.0833333333333333" MappedObjects="537" NumImages="1">
+						<Atom3d ID="537" Mapping="536" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="538" Element="0,1,0,0.333333333333333,-1,1,0,1.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,0.333333333333333,-0.5,1,0,0.166666666666667,0,0,0,0.416666666666667" MappedObjects="539" NumImages="1">
+						<Atom3d ID="539" Mapping="538" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="540" Element="1,-1,0,-0.666666666666667,1,0,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0.5,0.5,0,-0.666666666666667,0.5,0.5,0,0.666666666666667,0,0,0,0.416666666666667" MappedObjects="541" NumImages="1">
+						<Atom3d ID="541" Mapping="540" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="542" Element="0,1,0,1.333333333333333,-1,1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,1.333333333333333,-0.5,1,0,0.666666666666667,0,0,0,0.416666666666667" MappedObjects="543" NumImages="1">
+						<Atom3d ID="543" Mapping="542" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="544" Element="-1,0,0,1.333333333333333,0,-1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="1,-0.5,0,-0.166666666666667,0,0,0,-0.333333333333333,0,0,0,0.416666666666667" MappedObjects="545" NumImages="1">
+						<Atom3d ID="545" Mapping="544" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="546" Element="0,1,0,1.333333333333333,-1,1,0,1.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,1.333333333333333,-0.5,1,0,0.666666666666667,0,0,0,0.416666666666667" MappedObjects="547" NumImages="1">
+						<Atom3d ID="547" Mapping="546" ImageOf="4" Visible="0"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<MappingFamily ID="548" NumImageMappings="62">
+					<IdentityMapping ID="549" Element="1,0,0,0,0,1,0,0,0,0,1,0" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="5" NumImages="1">
+						<Atom3d ID="5" Mapping="549" Parent="2" Name="AL" UserID="1" XYZ="0,0,0.352" Connections="7,15,18,8,16,19" Components="Al"/>
+					</IdentityMapping>
+					<ImageMapping ID="550" Element="0,1,0,0,1,0,0,0,0,0,-1,0.5" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="551" NumImages="1">
+						<Atom3d ID="551" Mapping="550" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="552" Element="-1,0,0,0,0,-1,0,0,0,0,-1,0" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="553" NumImages="1">
+						<Atom3d ID="553" Mapping="552" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="554" Element="0,-1,0,0,-1,0,0,0,0,0,1,0.5" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="555" NumImages="1">
+						<Atom3d ID="555" Mapping="554" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="556" Element="1,0,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="557" NumImages="1">
+						<Atom3d ID="557" Mapping="556" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="558" Element="0,1,0,0.666666666666667,1,0,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="559" NumImages="1">
+						<Atom3d ID="559" Mapping="558" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="560" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="561" NumImages="1">
+						<Atom3d ID="561" Mapping="560" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="562" Element="0,-1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,0.833333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="563" NumImages="1">
+						<Atom3d ID="563" Mapping="562" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="564" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,0.666666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="565" NumImages="1">
+						<Atom3d ID="565" Mapping="564" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="566" Element="0,1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="567" NumImages="1">
+						<Atom3d ID="567" Mapping="566" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="568" Element="-1,0,0,0.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="569" NumImages="1">
+						<Atom3d ID="569" Mapping="568" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="570" Element="0,-1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,1.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="571" NumImages="1">
+						<Atom3d ID="571" Mapping="570" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="572" Element="0,-1,0,0,-1,0,0,0,0,0,1,-0.5" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="573" NumImages="1">
+						<Atom3d ID="573" Mapping="572" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="574" Element="0,-1,0,0.666666666666667,-1,0,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="575" NumImages="1">
+						<Atom3d ID="575" Mapping="574" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="576" Element="0,-1,0,0.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="577" NumImages="1">
+						<Atom3d ID="577" Mapping="576" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="578" Element="1,0,0,1,0,1,0,1,0,0,1,0" Constraint="0,0,0,1,0,0,0,1,0,0,1,0" MappedObjects="579" NumImages="1">
+						<Atom3d ID="579" Mapping="578" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="580" Element="1,0,0,0,0,1,0,1,0,0,1,0" Constraint="0,0,0,0,0,0,0,1,0,0,1,0" MappedObjects="581" NumImages="1">
+						<Atom3d ID="581" Mapping="580" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="582" Element="0,1,0,1,1,0,0,1,0,0,-1,0.5" Constraint="0,0,0,1,0,0,0,1,0,0,1,0" MappedObjects="583" NumImages="1">
+						<Atom3d ID="583" Mapping="582" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="584" Element="0,1,0,1,1,0,0,0,0,0,-1,0.5" Constraint="0,0,0,1,0,0,0,0,0,0,1,0" MappedObjects="585" NumImages="1">
+						<Atom3d ID="585" Mapping="584" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="586" Element="-1,0,0,1,0,-1,0,1,0,0,-1,1" Constraint="0,0,0,1,0,0,0,1,0,0,1,0" MappedObjects="587" NumImages="1">
+						<Atom3d ID="587" Mapping="586" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="588" Element="-1,0,0,0,0,-1,0,0,0,0,-1,1" Constraint="0,0,0,0,0,0,0,0,0,0,1,0" MappedObjects="589" NumImages="1">
+						<Atom3d ID="589" Mapping="588" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="590" Element="-1,0,0,1,0,-1,0,0,0,0,-1,1" Constraint="0,0,0,1,0,0,0,0,0,0,1,0" MappedObjects="591" NumImages="1">
+						<Atom3d ID="591" Mapping="590" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="592" Element="0,-1,0,1,-1,0,0,1,0,0,1,0.5" Constraint="0,0,0,1,0,0,0,1,0,0,1,0" MappedObjects="593" NumImages="1">
+						<Atom3d ID="593" Mapping="592" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="594" Element="0,-1,0,0,-1,0,0,1,0,0,1,0.5" Constraint="0,0,0,0,0,0,0,1,0,0,1,0" MappedObjects="595" NumImages="1">
+						<Atom3d ID="595" Mapping="594" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="596" Element="1,0,0,-0.333333333333333,0,1,0,-0.666666666666667,0,0,1,-0.666666666666667" Constraint="0,0,0,-0.333333333333333,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="597" NumImages="1">
+						<Atom3d ID="597" Mapping="596" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="598" Element="1,0,0,0.666666666666667,0,1,0,0.333333333333333,0,0,1,-0.666666666666667" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="599" NumImages="1">
+						<Atom3d ID="599" Mapping="598" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="600" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,-0.666666666666667" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="601" NumImages="1">
+						<Atom3d ID="601" Mapping="600" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="602" Element="0,1,0,-0.333333333333333,1,0,0,0.333333333333333,0,0,-1,0.833333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="603" NumImages="1">
+						<Atom3d ID="603" Mapping="602" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="604" Element="0,1,0,0.666666666666667,1,0,0,1.333333333333333,0,0,-1,0.833333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,1.333333333333333,0,0,1,0" MappedObjects="605" NumImages="1">
+						<Atom3d ID="605" Mapping="604" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="606" Element="-1,0,0,0.666666666666667,0,-1,0,1.333333333333333,0,0,-1,1.333333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,1.333333333333333,0,0,1,0" MappedObjects="607" NumImages="1">
+						<Atom3d ID="607" Mapping="606" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="608" Element="-1,0,0,-0.333333333333333,0,-1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="609" NumImages="1">
+						<Atom3d ID="609" Mapping="608" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="610" Element="-1,0,0,0.666666666666667,0,-1,0,0.333333333333333,0,0,-1,1.333333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="611" NumImages="1">
+						<Atom3d ID="611" Mapping="610" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="612" Element="0,-1,0,-0.333333333333333,-1,0,0,-0.666666666666667,0,0,1,-0.166666666666667" Constraint="0,0,0,-0.333333333333333,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="613" NumImages="1">
+						<Atom3d ID="613" Mapping="612" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="614" Element="0,-1,0,-0.333333333333333,-1,0,0,0.333333333333333,0,0,1,-0.166666666666667" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="615" NumImages="1">
+						<Atom3d ID="615" Mapping="614" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="616" Element="1,0,0,0.333333333333333,0,1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="0,0,0,0.333333333333333,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="617" NumImages="1">
+						<Atom3d ID="617" Mapping="616" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="618" Element="1,0,0,1.333333333333333,0,1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="0,0,0,1.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="619" NumImages="1">
+						<Atom3d ID="619" Mapping="618" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="620" Element="1,0,0,0.333333333333333,0,1,0,0.666666666666667,0,0,1,-0.333333333333333" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="621" NumImages="1">
+						<Atom3d ID="621" Mapping="620" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="622" Element="0,1,0,-0.666666666666667,1,0,0,-0.333333333333333,0,0,-1,0.166666666666667" Constraint="0,0,0,-0.666666666666667,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="623" NumImages="1">
+						<Atom3d ID="623" Mapping="622" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="624" Element="0,1,0,0.333333333333333,1,0,0,0.666666666666667,0,0,-1,0.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="625" NumImages="1">
+						<Atom3d ID="625" Mapping="624" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="626" Element="0,1,0,0.333333333333333,1,0,0,-0.333333333333333,0,0,-1,0.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="627" NumImages="1">
+						<Atom3d ID="627" Mapping="626" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="628" Element="-1,0,0,-0.666666666666667,0,-1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="0,0,0,-0.666666666666667,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="629" NumImages="1">
+						<Atom3d ID="629" Mapping="628" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="630" Element="-1,0,0,0.333333333333333,0,-1,0,-0.333333333333333,0,0,-1,0.666666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="631" NumImages="1">
+						<Atom3d ID="631" Mapping="630" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="632" Element="0,-1,0,1.333333333333333,-1,0,0,0.666666666666667,0,0,1,0.166666666666667" Constraint="0,0,0,1.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="633" NumImages="1">
+						<Atom3d ID="633" Mapping="632" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="634" Element="0,-1,0,0.333333333333333,-1,0,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="635" NumImages="1">
+						<Atom3d ID="635" Mapping="634" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="636" Element="0,1,0,0,1,0,0,1,0,0,-1,0.5" Constraint="0,0,0,0,0,0,0,1,0,0,1,0" MappedObjects="637" NumImages="1">
+						<Atom3d ID="637" Mapping="636" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="638" Element="-1,0,0,0,0,-1,0,1,0,0,-1,1" Constraint="0,0,0,0,0,0,0,1,0,0,1,0" MappedObjects="639" NumImages="1">
+						<Atom3d ID="639" Mapping="638" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="640" Element="0,-1,0,1,-1,0,0,0,0,0,1,0.5" Constraint="0,0,0,1,0,0,0,0,0,0,1,0" MappedObjects="641" NumImages="1">
+						<Atom3d ID="641" Mapping="640" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="642" Element="1,0,0,1,0,1,0,0,0,0,1,0" Constraint="0,0,0,1,0,0,0,0,0,0,1,0" MappedObjects="643" NumImages="1">
+						<Atom3d ID="643" Mapping="642" ImageOf="5"/>
+					</ImageMapping>
+					<ImageMapping ID="644" Element="0,-1,0,-0.666666666666667,-1,0,0,-0.333333333333333,0,0,1,0.166666666666667" Constraint="0,0,0,-0.666666666666667,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="645" NumImages="1">
+						<Atom3d ID="645" Mapping="644" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="646" Element="0,1,0,-0.333333333333333,1,0,0,-0.666666666666667,0,0,-1,0.833333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="647" NumImages="1">
+						<Atom3d ID="647" Mapping="646" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="648" Element="-1,0,0,-0.333333333333333,0,-1,0,-0.666666666666667,0,0,-1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="649" NumImages="1">
+						<Atom3d ID="649" Mapping="648" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="650" Element="-1,0,0,-0.333333333333333,0,-1,0,0.333333333333333,0,0,-1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="651" NumImages="1">
+						<Atom3d ID="651" Mapping="650" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="652" Element="1,0,0,-0.666666666666667,0,1,0,-0.333333333333333,0,0,1,-0.333333333333333" Constraint="0,0,0,-0.666666666666667,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="653" NumImages="1">
+						<Atom3d ID="653" Mapping="652" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="654" Element="1,0,0,0,0,1,0,-1,0,0,1,0" Constraint="0,0,0,0,0,0,0,-1,0,0,1,0" MappedObjects="655" NumImages="1">
+						<Atom3d ID="655" Mapping="654" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="656" Element="0,1,0,0.666666666666667,1,0,0,-0.666666666666667,0,0,-1,0.833333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="657" NumImages="1">
+						<Atom3d ID="657" Mapping="656" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="658" Element="0,1,0,0,1,0,0,-1,0,0,-1,0.5" Constraint="0,0,0,0,0,0,0,-1,0,0,1,0" MappedObjects="659" NumImages="1">
+						<Atom3d ID="659" Mapping="658" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="660" Element="0,-1,0,0.666666666666667,-1,0,0,-0.666666666666667,0,0,1,-0.166666666666667" Constraint="0,0,0,0.666666666666667,0,0,0,-0.666666666666667,0,0,1,0" MappedObjects="661" NumImages="1">
+						<Atom3d ID="661" Mapping="660" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="662" Element="-1,0,0,1.333333333333333,0,-1,0,0.666666666666667,0,0,-1,0.666666666666667" Constraint="0,0,0,1.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="663" NumImages="1">
+						<Atom3d ID="663" Mapping="662" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="664" Element="0,1,0,0.333333333333333,1,0,0,-0.333333333333333,0,0,-1,1.166666666666667" Constraint="0,0,0,0.333333333333333,0,0,0,-0.333333333333333,0,0,1,0" MappedObjects="665" NumImages="1">
+						<Atom3d ID="665" Mapping="664" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="666" Element="1,0,0,0.666666666666667,0,1,0,1.333333333333333,0,0,1,0.333333333333333" Constraint="0,0,0,0.666666666666667,0,0,0,1.333333333333333,0,0,1,0" MappedObjects="667" NumImages="1">
+						<Atom3d ID="667" Mapping="666" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="668" Element="1,0,0,-0.333333333333333,0,1,0,0.333333333333333,0,0,1,0.333333333333333" Constraint="0,0,0,-0.333333333333333,0,0,0,0.333333333333333,0,0,1,0" MappedObjects="669" NumImages="1">
+						<Atom3d ID="669" Mapping="668" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="670" Element="0,1,0,1.333333333333333,1,0,0,0.666666666666667,0,0,-1,1.166666666666667" Constraint="0,0,0,1.333333333333333,0,0,0,0.666666666666667,0,0,1,0" MappedObjects="671" NumImages="1">
+						<Atom3d ID="671" Mapping="670" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<ImageMapping ID="672" Element="0,-1,0,0.666666666666667,-1,0,0,1.333333333333333,0,0,1,-0.166666666666667" Constraint="0,0,0,0.666666666666667,0,0,0,1.333333333333333,0,0,1,0" MappedObjects="673" NumImages="1">
+						<Atom3d ID="673" Mapping="672" ImageOf="5" Visible="0"/>
+					</ImageMapping>
+					<MappingRepairs NumRepairs="0"/>
+				</MappingFamily>
+				<InfiniteMapping ID="3" Element="1,0,0,0,0,1,0,0,0,0,1,0" MappedObjects="2"/>
+			</MappingSet>
+			<OriginalObjects ID="674">
+				<SetCollection Objects="4,5"/>
+			</OriginalObjects>
+		</SymmetrySystem>
+	</AtomisticTreeRoot>
+</XSD>

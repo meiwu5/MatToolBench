@@ -1,0 +1,90 @@
+{
+    "id": "fddbd8ec-0cbe-42d9-80ee-48557f0a45a3-wos",
+    "snapshot": "vestalab",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-1265_MgO.cif', toggle coordinate axes (hide if shown, show if hidden), change atomic radius to 1.5, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\MgO_radius.vesta'.",
+    "source": "https:\\www.example.com/software/vesta",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for VESTA to fully load",
+            "parameters": {
+                "seconds": 20
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories/vesta/",
+    "related_apps": [
+        "Vesta"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\MgO_radius.vesta"
+            },
+            {
+                "type": "check_file_opened",
+                "expected_filename": "mp-1265_MgO.cif"
+            },
+            {
+                "type": "check_file_opened",
+                "title_keyword": "Properties"
+            },
+            {
+                "type": "check_properties_field",
+                "field_name": "Radius",
+                "expected_value": 1.5
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

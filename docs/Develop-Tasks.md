@@ -1,4 +1,4 @@
-# Develop new Tasks in WAA
+# Develop new Tasks in MatToolBench
 
 First and foremost, we recommend getting familiar with our own task examples to get a sense of the configuration required for setting up a task as well as common setups, commands, patterns, etc. We also provide a brief example below. If developing a task for a program/application category that already exists in this repo (e.g., Chrome, Edge, LibreOffice, etc.), we highly recommend getting familiar with our existing task machineary including but not limited to its getters, evaluators, etc. and making modifications from there.
 

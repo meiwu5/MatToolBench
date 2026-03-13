@@ -1,0 +1,10 @@
+Full Formula (Cs1 Cl1)
+Reduced Formula: CsCl
+abc   :   2.969848   2.969848   2.969848
+angles:  60.000000  60.000000  60.000000
+pbc   :       True       True       True
+Sites (2)
+  #  SP      a    b    c
+---  ----  ---  ---  ---
+  0  Cl    0.5  0.5  0.5
+  1  Cs    0    0    0

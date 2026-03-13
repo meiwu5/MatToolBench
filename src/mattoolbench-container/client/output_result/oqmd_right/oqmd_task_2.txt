@@ -1,0 +1,5 @@
+name:       Fe
+entry_id:   7505
+delta_e:    0.161451849999999 eV/atom
+stability:  0.161451849999999 eV/atom
+spacegroup: Fm-3m

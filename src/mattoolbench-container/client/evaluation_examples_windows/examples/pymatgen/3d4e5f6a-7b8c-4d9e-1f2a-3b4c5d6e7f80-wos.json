@@ -1,0 +1,26 @@
+{
+  "id": "3d4e5f6a-7b8c-4d9e-1f2a-3b4c5d6e7f80-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create an Incar object and set NSW=100 and EDIFF=1e-6, save the parameter content to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task13.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task13.txt",
+      "dest": "task13.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task13.txt",
+      "dest": "task13_right.txt"
+    }
+  }
+}

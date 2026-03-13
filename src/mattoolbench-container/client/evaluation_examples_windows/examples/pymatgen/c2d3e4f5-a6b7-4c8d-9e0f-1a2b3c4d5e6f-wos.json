@@ -1,0 +1,26 @@
+{
+  "id": "c2d3e4f5-a6b7-4c8d-9e0f-1a2b3c4d5e6f-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create a CsCl structure, extract the num_sites attribute (should be 2), and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task6.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task6.txt",
+      "dest": "task6.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task6.txt",
+      "dest": "task6_right.txt"
+    }
+  }
+}

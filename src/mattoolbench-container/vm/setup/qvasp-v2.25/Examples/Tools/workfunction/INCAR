@@ -1,0 +1,25 @@
+ SYSTEM =  AlN 0001 surface 2x2 Ga_T4
+
+ Electronic strcutre
+   PREC   = A
+   ENCUT  = 500 eV ; NELMIN = 2 ; NELMDL = -5
+   EDIFF  = 1E-5
+   EDIFFG = -0.02
+   LREAL  = F
+
+   LCHARG = F
+   LVHAR = TRUE
+   LWAVE  =  F
+#   NBANDS = 320
+
+   GGA = PE
+
+ Ionic Relaxation
+   NSW    = 0    number of steps for IOM
+   IBRION = -1
+   ISIF   = 2
+   PSTRESS= 0
+
+ DOS related values:
+   ISMEAR =    -5  ; SIGMA = 0.01
+#   EMIN   =   -15 ;  EMAX = 15

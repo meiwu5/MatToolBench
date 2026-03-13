@@ -1,0 +1,26 @@
+{
+  "id": "8b9c0d1e-2f3a-4b5c-8d9e-0f1a2b3c4d5e-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create a hexagonal structure (a=4.0, c=6.0) containing a Ti atom at coordinates [0,0,0], and save the structure description to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task2.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task2.txt",
+      "dest": "task2.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task2.txt",
+      "dest": "task2_right.txt"
+    }
+  }
+}

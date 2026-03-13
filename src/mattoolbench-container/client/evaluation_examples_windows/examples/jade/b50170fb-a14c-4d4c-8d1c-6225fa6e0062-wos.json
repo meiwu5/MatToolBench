@@ -1,0 +1,84 @@
+{
+    "id": "b50170fb-a14c-4d4c-8d1c-6225fa6e0062-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to open the original file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\XRD1.xrdml', perform full-pattern theta angle correction using the internal standard method, then print the fitting report and save it to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_theta.pdf'.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_theta.pdf"
+            },
+            {
+                "type": "check_file_opened",
+                "expected_filename": "XRD2.xrdml"
+            },
+            {
+                "type": "check_refinement_result"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

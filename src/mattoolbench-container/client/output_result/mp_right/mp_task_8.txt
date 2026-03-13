@@ -1,0 +1,1 @@
+band_gap: 3.4343; is_hubbard: false

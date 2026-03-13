@@ -1,0 +1,108 @@
+{
+    "id": "3e05324a-e02b-4752-9d78-8e4c38c7e264-wos",
+    "snapshot": "MSlab",
+    "instruction": "Use Materials Studio to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\untitled.stp', import the file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\urea.xsd', and set its display style to Ball and Stick.",
+    "source": "https://www.example.com/software/MS",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\BIOVIA\\Materials Studio 23.1\\bin\\MatStudio.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Materials Studio to fully load",
+            "parameters": {
+                "seconds": 120
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Maximize the Materials Studio window",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pygetwindow as gw; ws=[w for w in gw.getAllWindows() if \"Materials Studio\" in w.title]; ws[0].maximize() if ws else None"
+                ]
+            }
+        }
+    ],
+    "trajectory": "trajectories/MS/",
+    "related_apps": [
+        "Materials Studio"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_in_title",
+                "expected_filename": "untitled",
+                "region": "Top5%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "urea",
+                "forbidden_keywords": [
+                    "Import Document"
+                ],
+                "region": "Top40%"
+            },
+            {
+                "type": "check_dialog_title",
+                "expected_title": "Display Style",
+                "forbidden_keywords": [
+                    "Hide",
+                    "Display Options"
+                ]
+            },
+            {
+                "type": "check_visual_similarity",
+                "reference_key": "ball_stick",
+                "similarity_threshold": 0.99,
+                "crop_region": [
+                    0.2,
+                    0.15,
+                    0.7,
+                    0.7
+                ]
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

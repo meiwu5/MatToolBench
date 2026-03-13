@@ -2,8 +2,9 @@
 
 echo "Initializing Compute VM at startup..."
 
-# Install dos2unix
-sudo apt-get install -y dos2unix
+# Install dos2unix (non-interactive to avoid GUI prompts)
+export DEBIAN_FRONTEND=noninteractive
+sudo -E apt-get install -y -q dos2unix
 
 # Stop dnsmasq running on port 53
 sudo systemctl stop systemd-resolved

@@ -1,0 +1,203 @@
+ vasp.5.4.1 05Feb16 (build Dec 29 2025 23:00:53) complex                         
+ executed on             LinuxGNU date 2026.01.19  20:55:32
+ running on    4 total cores
+ distrk:  each k-point on    4 cores,    1 groups
+ distr:  one band on NCORES_PER_BAND=   2 cores,    2 groups
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+ INCAR:
+ POTCAR:   PAW_PBE Cu 05Jan2001                   
+ POTCAR:   PAW_PBE Cu 05Jan2001                   
+   VRHFIN =Cu: d10 p1                                                           
+   LEXCH  = PE                                                                  
+   EATOM  =  1390.9800 eV,  102.2341 Ry                                         
+                                                                                
+   TITEL  = PAW_PBE Cu 05Jan2001                                                
+   LULTRA =        F    use ultrasoft PP ?                                      
+   IUNSCR =        1    unscreen: 0-lin 1-nonlin 2-no                           
+   RPACOR =    2.000    partial core radius                                     
+   POMASS =   63.546; ZVAL   =   11.000    mass and valenz                      
+   RCORE  =    2.300    outmost cutoff radius                                   
+   RWIGS  =    2.480; RWIGS  =    1.312    wigner-seitz radius (au A)           
+   ENMAX  =  273.214; ENMIN  =  204.910 eV                                      
+   RCLOC  =    1.712    cutoff for local pot                                    
+   LCOR   =        T    correct aug charges                                     
+   LPAW   =        T    paw PP                                                  
+   EAUG   =  516.456                                                            
+   DEXC   =    -.008                                                            
+   RMAX   =    2.789    core radius for proj-oper                               
+   RAUG   =    1.300    factor for augmentation sphere                          
+   RDEP   =    2.302    radius for radial grids                                 
+   QCUT   =   -4.481; QGAM   =    8.962    optimization parameters              
+                                                                                
+   Description                                                                  
+     l     E      TYP  RCUT    TYP  RCUT                                        
+     2   .000     23  2.300                                                     
+     2   .000     23  2.300                                                     
+     0   .000     23  2.300                                                     
+     0   .000     23  2.300                                                     
+     1  -.200     23  2.300                                                     
+     1   .000     23  2.300                                                     
+     3   .000      7   .000                                                     
+  local pseudopotential read in
+  partial core-charges read in
+  atomic valenz-charges read in
+  non local Contribution for L=           2  read in
+    real space projection operators read in
+  non local Contribution for L=           2  read in
+    real space projection operators read in
+  non local Contribution for L=           0  read in
+    real space projection operators read in
+  non local Contribution for L=           0  read in
+    real space projection operators read in
+  non local Contribution for L=           1  read in
+    real space projection operators read in
+  non local Contribution for L=           1  read in
+    real space projection operators read in
+    PAW grid and wavefunctions read in
+
+   number of l-projection  operators is LMAX  =           6
+   number of lm-projection operators is LMMAX =          18
+
+ PAW_PBE Cu 05Jan2001                   :
+ energy of atom  1       EATOM=-1390.9800
+ kinetic energy error for atom=    0.0117 (will be added to EATOM!!)
+
+
+ POSCAR: Cu1                                     
+  positions in direct lattice
+  No initial velocities read in
+ exchange correlation table for  LEXCH =        8
+   RHO(1)=    0.500       N(1)  =     2000
+   RHO(2)=  100.500       N(2)  =     4000
+
+
+
+--------------------------------------------------------------------------------------------------------
+
+
+ ion  position               nearest neighbor table
+   1  0.000  0.000  0.000-
+
+  LATTYP: Found a face centered cubic cell.
+ ALAT       =     3.5774299120
+  
+  Lattice vectors:
+  
+ A1 = (   2.1907198700,   0.0000000000,   1.2648124800)
+ A2 = (   0.7302402900,   2.0654310600,   1.2648124800)
+ A3 = (  -0.0000000000,  -0.0000000000,   2.5296249500)
+
+
+Analysis of symmetry for initial positions (statically):
+=====================================================================
+ Subroutine PRICEL returns:
+ Original cell was already a primitive cell.
+ 
+
+ Routine SETGRP: Setting up the symmetry group for a 
+ face centered cubic supercell.
+
+
+ Subroutine GETGRP returns: Found 48 space group operations
+ (whereof 48 operations were pure point group operations)
+ out of a pool of 48 trial point group operations.
+
+
+The static configuration has the point symmetry O_h .
+
+
+Analysis of symmetry for dynamics (positions and initial velocities):
+=====================================================================
+ Subroutine PRICEL returns:
+ Original cell was already a primitive cell.
+ 
+
+ Routine SETGRP: Setting up the symmetry group for a 
+ face centered cubic supercell.
+
+
+ Subroutine GETGRP returns: Found 48 space group operations
+ (whereof 48 operations were pure point group operations)
+ out of a pool of 48 trial point group operations.
+
+
+The dynamic configuration has the point symmetry O_h .
+
+
+ Subroutine INISYM returns: Found 48 space group operations
+ (whereof 48 operations are pure point group operations),
+ and found     1 'primitive' translations
+
+
+
+ KPOINTS: Auto                                    
+
+Automatic generation of k-mesh.
+Space group operators:
+ irot       det(A)        alpha          n_x          n_y          n_z        tau_x        tau_y        tau_z
+    1     1.000000     0.000000     1.000000     0.000000     0.000000     0.000000     0.000000     0.000000
+    2    -1.000000     0.000000     1.000000     0.000000     0.000000     0.000000     0.000000     0.000000
+    3     1.000000   120.000000    -0.471404    -0.333333    -0.816497     0.000000     0.000000     0.000000
+    4    -1.000000   120.000000    -0.471404    -0.333333    -0.816497     0.000000     0.000000     0.000000
+    5     1.000000   120.000000     0.471405     0.333333     0.816496     0.000000     0.000000     0.000000
+    6    -1.000000   120.000000     0.471405     0.333333     0.816496     0.000000     0.000000     0.000000
+    7     1.000000    90.000000    -0.816497    -0.577350    -0.000000     0.000000     0.000000     0.000000
+    8    -1.000000    90.000000    -0.816497    -0.577350    -0.000000     0.000000     0.000000     0.000000
+    9     1.000000   180.000000     0.866025    -0.000000     0.500000     0.000000     0.000000     0.000000
+   10    -1.000000   180.000000     0.866025    -0.000000     0.500000     0.000000     0.000000     0.000000
+   11     1.000000    90.000000     0.408248    -0.577350     0.707107     0.000000     0.000000     0.000000
+   12    -1.000000    90.000000     0.408248    -0.577350     0.707107     0.000000     0.000000     0.000000
+   13     1.000000   180.000000     0.816497     0.577350     0.000000     0.000000     0.000000     0.000000
+   14    -1.000000   180.000000     0.816497     0.577350     0.000000     0.000000     0.000000     0.000000
+   15     1.000000   120.000000     0.942809    -0.333333     0.000000     0.000000     0.000000     0.000000
+   16    -1.000000   120.000000     0.942809    -0.333333     0.000000     0.000000     0.000000     0.000000
+   17     1.000000   120.000000    -0.000000    -1.000000     0.000000     0.000000     0.000000     0.000000
+   18    -1.000000   120.000000    -0.000000    -1.000000     0.000000     0.000000     0.000000     0.000000
+   19     1.000000    90.000000     0.816497     0.577350    -0.000000     0.000000     0.000000     0.000000
+   20    -1.000000    90.000000     0.816497     0.577350    -0.000000     0.000000     0.000000     0.000000
+   21     1.000000    90.000000     0.408248    -0.577350    -0.707107     0.000000     0.000000     0.000000
+   22    -1.000000    90.000000     0.408248    -0.577350    -0.707107     0.000000     0.000000     0.000000
+   23     1.000000   179.999999     0.288675     0.816496     0.500000     0.000000     0.000000     0.000000
+   24    -1.000000   179.999999     0.288675     0.816496     0.500000     0.000000     0.000000     0.000000
+   25     1.000000   120.000000     0.000000     1.000000     0.000000     0.000000     0.000000     0.000000
+   26    -1.000000   120.000000     0.000000     1.000000     0.000000     0.000000     0.000000     0.000000
+   27     1.000000   120.000000     0.471404     0.333333    -0.816497     0.000000     0.000000     0.000000
+   28    -1.000000   120.000000     0.471404     0.333333    -0.816497     0.000000     0.000000     0.000000
+   29     1.000000   180.000000    -0.408248     0.577350     0.707107     0.000000     0.000000     0.000000
+   30    -1.000000   180.000000    -0.408248     0.577350     0.707107     0.000000     0.000000     0.000000
+   31     1.000000    90.000000    -0.408248     0.577350    -0.707107     0.000000     0.000000     0.000000
+   32    -1.000000    90.000000    -0.408248     0.577350    -0.707107     0.000000     0.000000     0.000000
+   33     1.000000   180.000000    -0.000000    -0.000000     1.000000     0.000000     0.000000     0.000000
+   34    -1.000000   180.000000    -0.000000    -0.000000     1.000000     0.000000     0.000000     0.000000
+   35     1.000000    90.000000    -0.408248     0.577350     0.707107     0.000000     0.000000     0.000000
+   36    -1.000000    90.000000    -0.408248     0.577350     0.707107     0.000000     0.000000     0.000000
+   37     1.000000   120.000000    -0.942809     0.333333     0.000000     0.000000     0.000000     0.000000
+   38    -1.000000   120.000000    -0.942809     0.333333     0.000000     0.000000     0.000000     0.000000
+   39     1.000000   180.000000    -0.408248     0.577350    -0.707107     0.000000     0.000000     0.000000
+   40    -1.000000   180.000000    -0.408248     0.577350    -0.707107     0.000000     0.000000     0.000000
+   41     1.000000   120.000000    -0.471405    -0.333333     0.816496     0.000000     0.000000     0.000000
+   42    -1.000000   120.000000    -0.471405    -0.333333     0.816496     0.000000     0.000000     0.000000
+   43     1.000000   180.000000     0.288675     0.816496    -0.500000     0.000000     0.000000     0.000000
+   44    -1.000000   180.000000     0.288675     0.816496    -0.500000     0.000000     0.000000     0.000000
+   45     1.000000   180.000000     0.577350    -0.816497     0.000000     0.000000     0.000000     0.000000
+   46    -1.000000   180.000000     0.577350    -0.816497     0.000000     0.000000     0.000000     0.000000
+   47     1.000000   180.000000     0.866025    -0.000000    -0.500000     0.000000     0.000000     0.000000
+   48    -1.000000   180.000000     0.866025    -0.000000    -0.500000     0.000000     0.000000     0.000000
+ 
+ Subroutine IBZKPT returns following result:
+ ===========================================
+ 
+ Found      1 irreducible k-points:
+ 
+ Following reciprocal coordinates:
+            Coordinates               Weight
+  0.000000  0.000000  0.000000      1.000000
+ 
+ Following cartesian coordinates:
+            Coordinates               Weight
+  0.000000  0.000000  0.000000      1.000000
+ 

@@ -1,1 +1,9 @@
 *.sh text eol=lf
+
+# Git LFS — benchmark data files and large binary tools
+*.dm3 filter=lfs diff=lfs merge=lfs -text
+src/mattoolbench-container/vm/setup/qvasp-v2.25/exefile/Tools/USERTooLs/atomkit filter=lfs diff=lfs merge=lfs -text
+src/mattoolbench-container/vm/setup/qvasp-v2.25/exefile/Tools/USERTooLs/vaspkit filter=lfs diff=lfs merge=lfs -text
+src/mattoolbench-container/vm/setup/qvasp-v2.25/exefile/Tools/cleavesurface filter=lfs diff=lfs merge=lfs -text
+src/mattoolbench-container/vm/setup/qvasp-v2.25/Examples/Tools/elastic/OUTCAR filter=lfs diff=lfs merge=lfs -text
+src/mattoolbench-container/vm/setup/qvasp-v2.25/Examples/Tools/workfunction/LOCPOT filter=lfs diff=lfs merge=lfs -text

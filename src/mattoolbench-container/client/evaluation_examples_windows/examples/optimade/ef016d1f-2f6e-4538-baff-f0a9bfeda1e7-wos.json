@@ -1,0 +1,27 @@
+{
+    "id": "ef016d1f-2f6e-4538-baff-f0a9bfeda1e7-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all structures whose chemical composition includes both Fe and O (other elements are allowed), using a filter such as: elements HAS ALL \"Fe\",\"O\". Record the chemical_formula_reduced of the first 10 results and save them to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_4.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_4.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

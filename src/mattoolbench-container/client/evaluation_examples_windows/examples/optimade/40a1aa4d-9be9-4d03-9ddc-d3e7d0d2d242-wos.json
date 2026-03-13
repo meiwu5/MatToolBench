@@ -1,0 +1,27 @@
+{
+    "id": "40a1aa4d-9be9-4d03-9ddc-d3e7d0d2d242-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Query the Materials Project database via the OPTIMADE API to count all non-magnetic insulators with a band gap greater than 4.0 eV. Save the total count to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\mp_adv_20.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\mp_adv_20.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

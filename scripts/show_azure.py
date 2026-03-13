@@ -8,9 +8,8 @@ from tqdm import tqdm
 
 def get_results_from_json(result_dir, config, output_file):
     columns = ["exp_name", "uia_value", "som_origin", "model",
-               "chrome", "libreoffice_calc", "libreoffice_writer", 
-               "vlc", "vs_code", "settings", "windows_calc", 
-               "clock", "msedge", "file_explorer", "microsoft_paint", "notepad", "*errors*"]
+               "avantage", "vesta", "jade", 
+               "ms", "dm", "*errors*"]
     
     # Start the markdown file and write the headers
     with open(output_file, "w") as f:
@@ -41,9 +40,7 @@ def get_results_from_json(result_dir, config, output_file):
         results_path = os.path.join(*path_args)
         errs = 0
 
-        for domain in ["chrome", "libreoffice_calc", "libreoffice_writer", 
-                       "vlc", "vs_code", "settings", "windows_calc", 
-                       "clock", "msedge", "file_explorer", "microsoft_paint", "notepad"]:
+        for domain in ["avantage", "vesta", "jade", "ms", "dm"]:
             domain_path = os.path.join(results_path, domain)
             if os.path.isdir(domain_path):
                 task_results = []

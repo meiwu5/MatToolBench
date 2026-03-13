@@ -1,0 +1,14 @@
+Stable Li-Fe-O ternary compounds: 102
+Average delta_e: -1.8331 eV/atom
+
+All entries:
+  LiFeO2                delta_e=-1.90427537254294 eV/atom  spacegroup=I41/amd
+  LiFeO2                delta_e=-1.93051413004294 eV/atom  spacegroup=R-3m
+  LiFeO2                delta_e=-1.90382510379294 eV/atom  spacegroup=I41/amd
+  LiFeO2                delta_e=-1.91984958629294 eV/atom  spacegroup=C2/c
+  LiFeO2                delta_e=-1.84468471316794 eV/atom  spacegroup=Pnma
+  LiFeO2                delta_e=-1.89471401441794 eV/atom  spacegroup=Pnma
+  LiFeO2                delta_e=-1.89473797566794 eV/atom  spacegroup=Pnma
+  LiFeO2                delta_e=-1.48581486691794 eV/atom  spacegroup=Pnma
+  LiFeO2                delta_e=-1.65877942004294 eV/atom  spacegroup=Pnma
+  LiFeO2                delta_e=-1.89366240066794 eV/atom  spacegroup=Pna21

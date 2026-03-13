@@ -1,0 +1,7 @@
+name:        NaCl
+entry_id:    3735
+composition: Cl1 Na1
+spacegroup:  Fm-3m
+volume:      44.5528 A^3/atom
+delta_e:     -2.05010813823539 eV/atom
+stability:   0.0008186674999954846 eV/atom

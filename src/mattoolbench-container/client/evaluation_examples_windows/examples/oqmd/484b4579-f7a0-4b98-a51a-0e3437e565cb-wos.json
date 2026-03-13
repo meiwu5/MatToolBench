@@ -1,0 +1,27 @@
+{
+    "id": "484b4579-f7a0-4b98-a51a-0e3437e565cb-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for all stable Ni-Al binary compounds (element_set=Ni,Al AND ntypes=2), sorted by delta_e, identify the convex hull minimum and save full data to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_20.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 18,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_20.txt",
+            "dest": "oqmd_task_20.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_20.txt",
+            "dest": "oqmd_task_20_right.txt"
+        }
+    }
+}

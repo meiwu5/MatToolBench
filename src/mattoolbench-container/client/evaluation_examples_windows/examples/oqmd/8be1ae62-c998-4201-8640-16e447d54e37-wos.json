@@ -1,0 +1,27 @@
+{
+    "id": "8be1ae62-c998-4201-8640-16e447d54e37-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for stable Ba-Ti-O compounds (element_set=Ba,Ti,O), save all results' names/spacegroup/delta_e to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_11.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_11.txt",
+            "dest": "oqmd_task_11.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_11.txt",
+            "dest": "oqmd_task_11_right.txt"
+        }
+    }
+}

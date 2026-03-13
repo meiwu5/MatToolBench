@@ -14,5 +14,5 @@ docker-compose.yml
 docker-compose.yaml
 *.md
 
-# whitelist src/win-arena-container
-!src/win-arena-container/**
+# whitelist src/mattoolbench-container
+!src/mattoolbench-container/**

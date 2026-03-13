@@ -1,0 +1,27 @@
+{
+    "id": "a31af921-d4c2-4978-8938-688e8b6c47d8-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all structures that contain ONLY Group-IV elements (C, Si, Ge, Sn, Pb) using OPTIMADE filter syntax (e.g. elements HAS ONLY \"C\",\"Si\",\"Ge\",\"Sn\",\"Pb\"). Save the total count of matching structures to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_1.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_1.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

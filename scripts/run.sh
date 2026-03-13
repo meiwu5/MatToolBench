@@ -12,23 +12,27 @@ skip_build=false
 interactive=false
 connect=false
 use_kvm=true
-ram_size=8G
-cpu_cores=8
+ram_size=6G
+cpu_cores=4
 mount_vm_storage=true
 mount_client=true
 mount_server=true
-container_name="winarena"
+container_name="mattoolbench"
 browser_port=8006
 rdp_port=3390
 start_client=true
-agent="navi"
-model="gpt-4-vision-preview"
-som_origin="oss"
+agent="auto"
+model="qwen3.5-27b-mini"
+som_origin="a11y"
 a11y_backend="uia"
 gpu_enabled=false
 OPENAI_API_KEY=""
+OPENAI_ENDPOINT=""
 AZURE_API_KEY=""
 AZURE_ENDPOINT=""
+ORIGIN_EVAL_MODEL=""
+ORIGIN_EVAL_API_KEY=""
+ORIGIN_EVAL_BASE_URL=""
 
 # Parse the command line arguments
 while [[ $# -gt 0 ]]; do
@@ -113,12 +117,28 @@ while [[ $# -gt 0 ]]; do
             OPENAI_API_KEY="$2"
             shift 2
             ;;
+        --openai-endpoint)
+            OPENAI_ENDPOINT="$2"
+            shift 2
+            ;;
         --azure-api-key)
             AZURE_API_KEY="$2"
             shift 2
             ;;
         --azure-endpoint)
             AZURE_ENDPOINT="$2"
+            shift 2
+            ;;
+        --origin-eval-model)
+            ORIGIN_EVAL_MODEL="$2"
+            shift 2
+            ;;
+        --origin-eval-api-key)
+            ORIGIN_EVAL_API_KEY="$2"
+            shift 2
+            ;;
+        --origin-eval-base-url)
+            ORIGIN_EVAL_BASE_URL="$2"
             shift 2
             ;;
         --mode)
@@ -128,7 +148,7 @@ while [[ $# -gt 0 ]]; do
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
-            echo "  --container-name <name> : Name of the arena container (default: winarena)"
+            echo "  --container-name <name> : Name of the arena container (default: mattoolbench)"
             echo "  --prepare-image <true/false> : Prepare an arena golden image (default: false)"
             echo "  --skip-build <true/false> : Skip building the arena container image (default: false)"
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
@@ -142,12 +162,13 @@ while [[ $# -gt 0 ]]; do
             echo "  --browser-port <port> : Port to expose for connecting to the VM using browser (default: 8006)"
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
-            echo "  --agent <navi> : Agent to use for the arena container (default: navi)"
-            echo "  --model <model>: The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --agent <auto|gui|code|origin|navi> : Agent to use (default: auto — routes by domain)"
+            echo "  --model <model>: The model to use (default: qwen3.5-27b-mini, available options are: qwen3.5-27b, qwen3.5-27b-mini, gpt-5, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --openai-api-key <key> : The OpenAI API key"
+            echo "  --openai-endpoint : The OpenAI API key"
             echo "  --azure-api-key <key> : The Azure OpenAI API key"
             echo "  --azure-endpoint <url> : The Azure OpenAI Endpoint"
             echo "  --mode <dev/azure> : Mode (default: azure)"
@@ -162,13 +183,13 @@ done
 
 # Static parameters
 if [ "$mode" = "dev" ]; then # Only for dev mode
-  winarena_image_name="winarena-$mode"
+  mattoolbench_image_name="mattoolbench-$mode"
 else
-  winarena_image_name="winarena"
+  mattoolbench_image_name="mattoolbench"
 fi
 
-winarena_image_tag="latest" 
-winarena_full_image_name="windowsarena/$winarena_image_name"
+mattoolbench_image_tag="latest" 
+mattoolbench_full_image_name="mattoolbench/$mattoolbench_image_name"
 
 # Check if Docker daemon is running
 if ! docker info >/dev/null 2>&1; then
@@ -176,20 +197,20 @@ if ! docker info >/dev/null 2>&1; then
 fi
 
 # Check if the container image exists
-if ! docker images | grep -q -e $winarena_full_image_name; then
-    echo "Docker image $winarena_full_image_name not found."
+if ! docker images | grep -q -e $mattoolbench_full_image_name; then
+    echo "Docker image $mattoolbench_full_image_name not found."
     if [ "$skip_build" = true ]; then
-        log_error_exit "The 'skip_build' flag is set to true, but the image $winarena_full_image_name was not found. To build the image, set 'skip_build' to false, or pull the latest image from the registry using: docker pull $winarena_full_image_name:$winarena_image_tag"
+        log_error_exit "The 'skip_build' flag is set to true, but the image $mattoolbench_full_image_name was not found. To build the image, set 'skip_build' to false, or pull the latest image from the registry using: docker pull $mattoolbench_full_image_name:$mattoolbench_image_tag"
     fi
 fi
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 # Resolve paths
-vm_setup_image_path="$SCRIPT_DIR/../src/win-arena-container/vm/image"
-vm_storage_mount_path="$SCRIPT_DIR/../src/win-arena-container/vm/storage"
-server_mount_path="$SCRIPT_DIR/../src/win-arena-container/vm/setup"
-client_mount_path="$SCRIPT_DIR/../src/win-arena-container/client"
+vm_setup_image_path="$SCRIPT_DIR/../src/mattoolbench-container/vm/image"
+vm_storage_mount_path="$SCRIPT_DIR/../src/mattoolbench-container/vm/storage"
+server_mount_path="$SCRIPT_DIR/../src/mattoolbench-container/vm/setup"
+client_mount_path="$SCRIPT_DIR/../src/mattoolbench-container/client"
 
 # Solve absolute path
 vm_setup_image_path=$(getrealpath $vm_setup_image_path)
@@ -209,7 +230,7 @@ if [ ! -e /dev/kvm ]; then
 fi
 
 # Check if at least one key has been set: OPENAI_API_KEY or both AZURE_API_KEY and AZURE_ENDPOINT
-if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; then
+if [[ (-z "$OPENAI_API_KEY" || -z "$OPENAI_ENDPOINT")  && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; then
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
@@ -298,8 +319,13 @@ invoke_docker_container() {
         fi
     fi
 
+    # Origin eval model — dedicated vision LLM for scoring Origin task outputs
+    [ -n "$ORIGIN_EVAL_MODEL"   ] && docker_command+=" -e ORIGIN_EVAL_MODEL=$ORIGIN_EVAL_MODEL"
+    [ -n "$ORIGIN_EVAL_API_KEY" ] && docker_command+=" -e ORIGIN_EVAL_API_KEY=$ORIGIN_EVAL_API_KEY"
+    [ -n "$ORIGIN_EVAL_BASE_URL"] && docker_command+=" -e ORIGIN_EVAL_BASE_URL=$ORIGIN_EVAL_BASE_URL"
+
     # Add the image name with tag
-    docker_command+=" $winarena_full_image_name:$winarena_image_tag"
+    docker_command+=" $mattoolbench_full_image_name:$mattoolbench_image_tag"
     
     # Set the entrypoint arguments
     entrypoint_args=" -c './entry.sh --prepare-image $prepare_image --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend'"

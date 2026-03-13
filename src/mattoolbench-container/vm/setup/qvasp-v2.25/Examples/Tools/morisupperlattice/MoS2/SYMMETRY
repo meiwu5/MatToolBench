@@ -1,0 +1,52 @@
+# Read the symmetry of structure from the SYMMETRY.in file if it exists. 
+  187          #Space group number of the input structure
+ 
+Symmetry Operation:    12
+  1  0  0
+  0  1  0
+  0  0  1
+ 
+ -1  1  0
+ -1  0  0
+  0  0 -1
+ 
+  0 -1  0
+  1 -1  0
+  0  0  1
+ 
+  1  0  0
+  0  1  0
+  0  0 -1
+ 
+ -1  1  0
+ -1  0  0
+  0  0  1
+ 
+  0 -1  0
+  1 -1  0
+  0  0 -1
+ 
+  0 -1  0
+ -1  0  0
+  0  0 -1
+ 
+  1  0  0
+  1 -1  0
+  0  0  1
+ 
+ -1  1  0
+  0  1  0
+  0  0 -1
+ 
+  0 -1  0
+ -1  0  0
+  0  0  1
+ 
+  1  0  0
+  1 -1  0
+  0  0 -1
+ 
+ -1  1  0
+  0  1  0
+  0  0  1
+ 

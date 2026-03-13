@@ -1,0 +1,120 @@
+{
+    "id": "1637ba5b-1785-4af1-9a35-3e1ae4bec973-wos",
+    "snapshot": "vestalab",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-804_GaN.cif', in Boundary adjust fractional ranges x(min)=-0.5, x(max)=1.5, y(min)=-0.5, y(max)=1.5 to expand view, add two lattice planes in Lattice Planes, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaAs_planes_color.vesta'.",
+    "source": "https:\\www.example.com/software/vesta",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for VESTA to fully load",
+            "parameters": {
+                "seconds": 20
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories/vesta/",
+    "related_apps": [
+        "Vesta"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaAs_planes_color.vesta"
+            },
+            {
+                "type": "check_file_opened",
+                "expected_filename": "mp-804_GaN.cif"
+            },
+            {
+                "type": "check_file_opened",
+                "title_keyword": "Boundary"
+            },
+            {
+                "type": "check_boundary_settings",
+                "x_min": -0.5,
+                "x_max": 1.5,
+                "y_min": -0.5,
+                "y_max": 1.5
+            },
+            {
+                "type": "check_dialog_opened",
+                "title_keyword": "Lattice Planes"
+            },
+            {
+                "type": "check_multiple_lattice_planes",
+                "expected_count": 2
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

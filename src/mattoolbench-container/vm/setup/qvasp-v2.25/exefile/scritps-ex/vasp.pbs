@@ -1,0 +1,34 @@
+#PBS -N vasp6
+#PBS -l nodes=1:ppn=24
+#PBS -l walltime=860:00:00
+#PBS -q default
+#PBS -V
+#PBS -S /bin/bash 
+
+
+ulimit -s unlimited
+ulimit -m unlimited
+ulimit -c unlimited
+ulimit -d unlimited
+
+cd $PBS_O_WORKDIR
+EXEC=/home/wencai/soft/vasp.6.4.2/bin/vasp_std
+###EXEC=/home/wencai/soft/vasp.6.4.2/bin/vasp_ncl
+###EXEC=/home/wencai/soft/vasp.6.4.2/bin/vasp_gam
+
+NP=`cat $PBS_NODEFILE | wc -l`
+NN=`cat $PBS_NODEFILE | sort | uniq | tee hosts | wc -l`
+
+cat $PBS_NODEFILE > hosts
+
+############### intel ##########################
+source /opt/intel/composer_xe_2015.2.164/bin/ifortvars.sh intel64
+source /opt/intel/composer_xe_2015.2.164/bin/iccvars.sh intel64
+source /opt/intel/composer_xe_2015.2.164/mkl/bin/mklvars.sh intel64
+source /opt/intel/impi/2017.3.196/bin64/mpivars.sh
+## export I_MPI_ADJUST_REDUCE = 3
+
+##/opt/openmpi/bin/mpirun -machinefile hosts -n $NP  $EXEC > log 
+mpirun -np $NP  $EXEC > log 
+
+rm vasp6*

@@ -1,0 +1,6 @@
+Fe2Ni
+Fe3Ni
+Fe3Ni2
+FeNi
+FeNi2
+FeNi3

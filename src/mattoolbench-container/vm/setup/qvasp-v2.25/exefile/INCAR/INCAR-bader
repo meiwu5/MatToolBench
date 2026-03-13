@@ -1,0 +1,18 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+ 
+Bader Charge
+   NELM = 200
+   ICHARG = 2
+   NSW    = 0
+   IBRION = -1
+#  NGXF=1000
+#  NGYF=1000
+#  NGZF=1000
+
+   LCHARG = T
+   LAECHG = T
+   LWAVE  =  F
+
+# Attenion: better modify    PREC   = Accurate
+# Use 'chgsum.pl AECCAR0 AECCAR2 to get CHARGCAR_sum '
+# Use './bader CHGCAR -ref CHGCAR_sum' to get the results

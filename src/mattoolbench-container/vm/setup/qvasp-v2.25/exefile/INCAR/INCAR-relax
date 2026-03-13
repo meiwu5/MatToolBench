@@ -1,0 +1,15 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+
+ Ionic Relaxation
+   ICHARG = 2
+   EDIFFG = -0.03        #force
+   NSW    = 300          #max steps for IOM
+   IBRION = 2
+   POTIM = 0.5
+   ISIF   = 2            #not change lattice:2 chang lattice:3
+#  IOPTCELL= 1 0 0  0 1 0 0 0 0   # fix or relax lattice
+   PSTRESS= 0
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+# Use 'qvasp -p2c' to transer format (VESTA or MS)

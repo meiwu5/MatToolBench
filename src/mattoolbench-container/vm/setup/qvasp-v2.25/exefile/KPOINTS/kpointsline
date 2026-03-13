@@ -1,0 +1,63 @@
+#!/bin/bash
+
+echo ""
+if [ ! -s POSCAR ];then
+  echo "Please create POSCAR firstly"
+  echo " "
+  exit;
+fi
+echo "Which dimension of materials(1-3): "
+read dimen
+
+if [ "$dimen"x == "3x" ];then
+  $qvasppath/exefile/KPOINTS/kpointspymat.py >/dev/null 2> /dev/null
+  mv .kpoints-tmp KPOINTS
+elif [ "$dimen"x == "2x" ]; then
+  $qvasppath/exefile/KPOINTS/kpointspymat.py >/dev/null 2> /dev/null
+  echo "please input the direction of vaccum with 1-3 (1->a 2->b 3->c):"
+  read vaccum
+  echo "qvasp-kpoint-line" > KPOINTS
+  echo "25" >> KPOINTS
+  echo "Line_mode" >> KPOINTS
+  echo "Reciprocal" >> KPOINTS
+  linenu=`cat .kpoints-tmp|wc -l`
+  for i in $(seq 5 3 $linenu)
+  do
+    line1=`sed -n ${i}p  .kpoints-tmp |awk "{print $"$vaccum"}"`
+    k=`echo $i +1 |bc`
+    line2=`sed -n ${k}p  .kpoints-tmp |awk "{print $"$vaccum"}"`
+    if [ $(echo "$line1 == 0"|bc) -eq 1 ] && [ $(echo "$line2 == 0"|bc) -eq 1 ]; then
+      sed -n ${i}p .kpoints-tmp >> KPOINTS
+      sed -n ${k}p  .kpoints-tmp >> KPOINTS
+      echo " " >> KPOINTS
+    fi
+  done
+
+elif [ "$dimen"x == "1x" ]; then
+  echo "please input the direction of periodic lattice with 1-3 (1->a 2->b 3->c):"
+  read peri
+  echo "qvasp-kpoint-line" > KPOINTS
+  echo "25" >> KPOINTS
+  echo "Line_mode" >> KPOINTS
+  echo "Reciprocal" >> KPOINTS
+  echo "0.0 0.0 0.0 ! Gamma" >> KPOINTS
+
+  if [ "$peri"x == "1x" ];then
+    echo "0.5 0.0 0.0 ! X" >> KPOINTS
+  elif [ "$peri"x == "2x" ];then
+    echo "0.0 0.5 0.0 ! Y" >> KPOINTS
+  elif [ "$peri"x == "3x" ];then
+    echo "0.0 0.0 0.5 ! Z" >> KPOINTS
+  else
+      echo "please input the direction of periodic lattice with number 1 or 2 or 3 !"
+  fi   
+else 
+  echo "please input the dimension of materials with number 1 or 2 or 3 !"
+fi
+
+if [ ! -s KPOINTS ];then
+  echo "Please create POSCAR firstly"
+  echo " "
+fi
+
+echo ""

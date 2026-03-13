@@ -1,0 +1,27 @@
+{
+    "id": "89a45970-2eb4-445a-98e4-9d22e6ef332f-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for all Li ternary compounds (element_set=Li AND ntypes=3), count total entries and how many have stability<0.01, and save both counts to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_9.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_9.txt",
+            "dest": "oqmd_task_9.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_9.txt",
+            "dest": "oqmd_task_9_right.txt"
+        }
+    }
+}

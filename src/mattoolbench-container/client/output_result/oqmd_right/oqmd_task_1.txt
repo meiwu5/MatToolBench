@@ -1,0 +1,6 @@
+name:       Fe2O3
+entry_id:   353416
+delta_e:    -0.935846740892949 eV/atom
+stability:  0.713916401500001 eV/atom
+spacegroup: Pm-3m
+volume:     51.6907 A^3/atom

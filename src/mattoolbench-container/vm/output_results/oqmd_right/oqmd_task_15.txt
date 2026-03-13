@@ -1,0 +1,10 @@
+Total stable La-Mn-O ternary compounds: 68
+=== Lowest formation energy entry ===
+entry_id:    3386
+name:        LaMnO3
+composition: La1 Mn1 O3
+delta_e:     -2.93214814146963 eV/atom
+stability:   0.0 eV/atom
+spacegroup:  Pnma
+volume:      244.012 A^3/atom
+prototype:   GdFeO3

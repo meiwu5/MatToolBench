@@ -1,0 +1,6 @@
+name:        SiO2
+entry_id:    6607
+composition: O2 Si1
+delta_e:     -3.07278504891917 eV/atom
+stability:   0.0007708983333296615 eV/atom
+spacegroup:  Fd-3m

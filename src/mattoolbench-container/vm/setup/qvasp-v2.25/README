@@ -1,0 +1,43 @@
+We write this toolkit as a flexible VASP pre-processing tools,named "quickluy use Vienna Ab-initio Simulation Package"(qvasp)
+
+Please cite:
+the qvasp program was used to postprocessing the raw data of VASP[1]
+[1] Wencai Yi,Gang Tang,Xin Chen, Bingchao Yang,Xiaobing Liu. qvasp: A flexible toolkit for VASP users in materials simulations, Computer Physics Communications, 2020,107535. DOI:10.1016/j.cpc.2020.107535
+
+Files architecture:
+$qvasppath/exefile/INCAR: INCAR templates, users could modify it as they want. 
+$qvasppath/exefile/KPOINTS: the binary files used to generate KPOINTS file
+$qvasppath/exefile/POSCAR: the binary files used to preprocessing POSCAR file
+$qvasppath/exefile/POTCAR: the binary files used to preprocessing POTCAR file
+$qvasppath/exefile/Tools: the binary files used to post-processing raw data file
+$qvasppath/source-code: the original code for other tools the binaryfiles
+$qvasppath/test: test and example files
+
+Runing Environment(Linux x64 Bit),we have tested it on: (Platforms and Version)
+Centos >6.0
+RedHat >5.0
+Ubuntu >16.0 (need run "sudo dpkg-reconfigure dash" and choose "No") 
+Ferdora >15.0
+SUSE >11
+If you try to running on x32 Bit Linux system, Please try to run "sh fix-program.sh" to recompile *.f90 file
+We did not have tested it on Mac for no apple device.
+
+How to install it on your Linux system? 
+1. Using the command "sh install.sh" to install it.
+or add the follow lines in your environment variable(such as .bashrc or /etc/profile)
+Such as:
+export qvasppath=/export/apps/qvasp   ## modify it as the path in your servers
+export PATH=$qvasppath:$PATH
+export PATH=$qvasppath/exefile/Tools/USERTooLs/vtstscripts:$PATH
+2.Choose a suitable "showstatus.sh" file, for instance, "cd exefile/Tools; mv showstatus-slurm.sh showstatus.sh" if your job management system is SLURM
+3.Download potential(POTCAR) files from https://www.vasp.at/ and exact in $qvasppath/exefile/POTCAR accordingly.
+
+Then users could relogin and use command "qvasp -help" to get the help document.
+
+You need get my permission if want to copy the codes to others! 
+Don't hesitate to contanct me at yiwc@qfnu.edu.cn if you have any question!
+
+Good Lucky!
+
+2023.08.11
+Yi,Wencai

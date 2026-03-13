@@ -1,0 +1,17 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+ 
+Density of states
+   NELM = 100
+   ICHARG = 11
+   LORBIT = 10
+   NSW    = 0
+   IBRION = -1
+   ISMEAR = -5
+   NEDOS = 600
+#  NBANDS=223    ## users should set this parameter if there is too few conduction band
+
+   LCHARG = F
+   LWAVE  =  F
+
+# Improve the density of k-mesh by qvasp -k 0.1
+# Use 'qvasp -dosd' to get the results (OriginPro)

@@ -1,0 +1,26 @@
+{
+  "id": "f5a6b7c8-d9e0-4f1a-2b3c-4d5e6f708192-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Reconstruct the LiO molecule from the dictionary, verify that the formula attribute is LiO, and save a record to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task9.txt including the original dict and the reconstructed formula (e.g., 'dict: {...}; formula: LiO').",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task9.txt",
+      "dest": "task9.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task9.txt",
+      "dest": "task9_right.txt"
+    }
+  }
+}

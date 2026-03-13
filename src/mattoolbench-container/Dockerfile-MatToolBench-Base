@@ -1,0 +1,81 @@
+# Stage 1: Pull Python from the official Python Docker image
+FROM python:3.9-slim AS python-stage
+
+# OPTIONAL: Stage 2: Pull CUDA 11.8
+FROM nvidia/cuda:11.8.0-base-ubuntu22.04 AS cuda-stage
+
+# Stage 3: Start from windows-local base image
+FROM windowsarena/windows-local:latest
+
+# Define build argument for profiling mode (default is off)
+ARG PROFILE_MODE=false
+
+# HuggingFace mirror endpoint — override with official URL if you have direct access:
+#   --build-arg HF_ENDPOINT=https://huggingface.co
+ARG HF_ENDPOINT=https://hf-mirror.com
+# Expose as ENV so Python subprocesses (huggingface_hub) pick it up automatically
+ENV HF_ENDPOINT=${HF_ENDPOINT}
+
+# Optional HTTP/HTTPS proxy for pip and wget inside the build
+# Example: --build-arg HTTP_PROXY=http://host.docker.internal:7890
+ARG HTTP_PROXY=""
+ARG HTTPS_PROXY=""
+ENV http_proxy=${HTTP_PROXY}
+ENV https_proxy=${HTTPS_PROXY}
+
+# Install necessary packages and clean up in one layer to reduce image size
+ENV DEBIAN_FRONTEND=noninteractive
+ENV NEEDRESTART_MODE=a
+RUN apt-get update && apt-get install -y \
+    dos2unix \
+    libgl1 \
+    libevdev-dev \
+    python3-dev \
+    build-essential \
+    tesseract-ocr \
+    && rm -rf /var/lib/apt/lists/*
+
+# OPTIONAL: Copy CUDA libraries and binaries from CUDA stage
+COPY --from=cuda-stage /usr/local/cuda-11.8 /usr/local/cuda-11.8
+ENV PATH="/usr/local/cuda-11.8/bin:${PATH}"
+ENV LD_LIBRARY_PATH="/usr/local/cuda-11.8/lib64:${LD_LIBRARY_PATH}"
+
+# Copy Python binaries and libraries from the Python stage
+COPY --from=python-stage /usr/local /usr/local
+
+# Ensure scripts are callable
+RUN ln -s /usr/local/bin/python /usr/bin/python && \
+    ln -s /usr/local/bin/pip /usr/bin/pip
+
+# Copy client application and requirements
+COPY src/mattoolbench-container/client/requirements.txt /client/requirements.txt
+
+# Install Python dependencies from requirements.txt
+# Combine all Python package installations into one RUN statement to minimize layering
+RUN pip install -r /client/requirements.txt && pip install requests easyocr tenacity onnxruntime pyOpenSSL sentencepiece anytree huggingface_hub
+
+# Download model weights
+# GroundingDINO: GitHub Releases (falls back to HF mirror if GitHub is unreachable)
+# OmniParser:    huggingface_hub.snapshot_download — downloads files directly over HTTPS,
+#                fully respects HF_ENDPOINT, and avoids git-lfs LFS subdomain redirects
+#                (e.g. cas-bridge.xethub.hf-mirror.org) that break inside Docker's DNS.
+RUN mkdir -p /models/groundingDINO/ /models/omni && \
+    wget -q \
+        https://github.com/IDEA-Research/GroundingDINO/releases/download/v0.1.0-alpha/groundingdino_swint_ogc.pth \
+        -O /models/groundingDINO/groundingdino_swint_ogc.pth \
+    || wget -q \
+        ${HF_ENDPOINT}/IDEA-Research/GroundingDINO/resolve/main/groundingdino_swint_ogc.pth \
+        -O /models/groundingDINO/groundingdino_swint_ogc.pth && \
+    python - <<'EOF'
+from huggingface_hub import snapshot_download
+snapshot_download(
+    repo_id="microsoft/OmniParser",
+    local_dir="/models/omni",
+    ignore_patterns=["*.git*", ".gitattributes"],
+)
+EOF
+
+# Conditionally run the disk usage profiling if PROFILE_MODE is true
+RUN if [ "$PROFILE_MODE" = "true" ]; then \
+        du -ah / | sort -rh | head -n 50 > /du_output.txt; \
+    fi

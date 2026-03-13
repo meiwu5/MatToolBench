@@ -1,0 +1,27 @@
+{
+    "id": "c69e8608-e98c-48da-a26f-b59fa258c5d1-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for stable Fe binary compounds (element_set=Fe AND ntypes=2), sorted by delta_e, save total count and top 5 to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_13.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_13.txt",
+            "dest": "oqmd_task_13.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_13.txt",
+            "dest": "oqmd_task_13_right.txt"
+        }
+    }
+}

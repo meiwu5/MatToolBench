@@ -1,0 +1,33 @@
+ PARTICAL CHARGE
+   ISTART=1
+   ICHARG=1
+   LPARD=T
+   LSEPB=T
+   LSEPK=T
+
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+ ## need be modified here
+   IBAND=10 11    
+   KPUSE=1        
+
+# IBAND and KPUSE could be obtained by 'qvasp -b' (VESTA)
+
+ TYPE2
+#ISTART=1
+#ICHARG=1
+#LPARD=T
+#LSEPB=T
+#LSEPK=T
+#EINT=-5 -3
+
+ TYPE 3
+#ISTART = 1
+#ICHARG = 1
+#LPARD=.TRUE.
+#NBMOD=-3
+#EINT = -1
+#LSEPB=.FALSE.
+#LSEPK=.FALSE.
+

@@ -1,0 +1,73 @@
+{
+    "id": "5494ba8e-795f-44e4-a8e9-3a65c1a2767f-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\XRD4.xrdml' and apply smoothing once.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_opened",
+                "expected_filename": "XRD4.xrdml"
+            },
+            {
+                "type": "check_smoothing"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

@@ -1,0 +1,127 @@
+{
+    "id": "ed0d9c92-e11b-492d-9d48-7b82291a7c54-wos",
+    "snapshot": "vestalab",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-22862_NaCl.cif', remove the only bond in Bonds, modify structure parameters: change Na atom coordinate to [1,1,1] and Cl to [1,0.5,0.5].",
+    "source": "https:\\www.example.com/software/vesta",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for VESTA to fully load",
+            "parameters": {
+                "seconds": 20
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories/vesta/",
+    "related_apps": [
+        "Vesta"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_opened",
+                "expected_filename": "mp-22862_NaCl.cif"
+            },
+            {
+                "type": "check_dialog_opened",
+                "title_keyword": "Bonds"
+            },
+            {
+                "type": "check_bonds_cleared"
+            },
+            {
+                "type": "check_dialog_opened",
+                "title_keyword": "Edit Data"
+            },
+            {
+                "type": "check_atom_coordinates_in_edit_data",
+                "atom_label": "Na",
+                "expected_coords": [
+                    1.0,
+                    1.0,
+                    1.0
+                ]
+            },
+            {
+                "type": "check_atom_coordinates_in_edit_data",
+                "atom_label": "Cl",
+                "expected_coords": [
+                    1.0,
+                    0.5,
+                    0.5
+                ]
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

@@ -1,0 +1,137 @@
+{
+    "id": "a86687bd-69b4-4190-a62a-b090a40cd1dc-wos",
+    "snapshot": "originlab",
+    "instruction": "Open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\origin\\CE1.ogwu', plot a galvanostatic long-cycle voltage-time curve, annotate the text '1 mA cm^-2, 1 mAh cm^-2' on the figure, set labels to ['Bare Zn', 'FAZ@Zn'], add a local zoom inset for the time range (20, 60) h, You can press Alt+4 to open the Code Builder to write and run scripts. Save the figure as 'CE1.png' to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\CE1.png'.",
+    "source": "https://www.originlab.com/",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files\\OriginLab\\Origin2026\\Origin64.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Origin to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Ctrl+O to open the file dialog",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey('ctrl', 'o')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file dialog",
+            "parameters": {
+                "seconds": 3
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Paste file path into dialog",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyperclip, pyautogui, time; pyautogui.FAILSAFE=False; pyperclip.copy(r'C:\\\\Users\\\\Docker\\\\Desktop\\\\setup\\\\dependencies\\\\origin\\\\CE1.ogwu'); time.sleep(0.2); pyautogui.hotkey('ctrl', 'v')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file dialog",
+            "parameters": {
+                "seconds": 3
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Enter to open the file",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.press('enter')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file to finish loading",
+            "parameters": {
+                "seconds": 8
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Alt+4 to open Code Builder",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey(\"alt\", \"4\")"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Code Builder to open",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories\\origin\\",
+    "related_apps": [
+        "Origin"
+    ],
+    "max_steps": 20,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\CE1.png"
+            },
+            {
+                "type": "validate_image_with_model",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\CE1.png",
+                "description": "The image is a galvanostatic long-cycle voltage-time curve. The annotation '1 mA cm^-2, 1 mAh cm^-2' appears on the figure. Legend labels 'Bare Zn' and 'FAZ@Zn' are present. A local zoom inset magnifying the time range around 20-60 h is shown."
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    },
+    "origin_category": "ce"
+}

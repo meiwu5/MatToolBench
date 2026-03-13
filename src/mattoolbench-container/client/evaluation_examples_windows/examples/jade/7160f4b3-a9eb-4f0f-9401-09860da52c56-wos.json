@@ -1,0 +1,106 @@
+{
+    "id": "7160f4b3-a9eb-4f0f-9401-09860da52c56-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to open the original XRD file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt' (contains Fe and possibly O), remove background, then based on peak position features search and return the best matching iron-based oxide or iron-containing phase (the top match), and save it to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_Fe.txt'.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_Fe.txt"
+            },
+            {
+                "type": "check_file_opened",
+                "expected_filename": "WRT-ZSX-5.txt"
+            },
+            {
+                "type": "check_background_removal"
+            },
+            {
+                "type": "check_dialog_title",
+                "title": "Current Chemistry"
+            },
+            {
+                "type": "check_dialog_title",
+                "title": "Search/Match Display"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

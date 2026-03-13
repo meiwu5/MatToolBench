@@ -1,0 +1,21 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+
+ HSE06
+   NELM = 100
+   NSW = 0
+   IBRION = -1
+   LHFCALC   = .TRUE.
+   ISTART = 1
+   HFSCREEN  = 0.2
+   ICHARG = 2
+   AEXX = 0.25
+   ALGO = Damped   # All
+   Time = 0.4
+   PRECFOCK  = N
+
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+# KPOINTS need refer IBZKPT 
+# And add high symmetry points follow IBZKPT (weight need be 0)
+# Also, use 'qvasp -bandd' to get the results (OriginPro)

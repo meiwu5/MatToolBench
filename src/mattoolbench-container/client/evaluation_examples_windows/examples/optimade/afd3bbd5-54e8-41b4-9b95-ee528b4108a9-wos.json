@@ -1,0 +1,27 @@
+{
+    "id": "afd3bbd5-54e8-41b4-9b95-ee528b4108a9-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query binary structures (nelements=2) where both elements belong to Group IV (C, Si, Ge, Sn, Pb), using a filter such as: nelements=2 AND elements HAS ONLY \"C\",\"Si\",\"Ge\",\"Sn\",\"Pb\". Save the returned Material ID list to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_2.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_2.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

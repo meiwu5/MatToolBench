@@ -1,0 +1,26 @@
+{
+  "id": "b1c2d3e4-f5a6-4b7c-8d9e-0f1a2b3c4d5e-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create a CsCl primitive structure using space group 225 and a=4.2, and save the structure details to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task5.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task5.txt",
+      "dest": "task5.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task5.txt",
+      "dest": "task5_right.txt"
+    }
+  }
+}

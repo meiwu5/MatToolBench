@@ -1,0 +1,26 @@
+{
+  "id": "c3d4e5f6-a7b8-4901-bcde-f23456789012-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to search insertion electrodes with elements Li, Fe, P, O and num_elements=4; for each material_id in material_ids record its average_voltage, and save to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_11.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_11.txt",
+      "dest": "mp_task_11.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_11.txt",
+      "dest": "mp_task_11_right.txt"
+    }
+  }
+}

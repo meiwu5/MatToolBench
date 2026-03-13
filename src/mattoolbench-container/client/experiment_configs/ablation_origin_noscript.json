@@ -1,0 +1,15 @@
+{
+    "_comment": "Ablation: Origin tasks \u2014 WITHOUT template scripts (GPT-4o)",
+    "model": "gpt-5",
+    "temperature": 0.0,
+    "som_origin": "oss",
+    "agent_name": "auto",
+    "max_steps": 15,
+    "max_trajectory_length": 15,
+    "test_all_meta_path": "evaluation_examples_windows/origin.json",
+    "diff_lvl": "normal",
+    "result_dir": "./results/ablation_origin_noscript",
+    "trial_id": "0",
+    "origin_mode": "no_script",
+    "origin_category": "auto"
+}

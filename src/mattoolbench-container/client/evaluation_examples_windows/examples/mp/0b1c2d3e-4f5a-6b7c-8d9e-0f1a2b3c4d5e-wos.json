@@ -1,0 +1,26 @@
+{
+  "id": "0b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to get the relaxed structure of mp-153 (hcp Mg), extract and record the lengths of lattice vectors a and b, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_7.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_7.txt",
+      "dest": "mp_task_7.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_7.txt",
+      "dest": "mp_task_7_right.txt"
+    }
+  }
+}

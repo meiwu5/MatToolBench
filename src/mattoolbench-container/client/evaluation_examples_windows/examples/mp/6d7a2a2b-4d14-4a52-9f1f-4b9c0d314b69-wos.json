@@ -1,0 +1,26 @@
+{
+  "id": "6d7a2a2b-4d14-4a52-9f1f-4b9c0d314b69-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to get the band structure of mp-1434, extract all high-symmetry point labels from labels_dict, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_2.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_2.txt",
+      "dest": "mp_task_2.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_2.txt",
+      "dest": "mp_task_2_right.txt"
+    }
+  }
+}

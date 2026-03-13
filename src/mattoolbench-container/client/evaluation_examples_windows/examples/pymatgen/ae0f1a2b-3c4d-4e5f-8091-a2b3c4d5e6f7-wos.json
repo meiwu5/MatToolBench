@@ -1,0 +1,26 @@
+{
+  "id": "ae0f1a2b-3c4d-4e5f-8091-a2b3c4d5e6f7-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Use pymatgen to read C:\\Users\\Docker\\Desktop\\setup\\VASP\\EIGENVAL, compute the band gap via eigenvalue_band_properties, and save the band gap and whether it is within 1.0-1.5 eV to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task20.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task20.txt",
+      "dest": "task20.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task20.txt",
+      "dest": "task20_right.txt"
+    }
+  }
+}

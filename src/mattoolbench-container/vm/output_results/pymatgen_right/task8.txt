@@ -1,0 +1,41 @@
+{
+  "@module": "pymatgen.core.structure",
+  "@class": "Molecule",
+  "charge": 0.0,
+  "spin_multiplicity": 2,
+  "sites": [
+    {
+      "name": "Li",
+      "species": [
+        {
+          "element": "Li",
+          "occu": 1
+        }
+      ],
+      "xyz": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "properties": {},
+      "label": "Li"
+    },
+    {
+      "name": "O",
+      "species": [
+        {
+          "element": "O",
+          "occu": 1
+        }
+      ],
+      "xyz": [
+        1.8,
+        0.0,
+        0.0
+      ],
+      "properties": {},
+      "label": "O"
+    }
+  ],
+  "properties": {}
+}

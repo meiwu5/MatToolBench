@@ -47,22 +47,69 @@ experiments_json = None
 
 def load_args_as_dict():
     parser = argparse.ArgumentParser(description='Script to create a Windows Arena run for benchmarking on Azure ML.')
-    parser.add_argument('--ci_startup_script_path', default='Users/rbonatti/compute-instance-startup.sh', help='Path to the startup script for the compute instance (default: Users/rbonatti/compute-instance-startup.sh)')  
+    parser.add_argument('--ci_startup_script_path', default='Users/wumei0087/compute-instance-startup.sh', help='Path to the startup script for the compute instance (default: Users/wumei0087/compute-instance-startup.sh)')  
     parser.add_argument('--agent', default='navi', help='Agent to use (default: navi)')  
     parser.add_argument('--datastore_input_path', default='storage' , help='Datastore input path (default: storage)')  
-    parser.add_argument('--docker_img_name', default='windowsarena/winarena:latest', help='Docker image name (default: winarena)')  
+    parser.add_argument('--docker_img_name', default='mattoolbench/mattoolbench:latest', help='Docker image name (default: mattoolbench)')  
     parser.add_argument('--exp_name', default='exp0', help='Experiment name (default: exp0)')  
-    parser.add_argument('--num_workers', type=int, default=2, help='Number of Worker Instances (default: 1)')  
+    parser.add_argument('--num_workers', type=int, default=1, help='Number of Worker Instances (default: 1)')  
     parser.add_argument('--use_managed_identity', type=bool, default=False, help='Use Managed Identity (default: False)')  
-    parser.add_argument('--json_name', default='evaluation_examples_windows/test_all.json', help='Name of the JSON file (default: evaluation_examples_windows/test_all.json)')  
-    parser.add_argument('--model_name', default='gpt-4o-mini', help='Model name (default: gpt-4o-mini)') #gpt-4o-mini or gpt-4-vision-preview or gpt-4o or gpt-4-1106-vision-preview  
-    parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed  
+    parser.add_argument('--json_name', default='evaluation_examples_windows/origin.json', help='Name of the JSON file (default: evaluation_examples_windows/origin.json)')  
+    parser.add_argument('--model_name', default='qwen3.5-27b', help='Model name (default: qwen3.5-27b)') #qwen3.5-27b or qwen3.5-27b or gpt-5 or gpt-4-1106-vision-preview  
+    parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed
     parser.add_argument('--a11y_backend', default='uia', help='Type of acc tree. uia more precise, win32 faster') #uia (slower) or win32 (faster)
+    parser.add_argument('--origin_mode', default='script', help='Whether OriginAgent uses template scripts: script | no_script (default: script)')
+    parser.add_argument('--vm_size', default='Standard_D8_v3', help='VM size (default: Standard_D8_v3)')
+    parser.add_argument('--vm_only', default='false', help='Start VM only, no agent (for local agent mode) (default: false)')
+    parser.add_argument('--origin_eval_model', default='', help='Dedicated vision LLM for evaluating Origin task outputs (default: empty, falls back to agent model)')
     args, _ = parser.parse_known_args()
     return vars(args)
 
-def launch_vm_and_job(  worker_id, 
-                        exp_name, 
+def create_compute_instance(worker_id, exp_name, azure_config, use_managed_identity, vm_size, ci_startup_script_path):
+    """Create (or verify) a compute instance. Called in parallel before jobs are submitted."""
+    subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
+    resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
+    workspace_name = azure_config['AZURE_ML_WORKSPACE_NAME']
+    ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace_name)
+
+    compute_instance_name = "w" + str(worker_id) + exp_name
+
+    try:
+        compute_instance = ml_client.compute.get(compute_instance_name)
+        logging.info(f"Compute instance {compute_instance_name} already exists (state: {compute_instance.state}). Skipping creation.")
+        if compute_instance.state != "Running":
+            ml_client.compute.begin_start(compute_instance_name).wait()
+            logging.info(f"Compute instance {compute_instance_name} started.")
+    except Exception as e:
+        logging.info(f"Compute instance {compute_instance_name} not found or unavailable ({e}). Creating...")
+
+        setup_scripts = SetupScripts(
+            creation_script=ScriptReference(path=ci_startup_script_path),
+            startup_script=ScriptReference(path=ci_startup_script_path)
+        )
+
+        if use_managed_identity:
+            identity_config = ManagedIdentityConfiguration(
+                client_id=azure_config['AZURE_MANAGED_IDENTITY_CLIENT_ID'],
+                resource_id="subscriptions/" + azure_config['AZURE_SUBSCRIPTION_ID'] + "/resourceGroups/" + azure_config['AZURE_ML_RESOURCE_GROUP'] + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/" + azure_config['AZURE_ML_USER_ASSIGNED_IDENTITY'],
+                object_id=azure_config['AZURE_MANAGED_IDENTITY_OBJECT_ID'],
+                principal_id=azure_config['AZURE_MANAGED_IDENTITY_PRINCIPAL_ID'],
+            )
+            identity = IdentityConfiguration(type="UserAssigned", user_assigned_identities=[identity_config])
+            compute_instance = ComputeInstance(name=compute_instance_name, size=vm_size,
+                                               idle_time_before_shutdown_minutes=60, ssh_public_access_enabled=True,
+                                               identity=identity, setup_scripts=setup_scripts)
+        else:
+            compute_instance = ComputeInstance(name=compute_instance_name, size=vm_size,
+                                               idle_time_before_shutdown_minutes=60, ssh_public_access_enabled=True,
+                                               setup_scripts=setup_scripts)
+
+        ml_client.begin_create_or_update(compute_instance).result()
+        logging.info(f"Compute instance {compute_instance_name} created.")
+
+
+def launch_vm_and_job(  worker_id,
+                        exp_name,
                         docker_config: DockerConfiguration,
                         datastore_input_path: str,
                         num_workers: int,
@@ -74,7 +121,11 @@ def launch_vm_and_job(  worker_id,
                         json_name: str,
                         model_name: str,
                         som_origin: str,
-                        a11y_backend: str
+                        a11y_backend: str,
+                        origin_mode: str,
+                        vm_size: str,
+                        vm_only: str = 'false',
+                        origin_eval_model: str = ''
                         ):
     subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
     resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
@@ -88,60 +139,10 @@ def launch_vm_and_job(  worker_id,
     custom_name = "docker-image-example-created" + datetime.now().strftime("%Y%m%d%H%M")
     env = Environment.from_docker_image(name=custom_name, image=docker_img_name)
 
-    #### CREATE THE STARTUP SCRIPT
-    startup_script_ref = ScriptReference(
-        path=ci_startup_script_path,
-        timeout_minutes=10
-    )
-    setup_scripts = SetupScripts(startup_script=startup_script_ref)
-
     #### CREATE THE DATA STORE
     datastore = Datastore.get(workspace=ws, datastore_name="workspaceblobstore")
 
-    compute_instance_name = "w" + str(worker_id) + "Exp" + exp_name
-
-    try:
-        compute_instance = ml_client.compute.get(compute_instance_name)
-        logging.info("Compute instance " + compute_instance_name + " already exists. Skipping creation")
-        logging.info(f"Compute instance status: {compute_instance.state}") # Stopped, Starting, Running, Stopping
-        if compute_instance.state != "Running":
-            ml_client.compute.begin_start(compute_instance_name).wait()
-            logging.info(f"Compute instance {compute_instance_name} has been started.")
-        else:
-            logging.info(f"Compute instance {compute_instance_name} is already {compute_instance.state}.")
-    except:
-        # start the compute instance, if it doesn't exist
-        logging.info(f"Creating compute instance {compute_instance_name}...")
-
-        if use_managed_identity:
-            identity_config = ManagedIdentityConfiguration(
-                client_id=azure_config['AZURE_MANAGED_IDENTITY_CLIENT_ID'],
-                resource_id="subscriptions/" + azure_config['AZURE_SUBSCRIPTION_ID'] + "/resourceGroups/" + azure_config['AZURE_ML_RESOURCE_GROUP'] + "/providers/Microsoft.ManagedIdentity/userAssignedIdentities/" + azure_config['AZURE_ML_USER_ASSIGNED_IDENTITY'],
-                object_id=azure_config['AZURE_MANAGED_IDENTITY_OBJECT_ID'],
-                principal_id=azure_config['AZURE_MANAGED_IDENTITY_PRINCIPAL_ID'],
-            )
-
-            identity = IdentityConfiguration(
-                type="UserAssigned",
-                user_assigned_identities=[identity_config]
-            )
-
-            compute_instance = ComputeInstance(name=compute_instance_name, 
-                                    size="Standard_D8_v3", 
-                                    setup_scripts=setup_scripts,
-                                    idle_time_before_shutdown_minutes=600,
-                                    ssh_public_access_enabled=True,
-                                    identity=identity
-                                    )
-        else:
-            compute_instance = ComputeInstance(name=compute_instance_name, 
-                                    size="Standard_D8_v3", 
-                                    setup_scripts=setup_scripts,
-                                    idle_time_before_shutdown_minutes=600,
-                                    ssh_public_access_enabled=True
-                                    )
-        ml_client.begin_create_or_update(compute_instance).result()
-        logging.info(f"Compute instance {compute_instance_name} created")
+    compute_instance_name = "w" + str(worker_id) + exp_name
 
     # start the job
     logging.info(f"Starting job on compute instance {compute_instance_name}...")
@@ -151,9 +152,10 @@ def launch_vm_and_job(  worker_id,
     run_config.environment = env  
     run_config.docker = docker_config  
     # Check for required environment variables
-    if 'OPENAI_API_KEY' in azure_config:
+    if 'OPENAI_API_KEY' in azure_config and 'OPENAI_ENDPOINT' in azure_config:
         run_config.environment_variables = {
-            "OPENAI_API_KEY": azure_config['OPENAI_API_KEY']
+            "OPENAI_API_KEY": azure_config['OPENAI_API_KEY'],
+            "OPENAI_ENDPOINT": azure_config['OPENAI_ENDPOINT']
         }
     elif 'AZURE_API_KEY' in azure_config and 'AZURE_ENDPOINT' in azure_config:
         run_config.environment_variables = {
@@ -163,13 +165,21 @@ def launch_vm_and_job(  worker_id,
     else:
         raise KeyError("Either 'OPENAI_API_KEY' must be available or both 'AZURE_API_KEY' and 'AZURE_ENDPOINT' must be available.")
 
+    # Optional dedicated eval model for Origin tasks
+    if origin_eval_model:
+        run_config.environment_variables["ORIGIN_EVAL_MODEL"] = origin_eval_model
+    if azure_config.get('ORIGIN_EVAL_API_KEY'):
+        run_config.environment_variables["ORIGIN_EVAL_API_KEY"] = azure_config['ORIGIN_EVAL_API_KEY']
+    if azure_config.get('ORIGIN_EVAL_BASE_URL'):
+        run_config.environment_variables["ORIGIN_EVAL_BASE_URL"] = azure_config['ORIGIN_EVAL_BASE_URL']
+
     input_dataset = Dataset.File.from_files(path=(datastore, datastore_input_path))
     input = input_dataset.as_named_input('input').as_mount('/tmp/input')
     output = OutputFileDatasetConfig(destination=(datastore, '/agent_outputs/'))
 
     src = ScriptRunConfig(source_directory="./azure_files",
                         script='run_entry.py',
-                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend],
+                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, origin_mode, vm_only, origin_eval_model],
                         run_config=run_config)
 
     experiment = Experiment(workspace=ws, name=exp_name)  
@@ -182,18 +192,7 @@ def launch_vm_and_job(  worker_id,
     logging.info("Waiting for job completion...")
     run.wait_for_completion(show_output=False)  
   
-    # Delete the VM once the job is done  
-    logging.info(f"Deleting compute instance {compute_instance_name}...")  
-    delete_poller = ml_client.compute.begin_delete(compute_instance_name)
-    
-    # Wait for resource cleanup  
-    try:
-        logging.info("Waiting for instance deletion...")
-        delete_poller.result()
-        time.sleep(60)
-    except Exception as err:
-        logging.error("Error while waiting for instance deletion...")
-        logging.exception(err)
+    logging.info(f"Job completed on compute instance {compute_instance_name}. Skipping instance deletion.")
     
 
 def launch_experiment(config):
@@ -216,22 +215,34 @@ def launch_experiment(config):
 
     #### CREATE THE ENVIRONMENT
     # env = Environment(
-    #     image="windowsarena/winarena:latest",
-    #     name="winarena",
+    #     image="mattoolbench/mattoolbench:latest",
+    #     name="mattoolbench",
     #     description="Windows Arena Environment.",
     # )
     # ml_client.environments.create_or_update(env)
     #### alternative: if we want a brand new environment:
 
     #### CREATE THE DOCKER CONFIGURATION
-    docker_config = DockerConfiguration(use_docker=True, shared_volumes=True, arguments=["--cap-add", 'NET_ADMIN'], shm_size='16g')
+    docker_config = DockerConfiguration(use_docker=True, shared_volumes=True, arguments=["--cap-add", 'NET_ADMIN', "-p", "5000:5000", "-p", "7200:7200"], shm_size='16g')
 
-    #### CREATE THE EXPERIMENTS
+    #### STEP 1: Create all compute instances in parallel
+    logging.info(f"Creating {config['num_workers']} compute instances in parallel...")
+    creators = []
+    for i in range(config['num_workers']):
+        p = Process(target=create_compute_instance, args=(i, config['exp_name'], azure_config,
+                                                          config['use_managed_identity'], config['vm_size'], config['ci_startup_script_path']))
+        creators.append(p)
+        p.start()
+    for p in creators:
+        p.join()
+
+    #### STEP 2: Submit all jobs in parallel
+    logging.info(f"All instances ready. Submitting {config['num_workers']} jobs in parallel...")
     experiments = []
     for i in range(config['num_workers']):
-        p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'], 
+        p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'],
             config['num_workers'], config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
-            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend']))
+            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend'], config.get('origin_mode', 'script'), config['vm_size'], config.get('vm_only', 'false'), config.get('origin_eval_model', '')))
         experiments.append(p)
         p.start()
 

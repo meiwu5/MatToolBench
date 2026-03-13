@@ -1,0 +1,35 @@
+ SYSTEM =  qvasp 
+
+INCAR-basic
+   PREC   = Normal
+   ENCUT  = 400 eV
+   NELMIN= 5
+   LREAL = F
+
+#   ALGO = Fast
+   EDIFF  = 1E-5
+#  ISMEAR = 0
+   SIGMA = 0.2
+
+#   LDAU=.TRUE.  ## For LDA + U set
+#   LDAUTYPE=2
+#   LDAUL=2 -1
+#   LDAUU=3  0
+#   LDAUJ=0  0
+
+   ISPIN = 1    ## For magnetism set
+#  MAGMOM = 3*1
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+
+ Ionic Relaxation
+   ICHARG = 2
+   EDIFFG = -0.03        force
+   NSW    = 300          max steps for IOM
+   IBRION = 2
+   POTIM = 0.5
+   ISIF   = 2            suface:2 crystal:3
+   PSTRESS= 0
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+# Use 'qvasp -cif' to transer format (VESTA or MS)

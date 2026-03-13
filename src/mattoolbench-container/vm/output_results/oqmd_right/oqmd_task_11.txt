@@ -1,0 +1,11 @@
+Stable Ba-Ti-O compounds: 1396
+  Ba2TiAgO6             delta_e=-2.23568487015588 eV/atom  spacegroup=P21/c
+  Ba2TiAgO6             delta_e=-2.23626840265588 eV/atom  spacegroup=R3
+  Ba2TiAgO6             delta_e=-2.23623102165588 eV/atom  spacegroup=I4/m
+  Ba2TiAgO6             delta_e=-2.23661382565588 eV/atom  spacegroup=I4/mmm
+  Ba2TiAgO6             delta_e=-2.23705680665588 eV/atom  spacegroup=C2/m
+  Ba2TiAgO6             delta_e=-2.23307517365588 eV/atom  spacegroup=Fm-3m
+  Ba2TiAgO6             delta_e=-2.24671972765588 eV/atom  spacegroup=R-3m
+  Ba2TiAgO6             delta_e=-2.24108871198921 eV/atom  spacegroup=P-3m1
+  Ba2TiAgO6             delta_e=-2.23367004865588 eV/atom  spacegroup=Fm-3m
+  Ba2TiAgO6             delta_e=-2.10135513765588 eV/atom  spacegroup=Pnn2

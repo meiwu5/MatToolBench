@@ -1,0 +1,26 @@
+{
+  "id": "e4f5a6b7-c8d9-4e0f-1a2b-3c4d5e6f7081-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Create a LiO molecule and call the as_dict() method, save the dictionary string to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task8.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task8.txt",
+      "dest": "task8.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task8.txt",
+      "dest": "task8_right.txt"
+    }
+  }
+}

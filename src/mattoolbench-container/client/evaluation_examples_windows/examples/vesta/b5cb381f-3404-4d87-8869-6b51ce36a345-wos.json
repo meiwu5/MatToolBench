@@ -1,0 +1,119 @@
+{
+    "id": "b5cb381f-3404-4d87-8869-6b51ce36a345-wos",
+    "snapshot": "vestalab",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-149_Si.cif', set fractional coordinate ranges x(max)=2, y(max)=2, z(max)=2 to show a 2×2×2 supercell, set Si atomic radius to 0.8 Å, bond radius to 0.15 Å, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\Si_supercell_111.vesta'.",
+    "source": "https:\\www.example.com/software/vesta",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for VESTA to fully load",
+            "parameters": {
+                "seconds": 20
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories/vesta/",
+    "related_apps": [
+        "Vesta"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Desktop\\setup\\output_result\\vesta\\Si_supercell_111.vesta"
+            },
+            {
+                "type": "check_file_opened",
+                "expected_filename": "mp-149_Si.cif"
+            },
+            {
+                "type": "check_file_opened",
+                "title_keyword": "Boundary"
+            },
+            {
+                "type": "check_boundary_settings",
+                "x_max": 2,
+                "y_max": 2,
+                "z_max": 2
+            },
+            {
+                "type": "check_properties_radius",
+                "radius_value": 0.8
+            },
+            {
+                "type": "check_properties_radius",
+                "radius_value": 0.15
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

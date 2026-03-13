@@ -1,0 +1,50 @@
+#!/bin/bash
+#$ -S /bin/bash
+#$ -cwd
+#$ -N vasp
+#$ -pe ompi 8
+#$ -V
+
+############source SGE variables############
+source /opt/sge/sge6_2u4/default/common/settings.sh
+############################################
+
+cd $SGE_O_WORKDIR
+
+source /opt/intel/impi/5.0.2.044/bin64/mpivars.sh
+source /opt/intel/composer_xe_2011_sp1.10.319/mkl/bin/mklvars.sh intel64
+
+#EXEC=/opt/vasp/vasp5.2.12-vtst-intel11
+EXEC=/opt/vasp/vasp.5.4.1-vtst/bin/vasp_std
+#EXEC=/opt/vasp/vasp5.2.12-intel11
+#EXEC=/opt/vasp/vasp-ompi-intel11
+#EXEC=/opt/vasp/vasp-vtst-ompi-intel11
+
+MPI_HOME=/opt/intel/impi/5.0.2.044
+
+cat $TMPDIR/machines |uniq > hosts
+echo "host: "
+cat hosts
+echo "---------------------------"
+# setup Nums of Processor
+NP=`cat $TMPDIR/machines |wc -l`
+echo "Numbers of Processors:  $NP"
+echo "---------------------------"
+
+# Number of MPD
+N_MPD=`cat hosts|wc -l`
+echo "started mpd Number: $N_MPD"
+echo "---------------------------"
+
+# setup mpi env (em64t)
+$MPI_HOME/bin64/mpdboot -r rsh -n $N_MPD -f hosts
+username=`whoami`
+# running program#############################
+$MPI_HOME/bin64/mpiexec -genv I_MPI_DEBUG 3 -genv I_MPI_DEVICE ssm -n $NP $EXEC
+##############################################
+# clean
+$MPI_HOME/bin64/mpdallexit
+
+rm -rf $SGE_O_WORKDIR/vasp.e*
+rm -rf $SGE_O_WORKDIR/vasp.o*
+rm -rf $SGE_O_WORKDIR/vasp.p*

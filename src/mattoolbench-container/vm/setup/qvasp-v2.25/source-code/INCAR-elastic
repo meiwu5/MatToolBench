@@ -1,0 +1,11 @@
+ Elastic Modulus
+   NELM = 100
+   NSW=1
+   IBRION=6
+   ISIF=3
+   NFREE=4
+
+   LCHARG = .FALSE.
+   LWAVE  =  F
+
+# The elastic constant is in the OUTCAR: TOTAL ELASTIC MODULI

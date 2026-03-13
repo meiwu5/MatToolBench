@@ -1,0 +1,88 @@
+{
+    "id": "692a21f3-8151-4980-ad61-1a7294146732-wos",
+    "snapshot": "dmlab",
+    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm4.dm4', perform FFT on lattice region, save file to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\FFT_3.dm3'.",
+    "source": "https:\\www.example.com/software/dm",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for DigitalMicrograph to fully load",
+            "parameters": {
+                "seconds": 1
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 1
+            }
+        }
+    ],
+    "trajectory": "trajectories/dm/",
+    "related_apps": [
+        "Dm"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\FFT_3.dm3"
+            },
+            {
+                "type": "check_file_import",
+                "expected_filename": "dm4.dm4"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "FFT of dm4"
+                ],
+                "region": "whole"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

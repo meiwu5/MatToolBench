@@ -1,0 +1,26 @@
+{
+  "id": "2c4d5d4f-6a8b-4e10-9d88-5f5a0b8c4a2e-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to query the formation energy per atom of mp-19005 and the list of decomposition products, write a JSON dict with keys formation_energy_per_atom and decomposes_to, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_3.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_3.txt",
+      "dest": "mp_task_3.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_3.txt",
+      "dest": "mp_task_3_right.txt"
+    }
+  }
+}

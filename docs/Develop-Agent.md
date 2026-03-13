@@ -1,6 +1,6 @@
 # Bringing Your Own Agent to Windows Agent Arena
 
-Want to test your own agents in Windows Agent Arena? You can use our default agent as a template and create your own folder under `src/win-arena-container/client/mm_agents`. You just need to ensure that your `agent.py` file includes the `predict()` and `reset()` functions.
+Want to test your own agents in Windows Agent Arena? You can use our default agent as a template and create your own folder under `src/mattoolbench-container/client/mm_agents`. You just need to ensure that your `agent.py` file includes the `predict()` and `reset()` functions.
 
 ## Steps to Create Your Custom Agent
 
@@ -9,7 +9,7 @@ Want to test your own agents in Windows Agent Arena? You can use our default age
 Navigate to the `mm_agents` directory:
 
 ```bash
-cd src/win-arena-container/client/mm_agents
+cd src/mattoolbench-container/client/mm_agents
 ```
 
 Create a new folder for your agent. For example, if your agent is named `my_agent`, run:

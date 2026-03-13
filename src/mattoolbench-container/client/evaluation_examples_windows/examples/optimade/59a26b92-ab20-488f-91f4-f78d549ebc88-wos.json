@@ -1,0 +1,27 @@
+{
+    "id": "59a26b92-ab20-488f-91f4-f78d549ebc88-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all structures with chemical_formula_reduced = \"SiO2\". Count how many records each database provider contributes (e.g. Materials Project, OQMD, AFLOW, COD) and save the per-provider record counts to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_8.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_8.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

@@ -1,0 +1,73 @@
+{
+    "id": "704049ba-c745-47cf-aad1-5d2d9a96eb6f-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\XRD1.xrdml', switch the x-axis from 2θ to d-spacing display, then switch back to 2θ.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_opened",
+                "expected_filename": "XRD1.xrdml"
+            },
+            {
+                "type": "check_axis_switch"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

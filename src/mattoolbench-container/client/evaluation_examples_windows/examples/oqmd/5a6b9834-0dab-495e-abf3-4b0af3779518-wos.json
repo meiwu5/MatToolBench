@@ -1,0 +1,27 @@
+{
+    "id": "5a6b9834-0dab-495e-abf3-4b0af3779518-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for the Mg-O compound with the lowest delta_e (element_set=Mg,O), save its full details to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_12.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_12.txt",
+            "dest": "oqmd_task_12.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_12.txt",
+            "dest": "oqmd_task_12_right.txt"
+        }
+    }
+}

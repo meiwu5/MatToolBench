@@ -1,0 +1,15 @@
+{
+    "_comment": "Main experiment \u2014 full benchmark \u2014 Gemini 1.5 Pro (Google)",
+    "model": "gemini-1.5-pro",
+    "temperature": 0.0,
+    "som_origin": "oss",
+    "agent_name": "auto",
+    "origin_mode": "script",
+    "origin_category": "auto",
+    "max_steps": 15,
+    "max_trajectory_length": 15,
+    "test_all_meta_path": "evaluation_examples_windows/test_all.json",
+    "diff_lvl": "normal",
+    "result_dir": "./results/main_gemini_1.5_pro",
+    "trial_id": "0"
+}

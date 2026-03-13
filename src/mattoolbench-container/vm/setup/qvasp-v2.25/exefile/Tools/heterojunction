@@ -1,0 +1,58 @@
+#! /bin/sh
+echo "*************************************************************"
+echo "Author:JunLuo and JiZhou"
+echo "Email:junluo@hnu.edu.cn  Hunan University"
+echo "Function: A program that can be used to build heterostructure with two POSCAR"
+echo "Version:1.1"
+echo "First released time: 2019.07.30"
+echo "Last modified time: 2021.12.30 by Wencai Yi"
+echo "*************************************************************"
+
+
+## check wether exit python3
+test=`which python3 2> /dev/null`
+if [ -z $test ]; then
+ echo "There is no python3, please running this command under python3 environment!"
+ echo "We suggest that you install anaconda3 in your machine!"
+ exit;
+fi
+
+if [ $# -lt 2 ];then
+ echo "Please use: qvasp -hej subs1 subs2 (subs1 and subs2 should be (quasi-)two dimensional material in POSCAR format),stop"
+ exit;
+fi
+
+if [ -e $1 -a -f $2 ];then
+ continue;
+else
+ echo "The file of $1 or $2 not exist,stop"
+ exit;
+fi
+
+cp $1 POSCAR
+echo 602 | $qvasppath/exefile/Tools/USERTooLs/vaspkit | grep 123
+echo "The target file has been converted into primitive cell!"
+mv PRIMCELL.vasp POSCAR
+$qvasppath/exefile/Tools/2d-center.x
+cp POSCAR_center POSCAR1
+
+
+cp $2 POSCAR
+echo 602 | $qvasppath/exefile/Tools/USERTooLs/vaspkit | grep 123
+echo "The target file has been converted into primitive cell!"
+mv PRIMCELL.vasp POSCAR
+$qvasppath/exefile/Tools/2d-center.x
+cp POSCAR_center POSCAR2
+
+python3 $qvasppath/exefile/Tools/find_hetero.py
+########### deal repeat  #################
+$qvasppath/exefile/Tools/sort-heter.x
+sh $qvasppath/exefile/Tools/redine_POSCAR.sh
+
+## clean
+rm heter.in POSCAR1 POSCAR22 POSCAR11 POSCAR2 POSCAR sorted_by_custom_angle.txt sorted_by_atomic_number.txt
+
+echo " "
+echo "Cite with \"The calculations were assisted by the qvasp and vaspkit [1-2]\"  "
+echo "[1] Wencai Yi, et al.qvasp: A Flexible Toolkit for VASP Users in Materials Simulations"
+echo "[2] Vei WANG, et al. VASPKIT: A user-friendly interface facilitating high-throughput computing and analysis using VASP code"

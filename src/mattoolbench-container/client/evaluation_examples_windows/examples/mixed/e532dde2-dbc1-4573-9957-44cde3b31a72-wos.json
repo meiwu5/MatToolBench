@@ -1,0 +1,88 @@
+{
+    "id": "e532dde2-dbc1-4573-9957-44cde3b31a72-wos",
+    "snapshot": "jade_origin_lab",
+    "instruction": "Use Jade to open the raw XRD file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt', analyze the diffraction peaks and find the best matching phase from the database. Export the corresponding PDF card to the desktop as 'WRT_PDF1.txt'. Then open Origin, import 'C:\\Users\\Docker\\Desktop\\WRT_PDF1.txt' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt', set sample labels to ['WRTZSX5'] and PDF card labels to ['PDF#99-0073'], plot an XRD diffraction matching figure with HKL peak annotations and sample/PDF labels, and save the figure as 'WRT_XRD.png' to the desktop.",
+    "source": "https://www.example.com/mixed/jade_origin",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/mixed/jade_origin/",
+    "related_apps": [
+        "Jade",
+        "Origin"
+    ],
+    "max_steps": 20,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\WRT_PDF1.txt"
+            },
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\WRT_XRD.png"
+            },
+            {
+                "type": "validate_image_with_model",
+                "file_path": "C:\\Users\\Docker\\Desktop\\WRT_XRD.png",
+                "description": "The image is an XRD diffraction matching figure. It contains two curves: one labeled 'WRTZSX5' (sample) and one labeled 'PDF#99-0073' (PDF card reference). HKL indices are annotated on the diffraction peaks."
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

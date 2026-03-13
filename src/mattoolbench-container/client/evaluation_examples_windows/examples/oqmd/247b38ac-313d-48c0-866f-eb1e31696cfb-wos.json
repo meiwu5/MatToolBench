@@ -1,0 +1,27 @@
+{
+    "id": "247b38ac-313d-48c0-866f-eb1e31696cfb-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for all Zn-O binary polymorphs (element_set=Zn,O), sorted by delta_e, save total count, most stable and least stable entries to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_16.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 18,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_16.txt",
+            "dest": "oqmd_task_16.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_16.txt",
+            "dest": "oqmd_task_16_right.txt"
+        }
+    }
+}

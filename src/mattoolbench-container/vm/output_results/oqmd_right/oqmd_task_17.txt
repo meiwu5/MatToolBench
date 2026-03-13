@@ -1,0 +1,11 @@
+Stable Cu-Au binary compounds: 155
+  entry_id=31283       name=CuAu        composition=Au1 Cu1          delta_e=-0.052771855 eV/atom
+  entry_id=7823        name=CuAu        composition=Au1 Cu1          delta_e=-0.0527098800000001 eV/atom
+  entry_id=10713       name=CuAu        composition=Au1 Cu1          delta_e=-0.0502331255000001 eV/atom
+  entry_id=306459      name=CuAu        composition=Au1 Cu1          delta_e=-0.0476822349999999 eV/atom
+  entry_id=327543      name=CuAu        composition=Au1 Cu1          delta_e=0.01403496 eV/atom
+  entry_id=1228140     name=CuAu        composition=Au1 Cu1          delta_e=0.0248423099999999 eV/atom
+  entry_id=338001      name=CuAu        composition=Au1 Cu1          delta_e=0.13962981 eV/atom
+  entry_id=1105644     name=CuAu        composition=Au1 Cu1          delta_e=0.233275695 eV/atom
+  entry_id=1224654     name=CuAu        composition=Au1 Cu1          delta_e=0.6752293875 eV/atom
+  entry_id=1218460     name=CuAu        composition=Au1 Cu1          delta_e=0.68464968 eV/atom

@@ -1,0 +1,56 @@
+{
+    "id": "65fda072-8a48-4cc2-8fa2-fb1df4603e39-wos",
+    "snapshot": "jadelab",
+    "instruction": "Use Jade to import the 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt' file.",
+    "source": "https:\\www.example.com/software/jade",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Jade to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 5
+            }
+        }
+    ],
+    "trajectory": "trajectories/jade/",
+    "related_apps": [
+        "Jade"
+    ],
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "check_file_opened",
+            "expected_filename": "WRT-ZSX-5.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

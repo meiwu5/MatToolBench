@@ -1,0 +1,26 @@
+{
+  "id": "8e7d6c5b-4a3b-2c1d-0e9f-8a7b6c5d4e3f-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to query the band gap value of mp-19005 and determine whether Hubbard U was enabled by checking task input INCAR (LDAU/LDAUU) via task_ids, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_8.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_8.txt",
+      "dest": "mp_task_8.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_8.txt",
+      "dest": "mp_task_8_right.txt"
+    }
+  }
+}

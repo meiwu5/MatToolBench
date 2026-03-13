@@ -1,0 +1,27 @@
+{
+    "id": "989b21da-031c-4837-95e9-1bb9211e3c04-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all records with formula_prototype = \"AB\" (NaCl-type structure). For each matching record, retrieve the space group symbol or number. Save the space group information to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_7.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_7.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

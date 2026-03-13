@@ -1,0 +1,115 @@
+{
+    "id": "715b7090-2160-409c-ac22-ba7b8bf6f674-wos",
+    "snapshot": "MSlab",
+    "instruction": "Use Materials Studio to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\untitled.stp' and build a new homopolymer with monomer ethylene and a chain length of 20.",
+    "source": "https://www.example.com/software/MS",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\BIOVIA\\Materials Studio 23.1\\bin\\MatStudio.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Materials Studio to fully load",
+            "parameters": {
+                "seconds": 120
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Maximize the Materials Studio window",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pygetwindow as gw; ws=[w for w in gw.getAllWindows() if \"Materials Studio\" in w.title]; ws[0].maximize() if ws else None"
+                ]
+            }
+        }
+    ],
+    "trajectory": "trajectories/MS/",
+    "related_apps": [
+        "Materials Studio"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_in_title",
+                "expected_filename": "untitled",
+                "region": "Top5%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "3D Atomistic",
+                "forbidden_keywords": [
+                    "Import Document"
+                ],
+                "region": "Top40%"
+            },
+            {
+                "type": "check_dialog_title",
+                "expected_title": "Homopolymer",
+                "forbidden_keywords": [
+                    "Add Atoms"
+                ]
+            },
+            {
+                "type": "check_field_value",
+                "dialog_title": "Homopolymer",
+                "field_name": null,
+                "expected_value": "ethylene"
+            },
+            {
+                "type": "check_field_value",
+                "dialog_title": "Homopolymer",
+                "field_name": "Chain length",
+                "expected_value": 20
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

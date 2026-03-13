@@ -1,0 +1,26 @@
+{
+  "id": "7f1c6a9d-8a56-44c7-9c7e-0d30d5c2ed9a-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to get the spin-polarized density of states of mp-13 (bcc Fe), record the maximum values of Spin.Up and Spin.Down in the total DOS, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_4.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_4.txt",
+      "dest": "mp_task_4.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_4.txt",
+      "dest": "mp_task_4_right.txt"
+    }
+  }
+}

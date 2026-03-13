@@ -1,0 +1,115 @@
+{
+    "id": "54d411cd-94a1-4d11-b98f-23283c8c6b11-wos",
+    "snapshot": "MSlab",
+    "instruction": "Use Materials Studio to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\untitled.stp', create a new 3D Atomistic document, open Build Crystal, set the lattice parameter a to 4.910 Å and the angle alpha to 70°.",
+    "source": "https://www.example.com/software/MS",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\BIOVIA\\Materials Studio 23.1\\bin\\MatStudio.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Materials Studio to fully load",
+            "parameters": {
+                "seconds": 120
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Maximize the Materials Studio window",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pygetwindow as gw; ws=[w for w in gw.getAllWindows() if \"Materials Studio\" in w.title]; ws[0].maximize() if ws else None"
+                ]
+            }
+        }
+    ],
+    "trajectory": "trajectories/MS/",
+    "related_apps": [
+        "Materials Studio"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_in_title",
+                "expected_filename": "untitled",
+                "region": "Top5%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "3D Atomistic",
+                "forbidden_keywords": [
+                    "Import Document"
+                ],
+                "region": "Top40%"
+            },
+            {
+                "type": "check_dialog_title",
+                "expected_title": "Build Crystal",
+                "forbidden_keywords": [
+                    "Unbuild Crystal"
+                ]
+            },
+            {
+                "type": "check_field_value",
+                "dialog_title": "Build Crystal",
+                "field_name": null,
+                "expected_value": 4910
+            },
+            {
+                "type": "check_field_value",
+                "dialog_title": "Build Crystal",
+                "field_name": null,
+                "expected_value": 70
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

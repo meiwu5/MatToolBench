@@ -1,0 +1,111 @@
+{
+    "id": "b0c2041a-5552-435b-a9c9-1bd5516d43ef-wos",
+    "snapshot": "avantagelab",
+    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\XPS Survey.VGD', then save the entire active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Sample.vgp'.",
+    "source": "https:\\www.example.com/software/avantage",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Avantage to load",
+            "parameters": {
+                "seconds": 8
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('right')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('enter')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        }
+    ],
+    "trajectory": "trajectories/avantage/",
+    "related_apps": [
+        "Avantage"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Sample.vgp"
+            },
+            {
+                "type": "check_multiple_files_imported",
+                "expected_files": [
+                    "C1s Scan",
+                    "O1s Scan",
+                    "Zn2p Scan",
+                    "XPS Survey"
+                ]
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

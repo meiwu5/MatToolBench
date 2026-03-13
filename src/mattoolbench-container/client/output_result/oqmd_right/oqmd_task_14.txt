@@ -1,0 +1,8 @@
+Al-O compounds with volume 8-12 A^3/atom: 0
+First result:
+  entry_id:   N/A
+  name:       N/A
+  volume:     N/A A^3/atom
+  delta_e:    N/A eV/atom
+  stability:  N/A eV/atom
+  spacegroup: N/A

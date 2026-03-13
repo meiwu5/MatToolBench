@@ -1,0 +1,27 @@
+{
+    "id": "e22c4852-afaa-498e-bb02-9fcf321f0106-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for the top 5 most stable Ti-O compounds (element_set=Ti,O), sorted by delta_e ascending, save their names/delta_e/stability to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_8.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_8.txt",
+            "dest": "oqmd_task_8.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_8.txt",
+            "dest": "oqmd_task_8_right.txt"
+        }
+    }
+}

@@ -1,0 +1,137 @@
+{
+    "id": "f8813427-c0e1-45a1-a585-0e9c1ad23fad-wos",
+    "snapshot": "originlab",
+    "instruction": "Open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\origin\\book3.ogwu', plot a Raman spectrum stacked/offset plot, annotate the excitation wavelength as 'ex:532 nm', calculate and annotate the ID/IG ratio on the figure, annotate peak positions horizontally, set sample labels to ['label1', 'label2', 'label3'], You can press Alt+4 to open the Code Builder to write and run scripts. Save the figure as 'Raman3.png' to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\Raman3.png'.",
+    "source": "https://www.originlab.com/",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files\\OriginLab\\Origin2026\\Origin64.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Origin to fully load",
+            "parameters": {
+                "seconds": 30
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Ctrl+O to open the file dialog",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey('ctrl', 'o')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file dialog",
+            "parameters": {
+                "seconds": 3
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Paste file path into dialog",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyperclip, pyautogui, time; pyautogui.FAILSAFE=False; pyperclip.copy(r'C:\\\\Users\\\\Docker\\\\Desktop\\\\setup\\\\dependencies\\\\origin\\\\book3.ogwu'); time.sleep(0.2); pyautogui.hotkey('ctrl', 'v')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file dialog",
+            "parameters": {
+                "seconds": 3
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Enter to open the file",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.press('enter')"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for file to finish loading",
+            "parameters": {
+                "seconds": 8
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Press Alt+4 to open Code Builder",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey(\"alt\", \"4\")"
+                ],
+                "shell": false
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Code Builder to open",
+            "parameters": {
+                "seconds": 3
+            }
+        }
+    ],
+    "trajectory": "trajectories\\origin\\",
+    "related_apps": [
+        "Origin"
+    ],
+    "max_steps": 10,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\Raman3.png"
+            },
+            {
+                "type": "validate_image_with_model",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\Raman3.png",
+                "description": "The image is a Raman spectrum stacked/offset plot. It shows the excitation wavelength label 'ex:532 nm'. The ID/IG ratio value is annotated on the figure. Peak position labels are written horizontally. Sample labels 'label1', 'label2', and 'label3' are present."
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    },
+    "origin_category": "raman"
+}

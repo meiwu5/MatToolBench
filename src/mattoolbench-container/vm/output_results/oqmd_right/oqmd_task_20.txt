@@ -1,0 +1,21 @@
+=== Ni-Al binary convex hull (stable compounds) ===
+Total stable compounds: 243
+
+  entry_id=94913       name=AlNi        composition=Al1 Ni1          delta_e=-0.669446355000001 eV/atom
+  entry_id=10516       name=AlNi        composition=Al1 Ni1          delta_e=-0.669379795 eV/atom
+  entry_id=304487      name=AlNi        composition=Al1 Ni1          delta_e=-0.66928167 eV/atom
+  entry_id=94919       name=AlNi        composition=Al1 Ni1          delta_e=-0.669194995000001 eV/atom
+  entry_id=1217542     name=AlNi        composition=Al1 Ni1          delta_e=-0.668647157500001 eV/atom
+  entry_id=336029      name=AlNi        composition=Al1 Ni1          delta_e=-0.636206390000001 eV/atom
+  entry_id=325571      name=AlNi        composition=Al1 Ni1          delta_e=-0.424828410000001 eV/atom
+  entry_id=1103673     name=AlNi        composition=Al1 Ni1          delta_e=-0.04661705 eV/atom
+  entry_id=1224522     name=AlNi        composition=Al1 Ni1          delta_e=0.0959331299999997 eV/atom
+  entry_id=1218328     name=AlNi        composition=Al1 Ni1          delta_e=0.463953155 eV/atom
+
+=== Convex hull minimum ===
+entry_id:    94913
+name:        AlNi
+composition: Al1 Ni1
+delta_e:     -0.669446355000001 eV/atom
+spacegroup:  Pm-3m
+volume:      24.0723 A^3/atom

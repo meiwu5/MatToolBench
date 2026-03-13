@@ -1,0 +1,12 @@
+ Frequency
+   ICHARG = 2
+   NSW    = 1
+   NFREE = 2
+   POTIM = 0.02
+   IBRION = 5
+
+   LCHARG = F
+   LWAVE  =  F
+
+# Frequenies was included in OUTCAR, eg. 1 f/i = 64.112970 THz
+# f/i is imaginary frequency

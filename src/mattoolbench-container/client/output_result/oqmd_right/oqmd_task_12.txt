@@ -1,0 +1,8 @@
+=== Lowest formation energy Mg-O compound ===
+entry_id:    1029300
+name:        AcMgAsO
+composition: Ac1 As1 Mg1 O1
+delta_e:     -2.13534121813636 eV/atom
+stability:   0.0807219237499952 eV/atom
+spacegroup:  P4/nmm
+volume:      173.565 A^3/atom

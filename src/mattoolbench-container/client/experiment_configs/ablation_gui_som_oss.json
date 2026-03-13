@@ -1,0 +1,13 @@
+{
+    "_comment": "Ablation: GUI tasks \u2014 SoM mode: oss/OCR-only (GPT-4o)",
+    "model": "gpt-5",
+    "temperature": 0.0,
+    "som_origin": "oss",
+    "agent_name": "auto",
+    "max_steps": 15,
+    "max_trajectory_length": 15,
+    "test_all_meta_path": "evaluation_examples_windows/test_all.json",
+    "diff_lvl": "normal",
+    "result_dir": "./results/ablation_gui_oss",
+    "trial_id": "0"
+}

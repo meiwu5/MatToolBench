@@ -1,0 +1,13 @@
+{
+    "_comment": "GUI tasks — OmniParser SoM (ablation: end-to-end visual parsing)",
+    "model": "gpt-5",
+    "temperature": 0.5,
+    "som_origin": "omni",
+    "agent_name": "auto",
+    "max_steps": 15,
+    "max_trajectory_length": 15,
+    "test_all_meta_path": "evaluation_examples_windows/test_all.json",
+    "diff_lvl": "normal",
+    "result_dir": "./results/gui_omni_gpt5",
+    "trial_id": "0"
+}

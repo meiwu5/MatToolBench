@@ -1,0 +1,27 @@
+{
+    "id": "ceab792f-3557-4eef-81a0-c578eb4c8486-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all compounds containing ONLY Al and O (nelements=2, elements HAS ONLY \"Al\",\"O\") that are thermodynamically stable (energy_above_hull = 0). Save the results including IDs and chemical formulas to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_5.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_5.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

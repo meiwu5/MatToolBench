@@ -1,0 +1,27 @@
+#!/bin/bash
+#Author:Wencai Yi
+#Goal: Transfer cif file to POSCAR
+
+echo " "
+if [ $# = 0 ]; then
+ file=`ls *.cif 2> /dev/null`
+else
+ file=$@
+ file=`echo $file|cut -d " " -f2-`
+fi
+
+for i in $file
+do
+ # check $i
+ if [ -s $i ];then 
+ $qvasppath/exefile/POSCAR/cif2pos2 $i
+ # rename by cp
+ filea=`echo $i|cut -c1-$((${#i}-4))`
+ echo "Transfer done of " $i "!"
+ cp POSCAR $filea.vasp  
+ else
+  echo "Please check the file of " $i " !"
+  echo "Use qvasp -c2p C.cif Si.cif to transfer C.cif Si.cif to C.vasp Si.vasp"
+ fi
+done
+echo " "

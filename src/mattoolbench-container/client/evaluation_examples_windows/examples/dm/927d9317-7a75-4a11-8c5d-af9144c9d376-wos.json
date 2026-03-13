@@ -1,0 +1,99 @@
+{
+    "id": "927d9317-7a75-4a11-8c5d-af9144c9d376-wos",
+    "snapshot": "dmlab",
+    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm1.dm3', use RectangleROI to draw a box at image center, add Data Bar.",
+    "source": "https:\\www.example.com/software/dm",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for DigitalMicrograph to fully load",
+            "parameters": {
+                "seconds": 1
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 1
+            }
+        }
+    ],
+    "trajectory": "trajectories/dm/",
+    "related_apps": [
+        "Dm"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "check_file_import",
+                "expected_filename": "dm1.dm3"
+            },
+            {
+                "type": "check_drawing_tool",
+                "tool_name": "RectangleROI"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "Add Data Bar"
+                ],
+                "region": "whole"
+            },
+            {
+                "type": "check_data_bar_by_text",
+                "min_keywords": 2
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

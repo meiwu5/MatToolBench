@@ -1,0 +1,13 @@
+ Phonopy Calculate
+   NELM = 100
+   IBRION =8
+   NSW =1
+   SIGMA=0.05
+   LREAL=.FALSE.
+   LWAVE=.FALSE.
+   LCHARG=.FALSE
+   ADDGRID=.TRUE.
+
+# You's better modify: EDIFF=1E-7; PREC=Accurate
+# Use 'phonopy -p --factor=521.471 band.conf' 
+#     'bandplot --gnuplot >PhononBAND.dat' to get PhononBAND.dat (OriginPro)

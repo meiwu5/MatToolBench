@@ -1,0 +1,30 @@
+#!/bin/sh -f
+#PBS -N vasp54
+#PBS -l nodes=1:ppn=28
+#PBS -l walltime=848:00:00
+#PBS -q cpu
+#PBS -V
+#PBS -S /bin/bash
+
+############## ENVIRONMENT ###########
+source /public1/enviroment/intel2016
+source /public1/enviroment/impi2016
+source /public1/enviroment/anaconda2-env
+NP=`cat $PBS_NODEFILE | wc -l`
+cat $PBS_NODEFILE > /tmp/nodefile.$$
+
+cd $PBS_O_WORKDIR
+
+############### SET EXEC #############
+EXEC=/public1/software/vasp/vasp5.4.4/avx512/vasp_std
+##EXEC=/public1/software/vasp5.4.4/avx512/vasp_ncl
+##EXEC=/public1/software/vasp5.4.4/avx512/vasp_gam
+
+
+ulimit -s unlimited  # remove limit on stack size
+
+export VASP_RAMAN_RUN='mpirun -np 28 /public1/software/vasp/vasp5.4.4/avx512/vasp_std > job.out'
+export VASP_RAMAN_PARAMS='01_192_2_0.01'
+
+python vasp_raman.py > vasp_raman.out
+#####python /u/afonari/vasp_raman.py > vasp_raman.out

@@ -3,6 +3,7 @@ import os
 import sys
 import time
 
+
 def main():
     storage_path = sys.argv[1]
     mounted_output_path = sys.argv[2]
@@ -14,6 +15,11 @@ def main():
     model_name = sys.argv[8]
     som_origin = sys.argv[9]
     a11y_backend = sys.argv[10]
+    origin_mode = sys.argv[11] if len(sys.argv) > 11 else "script"
+    vm_only = sys.argv[12].lower() == "true" if len(sys.argv) > 12 else False
+    origin_eval_model = sys.argv[13] if len(sys.argv) > 13 else ""
+    if origin_eval_model:
+        os.environ["ORIGIN_EVAL_MODEL"] = origin_eval_model
 
     # print all args
     print("All args:")
@@ -68,11 +74,18 @@ def main():
     print("display the content of /storage")  
     os.system("ls -l /storage")  
 
-    # starts the VM and waits for it to fully load before proceeding
     os.system("/entry_setup.sh") # since it's in root we can just do /script.sh and don't need cd /
 
-    # launches the client script
-    os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend}")
+    if vm_only:
+        # VM-only mode: keep container alive for remote agent connection
+        print("VM is ready. Running in vm-only mode, waiting for remote agent connection...")
+        print(f"  Windows VM API: port 5000")
+        print(f"  QEMU QMP:       port 7200")
+        while True:
+            time.sleep(60)
+    else:
+        # launches the client script
+        os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --origin_mode {origin_mode}")
 
     print("Finished running entry script")
 

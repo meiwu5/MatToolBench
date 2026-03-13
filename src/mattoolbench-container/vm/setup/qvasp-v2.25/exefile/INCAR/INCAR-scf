@@ -1,0 +1,14 @@
+   NCORE = 2     ## Important to reduce calculate time, equal sqrt(cpu cores)
+ 
+Self-consistent
+   NELM = 100
+   ICHARG = 2
+   NSW    = 0
+   IBRION = -1
+
+   ISMEAR = -5
+   LCHARG = T   
+   LWAVE  =  F
+
+# Usually set LCHARG = T to obtain CHGCAR to calculate Band or DOS
+# Use 'qvasp -e' to analysis results

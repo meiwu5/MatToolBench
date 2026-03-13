@@ -1,0 +1,27 @@
+{
+    "id": "a3f55121-8a2a-430e-87ee-aafbb9e6fcea-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for Ce-O binary compounds with band_gap > 0 (element_set=Ce,O AND ntypes=2 AND band_gap>0), find the largest band gap entry and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_18.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "max_steps": 18,
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_18.txt",
+            "dest": "oqmd_task_18.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_18.txt",
+            "dest": "oqmd_task_18_right.txt"
+        }
+    }
+}

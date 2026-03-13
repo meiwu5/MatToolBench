@@ -1,0 +1,2 @@
+Total Li ternary compounds:  32681
+Stable Li ternary compounds: 32681

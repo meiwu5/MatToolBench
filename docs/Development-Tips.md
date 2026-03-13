@@ -1,6 +1,6 @@
 ### Dev/Azure Mode
 
-For facilitating the development and testing of the initialization scripts in `src/win-arena-container/vm/setup` and Python server in `src/win-arena-container/vm/setup/server`, we have made a `mode` parameter available in the run-local script. By default, this mode is set to `azure` for optimizing running the benchmark at scale, but you can manually set it to `dev` when preparing the WAA golden image. Doing so will result in a new shared folder being mounted and shared between the Docker host and the Windows 11 VM running on Docker.
+For facilitating the development and testing of the initialization scripts in `src/mattoolbench-container/vm/setup` and Python server in `src/mattoolbench-container/vm/setup/server`, we have made a `mode` parameter available in the run-local script. By default, this mode is set to `azure` for optimizing running the benchmark at scale, but you can manually set it to `dev` when preparing the MatToolBench golden image. Doing so will result in a new shared folder being mounted and shared between the Docker host and the Windows 11 VM running on Docker.
 
 ```bash
 cd ./scripts
@@ -12,17 +12,17 @@ Once prepared, you can run the entire setup at once using:
 ./run-local.sh --mode dev --start-client true
 ```
 
-With the dev mode activated, any code changes made to the `src/win-arena-container/vm/setup` folder on the host will be reflected in the Windows 11 VM (`\\host.lan\Data`), making the overall development flow faster.
+With the dev mode activated, any code changes made to the `src/mattoolbench-container/vm/setup` folder on the host will be reflected in the Windows 11 VM (`\\host.lan\Data`), making the overall development flow faster.
 
 <div align="center">
     <img src="../img/local_dev_mode_shared_folder.png" alt="local_dev_mode_shared_folder" height="500"/>
 </div>
 
-### Reusing WAA Image Snapshots
+### Reusing MatToolBench Image Snapshots
 
 If you already did the Windows image setup once in the past (either using the dev or Azure mode), you can reuse the image to create new VMs. This is useful if you want to create multiple VMs with the same configuration.
 
-In this case, back up all the Windows image files from the folder `src/win-arena-container/vm/storage`.
+In this case, back up all the Windows image files from the folder `src/mattoolbench-container/vm/storage`.
 
 ```bash
 .../storage
@@ -37,9 +37,9 @@ In this case, back up all the Windows image files from the folder `src/win-arena
 
 ### Logs
 
-You can troubleshoot any errors occurring during the preparation phase of the golden image (`./run-local --prepare-image true`), by looking at the logs under [src/win-arena-container/vm/setup/ps_script_log.txt](../src/win-arena-container/vm/setup/ps_script_log.txt).
+You can troubleshoot any errors occurring during the preparation phase of the golden image (`./run-local --prepare-image true`), by looking at the logs under [src/mattoolbench-container/vm/setup/ps_script_log.txt](../src/mattoolbench-container/vm/setup/ps_script_log.txt).
 
-Logs of the Python server running on the Windows 11 VM can instead be found under: [src/win-arena-container/vm/setup/server/server.log](../src/win-arena-container/vm/setup/server/server.log)
+Logs of the Python server running on the Windows 11 VM can instead be found under: [src/mattoolbench-container/vm/setup/server/server.log](../src/mattoolbench-container/vm/setup/server/server.log)
 
 ### Interactive mode - how to launch the docker without running the vm and client processes:
 During the development of any agents and extensions for the benchmark tasks, it might be useful to start the container without starting the client and VM processes. In this case, run:

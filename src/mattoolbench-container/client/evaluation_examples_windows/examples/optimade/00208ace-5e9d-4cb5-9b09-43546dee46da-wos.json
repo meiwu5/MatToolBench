@@ -1,0 +1,27 @@
+{
+    "id": "00208ace-5e9d-4cb5-9b09-43546dee46da-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query structures that contain exactly 4 different elements (nelements=4). Randomly select 5 results and record their database source identifier (the 'id' field). Save the 5 identifiers to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_6.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 8,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_6.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

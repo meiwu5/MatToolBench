@@ -1,0 +1,1 @@
+Spin.Up max: 10.0573; Spin.Down max: 10.3996

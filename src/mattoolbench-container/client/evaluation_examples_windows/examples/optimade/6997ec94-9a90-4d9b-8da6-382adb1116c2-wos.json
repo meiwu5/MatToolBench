@@ -1,0 +1,27 @@
+{
+    "id": "6997ec94-9a90-4d9b-8da6-382adb1116c2-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query structures containing at least one transition metal (Fe, Co, or Ni) with a computed band gap greater than 1.0 eV (elements HAS ANY \"Fe\",\"Co\",\"Ni\" AND band_gap > 1.0). Find the structure with the highest band gap value and save its Material ID to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_9.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_9.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

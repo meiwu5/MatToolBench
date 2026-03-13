@@ -1,0 +1,6 @@
+#!/bin/bash
+
+timestep=`grep POTIM OUTCAR |tail -n 1 |awk '{print $3}'`
+
+python $qvasppath/exefile/Tools/USERTooLs/XDATCAR_toolkit.py -p -t $timestep --pbc
+python $qvasppath/exefile/Tools/USERTooLs/RDF.py

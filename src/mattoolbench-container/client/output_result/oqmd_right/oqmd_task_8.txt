@@ -1,0 +1,6 @@
+Top 5 stable Ti-O compounds:
+  AcTiNO           delta_e=-2.14548130937713 eV/atom  stability=0.2532141092242117 eV/atom
+  AcTiAsO          delta_e=-2.12778692679125 eV/atom  stability=0.0179263245787498 eV/atom
+  AcTiAsO          delta_e=-2.12737017179125 eV/atom  stability=0.0183430795787496 eV/atom
+  AcTiNO           delta_e=-2.11009045312713 eV/atom  stability=0.28860496547421155 eV/atom
+  AcTiNO           delta_e=-2.09723936187713 eV/atom  stability=0.3014560567242115 eV/atom

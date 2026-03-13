@@ -1,0 +1,27 @@
+{
+    "id": "2bdd52b8-44c8-4543-80f4-209cf7d01cb0-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query structures with unit cell volume between 50 and 200 Ang^3 and exactly 3 elements (nelements=3 AND lattice_vectors_volume > 50 AND lattice_vectors_volume < 200). Calculate the average atomic density (atoms per Ang^3) across all returned structures and save the result to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_10.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_10.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        }
+    }
+}

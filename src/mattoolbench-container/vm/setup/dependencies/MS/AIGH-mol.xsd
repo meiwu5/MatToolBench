@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="latin1"?>
+<!DOCTYPE XSD []>
+<XSD Version="3.0">
+	<AtomisticTreeRoot ID="1" NumProperties="32" NumChildren="1" Name="rotate_cccn_aigh_in">
+		<Property Name="AngleEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BendBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BendTorsionBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="BondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ElectrostaticEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="Force" DefinedOn="Bondable" Type="CoDirection"/>
+		<Property Name="HydrogenBondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ImportOrder" DefinedOn="Bondable" Type="UnsignedInteger"/>
+		<Property Name="InversionEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="IsBackboneAtom" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsChiralCenter" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="IsOutOfPlane" DefinedOn="Atom" Type="Boolean"/>
+		<Property Name="ListIdentifier" DefinedOn="PropertyList" Type="String"/>
+		<Property Name="NonBondEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="NormalMode" DefinedOn="Bondable" Type="Direction"/>
+		<Property Name="NormalModeFrequency" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="OrbitalCutoffRadius" DefinedOn="Bondable" Type="Double"/>
+		<Property Name="PotentialEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="QuantizationValue" DefinedOn="ScalarFieldBase" Type="Double"/>
+		<Property Name="RestraintEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="SeparatedStretchStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="SimulationStep" DefinedOn="Trajectory" Type="Integer"/>
+		<Property Name="StretchBendStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="StretchStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="StretchTorsionStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionBendBendEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="TorsionStretchEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ValenceCrossTermEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="ValenceDiagonalEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="VanDerWaalsEnergy" DefinedOn="AtomisticTreeRoot" Type="Double"/>
+		<Property Name="_Stress" DefinedOn="SymmetrySystem" Type="Matrix"/>
+		<Molecule ID="2" NumChildren="1" Name="AIGH_A" UserID="1" XYZ="0,0,0">
+			<SubUnit ID="3" NumChildren="77" Name="XXXX_1" XYZ="0,0,0">
+				<Atom3d ID="4" HasProperties="1" Name="C1" UserID="1" XYZ="5.925375462,2.129851818,0.823955059" Connections="5,6,7" ForcefieldType="c5" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="2"/>
+				</Atom3d>
+				<Atom3d ID="8" HasProperties="1" Name="C2" UserID="2" XYZ="6.539952755,1.767855883,-0.359313577" Connections="5,9,10" ForcefieldType="c5" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="3"/>
+				</Atom3d>
+				<Atom3d ID="11" HasProperties="1" Name="C3" UserID="3" XYZ="7.853494167,1.299874902,-0.366484672" Connections="9,12,13" ForcefieldType="cp" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="4"/>
+				</Atom3d>
+				<Atom3d ID="14" HasProperties="1" Name="H11" UserID="4" XYZ="0.047676146,3.593887568,0.749245763" Connections="15" Charge="0.407000005245209" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="5"/>
+				</Atom3d>
+				<Atom3d ID="16" HasProperties="1" Name="H12" UserID="5" XYZ="-0.570959985,3.791967154,2.303588867" Connections="17" Charge="0.407000005245209" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="6"/>
+				</Atom3d>
+				<Atom3d ID="18" HasProperties="1" Name="N5" UserID="6" XYZ="0.210771009,3.594703913,1.730831027" Connections="15,17,19" Charge="-0.814000010490417" ForcefieldType="n2" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="7"/>
+				</Atom3d>
+				<Atom3d ID="20" HasProperties="1" Name="C10" UserID="7" XYZ="8.541204453,0.892384827,-1.651695013" Connections="13,21,22" Charge="0.300000011920929" ForcefieldType="c=1" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="8"/>
+				</Atom3d>
+				<Atom3d ID="23" HasProperties="1" Name="H8" UserID="8" XYZ="8.106453896,2.505525827,-2.657343388" Connections="24" Charge="0.328000009059906" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="9"/>
+				</Atom3d>
+				<Atom3d ID="25" HasProperties="1" Name="N1" UserID="9" XYZ="8.555199623,1.611676931,-2.666972876" Connections="21,24" Charge="-0.628000020980835" ForcefieldType="n=" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="10"/>
+				</Atom3d>
+				<Atom3d ID="26" HasProperties="1" Name="N4" UserID="10" XYZ="2.320729733,3.111333132,1.294338465" Connections="27,28" Charge="-0.400000005960464" ForcefieldType="n=1" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="11"/>
+				</Atom3d>
+				<Atom3d ID="29" HasProperties="1" Name="C11" UserID="11" XYZ="1.392156124,3.350161076,2.132323027" Connections="19,28,30" Charge="0.400000005960464" ForcefieldType="cr" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="12"/>
+				</Atom3d>
+				<Atom3d ID="31" HasProperties="1" Name="N2" UserID="12" XYZ="9.195266724,-0.299907833,-1.794604421" Connections="22,32,33" Charge="-0.879000008106232" ForcefieldType="n" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="13"/>
+				</Atom3d>
+				<Atom3d ID="34" HasProperties="1" Name="H9" UserID="13" XYZ="9.153002739,-1.036795735,-1.11659503" Connections="32" Charge="0.439999997615814" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="14"/>
+				</Atom3d>
+				<Atom3d ID="35" HasProperties="1" Name="H10" UserID="14" XYZ="9.569464684,-0.478262335,-2.709335804" Connections="33" Charge="0.439999997615814" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="15"/>
+				</Atom3d>
+				<Atom3d ID="36" HasProperties="1" Name="H1" UserID="15" XYZ="9.559990883,0.867110372,0.91628778" Connections="37" Charge="0.127000004053116" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="16"/>
+				</Atom3d>
+				<Atom3d ID="38" HasProperties="1" Name="C4" UserID="16" XYZ="8.51825428,1.217889309,0.873034894" Connections="12,37,39" Charge="-0.127000004053116" ForcefieldType="cp" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="17"/>
+				</Atom3d>
+				<Atom3d ID="40" HasProperties="1" Name="H13" UserID="17" XYZ="2.525611877,3.15973115,3.681841373" Connections="41" Charge="0.407000005245209" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="18"/>
+				</Atom3d>
+				<Atom3d ID="42" HasProperties="1" Name="H14" UserID="18" XYZ="0.929216206,3.529396057,4.098573208" Connections="43" Charge="0.407000005245209" ForcefieldType="hn" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="19"/>
+				</Atom3d>
+				<Atom3d ID="44" HasProperties="1" Name="N6" UserID="19" XYZ="1.593750238,3.356278181,3.388139248" Connections="30,41,43" Charge="-0.814000010490417" ForcefieldType="n2" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="20"/>
+				</Atom3d>
+				<Atom3d ID="45" HasProperties="1" Name="H3" UserID="20" XYZ="8.450993538,1.513284922,3.018967867" Connections="46" Charge="0.127000004053116" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="21"/>
+				</Atom3d>
+				<Atom3d ID="47" HasProperties="1" Name="C6" UserID="21" XYZ="7.901505947,1.586261392,2.068618298" Connections="39,46,48" Charge="-0.127000004053116" ForcefieldType="cp" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="22"/>
+				</Atom3d>
+				<Atom3d ID="49" HasProperties="1" Name="H2" UserID="22" XYZ="6.093735695,2.335637569,2.988408566" Connections="50" Charge="0.127000004053116" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="23"/>
+				</Atom3d>
+				<Atom3d ID="51" HasProperties="1" Name="C5" UserID="23" XYZ="6.588027954,2.047414303,2.051118851" Connections="6,48,50" Charge="-0.127000004053116" ForcefieldType="cp" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="24"/>
+				</Atom3d>
+				<Atom3d ID="52" HasProperties="1" Name="H5" UserID="24" XYZ="5.475054741,1.026849508,-2.1209445" Connections="53" Charge="0.0529999993741512" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="25"/>
+				</Atom3d>
+				<Atom3d ID="54" HasProperties="1" Name="H4" UserID="25" XYZ="5.942521095,2.738075972,-2.220628023" Connections="55" Charge="0.0529999993741512" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="26"/>
+				</Atom3d>
+				<Atom3d ID="56" HasProperties="1" Name="C7" UserID="26" XYZ="5.588380337,1.95223248,-1.533396006" Connections="10,53,55,57" Charge="-0.105999998748302" ForcefieldType="c2" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="27"/>
+				</Atom3d>
+				<Atom3d ID="58" HasProperties="1" Name="H7" UserID="27" XYZ="3.464635849,1.584818721,-0.984877288" Connections="59" Charge="0.0529999993741512" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="28"/>
+				</Atom3d>
+				<Atom3d ID="60" HasProperties="1" Name="H6" UserID="28" XYZ="3.812644005,3.296823978,-1.310608149" Connections="61" Charge="0.0529999993741512" ForcefieldType="hc" Components="H" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="29"/>
+				</Atom3d>
+				<Atom3d ID="62" HasProperties="1" Name="C8" UserID="29" XYZ="4.219679356,2.376889229,-0.865795255" Connections="57,59,61,63" Charge="-0.105999998748302" ForcefieldType="c2" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="30"/>
+				</Atom3d>
+				<Atom3d ID="64" HasProperties="1" Name="C9" UserID="30" XYZ="4.527309895,2.581574917,0.603085637" Connections="7,63,65" Charge="0.300000011920929" ForcefieldType="c=2" Components="C" FormalCharge="0/1">
+					<Properties IsOutOfPlane="1" ImportOrder="31"/>
+				</Atom3d>
+				<Atom3d ID="66" HasProperties="1" Name="N3" UserID="31" XYZ="3.623238802,2.835750818,1.572594762" Connections="27,65" Charge="-0.300000011920929" ForcefieldType="n=2" Components="N" FormalCharge="0/1">
+					<Properties IsOutOfPlane="0" ImportOrder="32"/>
+				</Atom3d>
+				<Bond ID="5" Connects="4,8" Type="Double"/>
+				<Bond ID="6" Connects="4,51"/>
+				<Bond ID="7" Connects="4,64"/>
+				<Bond ID="9" Connects="8,11"/>
+				<Bond ID="10" Connects="8,56"/>
+				<Bond ID="12" Connects="11,38" Type="Double"/>
+				<Bond ID="13" Connects="11,20"/>
+				<Bond ID="15" Connects="14,18"/>
+				<Bond ID="17" Connects="16,18"/>
+				<Bond ID="19" Connects="18,29"/>
+				<Bond ID="21" Connects="20,25" Type="Double"/>
+				<Bond ID="22" Connects="20,31"/>
+				<Bond ID="24" Connects="23,25"/>
+				<Bond ID="27" Connects="26,66"/>
+				<Bond ID="28" Connects="26,29" Type="Double"/>
+				<Bond ID="30" Connects="29,44"/>
+				<Bond ID="32" Connects="31,34"/>
+				<Bond ID="33" Connects="31,35"/>
+				<Bond ID="37" Connects="36,38"/>
+				<Bond ID="39" Connects="38,47"/>
+				<Bond ID="41" Connects="40,44"/>
+				<Bond ID="43" Connects="42,44"/>
+				<Bond ID="46" Connects="45,47"/>
+				<Bond ID="48" Connects="47,51" Type="Double"/>
+				<Bond ID="50" Connects="49,51"/>
+				<Bond ID="53" Connects="52,56"/>
+				<Bond ID="55" Connects="54,56"/>
+				<Bond ID="57" Connects="56,62"/>
+				<Bond ID="59" Connects="58,62"/>
+				<Bond ID="61" Connects="60,62"/>
+				<Bond ID="63" Connects="62,64"/>
+				<Bond ID="65" Connects="64,66" Type="Double"/>
+				<ChargeGroup ID="67" Name="aig0" NumTriggerSets="1" SwitchingCenter="47">
+					<MonitorTriggerSet ID="68" Objects="45,47" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="69" Name="aig1" NumTriggerSets="1" SwitchingCenter="44">
+					<MonitorTriggerSet ID="70" Objects="40,42,44" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="71" Name="aig2" NumTriggerSets="1" SwitchingCenter="18">
+					<MonitorTriggerSet ID="72" Objects="14,16,18" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="73" Name="aig3" NumTriggerSets="1" SwitchingCenter="29">
+					<MonitorTriggerSet ID="74" Objects="26,29" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="75" Name="aig4" NumTriggerSets="1" SwitchingCenter="66">
+					<MonitorTriggerSet ID="76" Objects="64,66" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="77" Name="aig5" NumTriggerSets="1" SwitchingCenter="62">
+					<MonitorTriggerSet ID="78" Objects="58,60,62" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="79" Name="aig6" NumTriggerSets="1" SwitchingCenter="56">
+					<MonitorTriggerSet ID="80" Objects="52,54,56" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="81" Name="aig7" NumTriggerSets="1" SwitchingCenter="4">
+					<MonitorTriggerSet ID="82" Objects="4" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="83" Name="aig8" NumTriggerSets="1" SwitchingCenter="8">
+					<MonitorTriggerSet ID="84" Objects="8" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="85" Name="aig9" NumTriggerSets="1" SwitchingCenter="51">
+					<MonitorTriggerSet ID="86" Objects="49,51" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="87" Name="aiga" NumTriggerSets="1" SwitchingCenter="38">
+					<MonitorTriggerSet ID="88" Objects="36,38" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="89" Name="aigb" NumTriggerSets="1" SwitchingCenter="11">
+					<MonitorTriggerSet ID="90" Objects="11" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="91" Name="aigc" NumTriggerSets="1" SwitchingCenter="25">
+					<MonitorTriggerSet ID="92" Objects="20,23,25" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+				<ChargeGroup ID="93" Name="aigd" NumTriggerSets="1" SwitchingCenter="31">
+					<MonitorTriggerSet ID="94" Objects="31,34,35" ShouldAllowDeletions="0" EventMask="13"/>
+				</ChargeGroup>
+			</SubUnit>
+		</Molecule>
+	</AtomisticTreeRoot>
+</XSD>

@@ -1,0 +1,15 @@
+Total Zn-O binary polymorphs: 72
+
+=== Most stable (lowest delta_e) ===
+entry_id:   4908
+name:       ZnO
+delta_e:    -1.64890428793938 eV/atom
+stability:  0.0009012899999969459 eV/atom
+spacegroup: P63mc
+
+=== Least stable (highest delta_e) ===
+entry_id:   339274
+name:       ZnO
+delta_e:    -0.685245522939377 eV/atom
+stability:  0.964560055 eV/atom
+spacegroup: P4/mmm

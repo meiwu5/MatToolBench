@@ -1,0 +1,116 @@
+{
+    "id": "427ec958-851b-4e26-ba01-501e7164433f-wos",
+    "snapshot": "dmlab",
+    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm9.dm3', perform FFT analysis, apply annular mask on FFT power spectrum to filter background noise, perform inverse transform, save filtered lattice to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\RingMask_Filtered_IFFT.dm3'.",
+    "source": "https:\\www.example.com/software/dm",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for DigitalMicrograph to fully load",
+            "parameters": {
+                "seconds": 1
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 1
+            }
+        }
+    ],
+    "trajectory": "trajectories/dm/",
+    "related_apps": [
+        "Dm"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\RingMask_Filtered_IFFT.dm3"
+            },
+            {
+                "type": "check_file_import",
+                "expected_filename": "dm9.dm3"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "FFT of"
+                ],
+                "region": "whole"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "SpotMask"
+                ],
+                "region": "whole"
+            },
+            {
+                "type": "check_ocr_text",
+                "target_text": [
+                    "IFFT of FFT of"
+                ],
+                "region": "whole"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

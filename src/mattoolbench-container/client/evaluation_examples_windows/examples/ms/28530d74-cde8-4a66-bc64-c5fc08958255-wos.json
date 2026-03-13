@@ -1,0 +1,114 @@
+{
+    "id": "28530d74-cde8-4a66-bc64-c5fc08958255-wos",
+    "snapshot": "MSlab",
+    "instruction": "Use Materials Studio to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\MS\\untitled.stp', create a new 3D Atomistic document, use Build Crystal to build a crystal with space group P1, and save the file to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\MS\\task_5.xsd'.",
+    "source": "https://www.example.com/software/MS",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files (x86)\\BIOVIA\\Materials Studio 23.1\\bin\\MatStudio.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Materials Studio to fully load",
+            "parameters": {
+                "seconds": 120
+            }
+        },
+        {
+            "type": "execute",
+            "note": "Maximize the Materials Studio window",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pygetwindow as gw; ws=[w for w in gw.getAllWindows() if \"Materials Studio\" in w.title]; ws[0].maximize() if ws else None"
+                ]
+            }
+        }
+    ],
+    "trajectory": "trajectories/MS/",
+    "related_apps": [
+        "Materials Studio"
+    ],
+    "max_steps": 13,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\MS\\task_5.xsd"
+            },
+            {
+                "type": "check_file_in_title",
+                "expected_filename": "untitled",
+                "region": "Top5%"
+            },
+            {
+                "type": "check_text_keyword",
+                "keyword": "3D Atomistic",
+                "forbidden_keywords": [
+                    "Import Document"
+                ],
+                "region": "Top50%"
+            },
+            {
+                "type": "check_dialog_title",
+                "expected_title": "Build Crystal",
+                "forbidden_keywords": [
+                    "Unbuild Crystal",
+                    "SuperCell"
+                ]
+            },
+            {
+                "type": "check_field_value",
+                "dialog_title": "Build Crystal",
+                "field_name": null,
+                "expected_value": "P1"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

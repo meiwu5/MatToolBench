@@ -1,0 +1,26 @@
+{
+  "id": "4e5f6a7b-8c9d-4e0f-2a3b-4c5d6e7f8091-wos",
+  "snapshot": "pymatgen_python_env",
+  "instruction": "Use the Kpoints class to generate an 8×8×8 Monkhorst-Pack grid, and save the file content to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task14.txt.",
+  "source": "https:\\pymatgen.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\pymatgen\\",
+  "related_apps": [
+    "Pymatgen",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task14.txt",
+      "dest": "task14.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task14.txt",
+      "dest": "task14_right.txt"
+    }
+  }
+}

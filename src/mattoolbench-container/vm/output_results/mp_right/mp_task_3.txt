@@ -1,0 +1,1 @@
+{"formation_energy_per_atom": -3.6557847515789472, "decomposes_to": null}

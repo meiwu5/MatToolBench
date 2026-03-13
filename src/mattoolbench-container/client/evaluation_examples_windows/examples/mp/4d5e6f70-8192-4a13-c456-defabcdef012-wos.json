@@ -1,0 +1,26 @@
+{
+  "id": "4d5e6f70-8192-4a13-c456-defabcdef012-wos",
+  "snapshot": "materials_project_api_env",
+  "instruction": "Use mp_api to get the space group symbol and number of mp-1143, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_18.txt.",
+  "source": "https:\\materialsproject.org/",
+  "_comments": "comments_placeholder",
+  "config": [],
+  "trajectory": "trajectories\\materialproject\\",
+  "related_apps": [
+    "MaterialProject",
+    "Python"
+  ],
+  "evaluator": {
+    "func": "detect_file_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_18.txt",
+      "dest": "mp_task_18.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_18.txt",
+      "dest": "mp_task_18_right.txt"
+    }
+  }
+}

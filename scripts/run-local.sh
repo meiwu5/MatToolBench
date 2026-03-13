@@ -12,17 +12,17 @@ skip_build=false
 interactive=false
 connect=false
 use_kvm=true
-ram_size=8G
+ram_size=6G
 cpu_cores=8
 mount_vm_storage=true
 mount_client=true
 mount_server=true
-container_name="winarena"
+container_name="mattoolbench"
 browser_port=8006
 rdp_port=3390
 start_client=true
-agent="navi"
-model="gpt-4-vision-preview"
+agent="auto"
+model="qwen3.5-27b"
 som_origin="oss"
 a11y_backend="uia"
 gpu_enabled=false
@@ -113,7 +113,7 @@ while [[ $# -gt 0 ]]; do
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
-            echo "  --container-name <name> : Name of the arena container (default: winarena)"
+            echo "  --container-name <name> : Name of the arena container (default: mattoolbench)"
             echo "  --prepare-image <true/false> : Prepare an arena golden image (default: false)"
             echo "  --skip-build <true/false> : Skip building the arena container image (default: false)"
             echo "  --interactive <true/false> : Launches the arena container in interactive mode, providing access to the command line (bin/bash) without initiating the client or VM server processes. (default: false)"
@@ -127,8 +127,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --browser-port <port> : Port to expose for connecting to the VM using browser (default: 8006)"
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
-            echo "  --agent <navi> : Agent to use for the arena container (default: navi)"
-            echo "  --model <model>: The model to use (default: gpt-4-vision-preview, available options are: gpt-4o-mini, gpt-4-vision-preview, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --agent <auto|gui|code|origin|navi> : Agent to use (default: auto — routes by domain)"
+            echo "  --model <model>: The model to use (default: qwen3.5-27b, available options are: qwen3.5-27b, qwen3.5-27b, gpt-5, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
@@ -153,12 +153,18 @@ echo "Using configuration file: $config_file_path"
 echo "Using mode: $mode"
 
 OPENAI_API_KEY=$(extract_json_field_from_file "OPENAI_API_KEY" "$config_file_path")
+OPENAI_ENDPOINT=$(extract_json_field_from_file "OPENAI_ENDPOINT" "$config_file_path")
 AZURE_API_KEY=$(extract_json_field_from_file "AZURE_API_KEY" "$config_file_path")
 AZURE_ENDPOINT=$(extract_json_field_from_file "AZURE_ENDPOINT" "$config_file_path")
 
+# Origin eval model (optional — dedicated vision LLM for evaluating Origin task outputs)
+ORIGIN_EVAL_MODEL=$(extract_json_field_from_file "ORIGIN_EVAL_MODEL" "$config_file_path")
+ORIGIN_EVAL_API_KEY=$(extract_json_field_from_file "ORIGIN_EVAL_API_KEY" "$config_file_path")
+ORIGIN_EVAL_BASE_URL=$(extract_json_field_from_file "ORIGIN_EVAL_BASE_URL" "$config_file_path")
+
 # Check if at least one key has been set: OPENAI_API_KEY or both AZURE_API_KEY and AZURE_ENDPOINT
-if [[ -z "$OPENAI_API_KEY" && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; then
+if [[ (-z "$OPENAI_API_KEY" || -z "$OPENAI_ENDPOINT") && (-z "$AZURE_API_KEY" || -z "$AZURE_ENDPOINT") ]]; then
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --openai-endpoint $OPENAI_ENDPOINT --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT --origin-eval-model "$ORIGIN_EVAL_MODEL" --origin-eval-api-key "$ORIGIN_EVAL_API_KEY" --origin-eval-base-url "$ORIGIN_EVAL_BASE_URL"
