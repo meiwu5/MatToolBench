@@ -1,5 +1,5 @@
 # Stage 1: Pull Python from the official Python Docker image
-FROM python:3.9-slim AS python-stage
+FROM python:3.12-slim AS python-stage
 
 # OPTIONAL: Stage 2: Pull CUDA 11.8
 FROM nvidia/cuda:11.8.0-base-ubuntu22.04 AS cuda-stage
@@ -52,7 +52,8 @@ COPY src/mattoolbench-container/client/requirements.txt /client/requirements.txt
 
 # Install Python dependencies from requirements.txt
 # Combine all Python package installations into one RUN statement to minimize layering
-RUN pip install -r /client/requirements.txt && pip install requests easyocr tenacity onnxruntime pyOpenSSL sentencepiece anytree huggingface_hub
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install -r /client/requirements.txt && pip install requests easyocr tenacity onnxruntime pyOpenSSL sentencepiece anytree huggingface_hub
 
 # Download model weights
 # GroundingDINO: GitHub Releases (falls back to HF mirror if GitHub is unreachable)

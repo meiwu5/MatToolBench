@@ -309,6 +309,9 @@ invoke_docker_container() {
     # OpenAI API Key priotitized over Azure API Key
     if [ -n "$OPENAI_API_KEY" ]; then
         docker_command+=" -e OPENAI_API_KEY=$OPENAI_API_KEY"
+        if [ -n "$OPENAI_ENDPOINT" ]; then
+            docker_command+=" -e OPENAI_ENDPOINT=$OPENAI_ENDPOINT"
+        fi
     else
         if [ -n "$AZURE_API_KEY" ]; then
             docker_command+=" -e AZURE_API_KEY=$AZURE_API_KEY"

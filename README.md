@@ -4,7 +4,7 @@
 # MatToolBench
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.9-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 
 </div>
 
@@ -16,10 +16,9 @@
 
 | Category | Domains | Tasks | Agent Type | Description |
 |----------|---------|-------|------------|-------------|
-| **Origin** | XRD, XPS, Raman, Cycle, Step, CE | ~96 | OriginAgent | Writes OriginPro scripts to analyze experimental data and generate plots |
-| **GUI** | Jade, Avantage, VESTA, DM, MS | ~65 | GUIAgent | Visually navigates materials software GUIs to complete analysis tasks |
-| **Code** | MP, OQMD, PyMatgen, OPTIMADE | ~92 | CodeAgent | Generates Python code to query materials databases and retrieve properties |
-
+| **Origin** | XRD, XPS, Raman, Cycle, Step, CE | ~16 | OriginAgent | Writes OriginPro scripts to analyze experimental data and generate plots |
+| **GUI** | Jade, Avantage, VESTA, DM, MS | ~100 | GUIAgent | Visually navigates materials software GUIs to complete analysis tasks |
+| **Code** | MP, OQMD, PyMatgen, OPTIMADE | ~70 | CodeAgent | Generates Python code to query materials databases and retrieve properties |
 ---
 
 ## 🗺️ System Overview
@@ -73,7 +72,7 @@
 | Entry point | `scripts/run-local.sh` | `scripts/run_azure.py` |
 | Storage | Local disk (`vm/storage/`) | Azure Blob Storage |
 | Concurrency | Serial, single machine | Parallel ML Jobs (`num_workers`) |
-| Docker image | `mattoolbench:latest` (built locally) | `meiwu/mattoolbench:latest` (pulled from registry) |
+| Docker image | `mattoolbench:latest` (built locally) | `mattoolbench/mattoolbench:latest` (pulled from registry) |
 | VM image | Persisted in `vm/storage/` | Uploaded to Azure datastore |
 
 ---
@@ -146,9 +145,9 @@ MatToolBench/
 
 - Docker daemon installed and running. On Windows, use [Docker with WSL 2](https://docs.docker.com/desktop/wsl/).
 - An [OpenAI](https://platform.openai.com/docs/introduction) or [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) API Key.
-- Python 3.9 — recommended via [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html):
+- Python 3.12 — recommended via [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html):
   ```bash
-  conda create -n mattoolbench python=3.9
+  conda create -n mattoolbench python=3.12
   conda activate mattoolbench
   ```
 

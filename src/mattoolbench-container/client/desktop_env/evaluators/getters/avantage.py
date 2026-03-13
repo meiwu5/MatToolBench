@@ -203,7 +203,7 @@ def _get_parameter_variants(parameter_name: str) -> list:
     common_variants = {
         'font': ['font', 'Font', 'FONT', 'fon', 'fonl'],
         'color': ['color', 'Color', 'COLOR', 'colour', 'Colour', 'coIor'],
-        'eV': ['eV', 'ev', 'EV', 'e V', 'e\/', 'e\\\\/'],
+        'eV': ['eV', 'ev', 'EV', 'e V', 'e/', 'e\\\\/'],
         'FWHM': ['FWHM', 'fwhm', 'FW HM', 'FVVHM'],
         'amount': ['amount', 'Amount', 'AMOUNT', 'amoun', 'arnount'],
         'Rows': ['Rows', 'rows', 'ROWS', 'Row', 'Rovvs'],

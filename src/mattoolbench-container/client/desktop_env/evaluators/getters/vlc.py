@@ -54,7 +54,7 @@ def get_vlc_config(env, config: Dict[str, str]):
     elif os_type == "Windows":
         # config_path = env.controller.execute_python_command(
         #     "import os; print(os.path.expanduser('~\\AppData\\Roaming\\vlc\\vlcrc'))")['output'].strip()
-        config_path = "C:\\Users\Docker\\AppData\\Roaming\\vlc\\vlcrc".strip()
+        config_path = "C:\\Users\\Docker\\AppData\\Roaming\\vlc\\vlcrc".strip()
     else:
         raise Exception("Unsupported operating system", os_type)
     

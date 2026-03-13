@@ -136,7 +136,7 @@ Element section:
 """
 
 def build_user_msg_visual(query, window_title, text_rendering, candidates):
-    msg = f"""\Inputs:
+    msg = f"""Inputs:
 
 0: Step objective: {query}
 
@@ -155,7 +155,7 @@ def build_user_msg_visual(query, window_title, text_rendering, candidates):
 
 
 def build_user_msg(query, window_title, text_rendering, candidates):
-    msg = f"""\Inputs:
+    msg = f"""Inputs:
 
 0: Step objective: {query}
 
