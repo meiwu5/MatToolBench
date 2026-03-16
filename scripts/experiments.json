@@ -6,15 +6,16 @@
     "datastore_input_path": "storage",
     "docker_img_name": "mattoolbench/mattoolbench:latest",
     "exp_name": "Experiment1",
-    "num_workers": 10,
+    "num_workers": 5,
     "use_managed_identity": false,
     "json_name": "evaluation_examples_windows/test_all.json",
-    "model_name": "doubao-seed-1-6-251015",
+    "model_name": "doubao-seed-1-6-thinking-250715",
     "som_origin": "oss",
-    "observation_type":"screenshot",
+    "observation_type": "screenshot",
     "a11y_backend": "uia",
     "origin_mode": "script",
-    "origin_eval_model": "gpt-4o",
-    "vm_only": false
+    "origin_eval_model": "Qwen3-VL-235B-A22B-Instruct",
+    "vm_only": false,
+    "_start_time": "2026-03-16 19:28:22"
   }
 }

@@ -167,7 +167,7 @@ def config() -> argparse.Namespace:
     parser.add_argument("--screen_width", type=int, default=1920)
     parser.add_argument("--screen_height", type=int, default=1200)
     parser.add_argument("--sleep_after_execution", type=float, default=3)
-    parser.add_argument("--max_steps", type=int, default=50)
+    parser.add_argument("--max_steps", type=int, default=15)
     parser.add_argument("--a11y_backend", type=str, default="uia") # "uia" or "win32"
 
     # agent config

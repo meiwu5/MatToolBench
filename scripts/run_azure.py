@@ -84,8 +84,14 @@ def create_compute_instance(worker_id, exp_name, azure_config, use_managed_ident
         logging.info(f"Compute instance {compute_instance_name} not found or unavailable ({e}). Creating...")
 
         setup_scripts = SetupScripts(
-            creation_script=ScriptReference(path=ci_startup_script_path),
-            startup_script=ScriptReference(path=ci_startup_script_path)
+            creation_script=ScriptReference(
+                path=ci_startup_script_path,
+                timeout_minutes=10
+            ),
+            startup_script=ScriptReference(
+                path=ci_startup_script_path,
+                timeout_minutes=10
+            )
         )
 
         if use_managed_identity:
@@ -313,8 +319,8 @@ if __name__ == "__main__":
 
             experiments[exp_name] = exp_config
 
-            # Save updated experiments JSON
-            save_exps(experiments)
+            # # Save updated experiments JSON
+            # save_exps(experiments)
             
             # Save updated experiments JSON
             save_exps(experiments)
