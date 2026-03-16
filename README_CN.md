@@ -3,7 +3,7 @@
 # MatToolBench
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Python](https://img.shields.io/badge/Python-3.9-blue.svg)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 
 </div>
 
@@ -145,9 +145,9 @@ MatToolBench/
 
 - Docker 已安装并运行。Windows 用户推荐使用 [Docker + WSL 2](https://docs.docker.com/desktop/wsl/)
 - [OpenAI](https://platform.openai.com/docs/introduction) 或 [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) API Key
-- Python 3.9，推荐使用 [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)：
+- Python 3.12，推荐使用 [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)：
   ```bash
-  conda create -n mattoolbench python=3.9
+  conda create -n mattoolbench python=3.12
   conda activate mattoolbench
   ```
 
@@ -502,7 +502,7 @@ azcopy copy scripts/azure_files/compute-instance-startup.sh \
 | `model_name` | LLM 骨干模型（如 `gpt-5`、`claude-sonnet-4-6`）| — |
 | `som_origin` | 屏幕解析方式（`oss`、`a11y`、`mixed-oss`、`omni`）| `oss` |
 | `a11y_backend` | 无障碍后端（`uia`、`win32`）| `uia` |
-| `origin_mode` | 模板脚本注入（`script`、`noscript`）| `script` |
+| `origin_mode` | 模板脚本注入（`script`、`no_script`）| `script` |
 | `json_name` | 容器内的任务列表 JSON | `evaluation_examples_windows/test_all.json` |
 | `vm_only` | 若为 `true`，仅启动 VM；智能体通过 `run_local_agent.py` 在本地运行 | `false` |
 | `use_managed_identity` | 使用 Azure 托管身份代替服务主体 | `false` |
@@ -610,22 +610,46 @@ python print_ablation_results.py
 
 ## 🤖 智能体详情
 
+### 智能体路由（`--agent_name`）
+
+| 值 | 智能体类 | 适用领域 |
+|---|---|---|
+| `auto` *（默认）* | 按领域自动路由 | 全部 |
+| `gui` | `GUIAgent` | avantage、dm、jade、vesta、ms |
+| `code` | `CodeAgent` | mp、oqmd、pymatgen、optimade |
+| `origin` | `OriginAgent` | origin |
+| `navi` | `NaviAgent` | 通用视觉智能体（旧版，兼容用）|
+
 ### GUIAgent（NaviAgent）
 
 材料软件 GUI 视觉交互智能体，每步执行流程：
 1. 对 Windows VM 截图
-2. 运行 **ScreenParser（SoM）** 识别并标注 UI 元素（GroundingDINO + OCR，或 OmniParser / 无障碍树）
-3. 将标注截图传入 **LLMPlanner**（GPT-4V 等）
+2. 运行 **ScreenParser（SoM）** 识别并标注 UI 元素
+3. 将标注截图传入 **LLMPlanner**（支持任意 OpenAI 兼容模型）
 4. 通过 VM 控制器执行规划动作（点击、输入、滚动、快捷键）
 
-屏幕解析模式由 `som_origin` 参数控制：
+#### 屏幕解析模式（`--som_origin`）
 
-| `som_origin` 值 | 屏幕解析方式 |
-|---|---|
-| `oss` | GroundingDINO + Tesseract OCR（默认）|
-| `a11y` | 仅 Windows 无障碍树 |
-| `mixed-oss` | 无障碍树 + OCR 融合 |
-| `omni` | OmniParser |
+| `som_origin` | 解析方式 | 速度 | 需要无障碍树 | 本地模型 |
+|---|---|---|---|---|
+| `oss` *（默认）* | Tesseract OCR | 快 | 否 | 否 |
+| `a11y` | Windows 无障碍树（UIA/Win32）| 中 | **是** | 否 |
+| `mixed-oss` | 无障碍树 + Tesseract OCR 融合 | 慢 | **是** | 否 |
+| `mixed` | 无障碍树 + GroundingDINO | 慢 | **是** | 是 |
+| `omni` | OmniParser（YOLO + Florence）| 慢 | 否 | 是 |
+| `mixed-omni` | 无障碍树 + OmniParser | 最慢 | **是** | 是 |
+
+#### 观测类型（`--observation_type`）
+
+控制每步从 VM 采集哪些数据，**必须与 `som_origin` 匹配**。
+
+| `observation_type` | 是否采集无障碍树 | 配合使用 |
+|---|---|---|
+| `screenshot` *（默认）* | 否 | `oss`、`omni` |
+| `a11y_tree` | **是** | `a11y`、`mixed-oss`、`mixed`、`mixed-omni` |
+| `screenshot_a11y_tree` | **是** | 同 `a11y_tree` |
+
+> **重要提示：** 当 `som_origin=oss`（默认）时，无障碍树根本不会被使用。如果仍然采集它（`observation_type=a11y_tree`），每步会白白浪费 5–60 秒在缓慢的 Windows UIA API 调用上。除非使用基于无障碍树的 SoM 模式，否则始终保持 `observation_type=screenshot`。
 
 ### OriginAgent
 
@@ -635,18 +659,31 @@ python print_ablation_results.py
 3. 编写或调整 OriginPro Python 脚本（可选：参考 `origin_draw/` 中的领域模板）
 4. 运行脚本（F5）生成输出图表
 
-模板脚本覆盖：XRD 物相匹配、XPS 峰拟合、拉曼光谱、电化学循环、阶跃分析、库仑效率等。
+`--origin_mode` 参数：
+- `script` *（默认）* — LLM 以领域模板脚本为上下文进行调整
+- `no_script` — LLM 从零编写脚本（消融基线）
 
-`origin_mode` 参数：
-- `script` — LLM 以领域模板脚本为上下文进行调整
-- `noscript` — LLM 从零编写脚本
+`--origin_category` 模板类型：
+
+| 类别 | 脚本文件 | 分析类型 |
+|---|---|---|
+| `xrd` | `XRD_match.py` | XRD 物相匹配 |
+| `xps` | `XPS.py` | XPS 峰拟合 |
+| `ftir` | `FTIR.py` | FTIR 光谱 |
+| `raman` | `roman.py` | 拉曼光谱 |
+| `cycle` | `cycle.py` | 电化学循环 |
+| `bs` | `BS.py` | 能带结构 |
+| `step` | `step.py` | 自由能阶跃 |
+| `ce` | `CE.py` | 库仑效率 |
+| `auto` *（默认）* | — | 从每个任务的 JSON 配置自动读取 |
 
 ### CodeAgent
 
 纯文本智能体，执行流程：
 1. LLM 生成 Python 代码，查询材料数据库（MP、OQMD、PyMatgen、OPTIMADE）
-2. 执行代码；失败时将错误回溯反馈给 LLM 进行自我纠错
-3. 最多重试 `code_retries` 次
+2. 在 VM 内使用对应虚拟环境执行代码
+3. 失败时将 stdout/stderr 反馈给 LLM 进行自我纠错
+4. 最多重试 `--code_retries` 次（默认：3）
 
 ---
 
@@ -673,12 +710,12 @@ bash scripts/run_ablations.sh
 
 对比四种不同的屏幕解析策略在材料科学 GUI 任务上的效果。
 
-| 配置文件 | `som_origin` | 解析方式 | 说明 |
-|---|---|---|---|
-| `ablation_gui_som_oss.json` | `oss` | GroundingDINO + Tesseract OCR | 仅 OCR，无结构信息（基准线）|
-| `ablation_gui_som_a11y.json` | `a11y` | Windows 无障碍树 | 纯结构信息，无视觉输入 |
-| `ablation_gui_som_mixed.json` | `mixed-oss` | 无障碍树 + OCR 融合 | 多模态融合 |
-| `ablation_gui_som_omni.json` | `omni` | OmniParser 视觉定位 | 端到端视觉解析 |
+| 配置文件 | `som_origin` | `observation_type` | 解析方式 | 说明 |
+|---|---|---|---|---|
+| `ablation_gui_som_oss.json` | `oss` | `screenshot` | Tesseract OCR | 仅 OCR，无结构信息（基准线）|
+| `ablation_gui_som_a11y.json` | `a11y` | `a11y_tree` | Windows 无障碍树 | 纯结构信息，无视觉输入 |
+| `ablation_gui_som_mixed.json` | `mixed-oss` | `a11y_tree` | 无障碍树 + OCR 融合 | 多模态融合 |
+| `ablation_gui_som_omni.json` | `omni` | `screenshot` | OmniParser（YOLO + Florence）| 端到端视觉解析 |
 
 **研究问题：** 对于预训练时未见过的专业材料软件（Jade、VESTA 等），视觉定位是否优于结构化无障碍信息？
 
@@ -700,14 +737,53 @@ bash scripts/run_main.sh
 
 ### 关键配置参数
 
-| 参数 | 说明 | 可选值 |
+| 参数 | 说明 | 可选值 / 默认值 |
 |---|---|---|
-| `som_origin` | GUI/Origin 智能体的屏幕解析方式 | `oss`, `a11y`, `mixed-oss`, `omni` |
-| `origin_mode` | 是否向 OriginAgent 注入领域模板脚本 | `script`, `no_script` |
-| `model` | LLM 骨干模型 | `gpt-5`, `claude-sonnet-4-6`, `qwen-max`, ... |
-| `max_steps` | 每任务最大步数（同时控制 CodeAgent 重试次数）| 整数（默认 `15`，Origin 任务用 `8`）|
-| `temperature` | LLM 采样温度 | 主实验/消融用 `0.0`，探索性实验用 `0.5` |
-| `diff_lvl` | 任务难度过滤 | `normal`, `hard` |
+| `agent_name` | 智能体类型 | `auto` *（默认）*、`gui`、`code`、`origin`、`navi` |
+| `som_origin` | GUI/Origin 智能体的屏幕解析方式 | `oss` *（默认）*、`a11y`、`mixed-oss`、`mixed`、`omni`、`mixed-omni` |
+| `observation_type` | 每步从 VM 采集的数据类型 | `screenshot` *（默认）*、`a11y_tree` |
+| `origin_mode` | 是否向 OriginAgent 注入领域模板脚本 | `script` *（默认）*、`no_script` |
+| `origin_category` | OriginAgent 模板脚本类别 | `auto` *（默认）*、`xrd`、`xps`、`ftir`、`raman`、`cycle`、`bs`、`step`、`ce` |
+| `model` | LLM 骨干模型 | `gpt-5`、`claude-sonnet-4-6`、`qwen-max`、… |
+| `temperature` | LLM 采样温度 | 主实验/消融用 `0.0`，默认 `1.0` |
+| `max_steps` | 每任务最大步数 | `50` *（默认）* |
+| `sleep_after_execution` | 每次动作后等待秒数 | `3` *（默认）* |
+| `code_retries` | CodeAgent 最大自我纠错重试次数 | `3` *（默认）* |
+| `a11y_backend` | Windows 无障碍 API 后端 | `uia` *（默认）*、`win32` |
+| `diff_lvl` | 任务难度 | `normal` *（默认）*、`hard` |
+| `num_workers` | 并行 Worker 数量（Azure 多机）| `1` *（默认）* |
+
+---
+
+## ⚡ 性能调优说明
+
+每个 Agent 步骤涉及两个可能很慢的操作：**VM 观测采集** 和 **LLM 推理**。遵循以下建议可避免不必要的延迟。
+
+### 观测采集
+
+无障碍树（`observation_type=a11y_tree`）需要调用 Windows UIA API，**每步可能耗时 5–60 秒**，且返回大量 XML 数据。只在真正需要时才开启：
+
+| `som_origin` | 所需 `observation_type` | 说明 |
+|---|---|---|
+| `oss` *（默认）* | `screenshot` | 无需无障碍树 |
+| `omni` | `screenshot` | 无需无障碍树 |
+| `a11y` | `a11y_tree` | 无障碍树是唯一输入 |
+| `mixed-oss`、`mixed`、`mixed-omni` | `a11y_tree` | 无障碍树用于区域过滤 |
+
+默认 `observation_type` 已设为 `screenshot`。仅在使用基于无障碍树的 SoM 模式时才改为 `a11y_tree`。
+
+### LLM 推理
+
+影响每步发送 token 数量的因素：
+
+| 因素 | 当前设置 | 影响 |
+|---|---|---|
+| 候选元素列表 | 自动截断至 4 000 字符 | 高 |
+| 历史动作数量 | `n_prev=3`（保留最近 3 步）| 中 |
+| 截图分辨率 | 最大边缩放至 768 px | 中 |
+| 最大输出 token 数 | GUI 2048，Code 1500 | 中 |
+
+如果使用**思考模型**（如 Qwen3-Thinking），每次响应都会先输出长篇 `<think>…</think>` 内容，大幅增加延迟。如不需要推理过程，可通过 API 的 `extra_body` 参数关闭思考模式。
 
 ---
 

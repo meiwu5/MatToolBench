@@ -176,7 +176,7 @@ class CodeAgent:
 
         # --- Call LLM (text only, no images) -----------------------------
         logger.info("CodeAgent: calling LLM (attempt %d/%d)…", self._attempt, self.max_retries)
-        llm_response = self.planner.plan(images=[], user_query=user_msg)
+        llm_response = self.planner.plan(images=[], user_query=user_msg, max_tokens=1500)
         logs["llm_response"] = llm_response
 
         # --- Parse code block --------------------------------------------

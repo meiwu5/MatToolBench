@@ -358,7 +358,16 @@ Remember to always use the correct syntax for functions, verify all required fie
 """
 
 
+_MAX_CANDIDATES_CHARS = 4000   # ~1000 tokens; truncate if the element list is huge
+_MAX_PREV_ACTIONS_CHARS = 2000  # keep history concise
+
 def build_user_msg_visual(query, window_title, window_names_str, clipboard_content, text_rendering, candidates, prev_actions, textual_memory):
+    # Truncate very long candidate/history strings to avoid oversized prompts.
+    if isinstance(candidates, str) and len(candidates) > _MAX_CANDIDATES_CHARS:
+        candidates = candidates[:_MAX_CANDIDATES_CHARS] + "\n... (truncated)"
+    if isinstance(prev_actions, str) and len(prev_actions) > _MAX_PREV_ACTIONS_CHARS:
+        prev_actions = prev_actions[:_MAX_PREV_ACTIONS_CHARS] + "\n... (truncated)"
+
     msg = f"""Inputs:
 
 1. User objective: {query}

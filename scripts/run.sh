@@ -22,7 +22,7 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="auto"
-model="qwen3.5-27b-mini"
+model="doubao-seed-1-6-thinking-250715-mini"
 som_origin="a11y"
 a11y_backend="uia"
 gpu_enabled=false
@@ -163,7 +163,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <auto|gui|code|origin|navi> : Agent to use (default: auto — routes by domain)"
-            echo "  --model <model>: The model to use (default: qwen3.5-27b-mini, available options are: qwen3.5-27b, qwen3.5-27b-mini, gpt-5, gpt-4-1106-vision-preview)"
+            echo "  --model <model>: The model to use (default: doubao-seed-1-6-thinking-250715-mini, available options are: doubao-seed-1-6-thinking-250715, doubao-seed-1-6-thinking-250715-mini, gpt-5, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"

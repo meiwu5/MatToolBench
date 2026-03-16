@@ -132,7 +132,7 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
             sys.executable, "run.py",
             "--emulator_ip",        local_ip,
             "--agent_name",         exp.get("agent", "auto"),
-            "--model",              exp.get("model_name", "qwen3.5-27b"),
+            "--model",              exp.get("model_name", "doubao-seed-1-6-thinking-250715"),
             "--som_origin",         exp.get("som_origin", "oss"),
             "--a11y_backend",       exp.get("a11y_backend", "uia"),
             "--num_workers",        str(exp.get("num_workers", 1)),

@@ -23,8 +23,8 @@ class GPT4V_Planner():
         # set the initial system message
         self.system_prompt =  planner_messages.planning_system_message
     
-    def plan(self, images, user_query):  
-        response = self.gpt4v.process_images(self.system_prompt, user_query, images, max_tokens=4096, temperature=self.temperature, only_text=True)
+    def plan(self, images, user_query, max_tokens=2048):
+        response = self.gpt4v.process_images(self.system_prompt, user_query, images, max_tokens=max_tokens, temperature=self.temperature, only_text=True)
         return response
     
     def describe_elements(self, screenshot, crops, descriptions=None) -> str:

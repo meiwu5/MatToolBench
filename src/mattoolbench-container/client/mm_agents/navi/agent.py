@@ -38,8 +38,8 @@ def resize_image_openai(image):
     
     Reference: https://platform.openai.com/docs/guides/vision/calculating-costs
     """
-    max_size = 1024
-    target_short_side = 512
+    max_size = 768
+    target_short_side = 384
     
     out_w, out_h = image.size
 
@@ -133,7 +133,7 @@ class NaviAgent:
 
         self.prev_actions = []
         self.clipboard_content = None
-        self.n_prev = 5
+        self.n_prev = 3
         self.step_counter = 0
       
 

@@ -161,8 +161,8 @@ def config() -> argparse.Namespace:
             "screenshot_a11y_tree",
             "som"
         ],
-        default="a11y_tree",
-        help="Observation type",
+        default="screenshot",
+        help="Observation type. Use 'a11y_tree' only when som_origin=a11y/mixed/mixed-oss/mixed-omni.",
     )
     parser.add_argument("--screen_width", type=int, default=1920)
     parser.add_argument("--screen_height", type=int, default=1200)
@@ -215,7 +215,7 @@ def config() -> argparse.Namespace:
     )
 
     # lm config
-    parser.add_argument("--model", type=str, default="qwen3.5-27b") #qwen3.5-27b or qwen3.5-27b or gpt-4o or gpt-4-1106-vision-preview
+    parser.add_argument("--model", type=str, default="doubao-seed-1-6-thinking-250715") #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-4o or gpt-4-1106-vision-preview
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top_p", type=float, default=0.9)
     parser.add_argument("--max_tokens", type=int, default=1500)

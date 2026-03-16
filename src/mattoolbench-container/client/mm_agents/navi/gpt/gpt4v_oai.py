@@ -18,7 +18,7 @@ from tenacity import (
 
 class GPT4VisionOAI:  
   
-    def __init__(self, model="qwen3.5-27b-mini"):  
+    def __init__(self, model="doubao-seed-1-6-thinking-250715-mini"):  
     # def __init__(self, model="Qwen3-Next-80B-A3B-Thinking"):  
         self.model = model
         #oad key from environment variable
@@ -84,7 +84,7 @@ class GPT4VisionOAI:
         try:
             print(f"Making API call to {self.endpoint} with model {self.model}")
             response = self.client.chat.completions.create(  
-                # model="qwen3.5-27b-mini",  
+                # model="doubao-seed-1-6-thinking-250715-mini",  
                 model=self.model,  
                 messages=[ 
                     {
@@ -117,7 +117,7 @@ def main():
     system_prompt = "You are a helpful assistant."
 
     # SINGLE RESOURCE
-    gpt4v_wrapper = GPT4VisionOAI(model="qwen3.5-27b-mini")
+    gpt4v_wrapper = GPT4VisionOAI(model="doubao-seed-1-6-thinking-250715-mini")
 
     # process a single image
     start_time = time.time()

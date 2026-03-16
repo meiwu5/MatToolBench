@@ -503,7 +503,7 @@ Update `ci_startup_script_path` in `experiments.json` to match the path under `U
 | `model_name` | LLM backbone (e.g., `gpt-5`, `claude-sonnet-4-6`) | — |
 | `som_origin` | Screen-parsing method (`oss`, `a11y`, `mixed-oss`, `omni`) | `oss` |
 | `a11y_backend` | Accessibility backend (`uia`, `win32`) | `uia` |
-| `origin_mode` | Template script injection (`script`, `noscript`) | `script` |
+| `origin_mode` | Template script injection (`script`, `no_script`) | `script` |
 | `json_name` | Task list JSON inside the container | `evaluation_examples_windows/test_all.json` |
 | `vm_only` | If `true`, start VM only; agent runs locally via `run_local_agent.py` | `false` |
 | `use_managed_identity` | Use Azure Managed Identity instead of service principal | `false` |
@@ -607,22 +607,46 @@ python print_ablation_results.py
 
 ## 🤖 Agent Architecture
 
+### Agent Routing (`--agent_name`)
+
+| Value | Agent class | Domains |
+|---|---|---|
+| `auto` *(default)* | Auto-routed by domain | All |
+| `gui` | `GUIAgent` | avantage, dm, jade, vesta, ms |
+| `code` | `CodeAgent` | mp, oqmd, pymatgen, optimade |
+| `origin` | `OriginAgent` | origin |
+| `navi` | `NaviAgent` | Legacy visual agent (all domains) |
+
 ### GUIAgent (NaviAgent)
 
 Visual agent for materials software GUIs. Each step:
 1. Takes a screenshot of the Windows VM
-2. Runs **ScreenParser** (SoM) to identify and label UI elements using GroundingDINO + OCR (or OmniParser / Accessibility tree)
-3. Passes the annotated screenshot to the **LLMPlanner** (GPT-4V, etc.)
+2. Runs **ScreenParser** (SoM) to identify and label UI elements
+3. Passes the annotated screenshot to the **LLMPlanner** (any OpenAI-compatible model)
 4. Executes the planned action (click, type, scroll, hotkey) via the VM controller
 
-Controlled by `som_origin` config parameter:
+#### Screen Parsing Mode (`--som_origin`)
 
-| `som_origin` value | Screen parsing method |
-|---|---|
-| `oss` | GroundingDINO + Tesseract OCR (default) |
-| `a11y` | Windows Accessibility tree only |
-| `mixed-oss` | Accessibility tree + OSS detection |
-| `omni` | OmniParser |
+| `som_origin` | Method | Speed | Requires a11y tree | Local model |
+|---|---|---|---|---|
+| `oss` *(default)* | Tesseract OCR only | Fast | No | No |
+| `a11y` | Windows Accessibility tree (UIA/Win32) | Medium | **Yes** | No |
+| `mixed-oss` | Accessibility tree + Tesseract OCR merged | Slow | **Yes** | No |
+| `mixed` | Accessibility tree + GroundingDINO | Slow | **Yes** | Yes |
+| `omni` | OmniParser (YOLO + Florence) | Slow | No | Yes |
+| `mixed-omni` | Accessibility tree + OmniParser | Slowest | **Yes** | Yes |
+
+#### Observation Type (`--observation_type`)
+
+Controls which data is collected from the VM on every step. **Must match `som_origin`.**
+
+| `observation_type` | Collects a11y tree | Use with |
+|---|---|---|
+| `screenshot` *(default)* | No | `oss`, `omni` |
+| `a11y_tree` | **Yes** | `a11y`, `mixed-oss`, `mixed`, `mixed-omni` |
+| `screenshot_a11y_tree` | **Yes** | Same as `a11y_tree` |
+
+> **Important:** When `som_origin=oss` (default), the accessibility tree is never used. Collecting it anyway (`observation_type=a11y_tree`) wastes 5–60 seconds per step on a slow Windows UIA API call. Always keep `observation_type=screenshot` unless you are using an a11y-based SoM mode.
 
 ### OriginAgent
 
@@ -632,16 +656,31 @@ Extends NaviAgent. Given a task:
 3. Writes or adapts an OriginPro Python script (optionally seeded by a template from `origin_draw/`)
 4. Runs the script (F5) to produce the output figure
 
-Controlled by `origin_mode`:
-- `script` — LLM is given a task-specific template script as context
-- `noscript` — LLM writes the script from scratch
+Controlled by `--origin_mode`:
+- `script` *(default)* — LLM is given a task-specific template script as context
+- `no_script` — LLM writes the script from scratch (ablation baseline)
+
+Template script categories (`--origin_category`):
+
+| Category | Script | Analysis type |
+|---|---|---|
+| `xrd` | `XRD_match.py` | XRD phase matching |
+| `xps` | `XPS.py` | XPS peak fitting |
+| `ftir` | `FTIR.py` | FTIR spectroscopy |
+| `raman` | `roman.py` | Raman spectroscopy |
+| `cycle` | `cycle.py` | Electrochemical cycling |
+| `bs` | `BS.py` | Band structure |
+| `step` | `step.py` | Free energy step |
+| `ce` | `CE.py` | Coulombic efficiency |
+| `auto` *(default)* | — | Read from each task's JSON config |
 
 ### CodeAgent
 
 Text-only agent. Given a task:
 1. LLM generates Python code to query a materials database (MP, OQMD, PyMatgen, OPTIMADE)
-2. Code is executed; on failure, the traceback is fed back for self-correction
-3. Repeats up to `code_retries` times
+2. Code is executed inside the VM using the correct virtual environment
+3. On failure, stdout/stderr are fed back for self-correction
+4. Repeats up to `--code_retries` times (default: 3)
 
 ---
 
@@ -668,12 +707,12 @@ Tests whether injecting a pre-written domain-specific script into the OriginAgen
 
 Tests which screen-parsing strategy works best for materials-science GUI tasks across four modalities.
 
-| Config file | `som_origin` | Screen parsing method | Description |
-|---|---|---|---|
-| `ablation_gui_som_oss.json` | `oss` | GroundingDINO + Tesseract OCR | OCR-only, no structural info (baseline) |
-| `ablation_gui_som_a11y.json` | `a11y` | Windows Accessibility tree | Pure structural info, no vision |
-| `ablation_gui_som_mixed.json` | `mixed-oss` | A11y tree + OCR detection merged | Combined modality |
-| `ablation_gui_som_omni.json` | `omni` | OmniParser visual grounding | End-to-end visual parsing |
+| Config file | `som_origin` | `observation_type` | Screen parsing method | Description |
+|---|---|---|---|---|
+| `ablation_gui_som_oss.json` | `oss` | `screenshot` | Tesseract OCR only | OCR-only, no structural info (baseline) |
+| `ablation_gui_som_a11y.json` | `a11y` | `a11y_tree` | Windows Accessibility tree | Pure structural info, no vision |
+| `ablation_gui_som_mixed.json` | `mixed-oss` | `a11y_tree` | A11y tree + OCR merged | Combined modality |
+| `ablation_gui_som_omni.json` | `omni` | `screenshot` | OmniParser (YOLO + Florence) | End-to-end visual parsing |
 
 **Research question:** For specialist materials GUI tools (Jade, VESTA, etc.) not seen in general pretraining, does visual grounding outperform structural accessibility?
 
@@ -695,14 +734,53 @@ bash scripts/run_main.sh
 
 ### Key Config Parameters
 
-| Parameter | Description | Values |
+| Parameter | Description | Values / Default |
 |---|---|---|
-| `som_origin` | Screen parsing method for GUI/Origin agents | `oss`, `a11y`, `mixed-oss`, `omni` |
-| `origin_mode` | Whether to provide a template script to OriginAgent | `script`, `no_script` |
-| `model` | LLM backbone | `gpt-5`, `claude-sonnet-4-6`, `qwen-max`, ... |
-| `max_steps` | Max agent steps per task (also controls CodeAgent retries) | integer (default `15`, Origin uses `8`) |
-| `temperature` | LLM sampling temperature | `0.0` for main/ablation, `0.5` for exploratory |
-| `diff_lvl` | Task difficulty filter | `normal`, `hard` |
+| `agent_name` | Agent type | `auto` *(default)*, `gui`, `code`, `origin`, `navi` |
+| `som_origin` | Screen parsing method (GUI/Origin agents) | `oss` *(default)*, `a11y`, `mixed-oss`, `mixed`, `omni`, `mixed-omni` |
+| `observation_type` | VM observation to collect each step | `screenshot` *(default)*, `a11y_tree` |
+| `origin_mode` | Template script injection for OriginAgent | `script` *(default)*, `no_script` |
+| `origin_category` | Template script category for OriginAgent | `auto` *(default)*, `xrd`, `xps`, `ftir`, `raman`, `cycle`, `bs`, `step`, `ce` |
+| `model` | LLM backbone | `gpt-5`, `claude-sonnet-4-6`, `qwen-max`, … |
+| `temperature` | LLM sampling temperature | `0.0` for main/ablation, `1.0` default |
+| `max_steps` | Max agent steps per task | `50` *(default)* |
+| `sleep_after_execution` | Seconds to wait after each action | `3` *(default)* |
+| `code_retries` | Max self-correction retries for CodeAgent | `3` *(default)* |
+| `a11y_backend` | Windows accessibility API backend | `uia` *(default)*, `win32` |
+| `diff_lvl` | Task difficulty | `normal` *(default)*, `hard` |
+| `num_workers` | Parallel workers (Azure multi-VM) | `1` *(default)* |
+
+---
+
+## ⚡ Performance Notes
+
+Each agent step involves two potentially slow operations: **VM observation collection** and **LLM inference**. Follow these guidelines to avoid unnecessary latency.
+
+### Observation collection
+
+The accessibility tree (`observation_type=a11y_tree`) requires a Windows UIA API call that can take **5–60 seconds per step** and returns large XML payloads. Collect it only when your SoM mode actually needs it:
+
+| `som_origin` | Required `observation_type` | Notes |
+|---|---|---|
+| `oss` *(default)* | `screenshot` | No a11y tree needed |
+| `omni` | `screenshot` | No a11y tree needed |
+| `a11y` | `a11y_tree` | A11y tree is the only input |
+| `mixed-oss`, `mixed`, `mixed-omni` | `a11y_tree` | A11y tree used for masking |
+
+The default `observation_type` is `screenshot`. Only change it when using an a11y-based SoM mode.
+
+### LLM inference
+
+Factors that increase LLM latency (tokens sent per step):
+
+| Factor | Setting | Impact |
+|---|---|---|
+| Candidate element list | Automatically truncated at 4 000 chars | High |
+| Previous action history | `n_prev=3` (last 3 steps) | Medium |
+| Screenshot resolution | Resized to max 768 px | Medium |
+| Max output tokens | `max_tokens=2048` (GUI), `1500` (Code) | Medium |
+
+If using a **thinking model** (e.g. Qwen3-Thinking), each response includes a long `<think>…</think>` block. Disable thinking mode via your API's `extra_body` parameter if reasoning is not required for the task.
 
 ---
 

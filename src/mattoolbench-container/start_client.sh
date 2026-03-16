@@ -1,7 +1,7 @@
 #!/bin/bash
 
 agent="auto"
-model="qwen3.5-27b"
+model="doubao-seed-1-6-thinking-250715"
 som_origin="oss"
 a11y_backend="uia"
 clean_results=true
@@ -58,7 +58,7 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: $0 [options]"
             echo "Options:"
             echo "  --agent <auto|gui|code|origin|navi>  The agent to use (default: auto)"
-            echo "  --model <model>                 The model to use (default: qwen3.5-27b, available options are: qwen3.5-27b, qwen3.5-27b, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --model <model>                 The model to use (default: doubao-seed-1-6-thinking-250715, available options are: doubao-seed-1-6-thinking-250715, doubao-seed-1-6-thinking-250715, gpt-4o, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>       The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
             echo "  --a11y-backend <a11y_backend>   The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --clean-results <bool>          Clean the results directory before running the client (default: true)"

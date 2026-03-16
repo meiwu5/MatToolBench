@@ -55,7 +55,7 @@ def load_args_as_dict():
     parser.add_argument('--num_workers', type=int, default=1, help='Number of Worker Instances (default: 1)')  
     parser.add_argument('--use_managed_identity', type=bool, default=False, help='Use Managed Identity (default: False)')  
     parser.add_argument('--json_name', default='evaluation_examples_windows/origin.json', help='Name of the JSON file (default: evaluation_examples_windows/origin.json)')  
-    parser.add_argument('--model_name', default='qwen3.5-27b', help='Model name (default: qwen3.5-27b)') #qwen3.5-27b or qwen3.5-27b or gpt-5 or gpt-4-1106-vision-preview  
+    parser.add_argument('--model_name', default='doubao-seed-1-6-thinking-250715', help='Model name (default: doubao-seed-1-6-thinking-250715)') #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-5 or gpt-4-1106-vision-preview  
     parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed
     parser.add_argument('--a11y_backend', default='uia', help='Type of acc tree. uia more precise, win32 faster') #uia (slower) or win32 (faster)
     parser.add_argument('--origin_mode', default='script', help='Whether OriginAgent uses template scripts: script | no_script (default: script)')

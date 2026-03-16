@@ -11,6 +11,7 @@
     "json_name": "evaluation_examples_windows/test_all.json",
     "model_name": "doubao-seed-1-6-251015",
     "som_origin": "oss",
+    "observation_type":"screenshot",
     "a11y_backend": "uia",
     "origin_mode": "script",
     "origin_eval_model": "gpt-4o",
