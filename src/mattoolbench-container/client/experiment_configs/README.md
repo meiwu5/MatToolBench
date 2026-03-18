@@ -44,6 +44,7 @@ Tests which screen-parsing strategy works best for materials-science GUI tasks.
 | `ablation_gui_som_a11y.json`  | `a11y`      | Accessibility tree               |
 | `ablation_gui_som_mixed.json` | `mixed-oss` | OCR + accessibility (merged)     |
 | `ablation_gui_som_omni.json`  | `omni`      | OmniParser visual grounding      |
+| `ablation_gui_som_no_omni.json` | `no_omni` | Raw screenshots + coordinate clicks |
 
 ---
 

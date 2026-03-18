@@ -1,4 +1,4 @@
-
+﻿
 <div align="center">
 
 # MatToolBench
@@ -8,11 +8,11 @@
 
 </div>
 
-**MatToolBench** is a desktop agent benchmark for materials science, evaluating AI agents on real-world tasks across professional materials characterization and analysis software. It covers three task categories — **Origin** (script-based data analysis), **GUI** (visual interaction with materials-science tools), and **Code** (programmatic database queries) — and is built on top of a Windows 11 virtual machine environment running inside Docker.
+**MatToolBench** is a desktop agent benchmark for materials science, evaluating AI agents on real-world tasks across professional materials characterization and analysis software. It covers three task categories 鈥?**Origin** (script-based data analysis), **GUI** (visual interaction with materials-science tools), and **Code** (programmatic database queries) 鈥?and is built on top of a Windows 11 virtual machine environment running inside Docker.
 
 ---
 
-## 📚 Task Categories
+## 馃摎 Task Categories
 
 | Category | Domains | Tasks | Agent Type | Description |
 |----------|---------|-------|------------|-------------|
@@ -21,48 +21,48 @@
 | **Code** | MP, OQMD, PyMatgen, OPTIMADE | ~70 | CodeAgent | Generates Python code to query materials databases and retrieve properties |
 ---
 
-## 🗺️ System Overview
+## 馃椇锔?System Overview
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│                     Input (Task Config)                      │
-│              experiment_configs/*.json                       │
-│         { task_id, agent_type, model, ... }                 │
-└───────────────────────┬─────────────────────────────────────┘
-                        │
-          ┌─────────────┴─────────────┐
-          │                           │
+鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+鈹?                    Input (Task Config)                      鈹?
+鈹?             experiment_configs/*.json                       鈹?
+鈹?        { task_id, agent_type, model, ... }                 鈹?
+鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+                        鈹?
+          鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹粹攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+          鈹?                          鈹?
     run-local.sh                 run_azure.py
-          │                           │
+          鈹?                          鈹?
     Local Docker               Azure ML Job
     (single machine)           (parallel VMs)
-          │                           │
-          └─────────────┬─────────────┘
-                        │
+          鈹?                          鈹?
+          鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+                        鈹?
                      run.py
-                        │
-          ┌─────────────┼─────────────┐
-          │             │             │
+                        鈹?
+          鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹尖攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+          鈹?            鈹?            鈹?
      GUI Agent    Origin Agent   Code Agent
-          │             │             │
-    screenshot →    LLM writes     LLM writes
-    plan → act      .py script     query code
-          │             │             │
+          鈹?            鈹?            鈹?
+    screenshot 鈫?   LLM writes     LLM writes
+    plan 鈫?act      .py script     query code
+          鈹?            鈹?            鈹?
    Windows VM      OriginPro      Database API
   (QEMU/Docker)    (in VM)        (HTTP)
    Jade/VESTA/
    Avantage/DM/
    MatStudio
-          │             │             │
-          └─────────────┴─────────────┘
-                        │
+          鈹?            鈹?            鈹?
+          鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹粹攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+                        鈹?
                    evaluators/
                 (getters + metrics)
-                        │
-┌─────────────────────────────────────────────────────────────┐
-│                        Output                               │
-│    output_result/  +  results/logs/  +  screenshot traces   │
-└─────────────────────────────────────────────────────────────┘
+                        鈹?
+鈹屸攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
+鈹?                       Output                               鈹?
+鈹?   output_result/  +  results/logs/  +  screenshot traces   鈹?
+鈹斺攢鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹€鈹?
 ```
 
 **Local vs. Azure at a glance:**
@@ -77,75 +77,75 @@
 
 ---
 
-## 🗂️ Project Structure
+## 馃梻锔?Project Structure
 
 ```
 MatToolBench/
-├── config.json                        # API keys, Azure credentials
-├── requirements.txt                   # Host-side deps (azure-ai-ml, etc.)
-│
-├── docs/                              # Extended development guides
-│   ├── Develop-Agent.md
-│   ├── Develop-Tasks.md
-│   └── Development-Tips.md
-│
-├── scripts/
-│   ├── build-container-image.sh       # Build Docker image
-│   ├── run-local.sh                   # Local benchmark runner
-│   ├── run_azure.py                   # Azure ML runner (full cloud mode)
-│   ├── run_local_agent.py             # Run agent locally against Azure-hosted VM
-│   ├── show_azure.py                  # Aggregate results from Azure runs
-│   ├── experiments.json               # Azure experiment config
-│   └── azure_files/                   # Azure startup scripts
-│       ├── run_entry.py               # Job entry point executed on each Azure VM
-│       └── compute-instance-startup.sh
-│
-└── src/mattoolbench-container/
-    ├── Dockerfile-MatToolBench-Base   # Layer 1: Python / CUDA / model weights
-    ├── Dockerfile-MatToolBench        # Layer 2: client code + VM files
-    ├── entry.sh / start_vm.sh / start_client.sh
-    │
-    ├── vm/
-    │   ├── image/setup.iso            # Windows 11 ISO
-    │   ├── storage/                   # VM disk snapshots (windows.base, etc.)
-    │   ├── unattend-files/            # Automated install answer files
-    │   └── setup/                     # PowerShell setup scripts + tools
-    │       └── [Avantage / VESTA / DigitalMicrograph / Materials Studio / ...]
-    │
-    └── client/                        # Python client (runs inside container)
-        ├── run.py                     # Main execution entry point
-        ├── experiment_configs/        # JSON configs for each experiment
-        │   ├── main_gpt_5.json
-        │   ├── main_claude_sonnet_4_6.json
-        │   ├── main_gemini_1.5_pro.json
-        │   ├── ablation_gui_som_*.json
-        │   └── ...
-        ├── desktop_env/
-        │   ├── envs/desktop_env.py    # Core VM environment class
-        │   ├── controllers/           # VM / Python / setup controllers
-        │   └── evaluators/
-        │       ├── getters/           # Read state from each tool (jade, vesta, ...)
-        │       └── metrics/           # Scoring functions
-        ├── mm_agents/
-        │   ├── gui_agent.py
-        │   ├── origin_agent.py
-        │   ├── code_agent.py
-        │   └── navi/                  # NaviAgent: screen parsing + LLM planner
-        │       ├── screenparsing_oss/ # GroundingDINO, OmniParser, OCR
-        │       ├── gpt/               # GPT-4V / Phi-3 vision planners
-        │       └── llm/               # Text-only LLM planners
-        ├── task_code/                 # Reference code per database (MP, OQMD, ...)
-        ├── evaluation_examples_windows/  # Task definitions (JSON)
-        └── output_result/             # Experiment outputs
+鈹溾攢鈹€ config.json                        # API keys, Azure credentials
+鈹溾攢鈹€ requirements.txt                   # Host-side deps (azure-ai-ml, etc.)
+鈹?
+鈹溾攢鈹€ docs/                              # Extended development guides
+鈹?  鈹溾攢鈹€ Develop-Agent.md
+鈹?  鈹溾攢鈹€ Develop-Tasks.md
+鈹?  鈹斺攢鈹€ Development-Tips.md
+鈹?
+鈹溾攢鈹€ scripts/
+鈹?  鈹溾攢鈹€ build-container-image.sh       # Build Docker image
+鈹?  鈹溾攢鈹€ run-local.sh                   # Local benchmark runner
+鈹?  鈹溾攢鈹€ run_azure.py                   # Azure ML runner (full cloud mode)
+鈹?  鈹溾攢鈹€ run_local_agent.py             # Run agent locally against Azure-hosted VM
+鈹?  鈹溾攢鈹€ show_azure.py                  # Aggregate results from Azure runs
+鈹?  鈹溾攢鈹€ experiments.json               # Azure experiment config
+鈹?  鈹斺攢鈹€ azure_files/                   # Azure startup scripts
+鈹?      鈹溾攢鈹€ run_entry.py               # Job entry point executed on each Azure VM
+鈹?      鈹斺攢鈹€ compute-instance-startup.sh
+鈹?
+鈹斺攢鈹€ src/mattoolbench-container/
+    鈹溾攢鈹€ Dockerfile-MatToolBench-Base   # Layer 1: Python / CUDA / model weights
+    鈹溾攢鈹€ Dockerfile-MatToolBench        # Layer 2: client code + VM files
+    鈹溾攢鈹€ entry.sh / start_vm.sh / start_client.sh
+    鈹?
+    鈹溾攢鈹€ vm/
+    鈹?  鈹溾攢鈹€ image/setup.iso            # Windows 11 ISO
+    鈹?  鈹溾攢鈹€ storage/                   # VM disk snapshots (windows.base, etc.)
+    鈹?  鈹溾攢鈹€ unattend-files/            # Automated install answer files
+    鈹?  鈹斺攢鈹€ setup/                     # PowerShell setup scripts + tools
+    鈹?      鈹斺攢鈹€ [Avantage / VESTA / DigitalMicrograph / Materials Studio / ...]
+    鈹?
+    鈹斺攢鈹€ client/                        # Python client (runs inside container)
+        鈹溾攢鈹€ run.py                     # Main execution entry point
+        鈹溾攢鈹€ experiment_configs/        # JSON configs for each experiment
+        鈹?  鈹溾攢鈹€ main_gpt_5.json
+        鈹?  鈹溾攢鈹€ main_claude_sonnet_4_6.json
+        鈹?  鈹溾攢鈹€ main_gemini_1.5_pro.json
+        鈹?  鈹溾攢鈹€ ablation_gui_som_*.json
+        鈹?  鈹斺攢鈹€ ...
+        鈹溾攢鈹€ desktop_env/
+        鈹?  鈹溾攢鈹€ envs/desktop_env.py    # Core VM environment class
+        鈹?  鈹溾攢鈹€ controllers/           # VM / Python / setup controllers
+        鈹?  鈹斺攢鈹€ evaluators/
+        鈹?      鈹溾攢鈹€ getters/           # Read state from each tool (jade, vesta, ...)
+        鈹?      鈹斺攢鈹€ metrics/           # Scoring functions
+        鈹溾攢鈹€ mm_agents/
+        鈹?  鈹溾攢鈹€ gui_agent.py
+        鈹?  鈹溾攢鈹€ origin_agent.py
+        鈹?  鈹溾攢鈹€ code_agent.py
+        鈹?  鈹斺攢鈹€ navi/                  # NaviAgent: screen parsing + LLM planner
+        鈹?      鈹溾攢鈹€ screenparsing_oss/ # GroundingDINO, OmniParser, OCR
+        鈹?      鈹溾攢鈹€ gpt/               # GPT-4V / Phi-3 vision planners
+        鈹?      鈹斺攢鈹€ llm/               # Text-only LLM planners
+        鈹溾攢鈹€ task_code/                 # Reference code per database (MP, OQMD, ...)
+        鈹溾攢鈹€ evaluation_examples_windows/  # Task definitions (JSON)
+        鈹斺攢鈹€ output_result/             # Experiment outputs
 ```
 
 ---
 
-## ☝️ Pre-requisites
+## 鈽濓笍 Pre-requisites
 
 - Docker daemon installed and running. On Windows, use [Docker with WSL 2](https://docs.docker.com/desktop/wsl/).
 - An [OpenAI](https://platform.openai.com/docs/introduction) or [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) API Key.
-- Python 3.12 — recommended via [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html):
+- Python 3.12 鈥?recommended via [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html):
   ```bash
   conda create -n mattoolbench python=3.12
   conda activate mattoolbench
@@ -160,7 +160,7 @@ pip install -r requirements.txt
 
 ---
 
-## 💻 Local Deployment (WSL or Linux)
+## 馃捇 Local Deployment (WSL or Linux)
 
 ### 1. Configuration
 
@@ -184,7 +184,7 @@ cd scripts
 ./build-container-image.sh --build-base-image true
 ```
 
-> The build installs Python dependencies, CUDA libraries, and downloads model weights (GroundingDINO, OmniParser). This can take **30–60 minutes** depending on network speed.
+> The build installs Python dependencies, CUDA libraries, and downloads model weights (GroundingDINO, OmniParser). This can take **30鈥?0 minutes** depending on network speed.
 
 If the base image (`mattoolbench-base:latest`) is already built and unchanged, skip it:
 ```bash
@@ -201,7 +201,7 @@ src/mattoolbench-container/vm/image/setup.iso
 
 #### 3.2 Build the Golden Image
 
-You have two options — use our pre-built snapshot (recommended) or build from scratch.
+You have two options 鈥?use our pre-built snapshot (recommended) or build from scratch.
 
 ---
 
@@ -214,16 +214,16 @@ Skip the entire installation process by downloading our ready-to-use snapshot. A
 Extract and place the files at:
 ```
 src/mattoolbench-container/vm/storage/
-├── windows.base
-├── windows.boot
-├── windows.mac
-├── windows.rom
-├── windows.vars
-├── windows.ver
-└── data.img
+鈹溾攢鈹€ windows.base
+鈹溾攢鈹€ windows.boot
+鈹溾攢鈹€ windows.mac
+鈹溾攢鈹€ windows.rom
+鈹溾攢鈹€ windows.vars
+鈹溾攢鈹€ windows.ver
+鈹斺攢鈹€ data.img
 ```
 
-Then skip to [§ 4 Running the Benchmark](#4-running-the-benchmark) directly.
+Then skip to [搂 4 Running the Benchmark](#4-running-the-benchmark) directly.
 
 ---
 
@@ -231,7 +231,7 @@ Then skip to [§ 4 Running the Benchmark](#4-running-the-benchmark) directly.
 
 The automated script handles Windows 11 installation. Specialty materials science software must be installed manually via the shared folder.
 
-**Step B-1 — Download the software installers**
+**Step B-1 鈥?Download the software installers**
 
 Download each installer and place it in the corresponding subdirectory under `src/mattoolbench-container/vm/setup/`:
 
@@ -246,7 +246,7 @@ Download each installer and place it in the corresponding subdirectory under `sr
 
 > VESTA is open-source and can be downloaded from its official website. The other tools are commercial software; contact the respective vendors or use your institution's license.
 
-**Step B-2 — Start the automated Windows 11 installation**
+**Step B-2 鈥?Start the automated Windows 11 installation**
 
 ```bash
 cd scripts
@@ -255,23 +255,23 @@ cd scripts
 
 Open `http://localhost:8006` in your browser to watch the VM boot and the automated setup progress (~20 minutes for Windows install + basic tools).
 
-**Step B-3 — Install materials science software inside the VM**
+**Step B-3 鈥?Install materials science software inside the VM**
 
 Once the automated setup finishes and the Windows desktop is visible at `http://localhost:8006`:
 
-1. Open **File Explorer** inside the VM and navigate to `\\host.lan\Data` — this is the shared folder that maps directly to `src/mattoolbench-container/vm/setup/` on your host.
+1. Open **File Explorer** inside the VM and navigate to `\\host.lan\Data` 鈥?this is the shared folder that maps directly to `src/mattoolbench-container/vm/setup/` on your host.
 2. Run each installer from this shared folder in the following order:
 
 ```
-\\host.lan\Data\OriginSetup.exe              → follow the installer wizard
-\\host.lan\Data\Jade_setup.exe               → follow the installer wizard
-\\host.lan\Data\Avantage 6.6.0\Setup.exe     → follow the installer wizard
-\\host.lan\Data\VESTA-win64\VESTA_Setup.exe  → follow the installer wizard
-\\host.lan\Data\DigitalMicrograph\setup.exe  → follow the installer wizard
-\\host.lan\Data\Materials Studio 2023(64bit)\Setup.exe → follow the installer wizard
+\\host.lan\Data\OriginSetup.exe              鈫?follow the installer wizard
+\\host.lan\Data\Jade_setup.exe               鈫?follow the installer wizard
+\\host.lan\Data\Avantage 6.6.0\Setup.exe     鈫?follow the installer wizard
+\\host.lan\Data\VESTA-win64\VESTA_Setup.exe  鈫?follow the installer wizard
+\\host.lan\Data\DigitalMicrograph\setup.exe  鈫?follow the installer wizard
+\\host.lan\Data\Materials Studio 2023(64bit)\Setup.exe 鈫?follow the installer wizard
 ```
 
-3. After all software is installed, shut down the VM gracefully from inside Windows (Start → Shut down). The disk snapshot in `vm/storage/` is updated automatically.
+3. After all software is installed, shut down the VM gracefully from inside Windows (Start 鈫?Shut down). The disk snapshot in `vm/storage/` is updated automatically.
 
 > **Tip:** You can also use RDP to connect to the VM at `localhost:3390` (username: `Docker`, password: see `vm/setup/`) for a more comfortable installation experience.
 
@@ -281,13 +281,13 @@ After building the golden image (Option B above), back up the entire `vm/storage
 
 ```
 vm/storage/
-├── windows.base     ← main VM disk image
-├── windows.boot
-├── windows.mac
-├── windows.rom
-├── windows.vars
-├── windows.ver
-└── data.img
+鈹溾攢鈹€ windows.base     鈫?main VM disk image
+鈹溾攢鈹€ windows.boot
+鈹溾攢鈹€ windows.mac
+鈹溾攢鈹€ windows.rom
+鈹溾攢鈹€ windows.vars
+鈹溾攢鈹€ windows.ver
+鈹斺攢鈹€ data.img
 ```
 
 Copy this directory to a safe location. To restore, simply copy it back before running `./run-local.sh`.
@@ -352,25 +352,25 @@ Logs:
 
 ---
 
-## ☁️ Azure Cloud Deployment
+## 鈽侊笍 Azure Cloud Deployment
 
-Azure deployment runs the benchmark in parallel across multiple Azure ML Compute Instances — each instance hosts an independent Windows 11 VM, and all workers run simultaneously to maximize throughput.
+Azure deployment runs the benchmark in parallel across multiple Azure ML Compute Instances 鈥?each instance hosts an independent Windows 11 VM, and all workers run simultaneously to maximize throughput.
 
 ### Architecture
 
 ```
 Your Machine
-  └── run_azure.py
-        │
-        ├── Creates N Compute Instances (parallel)
-        │     w0<exp>, w1<exp>, ..., w{N-1}<exp>
-        │
-        └── Submits N ML Jobs (parallel)
+  鈹斺攢鈹€ run_azure.py
+        鈹?
+        鈹溾攢鈹€ Creates N Compute Instances (parallel)
+        鈹?    w0<exp>, w1<exp>, ..., w{N-1}<exp>
+        鈹?
+        鈹斺攢鈹€ Submits N ML Jobs (parallel)
               Each job on its Compute Instance:
-                ├── Pulls Docker image from registry
-                ├── Copies VM snapshot from Azure Blob
-                ├── Boots Windows 11 VM (QEMU)
-                └── Runs Python agent (run.py)
+                鈹溾攢鈹€ Pulls Docker image from registry
+                鈹溾攢鈹€ Copies VM snapshot from Azure Blob
+                鈹溾攢鈹€ Boots Windows 11 VM (QEMU)
+                鈹斺攢鈹€ Runs Python agent (run.py)
 ```
 
 There are **two deployment modes** on Azure:
@@ -382,7 +382,7 @@ There are **two deployment modes** on Azure:
 
 ---
 
-### Step 1 — Azure Prerequisites
+### Step 1 鈥?Azure Prerequisites
 
 You need:
 - An **Azure subscription** with sufficient quota for the chosen VM SKU (e.g., `Standard_D8_V3` requires 8 vCPU cores per worker)
@@ -391,11 +391,11 @@ You need:
 - The **Azure CLI** logged in, or credentials configured for `DefaultAzureCredential`
 
 Request quota increases if needed:
-> Azure ML portal → your workspace → Compute → Quotas → Request increase
+> Azure ML portal 鈫?your workspace 鈫?Compute 鈫?Quotas 鈫?Request increase
 
 ---
 
-### Step 2 — Add Azure Credentials to `config.json`
+### Step 2 鈥?Add Azure Credentials to `config.json`
 
 Extend your `config.json` with Azure ML credentials:
 
@@ -418,15 +418,15 @@ Extend your `config.json` with Azure ML credentials:
 
 ---
 
-### Step 3 — Upload the VM Snapshot to Azure Blob
+### Step 3 鈥?Upload the VM Snapshot to Azure Blob
 
 The Windows 11 golden image must be available on Azure Blob Storage so each worker can download it at startup.
 
-1. Build the golden image locally (see [Local § 3.2](#32-build-the-golden-image)) or obtain a pre-built snapshot.
+1. Build the golden image locally (see [Local 搂 3.2](#32-build-the-golden-image)) or obtain a pre-built snapshot.
 2. Upload the entire `vm/storage/` directory to your Azure datastore:
 
 ```bash
-# Using Azure CLI — upload the snapshot directory
+# Using Azure CLI 鈥?upload the snapshot directory
 az storage blob upload-batch \
     --account-name <your-storage-account> \
     --destination storage \
@@ -438,18 +438,18 @@ Or use [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/stora
 The expected layout on Blob after upload:
 ```
 storage/
-├── windows.base
-├── windows.boot
-├── windows.mac
-├── windows.rom
-├── windows.vars
-├── windows.ver
-└── data.img
+鈹溾攢鈹€ windows.base
+鈹溾攢鈹€ windows.boot
+鈹溾攢鈹€ windows.mac
+鈹溾攢鈹€ windows.rom
+鈹溾攢鈹€ windows.vars
+鈹溾攢鈹€ windows.ver
+鈹斺攢鈹€ data.img
 ```
 
 ---
 
-### Step 4 — Upload the Compute Instance Startup Script
+### Step 4 鈥?Upload the Compute Instance Startup Script
 
 Each Azure Compute Instance runs a startup script on creation. Upload it to your Azure ML workspace filestore:
 
@@ -467,7 +467,7 @@ Update `ci_startup_script_path` in `experiments.json` to match the path under `U
 
 ---
 
-### Step 5 — Configure `scripts/experiments.json`
+### Step 5 鈥?Configure `scripts/experiments.json`
 
 ```json
 {
@@ -493,15 +493,15 @@ Update `ci_startup_script_path` in `experiments.json` to match the path under `U
 
 | Parameter | Description | Default |
 |-----------|-------------|---------|
-| `ci_startup_script_path` | Path to the startup script in the ML workspace filestore | — |
+| `ci_startup_script_path` | Path to the startup script in the ML workspace filestore | 鈥?|
 | `docker_img_name` | Docker Hub image pulled on each VM | `meiwu/mattoolbench:latest` |
 | `datastore_input_path` | Azure Blob path containing the VM snapshot | `storage` |
-| `exp_name` | Experiment name; also used as the Azure ML Experiment name | — |
+| `exp_name` | Experiment name; also used as the Azure ML Experiment name | 鈥?|
 | `vm_size` | Azure VM SKU for each Compute Instance | `Standard_D8_V3` |
 | `num_workers` | Number of parallel Compute Instances / ML Jobs | `1` |
 | `agent` | Agent routing (`auto`, `gui`, `code`, `origin`, `navi`) | `auto` |
-| `model_name` | LLM backbone (e.g., `gpt-5`, `claude-sonnet-4-6`) | — |
-| `som_origin` | Screen-parsing method (`oss`, `a11y`, `mixed-oss`, `omni`) | `oss` |
+| `model_name` | LLM backbone (e.g., `gpt-5`, `claude-sonnet-4-6`) | 鈥?|
+| `som_origin` | Screen-parsing method (`oss`, `a11y`, `mixed-oss`, `omni`, `mixed-omni`, `no_omni`) | `oss` |
 | `a11y_backend` | Accessibility backend (`uia`, `win32`) | `uia` |
 | `origin_mode` | Template script injection (`script`, `no_script`) | `script` |
 | `json_name` | Task list JSON inside the container | `evaluation_examples_windows/test_all.json` |
@@ -510,7 +510,7 @@ Update `ci_startup_script_path` in `experiments.json` to match the path under `U
 
 ---
 
-### Step 6 — Launch the Experiment
+### Step 6 鈥?Launch the Experiment
 
 **Full cloud mode** (agent runs on Azure, fully automated):
 
@@ -520,8 +520,8 @@ python run_azure.py --experiments_json experiments.json
 ```
 
 `run_azure.py` will:
-1. Create (or start) `N` Compute Instances in parallel, named `w0<exp_name>`, `w1<exp_name>`, …
-2. Submit `N` ML Jobs in parallel — each job downloads the VM snapshot, boots the Windows VM, and runs the agent.
+1. Create (or start) `N` Compute Instances in parallel, named `w0<exp_name>`, `w1<exp_name>`, 鈥?
+2. Submit `N` ML Jobs in parallel 鈥?each job downloads the VM snapshot, boots the Windows VM, and runs the agent.
 
 Monitor job status in the [Azure ML Studio](https://ml.azure.com) or via:
 ```bash
@@ -532,11 +532,11 @@ python show_azure.py --result_dir <your-result-dir> \
 
 ---
 
-### Step 7 (Optional) — VM-Only Mode + Local Agent
+### Step 7 (Optional) 鈥?VM-Only Mode + Local Agent
 
 Use this mode when you want the **Windows VMs on Azure** but the **agent code running on your local machine** (e.g., for faster iteration on agent logic without rebuilding the Docker image).
 
-**Step 7.1 — Start VMs only**
+**Step 7.1 鈥?Start VMs only**
 
 Set `vm_only: true` in `experiments.json` and launch:
 ```bash
@@ -545,10 +545,10 @@ python run_azure.py --experiments_json experiments.json
 
 Each job will boot the Windows VM and then wait indefinitely for an incoming SSH tunnel connection. The Windows API is exposed on port 5000 inside the VM, and QEMU QMP on port 7200.
 
-**Step 7.2 — Get the public IP of each Compute Instance**
+**Step 7.2 鈥?Get the public IP of each Compute Instance**
 
 Find the SSH endpoint in the Azure ML portal:
-> Compute → Compute Instances → select instance → SSH endpoint
+> Compute 鈫?Compute Instances 鈫?select instance 鈫?SSH endpoint
 
 Or add the IPs directly to `config.json` (index = worker ID):
 ```json
@@ -557,7 +557,7 @@ Or add the IPs directly to `config.json` (index = worker ID):
 
 The default SSH port for Azure ML Compute Instances is **50000**.
 
-**Step 7.3 — Run the local agent**
+**Step 7.3 鈥?Run the local agent**
 
 Single worker:
 ```bash
@@ -572,7 +572,7 @@ python run_local_agent.py --exp_name experiment_1 --all_workers
 
 `run_local_agent.py` automatically:
 - Opens an SSH tunnel from your local machine to each Azure Compute Instance
-- Assigns each worker a unique loopback address (`127.0.0.1`, `127.0.0.2`, …) to avoid port conflicts
+- Assigns each worker a unique loopback address (`127.0.0.1`, `127.0.0.2`, 鈥? to avoid port conflicts
 - Waits for the Windows VM to be ready (up to 10 minutes)
 - Launches the Python agent pointing at the tunnel endpoint
 
@@ -586,7 +586,7 @@ Additional options:
 
 ---
 
-### Step 8 — Collect Results
+### Step 8 鈥?Collect Results
 
 Results are written to the `result_dir` configured in `experiments.json` (inside the Azure Blob output dataset). Download them:
 
@@ -605,7 +605,7 @@ python print_ablation_results.py
 
 ---
 
-## 🤖 Agent Architecture
+## 馃 Agent Architecture
 
 ### Agent Routing (`--agent_name`)
 
@@ -635,6 +635,7 @@ Visual agent for materials software GUIs. Each step:
 | `mixed` | Accessibility tree + GroundingDINO | Slow | **Yes** | Yes |
 | `omni` | OmniParser (YOLO + Florence) | Slow | No | Yes |
 | `mixed-omni` | Accessibility tree + OmniParser | Slowest | **Yes** | Yes |
+| `no_omni` | Raw screenshots only (no SoM / no IDs) | Fastest | No | No |
 
 #### Observation Type (`--observation_type`)
 
@@ -642,11 +643,11 @@ Controls which data is collected from the VM on every step. **Must match `som_or
 
 | `observation_type` | Collects a11y tree | Use with |
 |---|---|---|
-| `screenshot` *(default)* | No | `oss`, `omni` |
+| `screenshot` *(default)* | No | `oss`, `omni`, `no_omni` |
 | `a11y_tree` | **Yes** | `a11y`, `mixed-oss`, `mixed`, `mixed-omni` |
 | `screenshot_a11y_tree` | **Yes** | Same as `a11y_tree` |
 
-> **Important:** When `som_origin=oss` (default), the accessibility tree is never used. Collecting it anyway (`observation_type=a11y_tree`) wastes 5–60 seconds per step on a slow Windows UIA API call. Always keep `observation_type=screenshot` unless you are using an a11y-based SoM mode.
+> **Important:** When `som_origin=oss` or `som_origin=no_omni`, the accessibility tree is never used. Collecting it anyway (`observation_type=a11y_tree`) wastes 5-10 seconds per step on a slow Windows UIA API call. Always keep `observation_type=screenshot` unless you are using an a11y-based SoM mode.
 
 ### OriginAgent
 
@@ -657,8 +658,8 @@ Extends NaviAgent. Given a task:
 4. Runs the script (F5) to produce the output figure
 
 Controlled by `--origin_mode`:
-- `script` *(default)* — LLM is given a task-specific template script as context
-- `no_script` — LLM writes the script from scratch (ablation baseline)
+- `script` *(default)* 鈥?LLM is given a task-specific template script as context
+- `no_script` 鈥?LLM writes the script from scratch (ablation baseline)
 
 Template script categories (`--origin_category`):
 
@@ -672,7 +673,7 @@ Template script categories (`--origin_category`):
 | `bs` | `BS.py` | Band structure |
 | `step` | `step.py` | Free energy step |
 | `ce` | `CE.py` | Coulombic efficiency |
-| `auto` *(default)* | — | Read from each task's JSON config |
+| `auto` *(default)* | 鈥?| Read from each task's JSON config |
 
 ### CodeAgent
 
@@ -684,7 +685,7 @@ Text-only agent. Given a task:
 
 ---
 
-## 🔬 Ablation Experiments
+## 馃敩 Ablation Experiments
 
 All ablation runs use **GPT-5 as the backbone** with `temperature: 0.0` for reproducibility. Run all ablations at once:
 
@@ -692,7 +693,7 @@ All ablation runs use **GPT-5 as the backbone** with `temperature: 0.0` for repr
 bash scripts/run_ablations.sh
 ```
 
-### Dimension 1 — Origin: Template Script Injection
+### Dimension 1 鈥?Origin: Template Script Injection
 
 Tests whether injecting a pre-written domain-specific script into the OriginAgent system prompt improves task success on Origin plotting tasks.
 
@@ -703,7 +704,7 @@ Tests whether injecting a pre-written domain-specific script into the OriginAgen
 
 **Research question:** Does providing a task-specific OriginPro script template help the LLM adapt rather than generate from scratch?
 
-### Dimension 2 — GUI: Screen Parser (SoM Mode)
+### Dimension 2 鈥?GUI: Screen Parser (SoM Mode)
 
 Tests which screen-parsing strategy works best for materials-science GUI tasks across four modalities.
 
@@ -713,10 +714,11 @@ Tests which screen-parsing strategy works best for materials-science GUI tasks a
 | `ablation_gui_som_a11y.json` | `a11y` | `a11y_tree` | Windows Accessibility tree | Pure structural info, no vision |
 | `ablation_gui_som_mixed.json` | `mixed-oss` | `a11y_tree` | A11y tree + OCR merged | Combined modality |
 | `ablation_gui_som_omni.json` | `omni` | `screenshot` | OmniParser (YOLO + Florence) | End-to-end visual parsing |
+| `ablation_gui_som_no_omni.json` | `no_omni` | `screenshot` | Raw screenshots only | No parser, direct coordinate clicks |
 
 **Research question:** For specialist materials GUI tools (Jade, VESTA, etc.) not seen in general pretraining, does visual grounding outperform structural accessibility?
 
-### Main Experiment — LLM Comparison
+### Main Experiment 鈥?LLM Comparison
 
 Tests multiple LLM backbones across the full MatToolBench (all task types). Run with:
 
@@ -737,11 +739,11 @@ bash scripts/run_main.sh
 | Parameter | Description | Values / Default |
 |---|---|---|
 | `agent_name` | Agent type | `auto` *(default)*, `gui`, `code`, `origin`, `navi` |
-| `som_origin` | Screen parsing method (GUI/Origin agents) | `oss` *(default)*, `a11y`, `mixed-oss`, `mixed`, `omni`, `mixed-omni` |
+| `som_origin` | Screen parsing method (GUI/Origin agents) | `oss` *(default)*, `a11y`, `mixed-oss`, `mixed`, `omni`, `mixed-omni`, `no_omni` |
 | `observation_type` | VM observation to collect each step | `screenshot` *(default)*, `a11y_tree` |
 | `origin_mode` | Template script injection for OriginAgent | `script` *(default)*, `no_script` |
 | `origin_category` | Template script category for OriginAgent | `auto` *(default)*, `xrd`, `xps`, `ftir`, `raman`, `cycle`, `bs`, `step`, `ce` |
-| `model` | LLM backbone | `gpt-5`, `claude-sonnet-4-6`, `qwen-max`, … |
+| `model` | LLM backbone | `gpt-5`, `claude-sonnet-4-6`, `qwen-max`, 鈥?|
 | `temperature` | LLM sampling temperature | `0.0` for main/ablation, `1.0` default |
 | `max_steps` | Max agent steps per task | `50` *(default)* |
 | `sleep_after_execution` | Seconds to wait after each action | `3` *(default)* |
@@ -752,18 +754,19 @@ bash scripts/run_main.sh
 
 ---
 
-## ⚡ Performance Notes
+## 鈿?Performance Notes
 
 Each agent step involves two potentially slow operations: **VM observation collection** and **LLM inference**. Follow these guidelines to avoid unnecessary latency.
 
 ### Observation collection
 
-The accessibility tree (`observation_type=a11y_tree`) requires a Windows UIA API call that can take **5–60 seconds per step** and returns large XML payloads. Collect it only when your SoM mode actually needs it:
+The accessibility tree (`observation_type=a11y_tree`) requires a Windows UIA API call that can take **5鈥?0 seconds per step** and returns large XML payloads. Collect it only when your SoM mode actually needs it:
 
 | `som_origin` | Required `observation_type` | Notes |
 |---|---|---|
 | `oss` *(default)* | `screenshot` | No a11y tree needed |
 | `omni` | `screenshot` | No a11y tree needed |
+| `no_omni` | `screenshot` | Raw screenshots only; no SoM parsing |
 | `a11y` | `a11y_tree` | A11y tree is the only input |
 | `mixed-oss`, `mixed`, `mixed-omni` | `a11y_tree` | A11y tree used for masking |
 
@@ -780,11 +783,11 @@ Factors that increase LLM latency (tokens sent per step):
 | Screenshot resolution | Resized to max 768 px | Medium |
 | Max output tokens | `max_tokens=2048` (GUI), `1500` (Code) | Medium |
 
-If using a **thinking model** (e.g. Qwen3-Thinking), each response includes a long `<think>…</think>` block. Disable thinking mode via your API's `extra_body` parameter if reasoning is not required for the task.
+If using a **thinking model** (e.g. Qwen3-Thinking), each response includes a long `<think>鈥?/think>` block. Disable thinking mode via your API's `extra_body` parameter if reasoning is not required for the task.
 
 ---
 
-## 📊 Results
+## 馃搳 Results
 
 Per-task scores are saved to `scores_summary.csv` in the result directory after each task. Aggregate across experiments:
 ```bash
@@ -794,14 +797,14 @@ python print_ablation_results.py
 
 ---
 
-## 👏 Acknowledgements
+## 馃憦 Acknowledgements
 
 - [Windows Agent Arena](https://github.com/microsoft/WindowsAgentArena) for the Windows VM benchmark infrastructure.
 - [OS World](https://github.com/xlang-ai/OSWorld) for the original benchmark task framework.
 - [OmniParser](https://github.com/microsoft/OmniParser) for the screen understanding model.
 - [GroundingDINO](https://github.com/IDEA-Research/GroundingDINO) for the object detection module.
 
-## 📖 Citation
+## 馃摉 Citation
 
 ```bibtex
 @article{mattoolbench2024,
@@ -812,4 +815,5 @@ python print_ablation_results.py
 
 ## License
 
-MIT License — see [LICENSE](LICENSE).
+MIT License 鈥?see [LICENSE](LICENSE).
+

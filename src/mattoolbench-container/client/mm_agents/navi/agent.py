@@ -77,7 +77,7 @@ class NaviAgent:
             server: str = "azure",
             model: str = "gpt-4o", # openai or "phi3-v"
             som_config = None,
-            som_origin = "oss", # "oss", "a11y", "mixed-oss", "omni", "mixed-omni"
+            som_origin = "oss", # "oss", "a11y", "mixed-oss", "omni", "mixed-omni", "no_omni"
             obs_view = "screen", # "screen" or "window"
             auto_window_maximize = False,
             use_last_screen = True,
@@ -118,7 +118,9 @@ class NaviAgent:
             self.gpt4v_planner = Phi3_Planner(server='azure',model='phi3-v',temperature=temperature)
         else:
             self.gpt4v_planner = LLMPlanner(server=self.server, model=self.model, temperature=temperature)
-            if use_last_screen:
+            if self.som_origin == "no_omni":
+                self.gpt4v_planner.system_prompt = planner_messages.planning_system_message_raw
+            elif use_last_screen:
                 self.gpt4v_planner.system_prompt = planner_messages.planning_system_message_shortened_previmg
         
         from mm_agents.navi.screenparsing_oss.utils.obs import parser_to_prompt
@@ -186,7 +188,14 @@ class NaviAgent:
             logs['foreground_window'] = image
             
             # extract regions
-            if self.som_origin == "a11y":
+            if self.som_origin == "no_omni":
+                rendering = "N/A"
+                regions = []
+                rects = []
+                list_of_text = "Not available in raw-screen mode."
+                logs['foreground_window_prompt'] = image
+
+            elif self.som_origin == "a11y":
                 # a11y extractor
                 from mm_agents.navi.a11y_demo import propose_ents as get_a11y_ents
                 rendering = "N/A"
@@ -384,20 +393,49 @@ class NaviAgent:
             logs['image_height'] = image.height
             logs['regions'] = regions
 
-            user_question = planner_messages.build_user_msg_visual(instruction, window_title, window_names_str, computer_clipboard, rendering, list_of_text, prev_actions_str, self.memory_block_text)
+            if self.som_origin == "no_omni":
+                user_question = planner_messages.build_user_msg_raw_visual(
+                    instruction,
+                    window_title,
+                    window_names_str,
+                    computer_clipboard,
+                    image.width,
+                    image.height,
+                    prev_actions_str,
+                    self.memory_block_text,
+                )
+            else:
+                user_question = planner_messages.build_user_msg_visual(
+                    instruction,
+                    window_title,
+                    window_names_str,
+                    computer_clipboard,
+                    rendering,
+                    list_of_text,
+                    prev_actions_str,
+                    self.memory_block_text,
+                )
             logs['user_question'] = user_question
             
             image_resized, w_resized, h_resized, factor = resize_image_openai(view_image)
-            image_prompt_resized, w_resized, h_resized, factor = resize_image_openai(image_prompt)
-            
-            image_prompts = [image_resized, image_prompt_resized]
-            if self.use_last_screen:
-                last_image = self.last_image if self.last_image is not None else image_resized
-                self.last_image = image_resized
-                logs['last_image'] = last_image
+            if self.som_origin == "no_omni":
+                image_prompts = [image_resized]
+                if self.use_last_screen:
+                    last_image = self.last_image if self.last_image is not None else image_resized
+                    self.last_image = image_resized
+                    logs['last_image'] = last_image
+                    image_prompts = [last_image, image_resized]
+            else:
+                image_prompt_resized, w_resized, h_resized, factor = resize_image_openai(image_prompt)
                 
-                #image_prompts = [last_image] + image_prompts
-                image_prompts = [last_image, image_prompt_resized]
+                image_prompts = [image_resized, image_prompt_resized]
+                if self.use_last_screen:
+                    last_image = self.last_image if self.last_image is not None else image_resized
+                    self.last_image = image_resized
+                    logs['last_image'] = last_image
+                    
+                    #image_prompts = [last_image] + image_prompts
+                    image_prompts = [last_image, image_prompt_resized]
 
             # send to gpt
             logger.info("Thinking...")

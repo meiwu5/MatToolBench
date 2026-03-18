@@ -127,9 +127,14 @@ class OriginAgent(NaviAgent):
         if use_scripts and task_category:
             script_content = _load_script(task_category, self.scripts_dir)
 
-        self.gpt4v_planner.system_prompt = planner_messages.build_origin_system_message(
-            self.related_apps, script_content=script_content
-        )
+        if som_origin == "no_omni":
+            self.gpt4v_planner.system_prompt = planner_messages.build_origin_raw_system_message(
+                self.related_apps, script_content=script_content
+            )
+        else:
+            self.gpt4v_planner.system_prompt = planner_messages.build_origin_system_message(
+                self.related_apps, script_content=script_content
+            )
         logger.info(
             "OriginAgent initialised (model=%s, apps=%s, category=%s, use_scripts=%s, script=%s)",
             model,
@@ -145,7 +150,12 @@ class OriginAgent(NaviAgent):
         script_content = None
         if self.use_scripts and self.task_category:
             script_content = _load_script(self.task_category, self.scripts_dir)
-        self.gpt4v_planner.system_prompt = planner_messages.build_origin_system_message(
+        builder = (
+            planner_messages.build_origin_raw_system_message
+            if self.som_origin == "no_omni"
+            else planner_messages.build_origin_system_message
+        )
+        self.gpt4v_planner.system_prompt = builder(
             self.related_apps, script_content=script_content
         )
 
@@ -161,7 +171,12 @@ class OriginAgent(NaviAgent):
         script_content = None
         if self.use_scripts and task_category:
             script_content = _load_script(task_category, self.scripts_dir)
-        self.gpt4v_planner.system_prompt = planner_messages.build_origin_system_message(
+        builder = (
+            planner_messages.build_origin_raw_system_message
+            if self.som_origin == "no_omni"
+            else planner_messages.build_origin_system_message
+        )
+        self.gpt4v_planner.system_prompt = builder(
             self.related_apps, script_content=script_content
         )
         logger.info(

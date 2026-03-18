@@ -184,7 +184,7 @@ def config() -> argparse.Namespace:
         ),
     )
     parser.add_argument("--som_origin", type=str, default="oss",
-        help="Screen observation source: oss | a11y | mixed-oss | omni | mixed-omni")
+        help="Screen observation source: oss | a11y | mixed-oss | omni | mixed-omni | no_omni")
     parser.add_argument("--max_trajectory_length", type=int, default=3)
     parser.add_argument("--test_config_base_dir", type=str, default="evaluation_examples_windows")
 
@@ -313,7 +313,7 @@ def test(
             _csv.write("domain,task_id,score,instruction\n")
 
     # som_config is shared across all GUI-based agents.
-    if cfg_args["som_origin"] in ["a11y", "omni", "mixed-omni"]:
+    if cfg_args["som_origin"] in ["a11y", "omni", "mixed-omni", "no_omni"]:
         som_config = None
     else:  # "oss", "mixed-oss"
         som_config = {
