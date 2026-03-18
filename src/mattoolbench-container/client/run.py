@@ -74,7 +74,6 @@ def _build_agent(agent_type: str, domain: str, args, som_config, origin_category
             server="oai",
             model=args.model,
             temperature=args.temperature,
-            max_retries=getattr(args, "code_retries", 3),
         )
     if agent_type in ("origin", "origin_code"):
         use_scripts = getattr(args, "origin_mode", "script") == "script"
@@ -167,7 +166,7 @@ def config() -> argparse.Namespace:
     parser.add_argument("--screen_width", type=int, default=1920)
     parser.add_argument("--screen_height", type=int, default=1200)
     parser.add_argument("--sleep_after_execution", type=float, default=3)
-    parser.add_argument("--max_steps", type=int, default=15)
+    parser.add_argument("--max_steps", type=int, default=50)
     parser.add_argument("--a11y_backend", type=str, default="uia") # "uia" or "win32"
 
     # agent config
@@ -225,7 +224,7 @@ def config() -> argparse.Namespace:
     parser.add_argument("--domain", type=str, default="all")
     parser.add_argument("--emulator_ip", type=str, default="20.20.20.21")
 
-    parser.add_argument("--test_all_meta_path", type=str, default="evaluation_examples_windows/origin.json") # or test_custom.json for a single task
+    parser.add_argument("--test_all_meta_path", type=str, default="evaluation_examples_windows/mp.json") # or test_custom.json for a single task
 
     # logging related
     parser.add_argument("--result_dir", type=str, default="./results")
@@ -237,14 +236,6 @@ def config() -> argparse.Namespace:
 
     # benchmark difficulty level
     parser.add_argument("--diff_lvl", type=str, default="normal", help="Difficulty level of the benchmark")
-
-    # ---------------------------------------------------------------------------
-    # CodeAgent ablation
-    # ---------------------------------------------------------------------------
-    parser.add_argument(
-        "--code_retries", type=int, default=3,
-        help="Max self-correction retries for CodeAgent (ablation: set to 1 to disable).",
-    )
 
     # ---------------------------------------------------------------------------
     # Parse, then overlay JSON config file (CLI wins over file)
@@ -301,7 +292,6 @@ def test(
         "num_workers": args.num_workers,
         "origin_mode": getattr(args, "origin_mode", "script"),
         "origin_category": getattr(args, "origin_category", "auto"),
-        "code_retries": getattr(args, "code_retries", 3),
     }
 
     # Per-task score CSV – written after every finished example so you can
@@ -429,22 +419,32 @@ def test(
                 error_traceback = traceback.format_exc()
                 logger.error(error_traceback)
                 # env.controller.end_recording(os.path.join(example_result_dir, "recording.mp4"))
+                # Check for disk-full errors first to avoid cascading I/O failures
+                if isinstance(e, OSError) and e.errno in (28, 5):
+                    logger.error("FATAL: Disk full or I/O error. Stopping benchmark to prevent further failures.")
+                    break
                 # Write error details to traj.jsonl
-                with open(os.path.join(example_result_dir, "traj.jsonl"), "a") as f:
-                    f.write(json.dumps({
-                        "Error": f"Exception in {domain}/{example_id}",
-                        "Exception": str(e),
-                        "Traceback": error_traceback,
-                    }))
-                    f.write("\n")
-                
-                # Write error details with stack trace to traj.html
-                with open(os.path.join(example_result_dir, "traj.html"), "a") as f:
-                    f.write(f"<h1>Error: Exception in {domain}/{example_id}</h1>")
-                    f.write(f"<p>{e}</p>")
-                    f.write("<pre>")
-                    f.write(error_traceback)
-                    f.write("</pre>")
+                try:
+                    with open(os.path.join(example_result_dir, "traj.jsonl"), "a") as f:
+                        f.write(json.dumps({
+                            "Error": f"Exception in {domain}/{example_id}",
+                            "Exception": str(e),
+                            "Traceback": error_traceback,
+                        }))
+                        f.write("\n")
+
+                    # Write error details with stack trace to traj.html
+                    with open(os.path.join(example_result_dir, "traj.html"), "a") as f:
+                        f.write(f"<h1>Error: Exception in {domain}/{example_id}</h1>")
+                        f.write(f"<p>{e}</p>")
+                        f.write("<pre>")
+                        f.write(error_traceback)
+                        f.write("</pre>")
+                except OSError as write_err:
+                    if write_err.errno in (28, 5):
+                        logger.error("FATAL: Disk full or I/O error while writing error log. Stopping.")
+                        break
+                    raise
             else:
                 logger.info(f"Finished {domain}/{example_id}")
                 # Append this task's score to the running CSV.

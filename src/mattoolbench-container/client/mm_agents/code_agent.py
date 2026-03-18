@@ -16,8 +16,11 @@ Workflow per predict() call:
   4. Return an action that writes the code to a temp file and runs it
      using the correct venv's Python interpreter.
 
-The agent loops for up to `max_retries` steps.  On each subsequent call
-the previous code and stderr are fed back to the LLM so it can self-correct.
+The number of attempts is controlled by the outer max_steps loop in
+lib_run_single.py (same as GUIAgent), not by an internal retry counter.
+On each subsequent call the previous code and stderr are fed back to the
+LLM so it can self-correct.  When code executes successfully the agent
+returns ["DONE"] to terminate the episode immediately.
 """
 
 import logging
@@ -107,8 +110,6 @@ class CodeAgent:
         LLM backend – "oai" (OpenAI-compatible) or "azure".
     model : str
         Model identifier forwarded to GPT4V_Planner.
-    max_retries : int
-        Maximum number of code generation + execution attempts.
     temperature : float
         Sampling temperature for the LLM.
     """
@@ -118,13 +119,11 @@ class CodeAgent:
         task_category: str,
         server: str = "oai",
         model: str = "gpt-4o",
-        max_retries: int = 3,
         temperature: float = 0.2,
     ):
         self.action_space = "code_block"   # required by DesktopEnv / lib_run_single
         self.task_category = task_category.lower()
         self.venv_name = CATEGORY_TO_VENV.get(self.task_category, self.task_category)
-        self.max_retries = max_retries
 
         # Text-only planner (images are not needed for code tasks).
         self.planner = LLMPlanner(server=server, model=model, temperature=temperature)
@@ -133,7 +132,7 @@ class CodeAgent:
         # Per-episode state
         self._prev_code: Optional[str] = None
         self._prev_error: Optional[str] = None
-        self._attempt: int = 0
+        self._succeeded: bool = False
 
         logger.info(
             "CodeAgent initialised (category=%s, venv=%s, model=%s)",
@@ -158,13 +157,10 @@ class CodeAgent:
         """
         logs: Dict = {}
 
-        # --- Terminal conditions -----------------------------------------
-        if self._attempt >= self.max_retries:
-            logger.warning("CodeAgent: max retries (%d) reached — FAIL", self.max_retries)
-            return "", ["FAIL"], logs, self._stub_computer_args()
-
-        self._attempt += 1
-        logs["attempt"] = self._attempt
+        # --- Terminal condition: previous run succeeded ------------------
+        if self._succeeded:
+            logger.info("CodeAgent: previous execution succeeded — DONE")
+            return "", ["DONE"], logs, self._stub_computer_args()
 
         # --- Build user prompt -------------------------------------------
         user_msg = planner_messages.build_code_user_msg(
@@ -175,7 +171,7 @@ class CodeAgent:
         logs["user_msg"] = user_msg
 
         # --- Call LLM (text only, no images) -----------------------------
-        logger.info("CodeAgent: calling LLM (attempt %d/%d)…", self._attempt, self.max_retries)
+        logger.info("CodeAgent: calling LLM…")
         llm_response = self.planner.plan(images=[], user_query=user_msg, max_tokens=1500)
         logs["llm_response"] = llm_response
 
@@ -208,6 +204,8 @@ class CodeAgent:
         """
         if returncode == 0:
             self._prev_error = None
+            self._succeeded = True
+            logger.info("CodeAgent: execution succeeded")
         else:
             self._prev_error = f"returncode={returncode}\nSTDERR:\n{stderr[:2000]}"
             logger.warning("CodeAgent: execution failed (rc=%d)", returncode)
@@ -216,7 +214,7 @@ class CodeAgent:
         """Reset per-episode state."""
         self._prev_code = None
         self._prev_error = None
-        self._attempt = 0
+        self._succeeded = False
 
     # ------------------------------------------------------------------
     # Helpers

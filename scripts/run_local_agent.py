@@ -128,6 +128,17 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
         print(f"{tag} VM is ready! Starting local agent...\n")
 
         # ── Run local agent ───────────────────────────────────────────────────
+        # If single_task is specified ("domain/task_id"), run that single task.
+        single_task = exp.get("single_task", None)
+        if single_task:
+            json_name = f"evaluation_examples_windows/instances/{single_task}.json"
+            num_workers = 1
+            worker_id_effective = 0
+        else:
+            json_name = exp.get("json_name", "evaluation_examples_windows/test_all.json")
+            num_workers = exp.get("num_workers", 1)
+            worker_id_effective = worker_id
+
         agent_cmd = [
             sys.executable, "run.py",
             "--emulator_ip",        local_ip,
@@ -135,11 +146,13 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
             "--model",              exp.get("model_name", "doubao-seed-1-6-thinking-250715"),
             "--som_origin",         exp.get("som_origin", "oss"),
             "--a11y_backend",       exp.get("a11y_backend", "uia"),
-            "--num_workers",        str(exp.get("num_workers", 1)),
-            "--worker_id",          str(worker_id),
+            "--observation_type",   exp.get("observation_type", "screenshot"),
+            "--num_workers",        str(num_workers),
+            "--worker_id",          str(worker_id_effective),
             "--result_dir",         args.result_dir,
-            "--test_all_meta_path", exp.get("json_name", "evaluation_examples_windows/origin.json"),
+            "--test_all_meta_path", json_name,
             "--origin_mode",        exp.get("origin_mode", "script"),
+            "--max_steps",          str(exp.get("max_steps", 50)),
         ]
         subprocess.run(agent_cmd, cwd=str(DEFAULT_CLIENT_DIR))
 

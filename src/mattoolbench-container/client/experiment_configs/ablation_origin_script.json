@@ -6,7 +6,7 @@
     "agent_name": "auto",
     "max_steps": 15,
     "max_trajectory_length": 15,
-    "test_all_meta_path": "evaluation_examples_windows/origin.json",
+    "test_all_meta_path": "evaluation_examples_windows/mp.json",
     "diff_lvl": "normal",
     "result_dir": "./results/ablation_origin_script",
     "trial_id": "0",

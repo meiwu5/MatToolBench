@@ -19,6 +19,7 @@ from azure.ai.ml.entities import ComputeInstance, AmlCompute, Data, ScriptRefere
 
 # imports for SDK V1
 from azureml.core import Workspace, Dataset, Experiment, Environment, Datastore, ScriptRunConfig
+from azureml.core.authentication import AzureCliAuthentication
 from azureml.core.runconfig import RunConfiguration, DockerConfiguration  
 from azureml.core.compute import ComputeTarget
 from azureml.core.environment import Environment, DockerSection
@@ -54,7 +55,7 @@ def load_args_as_dict():
     parser.add_argument('--exp_name', default='exp0', help='Experiment name (default: exp0)')  
     parser.add_argument('--num_workers', type=int, default=1, help='Number of Worker Instances (default: 1)')  
     parser.add_argument('--use_managed_identity', type=bool, default=False, help='Use Managed Identity (default: False)')  
-    parser.add_argument('--json_name', default='evaluation_examples_windows/origin.json', help='Name of the JSON file (default: evaluation_examples_windows/origin.json)')  
+    parser.add_argument('--json_name', default='evaluation_examples_windows/mp.json', help='Name of the JSON file (default: evaluation_examples_windows/mp.json)')  
     parser.add_argument('--model_name', default='doubao-seed-1-6-thinking-250715', help='Model name (default: doubao-seed-1-6-thinking-250715)') #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-5 or gpt-4-1106-vision-preview  
     parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed
     parser.add_argument('--a11y_backend', default='uia', help='Type of acc tree. uia more precise, win32 faster') #uia (slower) or win32 (faster)
@@ -62,17 +63,18 @@ def load_args_as_dict():
     parser.add_argument('--vm_size', default='Standard_D8_v3', help='VM size (default: Standard_D8_v3)')
     parser.add_argument('--vm_only', default='false', help='Start VM only, no agent (for local agent mode) (default: false)')
     parser.add_argument('--origin_eval_model', default='', help='Dedicated vision LLM for evaluating Origin task outputs (default: empty, falls back to agent model)')
+    parser.add_argument('--observation_type', default='screenshot', help='Observation type: screenshot | a11y_tree | screenshot_a11y_tree | som (default: screenshot)')
     args, _ = parser.parse_known_args()
     return vars(args)
 
-def create_compute_instance(worker_id, exp_name, azure_config, use_managed_identity, vm_size, ci_startup_script_path):
+def create_compute_instance(worker_id, exp_name, azure_config, use_managed_identity, vm_size, ci_startup_script_path, instance_name=None):
     """Create (or verify) a compute instance. Called in parallel before jobs are submitted."""
     subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
     resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
     workspace_name = azure_config['AZURE_ML_WORKSPACE_NAME']
     ml_client = MLClient(DefaultAzureCredential(), subscription_id, resource_group, workspace_name)
 
-    compute_instance_name = "w" + str(worker_id) + exp_name
+    compute_instance_name = instance_name or ("w" + str(worker_id) + exp_name)
 
     try:
         compute_instance = ml_client.compute.get(compute_instance_name)
@@ -131,7 +133,10 @@ def launch_vm_and_job(  worker_id,
                         origin_mode: str,
                         vm_size: str,
                         vm_only: str = 'false',
-                        origin_eval_model: str = ''
+                        origin_eval_model: str = '',
+                        observation_type: str = 'screenshot',
+                        max_steps: int = 50,
+                        instance_name: str = None,
                         ):
     subscription_id = azure_config['AZURE_SUBSCRIPTION_ID']
     resource_group = azure_config['AZURE_ML_RESOURCE_GROUP']
@@ -140,7 +145,8 @@ def launch_vm_and_job(  worker_id,
     ml_client = MLClient(
         DefaultAzureCredential(), subscription_id, resource_group, workspace_name
     )
-    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name)
+    cli_auth = AzureCliAuthentication()
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name, auth=cli_auth)
 
     custom_name = "docker-image-example-created" + datetime.now().strftime("%Y%m%d%H%M")
     env = Environment.from_docker_image(name=custom_name, image=docker_img_name)
@@ -148,7 +154,7 @@ def launch_vm_and_job(  worker_id,
     #### CREATE THE DATA STORE
     datastore = Datastore.get(workspace=ws, datastore_name="workspaceblobstore")
 
-    compute_instance_name = "w" + str(worker_id) + exp_name
+    compute_instance_name = instance_name or ("w" + str(worker_id) + exp_name)
 
     # start the job
     logging.info(f"Starting job on compute instance {compute_instance_name}...")
@@ -185,7 +191,7 @@ def launch_vm_and_job(  worker_id,
 
     src = ScriptRunConfig(source_directory="./azure_files",
                         script='run_entry.py',
-                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, origin_mode, vm_only, origin_eval_model],
+                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, origin_mode, vm_only, origin_eval_model, observation_type, max_steps],
                         run_config=run_config)
 
     experiment = Experiment(workspace=ws, name=exp_name)  
@@ -216,7 +222,8 @@ def launch_experiment(config):
     ml_client = MLClient(
         DefaultAzureCredential(), subscription_id, resource_group, workspace_name
     )
-    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name)
+    cli_auth = AzureCliAuthentication()
+    ws = Workspace(subscription_id=subscription_id, resource_group=resource_group, workspace_name=workspace_name, auth=cli_auth)
 
 
     #### CREATE THE ENVIRONMENT
@@ -231,24 +238,39 @@ def launch_experiment(config):
     #### CREATE THE DOCKER CONFIGURATION
     docker_config = DockerConfiguration(use_docker=True, shared_volumes=True, arguments=["--cap-add", 'NET_ADMIN', "-p", "5000:5000", "-p", "7200:7200"], shm_size='16g')
 
+    # single_task 优先：单任务模式，强制 num_workers=1
+    single_task = config.get("single_task", None)
+    if single_task:
+        resolved_json = f"evaluation_examples_windows/instances/{single_task}.json"
+        resolved_num_workers = 1
+        logging.info(f"single_task specified: running single task {single_task}")
+    else:
+        resolved_json = config["json_name"]
+        resolved_num_workers = config["num_workers"]
+
     #### STEP 1: Create all compute instances in parallel
-    logging.info(f"Creating {config['num_workers']} compute instances in parallel...")
+    logging.info(f"Creating {resolved_num_workers} compute instances in parallel...")
+    # compute_instance_names: 指定已有实例名列表，不填则自动生成 w{i}{exp_name}
+    instance_names = config.get("compute_instance_names", [])
+
     creators = []
-    for i in range(config['num_workers']):
+    for i in range(resolved_num_workers):
+        name = instance_names[i] if i < len(instance_names) else None
         p = Process(target=create_compute_instance, args=(i, config['exp_name'], azure_config,
-                                                          config['use_managed_identity'], config['vm_size'], config['ci_startup_script_path']))
+                                                          config['use_managed_identity'], config['vm_size'], config['ci_startup_script_path'], name))
         creators.append(p)
         p.start()
     for p in creators:
         p.join()
 
     #### STEP 2: Submit all jobs in parallel
-    logging.info(f"All instances ready. Submitting {config['num_workers']} jobs in parallel...")
+    logging.info(f"All instances ready. Submitting {resolved_num_workers} jobs in parallel...")
     experiments = []
-    for i in range(config['num_workers']):
+    for i in range(resolved_num_workers):
+        name = instance_names[i] if i < len(instance_names) else None
         p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'],
-            config['num_workers'], config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
-            config['use_managed_identity'], config['json_name'], config['model_name'], config['som_origin'], config['a11y_backend'], config.get('origin_mode', 'script'), config['vm_size'], config.get('vm_only', 'false'), config.get('origin_eval_model', '')))
+            resolved_num_workers, config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
+            config['use_managed_identity'], resolved_json, config['model_name'], config['som_origin'], config['a11y_backend'], config.get('origin_mode', 'script'), config['vm_size'], config.get('vm_only', 'false'), config.get('origin_eval_model', ''), config.get('observation_type', 'screenshot'), config.get('max_steps', 50), name))
         experiments.append(p)
         p.start()
 

@@ -1,0 +1,56 @@
+{
+    "id": "e4e9cb3c-9c8a-4daa-9b65-0572127d2590-wos",
+    "snapshot": "mp_pymatgen_lab",
+    "instruction": "Use Pymatgen to retrieve the LiCoO2 structure from Materials Project. Generate three doped structures with different Li contents: Li_{0.5}CoO2, Li_{0.75}CoO2, and LiCoO2 (fully lithiated). For each structure, generate VASP input files (INCAR, KPOINTS, POSCAR, POTCAR placeholder) for structural optimization calculations. Save the input files for each composition in separate subdirectories on the desktop: 'vasp_Li0.5CoO2/', 'vasp_Li0.75CoO2/', and 'vasp_LiCoO2/'.",
+    "source": "https://www.example.com/mixed/pymatgen_mp_vasp",
+    "config": [],
+    "trajectory": "trajectories/mixed/pymatgen_mp_vasp/",
+    "related_apps": [
+        "Pymatgen",
+        "MaterialProject",
+        "Python"
+    ],
+    "max_steps": 20,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\vasp_Li0.5CoO2\\POSCAR"
+            },
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\vasp_Li0.75CoO2\\POSCAR"
+            },
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\vasp_LiCoO2\\POSCAR"
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

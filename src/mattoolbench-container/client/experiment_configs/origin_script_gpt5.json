@@ -8,7 +8,7 @@
     "origin_category": "auto",
     "max_steps": 8,
     "max_trajectory_length": 8,
-    "test_all_meta_path": "evaluation_examples_windows/origin.json",
+    "test_all_meta_path": "evaluation_examples_windows/mp.json",
     "diff_lvl": "normal",
     "result_dir": "./results/origin_script_gpt5",
     "trial_id": "0"

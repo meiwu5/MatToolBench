@@ -1,0 +1,46 @@
+{
+    "id": "cd7d938b-ad2e-4d57-b6b1-5a13c9bee507-wos",
+    "snapshot": "mp_vesta_lab",
+    "instruction": "Download the CIF structure file of mp-149 (Si) from Materials Project using mp_api. Then open the CIF file in VESTA to visualize the crystal structure. Remove one Si atomic site from the structure, and save the modified file to the desktop as 'Si_half.vesta'.",
+    "source": "https://www.example.com/mixed/mp_vesta",
+    "config": [],
+    "trajectory": "trajectories/mixed/mp_vesta/",
+    "related_apps": [
+        "MaterialProject",
+        "Python",
+        "Vesta"
+    ],
+    "max_steps": 20,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\Si_half.vesta"
+            },
+            {
+                "type": "validate_file_with_model",
+                "file_path": "C:\\Users\\Docker\\Desktop\\Si_half.vesta",
+                "description": "The VESTA file contains a Si crystal structure with one Si atomic site removed compared to the original mp-149 structure (which has 2 Si atoms in the conventional cell). The file should be a valid VESTA format file."
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

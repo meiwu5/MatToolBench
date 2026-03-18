@@ -18,6 +18,8 @@ def main():
     origin_mode = sys.argv[11] if len(sys.argv) > 11 else "script"
     vm_only = sys.argv[12].lower() == "true" if len(sys.argv) > 12 else False
     origin_eval_model = sys.argv[13] if len(sys.argv) > 13 else ""
+    observation_type = sys.argv[14] if len(sys.argv) > 14 else "screenshot"
+    max_steps = sys.argv[15] if len(sys.argv) > 15 else "50"
     if origin_eval_model:
         os.environ["ORIGIN_EVAL_MODEL"] = origin_eval_model
 
@@ -85,7 +87,7 @@ def main():
             time.sleep(60)
     else:
         # launches the client script
-        os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --origin_mode {origin_mode}")
+        os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --origin_mode {origin_mode} --observation_type {observation_type} --max_steps {max_steps}")
 
     print("Finished running entry script")
 

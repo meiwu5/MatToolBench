@@ -95,6 +95,7 @@ MatToolBench/
 │   ├── run_azure.py                   # Azure ML runner (full cloud mode)
 │   ├── run_local_agent.py             # Run agent locally against Azure-hosted VM
 │   ├── show_azure.py                  # Aggregate results from Azure runs
+│   ├── sync_results.py                # Incrementally sync Azure results to local folder
 │   ├── experiments.json               # Azure experiment config
 │   └── azure_files/                   # Azure startup scripts
 │       ├── run_entry.py               # Job entry point executed on each Azure VM
@@ -588,19 +589,44 @@ Additional options:
 
 ### Step 8 — Collect Results
 
-Results are written to the `result_dir` configured in `experiments.json` (inside the Azure Blob output dataset). Download them:
+Results are written to `agent_outputs/` in the `workspaceblobstore` (Azure Blob output dataset).
+
+#### Option A: Real-time sync (recommended)
+
+`scripts/sync_results.py` continuously pulls new or updated files from Azure Blob to a local folder using incremental sync (only downloads changed files):
+
+```bash
+# Install dependency (if not already present)
+pip install azure-storage-blob
+
+# Continuous sync every 30 seconds (default)
+python scripts/sync_results.py --local_dir ./results_local
+
+# Custom interval
+python scripts/sync_results.py --local_dir ./results_local --interval 60
+
+# Single sync and exit
+python scripts/sync_results.py --local_dir ./results_local --once
+
+# Filter by experiment name
+python scripts/sync_results.py --local_dir ./results_local --exp_name Experiment1
+```
+
+Then summarize:
+```bash
+python scripts/show_azure.py \
+    --result_dir ./results_local \
+    --json_config scripts/experiments.json \
+    --output_file results_table.md
+```
+
+#### Option B: One-shot download via Azure CLI
 
 ```bash
 az storage blob download-batch \
     --account-name <your-storage-account> \
     --source agent_outputs/<exp_name> \
     --destination ./results/
-```
-
-Then summarize:
-```bash
-cd src/mattoolbench-container/client
-python print_ablation_results.py
 ```
 
 ---

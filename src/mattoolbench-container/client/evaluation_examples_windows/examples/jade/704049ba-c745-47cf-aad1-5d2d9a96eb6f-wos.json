@@ -5,6 +5,19 @@
     "source": "https:\\www.example.com/software/jade",
     "config": [
         {
+            "type": "execute",
+            "note": "Force-kill any previously running Jade instance before launching a new one",
+            "parameters": {
+                "command": [
+                    "taskkill",
+                    "/F",
+                    "/IM",
+                    "jade6.exe",
+                    "/T"
+                ]
+            }
+        },
+        {
             "type": "launch",
             "parameters": {
                 "command": [

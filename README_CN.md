@@ -95,6 +95,7 @@ MatToolBench/
 │   ├── run_azure.py                   # Azure ML 运行脚本（全云模式）
 │   ├── run_local_agent.py             # 本地智能体对接 Azure 云端虚拟机
 │   ├── show_azure.py                  # 汇总 Azure 运行结果
+│   ├── sync_results.py                # 增量同步 Azure 结果到本地文件夹
 │   ├── experiments.json               # Azure 实验配置
 │   └── azure_files/                   # Azure 启动脚本
 │       ├── run_entry.py               # 每台 Azure VM 上的 Job 入口
@@ -591,19 +592,44 @@ python run_local_agent.py --exp_name experiment_1 --all_workers
 
 ### 第八步 — 收集结果
 
-结果写入 `experiments.json` 中配置的 `result_dir`（位于 Azure Blob 输出数据集中）。下载至本地：
+结果写入 `workspaceblobstore` 中的 `agent_outputs/` 路径（Azure Blob 输出数据集）。
+
+#### 方式 A：实时同步（推荐）
+
+`scripts/sync_results.py` 持续将 Azure Blob 上的新增或更新文件拉取到本地文件夹，支持增量同步（仅下载有变化的文件）：
+
+```bash
+# 安装依赖（如尚未安装）
+pip install azure-storage-blob
+
+# 持续同步，每 30 秒一次（默认）
+python scripts/sync_results.py --local_dir ./results_local
+
+# 自定义同步间隔（秒）
+python scripts/sync_results.py --local_dir ./results_local --interval 60
+
+# 仅同步一次后退出
+python scripts/sync_results.py --local_dir ./results_local --once
+
+# 只同步指定实验
+python scripts/sync_results.py --local_dir ./results_local --exp_name Experiment1
+```
+
+汇总结果：
+```bash
+python scripts/show_azure.py \
+    --result_dir ./results_local \
+    --json_config scripts/experiments.json \
+    --output_file results_table.md
+```
+
+#### 方式 B：通过 Azure CLI 一次性下载
 
 ```bash
 az storage blob download-batch \
     --account-name <your-storage-account> \
     --source agent_outputs/<exp_name> \
     --destination ./results/
-```
-
-汇总分析：
-```bash
-cd src/mattoolbench-container/client
-python print_ablation_results.py
 ```
 
 ---
@@ -683,7 +709,7 @@ python print_ablation_results.py
 1. LLM 生成 Python 代码，查询材料数据库（MP、OQMD、PyMatgen、OPTIMADE）
 2. 在 VM 内使用对应虚拟环境执行代码
 3. 失败时将 stdout/stderr 反馈给 LLM 进行自我纠错
-4. 最多重试 `--code_retries` 次（默认：3）
+4. 最多重试 `--code_retries` 次（默认：15）
 
 ---
 
@@ -748,7 +774,7 @@ bash scripts/run_main.sh
 | `temperature` | LLM 采样温度 | 主实验/消融用 `0.0`，默认 `1.0` |
 | `max_steps` | 每任务最大步数 | `50` *（默认）* |
 | `sleep_after_execution` | 每次动作后等待秒数 | `3` *（默认）* |
-| `code_retries` | CodeAgent 最大自我纠错重试次数 | `3` *（默认）* |
+| `code_retries` | CodeAgent 最大自我纠错重试次数 | `15` *（默认）* |
 | `a11y_backend` | Windows 无障碍 API 后端 | `uia` *（默认）*、`win32` |
 | `diff_lvl` | 任务难度 | `normal` *（默认）*、`hard` |
 | `num_workers` | 并行 Worker 数量（Azure 多机）| `1` *（默认）* |

@@ -1251,7 +1251,7 @@ def download_file():
     path = Path(os.path.expandvars(os.path.expanduser(path)))
     path.parent.mkdir(parents=True, exist_ok=True)
 
-    max_retries = 3
+    max_retries = 15
     error: Optional[Exception] = None
     for i in range(max_retries):
         try:
@@ -1486,20 +1486,40 @@ def close_all_windows():
     if os_name == "Windows":
         import pygetwindow as gw
 
-        # w = []
-        # for window in gw.getAllWindows():
-        #     w.append(window.title)
-        # return w, 999
+        _SKIP_TITLES = {
+            "Program Manager",
+            "",
+            "Administrator: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
+        }
 
+        # Step 1: 发送 WM_CLOSE（优雅关闭，让应用自行处理）
         for window in gw.getAllWindows():
-            if window.title != "Program Manager" and window.title != "" and \
-                window.title != "Administrator: C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe":
-                window.close()
-            
-        # for window in gw.getAllWindows():
-        #     if window.title != "Program Manager" and window.title != "":
-        #         window.close()
-                
+            if window.title not in _SKIP_TITLES:
+                try:
+                    window.close()
+                except Exception:
+                    pass
+
+        # Step 2: 等待应用响应 WM_CLOSE（包括弹出的"是否保存"对话框关闭）
+        time.sleep(2)
+
+        # Step 3: 对仍然存活的非系统窗口强制 taskkill /F，
+        #         彻底杀死 Jade、Avantage、VESTA 等弹出保存对话框后不退出的进程
+        user32 = ctypes.windll.user32
+        for window in gw.getAllWindows():
+            if window.title in _SKIP_TITLES:
+                continue
+            try:
+                pid = ctypes.c_ulong()
+                user32.GetWindowThreadProcessId(window._hWnd, ctypes.byref(pid))
+                if pid.value:
+                    subprocess.run(
+                        ["taskkill", "/F", "/PID", str(pid.value), "/T"],
+                        capture_output=True,
+                    )
+            except Exception:
+                pass
+
     elif os_name == "Linux":
         subprocess.run(["wmctrl", "-c", ":ALL:"], stdout=subprocess.DEVNULL)
     elif os_name == "Darwin":

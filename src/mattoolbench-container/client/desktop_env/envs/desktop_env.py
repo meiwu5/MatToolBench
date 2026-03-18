@@ -241,6 +241,39 @@ class DesktopEnv(gym.Env):
                 or (len(self.metric) == len(self.result_getter) == len(self.expected_getter) == len(
                     self.metric_options)))
 
+    def cleanup_code_outputs(self) -> None:
+        """Clean up code-task output files on the VM after evaluation.
+
+        CodeAgent writes generated scripts and results to fixed paths inside the VM:
+          - C:\\Users\\Docker\\Desktop\\setup\\mat_temp_solution.py  (the generated script)
+          - C:\\Users\\Docker\\Desktop\\setup\\output_result\\<domain>\\*.txt/json  (task outputs)
+
+        The *_right subdirectories under output_result contain reference answers and
+        must NOT be deleted.
+
+        Call this after env.evaluate() so stale files from the current run cannot
+        produce false-positive scores on a future run of the same task.
+        """
+        cleanup_code = (
+            "import os, glob\n"
+            "_base = r'C:\\Users\\Docker\\Desktop\\setup\\output_result'\n"
+            "if os.path.isdir(_base):\n"
+            "    for _sub in os.listdir(_base):\n"
+            "        if not _sub.endswith('_right'):\n"
+            "            _subpath = os.path.join(_base, _sub)\n"
+            "            if os.path.isdir(_subpath):\n"
+            "                for _f in glob.glob(os.path.join(_subpath, '*')):\n"
+            "                    try: os.remove(_f)\n"
+            "                    except: pass\n"
+            "_ts = r'C:\\Users\\Docker\\Desktop\\setup\\mat_temp_solution.py'\n"
+            "if os.path.exists(_ts): os.remove(_ts)\n"
+        )
+        try:
+            self.controller.execute_python_windows_command(cleanup_code)
+            logger.info("Cleaned up code task output files on VM.")
+        except Exception as e:
+            logger.warning("Failed to clean code task output files: %s", e)
+
     def reset(self, task_config: Optional[Dict[str, Any]] = None, seed=None, options=None) -> Dict[str, Any]:
         logger.info("Resetting environment...")
 

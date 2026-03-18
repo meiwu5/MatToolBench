@@ -109,7 +109,7 @@ class SetupController:
                 raise Exception(f"Setup Download - Invalid URL ({url}) or path ({path}).")
 
             if not os.path.exists(cache_path):
-                max_retries = 3
+                max_retries = 15
                 downloaded = False
                 e = None
                 for i in range(max_retries):

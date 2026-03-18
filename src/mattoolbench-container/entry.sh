@@ -15,7 +15,7 @@ clean_results=true
 worker_id="0"
 num_workers="1"
 result_dir="./results"
-json_name="evaluation_examples_windows/origin.json" 
+json_name="evaluation_examples_windows/mp.json" 
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
@@ -76,7 +76,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --worker-id <id>                The worker ID"
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
-            echo "  --json-name <name>              The name of the JSON file to use (default: origin.json)"
+            echo "  --json-name <name>              The name of the JSON file to use (default: mp.json)"
             exit 0
             ;;
         *)

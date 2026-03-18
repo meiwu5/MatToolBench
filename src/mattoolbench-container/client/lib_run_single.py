@@ -98,6 +98,10 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     logger.info("Result: %.2f", result)
     scores.append(result)
 
+    # Clean up code-task output files on the VM after evaluation, so stale
+    # results cannot produce false-positive scores on future runs of the same task.
+    env.cleanup_code_outputs()
+
     with open(os.path.join(example_result_dir, "result.txt"), "w", encoding="utf-8") as f:
         f.write(f"{result}\n")
 

@@ -1,0 +1,47 @@
+{
+    "id": "61d54506-166a-456c-ac43-d177df54b3e8-wos",
+    "snapshot": "mp_ms_lab",
+    "instruction": "Retrieve the layered material MoS2 from Materials Project using mp_api. Use Pymatgen to build a bilayer MoS2 structure by stacking two monolayers along the c-axis and export it as a CIF file. Then open the CIF file in Materials Studio, select all atoms, build a surface using default parameters, and save the file to the desktop as 'MoS2.xsd'.",
+    "source": "https://www.example.com/mixed/mp_pymatgen_ms",
+    "config": [],
+    "trajectory": "trajectories/mixed/mp_pymatgen_ms/",
+    "related_apps": [
+        "MaterialProject",
+        "Pymatgen",
+        "Python",
+        "Materials Studio"
+    ],
+    "max_steps": 25,
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\MoS2.xsd"
+            },
+            {
+                "type": "validate_file_with_model",
+                "file_path": "C:\\Users\\Docker\\Desktop\\MoS2.xsd",
+                "description": "The XSD file is a Materials Studio structure file containing a MoS2 surface or slab model. It should be a valid XSD format and contain Mo and S atoms arranged in a layered structure."
+            }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    }
+}

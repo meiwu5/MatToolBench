@@ -28,7 +28,7 @@ def get_results_from_json(result_dir, config, output_file):
             "result_dir": result_dir,
             "exp_name": exp_name,
             "action_space": "pyautogui",
-            "observation_type": "a11y_tree",
+            "observation_type": exp_details.get("observation_type", "screenshot"),
             "model": exp_details["model_name"],
             "trial_id": "0"
         }
