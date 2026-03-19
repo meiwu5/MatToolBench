@@ -1,124 +1,124 @@
 {
-    "id": "2e260820-4a40-4de2-9133-fdbad495d048-wos",
-    "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', adjust X-Axis font size to 20.",
-    "source": "https:\\www.example.com/software/avantage",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Avantage to load",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('right')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('enter')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 5
-            }
-        }
-    ],
-    "trajectory": "trajectories/avantage/",
-    "related_apps": [
-        "Avantage"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_multiple_files_imported",
-                "expected_files": [
-                    "Zn2p Scan"
-                ]
-            },
-            {
-                "type": "check_dialog_exists",
-                "dialog_title": "Chart",
-                "region": "whole",
-                "forbidden_paramete":["Display selected data","Grid Properties_"]
-            },
-            {
-                "type": "check_dialog_parameter",
-                "dialog_title": "Chart",
-                "parameter_name": "Title colour",
-                "expected_value": "Transparent",
-                "region": "whole"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "2e260820-4a40-4de2-9133-fdbad495d048-wos",
+  "snapshot": "avantagelab",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', adjust X-Axis font size to 20.",
+  "source": "https:\\www.example.com/software/avantage",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Avantage to load",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('right')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('enter')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 5
+      }
     }
+  ],
+  "trajectory": "trajectories/avantage/",
+  "related_apps": [
+    "Avantage"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_multiple_files_imported",
+        "expected_files": [
+          "Zn2p Scan"
+        ]
+      },
+      {
+        "type": "check_dialog_exists",
+        "dialog_title": "Chart",
+        "region": "whole",
+        "forbidden_parameter": ["Display selected data", "Axis Properties"]
+      },
+      {
+        "type": "check_dialog_parameter",
+        "dialog_title": "Chart",
+        "parameter_name": "Title Font",
+        "expected_value": "20pt",
+        "region": "whole"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

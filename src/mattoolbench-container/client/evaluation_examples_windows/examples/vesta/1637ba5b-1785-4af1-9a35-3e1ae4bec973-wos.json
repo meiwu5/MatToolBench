@@ -1,7 +1,7 @@
 {
     "id": "1637ba5b-1785-4af1-9a35-3e1ae4bec973-wos",
     "snapshot": "vestalab",
-    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-804_GaN.cif', in Boundary adjust fractional ranges x(min)=-0.5, x(max)=1.5, y(min)=-0.5, y(max)=1.5 to expand view, add two lattice planes in Lattice Planes, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaAs_planes_color.vesta'.",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-2534_GaAs.cif', in Boundary adjust fractional ranges x(min)=-0.5, x(max)=1.5, y(min)=-0.5, y(max)=1.5 to expand view, add two lattice planes in Lattice Planes, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaAs_planes_color.vesta'.",
     "source": "https:\\www.example.com/software/vesta",
     "config": [
         {
@@ -46,6 +46,7 @@
             "exact_match",
             "exact_match",
             "exact_match",
+            "exact_match",
             "exact_match"
         ],
         "result": [
@@ -55,7 +56,7 @@
             },
             {
                 "type": "check_file_opened",
-                "expected_filename": "mp-804_GaN.cif"
+                "expected_filename": "mp-2534_GaAs.cif"
             },
             {
                 "type": "check_file_opened",

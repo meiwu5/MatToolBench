@@ -294,13 +294,13 @@ def test(
         "origin_category": getattr(args, "origin_category", "auto"),
     }
 
-    # Per-task score CSV – written after every finished example so you can
-    # monitor progress without waiting for the full run to complete.
-    _scores_csv_path = os.path.join(args.result_dir, "scores_summary.csv")
-    os.makedirs(args.result_dir, exist_ok=True)
-    if not os.path.exists(_scores_csv_path):
-        with open(_scores_csv_path, "w", encoding="utf-8") as _csv:
-            _csv.write("domain,task_id,score,instruction\n")
+    # Base dir for this model/trial – results are organised by domain beneath it.
+    # Each worker writes to its own per-domain JSON files to avoid concurrent-
+    # write conflicts on Azure Blob Fuse (Errno 5 I/O error).
+    _model_result_dir = os.path.join(
+        args.result_dir, args.action_space, args.observation_type, args.model, args.trial_id
+    )
+    os.makedirs(_model_result_dir, exist_ok=True)
 
     # som_config is shared across all GUI-based agents.
     if cfg_args["som_origin"] in ["a11y", "omni", "mixed-omni"]:
@@ -341,6 +341,7 @@ def test(
     env.result_dir = args.result_dir
 
     _current_agent_type: str = ""
+    _domain_scores: dict = {}   # {domain: {"scores": [], "success": [], "tasks": []}}
     for domain in tqdm(test_all_meta, desc="Domain"):
         # Auto-routing: swap agent when the domain type changes.
         if use_auto_routing:
@@ -447,15 +448,49 @@ def test(
                     raise
             else:
                 logger.info(f"Finished {domain}/{example_id}")
-                # Append this task's score to the running CSV.
                 _last_score = scores[-1] if scores else 0.0
-                _instr_escaped = instruction.replace('"', '""')
-                with open(_scores_csv_path, "a", encoding="utf-8") as _csv:
-                    _csv.write(f'{domain},{example_id},{_last_score},"{_instr_escaped}"\n')
+                _last_success = 1 if _last_score >= 1.0 else 0
+                # Track per-domain scores for summary.
+                _domain_scores.setdefault(domain, {"scores": [], "success": [], "tasks": []})
+                _domain_scores[domain]["scores"].append(_last_score)
+                _domain_scores[domain]["success"].append(_last_success)
+                _domain_scores[domain]["tasks"].append({
+                    "task_id": example_id,
+                    "score": _last_score,
+                    "success": _last_success,
+                    "instruction": instruction,
+                })
+                # Write per-domain task results JSON after every task (for live monitoring).
+                _domain_dir = os.path.join(_model_result_dir, domain)
+                os.makedirs(_domain_dir, exist_ok=True)
+                _task_results_path = os.path.join(_domain_dir, f"task_results_w{args.worker_id}.json")
+                with open(_task_results_path, "w", encoding="utf-8") as _f:
+                    json.dump(_domain_scores[domain]["tasks"], _f, ensure_ascii=False, indent=2)
             finally:
                 # Cleanup task log handler
                 root_logger.removeHandler(task_log_handler)
                 task_log_handler.close()
+
+        # Write per-domain summary JSON after all examples in this domain finish.
+        if domain in _domain_scores:
+            _d = _domain_scores[domain]
+            _n = len(_d["scores"])
+            _domain_summary = {
+                "domain": domain,
+                "worker_id": args.worker_id,
+                "num_tasks": _n,
+                "avg_score": round(sum(_d["scores"]) / _n, 4) if _n else 0.0,
+                "success_rate": round(sum(_d["success"]) / _n, 4) if _n else 0.0,
+                "num_success": sum(_d["success"]),
+            }
+            _domain_dir = os.path.join(_model_result_dir, domain)
+            os.makedirs(_domain_dir, exist_ok=True)
+            _domain_summary_path = os.path.join(_domain_dir, f"summary_w{args.worker_id}.json")
+            with open(_domain_summary_path, "w", encoding="utf-8") as _f:
+                json.dump(_domain_summary, _f, ensure_ascii=False, indent=2)
+            logger.info(f"Domain summary saved: {domain}/summary_w{args.worker_id}.json "
+                        f"(success_rate={_domain_summary['success_rate']:.2%}, "
+                        f"avg_score={_domain_summary['avg_score']:.4f})")
 
     env.close()
     # logger.info(f"UPDATED SCORES: {scores}")

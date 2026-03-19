@@ -24,6 +24,7 @@ returns ["DONE"] to terminate the episode immediately.
 """
 
 import logging
+import os
 import re
 from typing import Dict, List, Optional, Tuple
 
@@ -57,23 +58,19 @@ def _python_exe(venv_name: str) -> str:
 def _make_run_action(code: str, venv_name: str) -> str:
     """
     Return a Python code string (executed inside the VM) that:
-      1. Writes `code` to TEMP_SCRIPT.
+      1. Writes `code` to TEMP_SCRIPT via base64 (immune to any quote/backslash issues).
       2. Runs TEMP_SCRIPT with the venv Python interpreter.
       3. Prints stdout / stderr for logging.
     """
-    # Escape backslashes and quotes so the code embeds safely.
-    escaped_code = code.replace("\\", "\\\\").replace('"""', '\\"\\"\\"')
+    import base64
+    encoded = base64.b64encode(code.encode("utf-8")).decode("ascii")
     python_exe = _python_exe(venv_name)
 
-    # Do NOT use textwrap.dedent here: if escaped_code contains lines at
-    # column 0 (which LLM-generated code always does), dedent finds no common
-    # leading whitespace and the surrounding wrapper lines keep their original
-    # indentation, producing a SyntaxError on the server side.
     lines = [
-        "import subprocess, os, sys",
+        "import subprocess, os, base64",
         f'_script = r"{TEMP_SCRIPT}"',
         f'_python_exe = r"{python_exe}"',
-        f'_code = """{escaped_code}"""',
+        f'_code = base64.b64decode("{encoded}").decode("utf-8")',
         "os.makedirs(os.path.dirname(_script), exist_ok=True)",
         'with open(_script, "w", encoding="utf-8") as _f:',
         "    _f.write(_code)",
@@ -85,7 +82,7 @@ def _make_run_action(code: str, venv_name: str) -> str:
         "    try:",
         "        _result = subprocess.run(",
         "            [_python_exe, _script],",
-        "            capture_output=True, text=True, timeout=180",
+        "            capture_output=True, text=True, timeout=300",
         "        )",
         '        print("SCRIPT_STDOUT:", _result.stdout[:3000])',
         '        print("SCRIPT_STDERR:", _result.stderr[:3000])',
@@ -127,7 +124,8 @@ class CodeAgent:
 
         # Text-only planner (images are not needed for code tasks).
         self.planner = LLMPlanner(server=server, model=model, temperature=temperature)
-        self.planner.system_prompt = planner_messages.code_system_message
+        mp_api_key = os.getenv("MP_API_KEY") or os.getenv("MAPI_KEY") or ""
+        self.planner.system_prompt = planner_messages.build_code_system_message(mp_api_key)
 
         # Per-episode state
         self._prev_code: Optional[str] = None

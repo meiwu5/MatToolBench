@@ -1,7 +1,7 @@
 {
     "id": "fddbd8ec-0cbe-42d9-80ee-48557f0a45a3-wos",
     "snapshot": "vestalab",
-    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-1265_MgO.cif', toggle coordinate axes (hide if shown, show if hidden), change atomic radius to 1.5, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\MgO_radius.vesta'.",
+    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-1265_MgO.cif', change atomic radius to 1.5, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\MgO_radius.vesta'.",
     "source": "https:\\www.example.com/software/vesta",
     "config": [
         {
@@ -42,6 +42,7 @@
     ],
     "evaluator": {
         "func": [
+            "exact_match",
             "exact_match",
             "exact_match",
             "exact_match"

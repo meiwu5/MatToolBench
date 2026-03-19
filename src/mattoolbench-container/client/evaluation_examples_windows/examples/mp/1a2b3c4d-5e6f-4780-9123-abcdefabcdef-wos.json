@@ -1,7 +1,7 @@
 {
   "id": "1a2b3c4d-5e6f-4780-9123-abcdefabcdef-wos",
   "snapshot": "materials_project_api_env",
-  "instruction": "Use mp_api to search for all materials with chemical formula TiO2, count the total number of material IDs, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_task_15.txt.",
+  "instruction": "Use mp_api to search for all materials with chemical formula TiO2, count the total number of material IDs, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_15.txt.",
   "source": "https:\\materialsproject.org/",
   "_comments": "comments_placeholder",
   "config": [],
