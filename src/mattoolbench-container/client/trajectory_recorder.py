@@ -9,39 +9,37 @@ class TrajectoryRecorder:
     def __init__(self, result_dir: str):
         self.result_dir = result_dir
         
-    # Only these keys will be saved as files; all other keys are skipped
-    SAVE_KEYS = {"screenshot", "plan_result"}
+    # Keys saved as image files (.png)
+    SAVE_IMAGE_KEYS = {"screenshot"}
+    # Keys saved as text files (.txt) — agent output for GUI and code agents respectively
+    SAVE_TEXT_KEYS = {"plan_result", "llm_response", "exec_log"}
 
     def save_dict(self, info_dict: Dict[str, Any], step_idx: int, action_timestamp: str) -> dict:
         """
         Save each key of the observation to the specified path, parsing the correct datatypes.
-        Only keys in SAVE_KEYS are persisted to disk; others are omitted.
+        Only keys in SAVE_IMAGE_KEYS / SAVE_TEXT_KEYS are persisted to disk; others are omitted.
         """
         file_format = "{key}-step_{step_idx}_{action_timestamp}.{ext}"
         obs_content = {}
 
         for key, value in info_dict.items():
-            if key not in self.SAVE_KEYS:
-                continue
-
-            if key == "plan_result":
+            if key in self.SAVE_TEXT_KEYS and isinstance(value, str):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="txt"))
-                with open(file_path, "w") as f:
+                with open(file_path, "w", encoding="utf-8") as f:
                     f.write(value if value else "No data available")
                 obs_content[key] = os.path.basename(file_path)
 
-            elif isinstance(value, bytes):
+            elif key in self.SAVE_IMAGE_KEYS:
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
-                with open(file_path, "wb") as f:
-                    f.write(value)
-                obs_content[key] = os.path.basename(file_path)
-
-            elif "PIL" in str(type(value)):
-                file_path = os.path.join(self.result_dir, file_format.format(
-                    key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
-                value.save(file_path)
+                if isinstance(value, bytes):
+                    with open(file_path, "wb") as f:
+                        f.write(value)
+                elif "PIL" in str(type(value)):
+                    value.save(file_path)
+                else:
+                    continue
                 obs_content[key] = os.path.basename(file_path)
 
         return obs_content

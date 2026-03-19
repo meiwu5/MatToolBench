@@ -3,6 +3,7 @@ import datetime
 import json
 import logging
 import os
+import re
 import time
 import traceback
 from trajectory_recorder import TrajectoryRecorder
@@ -63,16 +64,24 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
             # Feed execution result back to CodeAgent for self-correction.
             if hasattr(agent, 'handle_action_result'):
                 exec_result = info.get("exec_result") or {}
-                output = exec_result.get("output", "")
-                if exec_result.get("status") == "error":
-                    returncode = 1
-                    stderr = exec_result.get("message", "")
-                else:
-                    import re as _re
-                    _m = _re.search(r"RETURNCODE:\s*(\d+)", output)
-                    returncode = int(_m.group(1)) if _m else 0
-                    stderr = ""
-                agent.handle_action_result(output, stderr, returncode)
+                # Use message (HTTP error) or output (HTTP success) as raw text
+                raw = (exec_result.get("message", "")
+                       if exec_result.get("status") == "error"
+                       else exec_result.get("output", ""))
+                # Parse RETURNCODE / SCRIPT_STDOUT / SCRIPT_STDERR from printed output
+                _m_rc  = re.search(r"RETURNCODE:\s*(-?\d+)", raw)
+                _m_out = re.search(r"SCRIPT_STDOUT:\s*(.*?)(?=SCRIPT_STDERR:|RETURNCODE:|$)", raw, re.DOTALL)
+                _m_err = re.search(r"SCRIPT_STDERR:\s*(.*?)(?=RETURNCODE:|$)", raw, re.DOTALL)
+                returncode = int(_m_rc.group(1)) if _m_rc else (1 if exec_result.get("status") == "error" else 0)
+                stdout = _m_out.group(1).strip() if _m_out else ""
+                stderr = _m_err.group(1).strip() if _m_err else (raw if exec_result.get("status") == "error" else "")
+                agent.handle_action_result(stdout, stderr, returncode)
+                # Save per-step execution log so it is visible in results directory
+                logs["exec_log"] = (
+                    f"returncode: {returncode}\n"
+                    f"stdout:\n{stdout}\n"
+                    f"stderr:\n{stderr}"
+                )
             
             # Record step data
             recorder.record_step(
