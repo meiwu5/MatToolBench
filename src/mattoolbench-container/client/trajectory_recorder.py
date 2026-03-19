@@ -9,60 +9,41 @@ class TrajectoryRecorder:
     def __init__(self, result_dir: str):
         self.result_dir = result_dir
         
+    # Only these keys will be saved as files; all other keys are skipped
+    SAVE_KEYS = {"screenshot", "plan_result"}
+
     def save_dict(self, info_dict: Dict[str, Any], step_idx: int, action_timestamp: str) -> dict:
         """
         Save each key of the observation to the specified path, parsing the correct datatypes.
+        Only keys in SAVE_KEYS are persisted to disk; others are omitted.
         """
         file_format = "{key}-step_{step_idx}_{action_timestamp}.{ext}"
-        obs_content = {k:None for k in info_dict.keys()}
-        
+        obs_content = {}
+
         for key, value in info_dict.items():
-            file_path = None
-            if key in ["accessibility_tree", "user_question", "plan_result"]:
+            if key not in self.SAVE_KEYS:
+                continue
+
+            if key == "plan_result":
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="txt"))
                 with open(file_path, "w") as f:
                     f.write(value if value else "No data available")
                 obs_content[key] = os.path.basename(file_path)
-                
+
             elif isinstance(value, bytes):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
                 with open(file_path, "wb") as f:
                     f.write(value)
                 obs_content[key] = os.path.basename(file_path)
-                
-            elif isinstance(value, (int, float)):
-                obs_content[key] = value
-                
-            elif isinstance(value, (list, tuple, np.ndarray)) and len(value) > 0 and isinstance(value[0], (int, float)):
-                obs_content[key] = value
-                
-            elif isinstance(value, str):
-                obs_content[key] = value
-                
-            elif isinstance(value, np.ndarray):
-                file_path = os.path.join(self.result_dir, file_format.format(
-                    key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="npy"))
-                np.save(file_path, value)
-                obs_content[key] = os.path.basename(file_path)
-                
+
             elif "PIL" in str(type(value)):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
                 value.save(file_path)
                 obs_content[key] = os.path.basename(file_path)
-                
-            elif isinstance(value, (dict, list)):
-                file_path = os.path.join(self.result_dir, file_format.format(
-                    key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="json"))
-                with open(file_path, "w") as f:
-                    json.dump(value, f)
-                obs_content[key] = os.path.basename(file_path)
-                
-            else:
-                obs_content[key] = f"key: {key}: {type(value)} not saved"
-                
+
         return obs_content
 
     def dict_to_html(self, in_dict: Dict[str, Any], name: str) -> list:
