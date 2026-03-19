@@ -44,9 +44,9 @@ _CATEGORY_TO_SCRIPT: Dict[str, str] = {
 }
 
 # Default directory that holds the template scripts (relative to this file's
-# location two levels up: client/origin_draw/).
+# location one level up: client/origin_draw/).
 _DEFAULT_SCRIPTS_DIR = os.path.normpath(
-    os.path.join(os.path.dirname(__file__), "..", "..", "origin_draw")
+    os.path.join(os.path.dirname(__file__), "..", "origin_draw")
 )
 
 
