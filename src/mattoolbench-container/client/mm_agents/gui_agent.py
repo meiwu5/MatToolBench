@@ -47,5 +47,8 @@ class GUIAgent(NaviAgent):
             temperature=temperature,
         )
         # Replace the generic planner prompt with the GUI-specific one.
-        self.gpt4v_planner.system_prompt = planner_messages.gui_system_message
+        if som_origin == "no_omni":
+            self.gpt4v_planner.system_prompt = planner_messages.raw_gui_system_message
+        else:
+            self.gpt4v_planner.system_prompt = planner_messages.gui_system_message
         logger.info("GUIAgent initialised (model=%s, server=%s)", model, server)

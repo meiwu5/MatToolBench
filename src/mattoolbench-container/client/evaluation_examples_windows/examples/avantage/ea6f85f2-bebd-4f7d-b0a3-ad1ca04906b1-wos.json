@@ -1,166 +1,138 @@
 {
-    "id": "ea6f85f2-bebd-4f7d-b0a3-ad1ca04906b1-wos",
-    "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\Avantage\\XPS Survey.VGD', arrange the two spectra vertically in comparison view, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\stacked.vgp'.",
-    "source": "https:\\www.example.com/software/avantage",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Avantage to load",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('right')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('enter')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        }
-    ],
-    "trajectory": "trajectories/avantage/",
-    "related_apps": [
-        "Avantage"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\stacked.vgp"
-            },
-            {
-                "type": "check_multiple_files_imported",
-                "expected_files": [
-                    "C1s Scan"
-                ]
-            },
-            {
-                "type": "check_dialog_exists",
-                "dialog_title": "Peak Add",
-                "region": "40% on the left"
-            },
-            {
-                "type": "check_dialog_parameter",
-                "dialog_title": "Peak Add",
-                "parameter_name": [
-                    "Iterations"
-                ],
-                "expected_value": [],
-                "region": "40% on the left"
-            },
-            {
-                "type": "check_dialog_exists",
-                "dialog_title": "Charge Shift",
-                "region": "40% on the left"
-            },
-            {
-                "type": "check_dialog_parameter",
-                "dialog_title": "Charge Shift",
-                "parameter_name": [
-                    "Shift By"
-                ],
-                "expected_value": [
-                    "19.00"
-                ],
-                "region": "40% on the left"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "ea6f85f2-bebd-4f7d-b0a3-ad1ca04906b1-wos",
+  "snapshot": "avantagelab",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\XPS Survey.VGD', arrange the two spectra vertically in comparison view, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\stacked.vgp'.",
+  "source": "https:\\www.example.com/software/avantage",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Avantage to load",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('right')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('enter')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
     }
+  ],
+  "trajectory": "trajectories/avantage/",
+  "related_apps": [
+    "Avantage"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\stacked.vgp"
+      },
+      {
+        "type": "check_multiple_files_imported",
+        "expected_files": [
+          "C1s Scan",
+          "XPS Survey"
+        ]
+      },
+      {
+        "type": "check_dialog_exists",
+        "dialog_title": "LightBox",
+        "region": "20% on the left"
+      },
+      {
+        "type": "check_dialog_parameter",
+        "dialog_title": "LightBox",
+        "parameter_name": [
+          "C1s Scan",
+          "XPS Survey"
+        ],
+        "expected_value": [],
+        "region": "20% on the left"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

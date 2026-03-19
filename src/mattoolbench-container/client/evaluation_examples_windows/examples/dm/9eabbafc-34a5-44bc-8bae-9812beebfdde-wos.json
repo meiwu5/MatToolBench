@@ -55,7 +55,7 @@
                 "target_text": [
                     "5nm"
                 ],
-                "region": "bottom 30%"
+                "region": "bottom20%"
             }
         ],
         "expected": [

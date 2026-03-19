@@ -1,47 +1,47 @@
 {
-    "id": "1436ceaa-32c4-4155-ba76-611d0e95beb3-wos",
-    "snapshot": "pymatgen_vesta_lab",
-    "instruction": "Use Pymatgen to download the perovskite SrTiO3 structure (mp-5229) from Materials Project. Apply SpacegroupAnalyzer to perform symmetry analysis and extract the conventional standard structure to ensure lattice orthogonality. Export the processed structure as a CIF file and save it to the desktop. Then open the CIF file in VESTA, switch the display style to 'Ball and Stick' model, and save the file as 'SrTiO3_structure.vesta' to the desktop.",
-    "source": "https://www.example.com/mixed/pymatgen_mp_vesta",
-    "config": [],
-    "trajectory": "trajectories/mixed/pymatgen_mp_vesta/",
-    "related_apps": [
-        "Pymatgen",
-        "MaterialProject",
-        "Python",
-        "Vesta"
+  "id": "1436ceaa-32c4-4155-ba76-611d0e95beb3-wos",
+  "snapshot": "pymatgen_vesta_lab",
+  "instruction": "Use Pymatgen to download the perovskite SrTiO3 structure (mp-5229) from Materials Project. Apply SpacegroupAnalyzer to perform symmetry analysis and extract the conventional standard structure to ensure lattice orthogonality. Export the processed structure as a CIF file and save it to the desktop. Then open the CIF file in VESTA, switch the display style to 'Ball and Stick' model, and save the file to 'C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta'.",
+  "source": "https://www.example.com/mixed/pymatgen_mp_vesta",
+  "config": [],
+  "trajectory": "trajectories/mixed/pymatgen_mp_vesta/",
+  "related_apps": [
+    "Pymatgen",
+    "MaterialProject",
+    "Python",
+    "Vesta"
+  ],
+  "max_steps": 25,
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match"
     ],
-    "max_steps": 25,
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta"
-            },
-            {
-                "type": "validate_file_with_model",
-                "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta",
-                "description": "The VESTA file contains the conventional standard cell of perovskite SrTiO3 (space group Pm-3m, cubic). It should be a valid VESTA format file containing Sr, Ti, and O atoms. The display style should be set to Ball and Stick model."
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
-    }
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta"
+      },
+      {
+        "type": "validate_file_with_model",
+        "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta",
+        "description": "The VESTA file contains the conventional standard cell of perovskite SrTiO3 (space group Pm-3m, cubic). It should be a valid VESTA format file containing Sr, Ti, and O atoms. The display style should be set to Ball and Stick model."
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

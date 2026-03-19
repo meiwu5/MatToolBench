@@ -100,6 +100,7 @@ class TrajectoryRecorder:
 
     def record_init(self, obs: Dict[str, Any], example: Dict[str, Any], init_timestamp: str) -> None:
         """Record initial state"""
+        os.makedirs(self.result_dir, exist_ok=True)
         init_dict = self.save_dict(obs, 'reset', init_timestamp)
         
         # Save to JSONL
@@ -125,10 +126,11 @@ class TrajectoryRecorder:
                 html.append(f"<pre>No image</pre>")
             f.write("".join(html))
 
-    def record_step(self, obs: Dict[str, Any], logs: Dict[str, Any], 
+    def record_step(self, obs: Dict[str, Any], logs: Dict[str, Any],
                    step_idx: int, action_timestamp: str, elapsed_timestamp: str,
                    action: str, reward: float, done: bool, info: Dict[str, Any]) -> None:
         """Record a single step"""
+        os.makedirs(self.result_dir, exist_ok=True)
         obs_saved_content = self.save_dict(obs, step_idx, action_timestamp) if obs else {}
         logs_saved_content = self.save_dict(logs, step_idx, action_timestamp) if logs else {}
         

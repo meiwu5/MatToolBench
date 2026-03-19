@@ -106,11 +106,16 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
         f.write(f"{result}\n")
 
     # Save detailed evaluation log
+    max_score = len(env.metric) if isinstance(env.metric, list) else 1
+    precision = result / max_score if max_score > 0 else 0.0
+    success_rate = 1 if result >= max_score else 0
     eval_log = {
         "task_id": example.get("id", "unknown"),
         "instruction": example.get("instruction", ""),
         "total_score": result,
-        "max_score": len(env.metric) if isinstance(env.metric, list) else 1,
+        "max_score": max_score,
+        "precision": round(precision, 4),
+        "success_rate": success_rate,
         "subtasks": getattr(env, "evaluation_details", {}).get("subtasks", []),
         "timestamp": datetime.datetime.now().isoformat(),
     }

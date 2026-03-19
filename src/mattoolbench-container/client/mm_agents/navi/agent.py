@@ -5,6 +5,7 @@ from typing import Dict, List
 # from mm_agents.planner.computer import Computer, WindowManager
 from mm_agents.navi.llm.llm_planner import LLMPlanner
 from mm_agents.navi.llm import planner_messages
+from mm_agents.navi.screenparsing_oss.element_extractor.utils import draw_colored_image
 # Backward-compatible alias so existing code that refers to GPT4V_Planner still works.
 GPT4V_Planner = LLMPlanner
 import copy
@@ -77,7 +78,7 @@ class NaviAgent:
             server: str = "azure",
             model: str = "gpt-4o", # openai or "phi3-v"
             som_config = None,
-            som_origin = "oss", # "oss", "a11y", "mixed-oss", "omni", "mixed-omni"
+            som_origin = "oss", # "oss", "a11y", "mixed-oss", "omni", "mixed-omni", "no_omni"
             obs_view = "screen", # "screen" or "window"
             auto_window_maximize = False,
             use_last_screen = True,
@@ -118,7 +119,9 @@ class NaviAgent:
             self.gpt4v_planner = Phi3_Planner(server='azure',model='phi3-v',temperature=temperature)
         else:
             self.gpt4v_planner = LLMPlanner(server=self.server, model=self.model, temperature=temperature)
-            if use_last_screen:
+            if self.som_origin == "no_omni":
+                self.gpt4v_planner.system_prompt = planner_messages.planning_system_message_raw
+            elif use_last_screen:
                 self.gpt4v_planner.system_prompt = planner_messages.planning_system_message_shortened_previmg
         
         from mm_agents.navi.screenparsing_oss.utils.obs import parser_to_prompt
@@ -135,6 +138,7 @@ class NaviAgent:
         self.clipboard_content = None
         self.n_prev = 3
         self.step_counter = 0
+        self.prev_screenshot_bytes = None
       
 
     def predict(self, instruction: str, obs: Dict) -> List:
@@ -142,7 +146,21 @@ class NaviAgent:
         Predict the next action(s) based on the current observation.
         """
         logs={}
-        
+
+        # Detect if screen is unchanged since last step
+        screen_unchanged_warning = ""
+        current_screenshot_bytes = obs['screenshot'] if self.obs_view == "screen" else None
+        if current_screenshot_bytes and self.prev_screenshot_bytes:
+            if current_screenshot_bytes == self.prev_screenshot_bytes:
+                screen_unchanged_warning = (
+                    "\n\nNOTE: The screen appears unchanged since your last action. "
+                    "This may mean: (a) your click coordinates were slightly off — if so, try a more precise click on the same target; "
+                    "or (b) the action itself had no effect — if so, try a different approach such as a keyboard shortcut or a different UI element. "
+                    "Carefully assess which case applies before deciding your next step."
+                )
+        if self.obs_view == "screen":
+            self.prev_screenshot_bytes = current_screenshot_bytes
+
         if self.obs_view == "screen":
             image_file = BytesIO(obs['screenshot'])
             view_image = Image.open(image_file)
@@ -186,7 +204,14 @@ class NaviAgent:
             logs['foreground_window'] = image
             
             # extract regions
-            if self.som_origin == "a11y":
+            if self.som_origin == "no_omni":
+                rendering = "N/A"
+                regions = []
+                rects = []
+                list_of_text = "Not available in raw-screen mode."
+                logs['foreground_window_prompt'] = image
+
+            elif self.som_origin == "a11y":
                 # a11y extractor
                 from mm_agents.navi.a11y_demo import propose_ents as get_a11y_ents
                 rendering = "N/A"
@@ -384,20 +409,47 @@ class NaviAgent:
             logs['image_height'] = image.height
             logs['regions'] = regions
 
-            user_question = planner_messages.build_user_msg_visual(instruction, window_title, window_names_str, computer_clipboard, rendering, list_of_text, prev_actions_str, self.memory_block_text)
+            if self.som_origin == "no_omni":
+                user_question = planner_messages.build_user_msg_raw_visual(
+                    instruction,
+                    window_title,
+                    window_names_str,
+                    computer_clipboard,
+                    image.width,
+                    image.height,
+                    prev_actions_str,
+                    self.memory_block_text,
+                )
+            else:
+                user_question = planner_messages.build_user_msg_visual(
+                    instruction,
+                    window_title,
+                    window_names_str,
+                    computer_clipboard,
+                    rendering,
+                    list_of_text,
+                    prev_actions_str,
+                    self.memory_block_text,
+                )
+            if screen_unchanged_warning:
+                user_question += screen_unchanged_warning
             logs['user_question'] = user_question
-            
-            image_resized, w_resized, h_resized, factor = resize_image_openai(view_image)
-            image_prompt_resized, w_resized, h_resized, factor = resize_image_openai(image_prompt)
-            
-            image_prompts = [image_resized, image_prompt_resized]
-            if self.use_last_screen:
-                last_image = self.last_image if self.last_image is not None else image_resized
-                self.last_image = image_resized
-                logs['last_image'] = last_image
-                
-                #image_prompts = [last_image] + image_prompts
-                image_prompts = [last_image, image_prompt_resized]
+
+            if self.som_origin == "no_omni":
+                image_prompts = [view_image]
+                if self.use_last_screen:
+                    last_image = self.last_image if self.last_image is not None else view_image
+                    self.last_image = view_image
+                    logs['last_image'] = last_image
+                    image_prompts = [last_image, view_image]
+            else:
+                image_prompts = [view_image, image_prompt]
+                if self.use_last_screen:
+                    last_image = self.last_image if self.last_image is not None else view_image
+                    self.last_image = view_image
+                    logs['last_image'] = last_image
+
+                    image_prompts = [last_image, image_prompt]
 
             # send to gpt
             logger.info("Thinking...")
@@ -462,3 +514,4 @@ class NaviAgent:
         self.clipboard_content = None
         self.step_counter = 0
         self.last_image = None
+        self.prev_screenshot_bytes = None

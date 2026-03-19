@@ -185,6 +185,10 @@ def launch_vm_and_job(  worker_id,
     if azure_config.get('ORIGIN_EVAL_BASE_URL'):
         run_config.environment_variables["ORIGIN_EVAL_BASE_URL"] = azure_config['ORIGIN_EVAL_BASE_URL']
 
+    # Materials Project API key (for CodeAgent MP tasks)
+    if azure_config.get('MP_API_KEY'):
+        run_config.environment_variables["MP_API_KEY"] = azure_config['MP_API_KEY']
+
     input_dataset = Dataset.File.from_files(path=(datastore, datastore_input_path))
     input = input_dataset.as_named_input('input').as_mount('/tmp/input')
     output = OutputFileDatasetConfig(destination=(datastore, '/agent_outputs/'))

@@ -1,47 +1,50 @@
 {
-    "id": "ee1d2827-ea34-4162-9e35-6118fd14b51b-wos",
-    "snapshot": "optimade_pymatgen_lab",
-    "instruction": "Use the OPTIMADE protocol to query Materials Project for the elemental Si structure (chemical_formula_reduced = 'Si', nelements = 1). Download the structure and export it as a VASP POSCAR file. Then use Pymatgen to read the exported POSCAR file, apply SpacegroupAnalyzer to identify the space group symbol and crystal system of the structure, and save the results along with the POSCAR content to the desktop as 'Si_spacegroup.txt'. The output file should contain the space group symbol, crystal system, and the POSCAR content.",
-    "source": "https://www.example.com/mixed/optimade_mp_pymatgen",
-    "config": [],
-    "trajectory": "trajectories/mixed/optimade_mp_pymatgen/",
-    "related_apps": [
-        "Python",
-        "OPTIMADE",
-        "Pymatgen",
-        "MaterialProject"
+  "id": "ee1d2827-ea34-4162-9e35-6118fd14b51b-wos",
+  "snapshot": "optimade_pymatgen_lab",
+  "instruction": "Use the OPTIMADE protocol to query Materials Project for the elemental Si structure (chemical_formula_reduced = 'Si', nelements = 1). Download the structure and export it as a VASP POSCAR file. Then use Pymatgen to read the exported POSCAR file, apply SpacegroupAnalyzer to identify the space group symbol and crystal system of the structure, and save the results along with the POSCAR content to 'C:\\Users\\Docker\\Desktop\\Si_spacegroup.txt'. The output file should contain the space group symbol, crystal system, and the POSCAR content.",
+  "source": "https://www.example.com/mixed/optimade_mp_pymatgen",
+  "config": [],
+  "trajectory": "trajectories/mixed/optimade_mp_pymatgen/",
+  "related_apps": [
+    "Python",
+    "OPTIMADE",
+    "Pymatgen",
+    "MaterialProject"
+  ],
+  "max_steps": 20,
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match"
     ],
-    "max_steps": 20,
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\Si_spacegroup.txt"
-            },
-            {
-                "type": "file_contains",
-                "file_path": "C:\\Users\\Docker\\Desktop\\Si_spacegroup.txt",
-                "expected_keywords": ["Fd-3m", "cubic"]
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
-    }
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\Si_spacegroup.txt"
+      },
+      {
+        "type": "file_contains",
+        "file_path": "C:\\Users\\Docker\\Desktop\\Si_spacegroup.txt",
+        "expected_keywords": [
+          "Fd-3m",
+          "cubic"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

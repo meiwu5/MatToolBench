@@ -1,93 +1,93 @@
 {
-    "id": "c949b96c-4d66-4671-910b-29013a96578c-wos",
-    "snapshot": "avantage_origin_lab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', add a Shirley baseline and lock it, add a reference peak and adjust it to 284.8 eV, and export the report to an Excel file. Then open Origin, import the Binding Energy (eV) and Counts (s) data from the exported Excel file, plot an XPS spectrum curve using default parameters, and save the figure as 'avantage.png' to the desktop.",
-    "source": "https://www.example.com/mixed/avantage_origin",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Avantage to load",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('right')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('enter')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        }
-    ],
-    "trajectory": "trajectories/mixed/avantage_origin/",
-    "related_apps": [
-        "Avantage",
-        "Origin"
-    ],
-    "max_steps": 20,
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png"
-            },
-            {
-                "type": "validate_image_with_model",
-                "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png",
-                "description": "The image is an XPS C1s spectrum. The x-axis represents Binding Energy (eV) and the y-axis represents Counts (s). A Shirley background baseline is present and a reference peak is visible near 284.8 eV."
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "c949b96c-4d66-4671-910b-29013a96578c-wos",
+  "snapshot": "avantage_origin_lab",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', add a Shirley baseline and lock it, add a reference peak and adjust it to 284.8 eV, and export the report to an Excel file. Then open Origin, import the Binding Energy (eV) and Counts (s) data from the exported Excel file, plot an XPS spectrum curve using default parameters, and save the figure to 'C:\\Users\\Docker\\Desktop\\avantage.png'.",
+  "source": "https://www.example.com/mixed/avantage_origin",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Avantage to load",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('right')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('enter')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
     }
+  ],
+  "trajectory": "trajectories/mixed/avantage_origin/",
+  "related_apps": [
+    "Avantage",
+    "Origin"
+  ],
+  "max_steps": 20,
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png"
+      },
+      {
+        "type": "validate_image_with_model",
+        "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png",
+        "description": "The image is an XPS C1s spectrum. The x-axis represents Binding Energy (eV) and the y-axis represents Counts (s). A Shirley background baseline is present and a reference peak is visible near 284.8 eV."
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

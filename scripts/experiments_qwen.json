@@ -1,0 +1,30 @@
+{
+  "experiment_1": {
+    "ci_startup_script_path": "Users/wumei0087/compute-instance-startup.sh",
+    "vm_size": "Standard_D8_V3",
+    "agent": "auto",
+    "datastore_input_path": "storage",
+    "docker_img_name": "mattoolbench/mattoolbench:latest",
+    "exp_name": "Experiment1",
+    "num_workers": 5,
+    "use_managed_identity": false,
+    "json_name": "evaluation_examples_windows/test_all.json",
+    "model_name": "qwen3-vl-235b-a22b-thinking",
+    "som_origin": "no_omni",
+    "observation_type": "screenshot",
+    "a11y_backend": "uia",
+    "origin_mode": "script",
+    "origin_eval_model": "qwen3-vl-235b-a22b-thinking",
+    "compute_instance_names": [
+      "w5Experiment1",
+      "w6Experiment1",
+      "w7Experiment1",
+      "w8Experiment1",
+      "w9Experiment1"
+    ],
+    "max_steps": 15,
+    "temperature": 1.0,
+    "vm_only": false,
+    "_start_time": "2026-03-19 01:15:38"
+  }
+}

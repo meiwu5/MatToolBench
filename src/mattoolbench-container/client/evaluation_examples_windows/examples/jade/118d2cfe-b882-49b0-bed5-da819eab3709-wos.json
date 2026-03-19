@@ -1,107 +1,97 @@
 {
-    "id": "118d2cfe-b882-49b0-bed5-da819eab3709-wos",
-    "snapshot": "jadelab",
-    "instruction": "Use Jade to open the original file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt', perform Whole Pattern Fitting and Rietveld Refinement, then save the output file to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_refine.raw'.",
-    "source": "https:\\www.example.com/software/jade",
-    "config": [
-        {
-            "type": "execute",
-            "note": "Force-kill any previously running Jade instance before launching a new one",
-            "parameters": {
-                "command": [
-                    "taskkill",
-                    "/F",
-                    "/IM",
-                    "jade6.exe",
-                    "/T"
-                ]
-            }
-        },
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Jade to fully load",
-            "parameters": {
-                "seconds": 30
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 5
-            }
-        }
-    ],
-    "trajectory": "trajectories/jade/",
-    "related_apps": [
-        "Jade"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_refine.raw"
-            },
-            {
-                "type": "check_file_opened",
-                "expected_filename": "XRD1.xrdml"
-            },
-            {
-                "type": "check_axis_switch"
-            },
-            {
-                "type": "check_peak_add_two"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "118d2cfe-b882-49b0-bed5-da819eab3709-wos",
+  "snapshot": "jadelab",
+  "instruction": "Use Jade to open the original file 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\WRT-ZSX-5.txt', perform Whole Pattern Fitting and Rietveld Refinement, then save the output file to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_refine.raw'.",
+  "source": "https:\\www.example.com/software/jade",
+  "config": [
+    {
+      "type": "execute",
+      "note": "Force-kill any previously running Jade instance before launching a new one",
+      "parameters": {
+        "command": [
+          "taskkill",
+          "/F",
+          "/IM",
+          "jade6.exe",
+          "/T"
+        ]
+      }
+    },
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Jade to fully load",
+      "parameters": {
+        "seconds": 30
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','r')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 5
+      }
     }
+  ],
+  "trajectory": "trajectories/jade/",
+  "related_apps": [
+    "Jade"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_refine.raw"
+      },
+      {
+        "type": "check_file_opened",
+        "expected_filename": "WRT-ZSX-5.txt"
+      },
+      {
+        "type": "check_wpf_refinement"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

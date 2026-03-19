@@ -61,7 +61,8 @@
                 "type": "check_text_keyword",
                 "keyword": "Hide",
                 "forbidden_keywords": [
-                    "Display Style,Display Options"
+                    "Display Style",
+                    "Display Options"
                 ]
             },
             {

@@ -1,109 +1,111 @@
 {
-    "id": "4574af73-65b8-4ed9-bef2-f696537ab1a2-wos",
-    "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\XPS Survey.VGD', copy the spectrum to window B.",
-    "source": "https:\\www.example.com/software/avantage",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Avantage to load",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('right')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('enter')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        }
-    ],
-    "trajectory": "trajectories/avantage/",
-    "related_apps": [
-        "Avantage"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_multiple_files_imported",
-                "expected_files": [
-                    "Zn2p Scan"
-                ]
-            },
-            {
-                "type": "check_background_added_successfully",
-                "title": "User Backgrounds",
-                "bg_type": "Smart"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "4574af73-65b8-4ed9-bef2-f696537ab1a2-wos",
+  "snapshot": "avantagelab",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\XPS Survey.VGD', copy the spectrum to window B.",
+  "source": "https:\\www.example.com/software/avantage",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Avantage to load",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('right')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('enter')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
     }
+  ],
+  "trajectory": "trajectories/avantage/",
+  "related_apps": [
+    "Avantage"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_multiple_files_imported",
+        "expected_files": [
+          "XPS Survey"
+        ]
+      },
+      {
+        "type": "check_duplicate_files_imported",
+        "expected_files": [
+          "XPS Survey",
+          "XPS Survey"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

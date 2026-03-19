@@ -1,138 +1,120 @@
 {
-    "id": "8466aca1-46a4-4527-93ce-0c91cba94b68-wos",
-    "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', perform automatic peak fitting and accept the results, then export the fitting parameter table to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls'.",
-    "source": "https:\\www.example.com/software/avantage",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Avantage to load",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('right')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.press('enter')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 2
-            }
-        }
-    ],
-    "trajectory": "trajectories/avantage/",
-    "related_apps": [
-        "Avantage"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls"
-            },
-            {
-                "type": "check_multiple_files_imported",
-                "expected_files": [
-                    "O1s Scan"
-                ]
-            },
-            {
-                "type": "check_dialog_exists",
-                "dialog_title": "Charge Shift",
-                "region": "40% on the left"
-            },
-            {
-                "type": "check_dialog_parameter",
-                "dialog_title": "Charge Shift",
-                "parameter_name": [
-                    "Shift By"
-                ],
-                "expected_value": [
-                    "0.14"
-                ],
-                "region": "40% on the left"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "8466aca1-46a4-4527-93ce-0c91cba94b68-wos",
+  "snapshot": "avantagelab",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', perform automatic peak fitting and accept the results, then export the fitting parameter table to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls'.",
+  "source": "https:\\www.example.com/software/avantage",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Avantage to load",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('right')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.press('enter')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 2
+      }
     }
+  ],
+  "trajectory": "trajectories/avantage/",
+  "related_apps": [
+    "Avantage"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls"
+      },
+      {
+        "type": "check_multiple_files_imported",
+        "expected_files": [
+          "Zn2p Scan"
+        ]
+      },
+      {
+        "type": "check_dialog_exists",
+        "dialog_title": "Peak Fitting",
+        "region": "20% on the left"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

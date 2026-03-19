@@ -1,45 +1,45 @@
 {
-    "id": "4b515a3e-3267-490d-91ca-a7f950fea613-wos",
-    "snapshot": "ms_vesta_lab",
-    "instruction": "Open Materials Studio and create a new polyethylene chain with 5 repeating units (chain length 5). Build a crystal structure using default parameters. Export the crystal structure as a CIF file to the desktop. Then open the exported CIF file in VESTA, rotate the crystal to the standard crystallographic orientation, and adjust the fractional coordinate display range so that x(max), y(max), and z(max) are all set to 0.1. Save the resulting VESTA file to the desktop as 'polyethylene_crystal.vesta'.",
-    "source": "https://www.example.com/mixed/ms_vesta",
-    "config": [],
-    "trajectory": "trajectories/mixed/ms_vesta/",
-    "related_apps": [
-        "Materials Studio",
-        "Vesta"
+  "id": "4b515a3e-3267-490d-91ca-a7f950fea613-wos",
+  "snapshot": "ms_vesta_lab",
+  "instruction": "Open Materials Studio and create a new polyethylene chain with 5 repeating units (chain length 5). Build a crystal structure using default parameters. Export the crystal structure as a CIF file to the desktop. Then open the exported CIF file in VESTA, rotate the crystal to the standard crystallographic orientation, and adjust the fractional coordinate display range so that x(max), y(max), and z(max) are all set to 0.1. Save the resulting VESTA file to 'C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta'.",
+  "source": "https://www.example.com/mixed/ms_vesta",
+  "config": [],
+  "trajectory": "trajectories/mixed/ms_vesta/",
+  "related_apps": [
+    "Materials Studio",
+    "Vesta"
+  ],
+  "max_steps": 25,
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match"
     ],
-    "max_steps": 25,
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta"
-            },
-            {
-                "type": "validate_file_with_model",
-                "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta",
-                "description": "The VESTA file contains a polyethylene crystal structure built from a chain of 5 ethylene repeating units. The fractional coordinate range boundary values x(max), y(max), and z(max) should all be set to 0.1 in the VESTA file's BOUND section. The file should be a valid VESTA format."
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
-    }
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta"
+      },
+      {
+        "type": "validate_file_with_model",
+        "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta",
+        "description": "The VESTA file contains a polyethylene crystal structure built from a chain of 5 ethylene repeating units. The fractional coordinate range boundary values x(max), y(max), and z(max) should all be set to 0.1 in the VESTA file's BOUND section. The file should be a valid VESTA format."
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }

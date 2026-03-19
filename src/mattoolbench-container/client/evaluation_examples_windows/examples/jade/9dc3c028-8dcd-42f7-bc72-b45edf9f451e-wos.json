@@ -69,7 +69,7 @@
                 "expected_filename": "WRT-ZSX-5.txt"
             },
             {
-                "type": "check_wpf_refinement"
+                "type": "check_peak_finding"
             }
         ],
         "expected": [

@@ -69,7 +69,8 @@
                 "expected_filename": "WRT-ZSX-5.txt"
             },
             {
-                "type": "check_peak_finding"
+                "type": "check_dialog_title",
+            "title": "Calculate d-Spacing & Miller Indices"
             }
         ],
         "expected": [

@@ -14,7 +14,6 @@ import time
 import argparse
 import logging
 from pathlib import Path
-from datetime import datetime
 
 from azureml.core import Workspace, Datastore
 from azureml.core.authentication import AzureCliAuthentication
@@ -65,13 +64,9 @@ def sync_once(ws, local_dir: Path, exp_filter: str = None):
 
         local_path = local_dir / rel_path
 
-        # skip if local file is already up-to-date
+        # skip if local file already exists
         if local_path.exists():
-            local_mtime = datetime.utcfromtimestamp(local_path.stat().st_mtime)
-            # blob.last_modified is timezone-aware; make naive for comparison
-            blob_mtime = blob.last_modified.replace(tzinfo=None)
-            if local_mtime >= blob_mtime and local_path.stat().st_size == blob.size:
-                continue
+            continue
 
         # If any ancestor path is a file (stale placeholder), remove it
         for parent in reversed(local_path.parents):

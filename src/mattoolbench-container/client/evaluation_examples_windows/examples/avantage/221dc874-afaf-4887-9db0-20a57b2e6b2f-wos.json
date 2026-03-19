@@ -1,7 +1,7 @@
 {
     "id": "221dc874-afaf-4887-9db0-20a57b2e6b2f-wos",
     "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\Avantage\\O1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\Avantage\\Survey Scan.VGD', intelligently add peak background in C1s and fit the C–C peak, then apply charge compensation shift of +1360 eV to all spectra in the active documents, and save the full corrected set to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp'.",
+    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Survey Scan.VGD', intelligently add peak background in C1s and fit the C\u2013C peak, then apply charge compensation shift of +360 eV to all spectra in the active documents, and save the full corrected set to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp'.",
     "source": "https:\\www.example.com/software/avantage",
     "config": [
         {
@@ -73,16 +73,92 @@
         "Avantage"
     ],
     "evaluator": {
-        "func": "exact_match",
-        "result": {
-            "type": "file_exists",
-            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp"
-        },
-        "expected": {
-            "type": "rule",
-            "rules": {
-                "expected": true
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
+        ],
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp"
+            },
+            {
+                "type": "check_multiple_files_imported",
+                "expected_files": [
+                    "C1s Scan",
+                    "O1s Scan",
+                    "Survey Scan"
+                ]
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Peak Add",
+                "region": "40% on the left"
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Peak Fitting",
+                "region": "40% on the left"
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Charge Shift",
+                "region": "40% on the left"
+            },
+            {
+                "type": "check_dialog_parameter",
+                "dialog_title": "Charge Shift",
+                "parameter_name": [
+                    "Shift By"
+                ],
+                "expected_value": [
+                    "360"
+                ],
+                "region": "40% on the left"
             }
-        }
+        ],
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
     }
 }

@@ -1,116 +1,117 @@
 {
-    "id": "42b2ca4e-1001-4a90-a4ad-e36a091d226d-wos",
-    "snapshot": "vestalab",
-    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-804_GaN.cif', set display style to Polyhedral, toggle coordinate axes, set Polyhedral style to the fourth option, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaN_pol.vesta'.",
-    "source": "https:\\www.example.com/software/vesta",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for VESTA to fully load",
-            "parameters": {
-                "seconds": 20
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 3
-            }
-        }
-    ],
-    "trajectory": "trajectories/vesta/",
-    "related_apps": [
-        "Vesta"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Desktop\\setup\\output_result\\vesta\\GaN_pol.vesta"
-            },
-            {
-                "type": "check_file_opened",
-                "expected_filename": "mp-804_GaN.cif"
-            },
-            {
-                "type": "check_style_change",
-                "target_style": "Polyhedral"
-            },
-            {
-                "type": "check_axes_toggle"
-            },
-            {
-                "type": "check_file_opened",
-                "title_keyword": "Properties"
-            },
-            {
-                "type": "check_polyhedral_style",
-                "style_number": 4
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "42b2ca4e-1001-4a90-a4ad-e36a091d226d-wos",
+  "snapshot": "vestalab",
+  "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-804_GaN.cif', set display style to Polyhedral, toggle coordinate axes, set Polyhedral style to the fourth option, then save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaN_pol.vesta'.",
+  "source": "https:\\www.example.com/software/vesta",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for VESTA to fully load",
+      "parameters": {
+        "seconds": 20
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 3
+      }
     }
+  ],
+  "trajectory": "trajectories/vesta/",
+  "related_apps": [
+    "Vesta"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\GaN_pol.vesta"
+      },
+      {
+        "type": "check_file_opened",
+        "expected_filename": "mp-804_GaN.cif"
+      },
+      {
+        "type": "check_style_change",
+        "target_style": "Polyhedral"
+      },
+      {
+        "type": "check_axes_toggle"
+      },
+      {
+        "type": "check_file_opened",
+        "title_keyword": "Properties"
+      },
+      {
+        "type": "check_polyhedral_style",
+        "style_number": 4
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  }
 }
