@@ -576,11 +576,12 @@ computer.window_manager.switch_to_application("window_name")
 - **Peak fitting**: under the Processing menu.
 
 ## Origin (data analysis / plotting)
-- **Initial state**: The target .opju file is ALREADY OPEN and Code Builder is ALREADY OPEN (Alt+4 was pre-pressed). Do NOT try to open the file or reopen Code Builder — go straight to pasting and running the script.
+- **Initial state**: The target .opju file is ALREADY OPEN and Code Builder is ALREADY OPEN (Alt+4 was pre-pressed). Do NOT try to open the file or reopen Code Builder — go straight to entering and running the script.
 - **If Code Builder was accidentally closed**: press Alt+4 to reopen.
-- **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script; Ctrl+A then Ctrl+V = replace all code in editor.
-- **Before pasting**: click inside the Code Builder editor area to ensure focus, then Ctrl+A to select all existing code, Ctrl+V to paste new code.
-- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file, then paste the script.
+- **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
+- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
+- **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
+- **NEVER open Command Prompt, PowerShell, or any terminal to run the script** — code must always be entered into Code Builder and executed with F5 inside Origin.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -681,11 +682,12 @@ computer.window_manager.switch_to_application("window_name")
 - **Peak fitting**: under the Processing menu.
 
 ## Origin (data analysis / plotting)
-- **Initial state**: The target .opju file is ALREADY OPEN and Code Builder is ALREADY OPEN (Alt+4 was pre-pressed). Do NOT try to open the file or reopen Code Builder — go straight to pasting and running the script.
+- **Initial state**: The target .opju file is ALREADY OPEN and Code Builder is ALREADY OPEN (Alt+4 was pre-pressed). Do NOT try to open the file or reopen Code Builder — go straight to entering and running the script.
 - **If Code Builder was accidentally closed**: press Alt+4 to reopen.
-- **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script; Ctrl+A then Ctrl+V = replace all code in editor.
-- **Before pasting**: click inside the Code Builder editor area to ensure focus, then Ctrl+A to select all existing code, Ctrl+V to paste new code.
-- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file, then paste the script.
+- **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
+- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
+- **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
+- **NEVER open Command Prompt, PowerShell, or any terminal to run the script** — code must always be entered into Code Builder and executed with F5 inside Origin.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -726,7 +728,7 @@ Your job is to:
 2. Adapt ONLY the user-configurable parameters at the top of the script (variable names, sheet names,
    labels, colors, save path, etc.) to match the task.
 3. Keep the plotting/analysis logic unchanged.
-4. Paste the adapted script into Origin's Code Builder and run it with F5.
+4. Type the adapted script into Origin's Code Builder via `computer.keyboard.write(...)` and run it with F5.
 
 ```python
 {script_content}
@@ -749,11 +751,12 @@ The standard workflow for each task is:
    - Check the window title and screen content to confirm Code Builder appeared.
    - If a dialog box appears (e.g., "Save changes?", "Unsaved script"), handle it first.
    - If Code Builder has no editable file tab, press Ctrl+N to create a new Python file.
-3. **Write and input the code** — use the template script (if provided) as a reference. Compose
-   the complete adapted Python script yourself, tailored to the task parameters. Then use
-   `computer.clipboard.copy_text("...full script...")` to load it into the clipboard, click inside
-   the Code Builder editor area, select all (Ctrl+A), and paste (Ctrl+V).
-4. **Run the script** — press F5 to execute. Watch for error dialogs or Python console output.
+3. **Enter the code** — click inside the Code Builder editor area to ensure focus. Press Ctrl+A
+   to select all existing code, then Delete to clear it. Then use
+   `computer.keyboard.write("...full script...")` to type the complete adapted script directly
+   into the editor. Do NOT use clipboard paste, and do NOT open any terminal or command window.
+4. **Run the script** — press F5 to execute inside Code Builder. Watch for error dialogs or
+   Python console output. NEVER run code via Command Prompt, PowerShell, or any terminal.
 5. **Verify output** — confirm the output file was saved at the correct path. If an error occurred,
    read the error message from the screen and fix the script accordingly.
 6. **Mark DONE** — only after visually confirming the output file exists and looks correct.
@@ -764,7 +767,8 @@ The standard workflow for each task is:
 - **Is there a blocking dialog?** (e.g., error popup, save dialog, import wizard)
   If yes: dismiss it first (click OK/Cancel/close button) before proceeding.
 - **Did F5 run successfully?** Look for no error dialogs and check that the output file exists.
-  If errors appear: read them from the screen, fix the script, re-copy to clipboard, re-paste, and re-run.
+  If errors appear: read them from the screen, fix the script, clear the editor (Ctrl+A → Delete),
+  re-type the corrected script with `computer.keyboard.write(...)`, and press F5 again.
 - **Is the correct worksheet active?** The script reads from `op.find_sheet()`.
   If multiple sheets exist, click the correct sheet tab before running the script.
 
@@ -828,11 +832,13 @@ computer.window_manager.switch_to_application("window_name")
 - **NEVER pass pixel values** (e.g. x=620, x=75, x=316) — this will crash the action.
 
 # Origin-specific tips
-- **Alt+4** opens the Code Builder. Confirm it is open before inputting code.
+- **Alt+4** opens the Code Builder. Confirm it is open before entering code.
 - **F5** runs the script in Code Builder. Watch the output/console area for errors.
-- To input code: use `computer.clipboard.copy_text("...script...")` to load the script into the clipboard, click inside the Code Builder editor area, Ctrl+A to select all, then Ctrl+V to paste.
-- Click the Code Builder editor area before pasting to ensure focus is correct.
-- If Code Builder shows a "modified" indicator (*), clear it with Ctrl+A → Delete before pasting.
+- **How to enter code**: click inside the Code Builder editor area to focus it, press Ctrl+A to
+  select all existing code, press Delete to clear, then use `computer.keyboard.write("...script...")`
+  to type the script directly into the editor.
+- **NEVER open Command Prompt, PowerShell, or any terminal** to run Python scripts — always use
+  Code Builder + F5 inside Origin.
 - **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
 - Use the Script Window (Window → Script Window) for short LabTalk commands if needed.
 - The active worksheet is accessed via `op.find_sheet()` in the Python script.
@@ -853,7 +859,7 @@ Your job is to:
 1. Read the task objective carefully.
 2. Adapt ONLY the user-configurable parameters at the top of the script.
 3. Keep the plotting/analysis logic unchanged.
-4. Paste the adapted script into Origin's Code Builder and run it with F5.
+4. Type the adapted script into Origin's Code Builder via `computer.keyboard.write(...)` and run it with F5.
 
 ```python
 {script_content}
@@ -871,11 +877,13 @@ The relevant application(s) for this task: {apps_str}.
 
 # Core workflow
 1. Verify which window or dialog is active from the raw screenshot.
-2. Open Code Builder if needed, usually with Alt+4.
-3. Paste the script into the Code Builder editor.
-4. Run the script with F5.
-5. Inspect the raw screenshot for success, dialogs, or errors.
-6. Mark DONE only after visually confirming the result.
+2. Open Code Builder if needed, usually with Alt+4. If no editable file tab, press Ctrl+N.
+3. Click inside the Code Builder editor area to focus it, press Ctrl+A, then Delete to clear.
+4. Use `computer.keyboard.write("...full script...")` to type the script into the editor.
+   **NEVER open Command Prompt, PowerShell, or any terminal to run the code.**
+5. Press F5 to run the script inside Code Builder.
+6. Inspect the raw screenshot for success, dialogs, or errors.
+7. Mark DONE only after visually confirming the result.
 
 Guidelines:
 1. Execute ONE coherent GUI interaction per step.
