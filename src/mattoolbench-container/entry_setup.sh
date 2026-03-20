@@ -53,3 +53,27 @@ while true; do
 done
 
 echo "VM is up and running, and the Windows Arena Server is ready to use!"
+
+# ---------------------------------------------------------------------------
+# Inject proxy environment variables into the running Windows VM so that
+# Python scripts (mp_api, requests, urllib) route HTTPS traffic through
+# tinyproxy running in this container.
+# Uses 'setx' (user-level, no admin needed) so all new child processes
+# spawned by the Flask server will inherit the proxy settings.
+# ---------------------------------------------------------------------------
+PROXY_ADDR="http://20.20.20.1:${TINYPROXY_PORT}"
+VM_API="http://20.20.20.21:5000/setup/execute"
+
+for VAR in HTTPS_PROXY HTTP_PROXY https_proxy http_proxy; do
+    curl -s -X POST "${VM_API}" \
+        -H "Content-Type: application/json" \
+        -d "{\"command\": [\"setx\", \"${VAR}\", \"${PROXY_ADDR}\"], \"shell\": false}" \
+        > /dev/null
+done
+# Bypass proxy for local addresses
+curl -s -X POST "${VM_API}" \
+    -H "Content-Type: application/json" \
+    -d '{"command": ["setx", "NO_PROXY", "localhost,127.0.0.1,20.20.20.1"], "shell": false}' \
+    > /dev/null
+
+echo "Proxy env vars injected into VM: ${PROXY_ADDR}"
