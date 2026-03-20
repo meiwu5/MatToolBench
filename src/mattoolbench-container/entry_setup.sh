@@ -77,3 +77,28 @@ curl -s -X POST "${VM_API}" \
     > /dev/null
 
 echo "Proxy env vars injected into VM: ${PROXY_ADDR}"
+
+# ---------------------------------------------------------------------------
+# Proxy self-test: verify tinyproxy is reachable and the VM can access the internet
+# ---------------------------------------------------------------------------
+echo "=== Proxy self-test ==="
+# 1. Container side: tinyproxy itself can reach the internet
+echo -n "[container→internet] api.materialsproject.org: "
+curl -s --proxy "http://127.0.0.1:${TINYPROXY_PORT}" --connect-timeout 10 \
+    -o /dev/null -w "%{http_code}" https://api.materialsproject.org/heartbeat \
+    && echo "" || echo "FAIL"
+
+# 2. VM side: check HTTPS_PROXY was set
+echo -n "[VM] HTTPS_PROXY value: "
+curl -s -X POST "${VM_API}" \
+    -H "Content-Type: application/json" \
+    -d '{"command": ["cmd", "/c", "echo %HTTPS_PROXY%"], "shell": false}' \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('output','').strip())"
+
+# 3. VM side: Python requests via proxy
+echo -n "[VM→proxy→internet] Python requests test: "
+curl -s -X POST "${VM_API}" \
+    -H "Content-Type: application/json" \
+    -d '{"command": ["python", "-c", "import requests; r=requests.get(\"https://api.materialsproject.org/heartbeat\", timeout=15); print(r.status_code)"], "shell": false}' \
+    | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('output','').strip() or d.get('error','').strip()[:80])"
+echo "=== End proxy self-test ==="
