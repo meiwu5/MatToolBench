@@ -581,7 +581,6 @@ computer.window_manager.switch_to_application("window_name")
 - **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
 - **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
 - **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
-- **NEVER open Command Prompt, PowerShell, or any terminal to run the script** — code must always be entered into Code Builder and executed with F5 inside Origin.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -687,7 +686,6 @@ computer.window_manager.switch_to_application("window_name")
 - **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
 - **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
 - **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
-- **NEVER open Command Prompt, PowerShell, or any terminal to run the script** — code must always be entered into Code Builder and executed with F5 inside Origin.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -754,9 +752,9 @@ The standard workflow for each task is:
 3. **Enter the code** — click inside the Code Builder editor area to ensure focus. Press Ctrl+A
    to select all existing code, then Delete to clear it. Then use
    `computer.keyboard.write("...full script...")` to type the complete adapted script directly
-   into the editor. Do NOT use clipboard paste, and do NOT open any terminal or command window.
+   into the editor.
 4. **Run the script** — press F5 to execute inside Code Builder. Watch for error dialogs or
-   Python console output. NEVER run code via Command Prompt, PowerShell, or any terminal.
+   Python console output.
 5. **Verify output** — confirm the output file was saved at the correct path. If an error occurred,
    read the error message from the screen and fix the script accordingly.
 6. **Mark DONE** — only after visually confirming the output file exists and looks correct.
@@ -837,8 +835,6 @@ computer.window_manager.switch_to_application("window_name")
 - **How to enter code**: click inside the Code Builder editor area to focus it, press Ctrl+A to
   select all existing code, press Delete to clear, then use `computer.keyboard.write("...script...")`
   to type the script directly into the editor.
-- **NEVER open Command Prompt, PowerShell, or any terminal** to run Python scripts — always use
-  Code Builder + F5 inside Origin.
 - **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
 - Use the Script Window (Window → Script Window) for short LabTalk commands if needed.
 - The active worksheet is accessed via `op.find_sheet()` in the Python script.
@@ -880,7 +876,6 @@ The relevant application(s) for this task: {apps_str}.
 2. Open Code Builder if needed, usually with Alt+4. If no editable file tab, press Ctrl+N.
 3. Click inside the Code Builder editor area to focus it, press Ctrl+A, then Delete to clear.
 4. Use `computer.keyboard.write("...full script...")` to type the script into the editor.
-   **NEVER open Command Prompt, PowerShell, or any terminal to run the code.**
 5. Press F5 to run the script inside Code Builder.
 6. Inspect the raw screenshot for success, dialogs, or errors.
 7. Mark DONE only after visually confirming the result.
