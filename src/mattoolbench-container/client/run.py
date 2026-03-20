@@ -164,7 +164,7 @@ def config() -> argparse.Namespace:
         help="Observation type. Use 'a11y_tree' only when som_origin=a11y/mixed/mixed-oss/mixed-omni.",
     )
     parser.add_argument("--screen_width", type=int, default=1920)
-    parser.add_argument("--screen_height", type=int, default=1200)
+    parser.add_argument("--screen_height", type=int, default=1080)
     parser.add_argument("--sleep_after_execution", type=float, default=3)
     parser.add_argument("--max_steps", type=int, default=50)
     parser.add_argument("--a11y_backend", type=str, default="uia") # "uia" or "win32"
@@ -426,6 +426,7 @@ def test(
                     break
                 # Write error details to traj.jsonl
                 try:
+                    os.makedirs(example_result_dir, exist_ok=True)
                     with open(os.path.join(example_result_dir, "traj.jsonl"), "a") as f:
                         f.write(json.dumps({
                             "Error": f"Exception in {domain}/{example_id}",
@@ -521,10 +522,13 @@ def get_unfinished(action_space, use_model, observation_type, result_dir, trial_
                         # empty all files and dirs under example_id
                         for file in os.listdir(example_path):
                             out_path = os.path.join(example_path, file)
-                            if os.path.isdir(out_path):
-                                shutil.rmtree(out_path)
-                            else:
-                                os.remove(out_path)
+                            try:
+                                if os.path.isdir(out_path):
+                                    shutil.rmtree(out_path)
+                                else:
+                                    os.remove(out_path)
+                            except FileNotFoundError:
+                                pass  # already deleted by another process
                     else:
                         finished[domain].append(example_id)
 

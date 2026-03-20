@@ -33,6 +33,7 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     build-essential \
     tesseract-ocr \
+    tinyproxy \
     && rm -rf /var/lib/apt/lists/*
 
 # OPTIONAL: Copy CUDA libraries and binaries from CUDA stage

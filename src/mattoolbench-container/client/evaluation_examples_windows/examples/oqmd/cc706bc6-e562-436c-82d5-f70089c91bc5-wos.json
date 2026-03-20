@@ -1,27 +1,27 @@
 {
-    "id": "cc706bc6-e562-436c-82d5-f70089c91bc5-wos",
-    "snapshot": "oqmdlab",
-    "instruction": "Query the OQMD database for the first SiO2 entry (element_set=Si,O AND ntypes=2), extract its name/composition/delta_e/stability/spacegroup, and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_4.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-    "source": "https://oqmd.org/",
-    "_comments": "OQMD REST API task",
-    "config": [],
-    "trajectory": "trajectories\\oqmd\\",
-    "related_apps": [
-        "OQMD",
-        "Python"
-    ],
-    "max_steps": 8,
-    "evaluator": {
-        "func": "detect_file_match",
-        "result": {
-            "type": "vm_file",
-            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_4.txt",
-            "dest": "oqmd_task_4.txt"
-        },
-        "expected": {
-            "type": "vm_file",
-            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_4.txt",
-            "dest": "oqmd_task_4_right.txt"
-        }
+  "id": "cc706bc6-e562-436c-82d5-f70089c91bc5-wos",
+  "snapshot": "oqmdlab",
+  "instruction": "Query the OQMD database for the first SiO2 entry (element_set=Si,O AND ntypes=2), extract its name/composition/delta_e/stability/spacegroup, and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_4.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+  "source": "https://oqmd.org/",
+  "_comments": "OQMD REST API task",
+  "config": [],
+  "trajectory": "trajectories\\oqmd\\",
+  "related_apps": [
+    "OQMD",
+    "Python"
+  ],
+  "max_steps": 8,
+  "evaluator": {
+    "func": "detect_kv_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_4.txt",
+      "dest": "oqmd_task_4.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_4.txt",
+      "dest": "oqmd_task_4_right.txt"
     }
+  }
 }

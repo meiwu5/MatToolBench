@@ -4,7 +4,24 @@
   "instruction": "Use mp_api to get the phonon born effective charges (born) of mp-2490, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_19.txt.",
   "source": "https:\\materialsproject.org/",
   "_comments": "comments_placeholder",
-  "config": [],
+  "config": [
+    {
+      "type": "command",
+      "parameters": {
+        "command": [
+          "C:\\Users\\Docker\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-m",
+          "pip",
+          "install",
+          "--quiet",
+          "--disable-pip-version-check",
+          "mp-api==0.39.5",
+          "emmet-core==0.78.7"
+        ],
+        "shell": false
+      }
+    }
+  ],
   "trajectory": "trajectories\\materialproject\\",
   "related_apps": [
     "MaterialProject",

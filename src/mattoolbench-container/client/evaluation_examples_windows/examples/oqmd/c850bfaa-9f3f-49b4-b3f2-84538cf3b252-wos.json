@@ -1,27 +1,27 @@
 {
-    "id": "c850bfaa-9f3f-49b4-b3f2-84538cf3b252-wos",
-    "snapshot": "oqmdlab",
-    "instruction": "Query the OQMD database for Al-O compounds with volume between 8 and 12 A^3/atom (element_set=Al,O AND volume>8 AND volume<12), save the count and first result to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_14.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-    "source": "https://oqmd.org/",
-    "_comments": "OQMD REST API task",
-    "config": [],
-    "trajectory": "trajectories\\oqmd\\",
-    "related_apps": [
-        "OQMD",
-        "Python"
-    ],
-    "max_steps": 13,
-    "evaluator": {
-        "func": "detect_file_match",
-        "result": {
-            "type": "vm_file",
-            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_14.txt",
-            "dest": "oqmd_task_14.txt"
-        },
-        "expected": {
-            "type": "vm_file",
-            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_14.txt",
-            "dest": "oqmd_task_14_right.txt"
-        }
+  "id": "c850bfaa-9f3f-49b4-b3f2-84538cf3b252-wos",
+  "snapshot": "oqmdlab",
+  "instruction": "Query the OQMD database for Al-O compounds with volume between 8 and 12 A^3/atom (element_set=Al,O AND volume>8 AND volume<12), save the count and first result to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_14.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+  "source": "https://oqmd.org/",
+  "_comments": "OQMD REST API task",
+  "config": [],
+  "trajectory": "trajectories\\oqmd\\",
+  "related_apps": [
+    "OQMD",
+    "Python"
+  ],
+  "max_steps": 13,
+  "evaluator": {
+    "func": "detect_kv_match",
+    "result": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_14.txt",
+      "dest": "oqmd_task_14.txt"
+    },
+    "expected": {
+      "type": "vm_file",
+      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_14.txt",
+      "dest": "oqmd_task_14_right.txt"
     }
+  }
 }

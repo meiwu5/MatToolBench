@@ -96,6 +96,121 @@ def detect_file_match(result_path: str, gold_path: str, **options) -> float:
         except Exception:
             return 0.0
 
+def detect_kv_match(result_path: str, gold_path: str, **options) -> float:
+    """
+    Flexible evaluation for API-query tasks (OQMD, MP, OPTIMADE).
+
+    Extracts key-value pairs from both files and compares them by key name.
+    Tolerant of formatting differences (spacing, units, output order).
+    For numeric values, uses relative tolerance (default 0.1%).
+    For string values (names, spacegroups), uses exact case-insensitive match.
+
+    Score = (number of matching reference keys) / (total reference keys)
+
+    Supported value formats in the reference file:
+      - "key:   value [unit]"       e.g. "delta_e:  -0.935 eV/atom"
+      - "key=value"                 e.g. "delta_e=-0.935"
+      - "Total X: N" / "count: N"  treated as key "total"
+      - Bare integers/floats on their own line
+    """
+    if not result_path or not gold_path:
+        return 0.0
+    if not os.path.isfile(result_path) or not os.path.isfile(gold_path):
+        return 0.0
+
+    rtol = options.get("rtol", 1e-3)   # relative tolerance (0.1%)
+    atol = options.get("atol", 1e-9)   # absolute tolerance for near-zero values
+
+    _NUM_RE = re.compile(r"^(-?\d+\.?\d*(?:[eE][+-]?\d+)?)")
+
+    def _parse_number(s: str):
+        """Return float if string starts with a number, else None."""
+        m = _NUM_RE.match(s.strip())
+        return float(m.group(1)) if m else None
+
+    def _nums_close(a: float, b: float) -> bool:
+        if abs(b) > atol:
+            return abs(a - b) / abs(b) <= rtol
+        return abs(a - b) <= atol
+
+    def _extract_kv(path: str) -> dict:
+        """Parse a text file into {normalised_key: raw_value_str} dict."""
+        kv = {}
+
+        def _add_colon_segment(segment: str) -> None:
+            """Parse one 'key: value' segment and add to kv."""
+            segment = segment.strip()
+            if not segment:
+                return
+            m_total = re.match(r"(?:total|count)\b.*?:\s*(.+)", segment, re.IGNORECASE)
+            if m_total:
+                kv["total"] = m_total.group(1).strip()
+                return
+            m_colon = re.match(r"^\s*([A-Za-z_][A-Za-z0-9_ /]*?)\s*:\s*(.+)", segment)
+            if m_colon:
+                k = m_colon.group(1).strip().lower().replace(" ", "_")
+                v = m_colon.group(2).strip()
+                kv[k] = v
+                return
+            m_eq = re.match(r"^\s*([A-Za-z_]\w*)\s*=\s*(.+)", segment)
+            if m_eq:
+                k = m_eq.group(1).strip().lower()
+                v = m_eq.group(2).strip()
+                kv[k] = v
+
+        with open(path, "r", encoding="utf-8", errors="ignore") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                # Split semicolon-separated pairs on the same line
+                # e.g. "a: 3.172; b: 3.172" or "band_gap: 3.43; is_hubbard: false"
+                # Only split if each segment looks like "key: value"
+                segments = line.split(";")
+                if len(segments) > 1 and all(re.match(r"\s*[A-Za-z_]", s) for s in segments):
+                    for seg in segments:
+                        _add_colon_segment(seg)
+                else:
+                    _add_colon_segment(line)
+        return kv
+
+    try:
+        gold_kv   = _extract_kv(gold_path)
+        result_kv = _extract_kv(result_path)
+
+        if not gold_kv:
+            return 0.0
+
+        matched = 0
+        for key, gold_val in gold_kv.items():
+            res_val = result_kv.get(key)
+            if res_val is None:
+                # try partial key match (e.g. "band_gap" vs "band_gap ")
+                for rk, rv in result_kv.items():
+                    if key in rk or rk in key:
+                        res_val = rv
+                        break
+            if res_val is None:
+                continue
+
+            # Strip unit suffix for comparison  (e.g. "11.7266 A^3/atom" → "11.7266")
+            gold_num = _parse_number(gold_val)
+            res_num  = _parse_number(res_val)
+
+            if gold_num is not None and res_num is not None:
+                if _nums_close(res_num, gold_num):
+                    matched += 1
+            else:
+                # String comparison (spacegroup, name, etc.)
+                if gold_val.lower().strip() == res_val.lower().strip():
+                    matched += 1
+
+        return matched / len(gold_kv)
+
+    except Exception:
+        return 0.0
+
+
 def literal_match(result: Any, expected: Any, **options) -> float:
     literal_type = options.get('type', 'str')
     if literal_type == 'str':
