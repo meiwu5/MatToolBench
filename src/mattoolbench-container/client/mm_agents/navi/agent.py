@@ -105,7 +105,7 @@ class NaviAgent:
 
         # hard-coded params
         device = "cpu"
-        self.h, self.w = 1200, 1920 
+        self.h, self.w = 1080, 1920 
         
         if som_origin in ["oss", "mixed-oss"]: # oss extractor
             from mm_agents.navi.screenparsing_oss.parser import ScreenParser

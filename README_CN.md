@@ -171,11 +171,15 @@ pip install -r requirements.txt
     "OPENAI_API_KEY": "<your-openai-key>",
     "OPENAI_ENDPOINT": "https://api.openai.com/v1",
     "AZURE_API_KEY": "<your-azure-openai-key>",
-    "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/"
+    "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/",
+
+    "MP_API_KEY": "<your-materials-project-api-key>"
 }
 ```
 
 > OpenAI 和 Azure OpenAI 二选一即可，脚本会自动检测。两者均未填写时会报错退出。
+
+> **`MP_API_KEY`** 是运行 **Code 类任务**中 [Materials Project](https://materialsproject.org) 数据库查询（`mp` 和 `optimade` 领域）的必填项。请前往 [materialsproject.org/dashboard](https://materialsproject.org/dashboard) 获取 API Key。未填写时，相关任务会报认证错误。`OQMD` 和 `pymatgen` 任务无需此 Key。
 
 ### 2. 构建 Docker 镜像
 
@@ -408,6 +412,8 @@ Azure 部署支持**两种模式**：
     "AZURE_API_KEY": "<your-azure-openai-key>",
     "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/",
 
+    "MP_API_KEY": "<your-materials-project-api-key>",
+
     "AZURE_SUBSCRIPTION_ID": "<your-subscription-id>",
     "AZURE_ML_RESOURCE_GROUP": "<your-resource-group>",
     "AZURE_ML_WORKSPACE_NAME": "<your-workspace-name>",
@@ -416,7 +422,13 @@ Azure 部署支持**两种模式**：
 }
 ```
 
-`AZURE_INSTANCE_IPS` 仅在 VM-only 模式下使用（见第六步），全云模式填空列表即可。
+| 字段 | 是否必填 | 说明 |
+|------|----------|------|
+| `OPENAI_API_KEY` + `OPENAI_ENDPOINT` | LLM 二选一 | OpenAI 兼容的 API Key 和 Base URL |
+| `AZURE_API_KEY` + `AZURE_ENDPOINT` | LLM 二选一 | Azure OpenAI Key 和端点 |
+| `MP_API_KEY` | `mp` / `optimade` Code 任务必填 | [Materials Project](https://materialsproject.org/dashboard) API Key。CodeAgent 运行时会将其注入生成的脚本中。`oqmd` 和 `pymatgen` 任务无需此 Key。 |
+| `AZURE_SUBSCRIPTION_ID` / `AZURE_ML_RESOURCE_GROUP` / `AZURE_ML_WORKSPACE_NAME` | Azure 云端模式必填 | Azure ML 工作区标识信息 |
+| `AZURE_INSTANCE_IPS` | 仅 VM-only 模式使用 | 各 Compute Instance 的公网 IP；全云模式填 `[]` 即可 |
 
 ---
 
@@ -430,12 +442,13 @@ Windows 11 黄金镜像必须提前上传到 Azure Blob Storage，各 Worker 启
 ```bash
 # 使用 Azure CLI 批量上传
 az storage blob upload-batch \
-    --account-name <your-storage-account> \
-    --destination storage \
-    --source src/mattoolbench-container/vm/storage/
+    --account-name agentsml7737741243 \
+    --destination azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/storage \
+    --source src/mattoolbench-container/vm/storage/ \
+    --account-key "<your-account-key>"
 ```
 
-也可使用 [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) 将 `vm/storage/` 文件夹拖拽上传至名为 `storage` 的容器（与 `datastore_input_path` 默认值对应）。
+也可使用 [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) 将 `vm/storage/` 文件夹拖拽上传至容器 `azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f` 中的 `storage` 路径（与 `datastore_input_path` 默认值对应）。
 
 上传后 Blob 中的预期目录结构：
 ```
@@ -627,9 +640,10 @@ python scripts/show_azure.py \
 
 ```bash
 az storage blob download-batch \
-    --account-name <your-storage-account> \
-    --source agent_outputs/<exp_name> \
-    --destination ./results/
+    --account-name agentsml7737741243 \
+    --source azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/agent_outputs/<exp_name> \
+    --destination ./results/ \
+    --account-key "<your-account-key>"
 ```
 
 ---

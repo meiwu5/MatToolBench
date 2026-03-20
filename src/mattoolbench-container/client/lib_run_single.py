@@ -10,6 +10,22 @@ from trajectory_recorder import TrajectoryRecorder
 
 logger = logging.getLogger("desktopenv.experiment")
 
+
+def _write_with_retry(path: str, content: str, retries: int = 5, delay: float = 0.5) -> None:
+    """Write text to a file, retrying makedirs on Azure Blob Fuse visibility delays."""
+    for attempt in range(retries):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        try:
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+            return
+        except FileNotFoundError:
+            if attempt < retries - 1:
+                time.sleep(delay)
+            else:
+                raise
+
+
 # Open the JSON file
 with open("./settings.json", "r") as file:
     # Load the JSON data from the file
@@ -24,14 +40,17 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
 
     #env.controller.start_recording()
     start_time = datetime.datetime.now()
-    
+
     # Initialize recorder, which will save the trajectory as a JSON & HTML in {example_result_dir}/traj.(jsonl,html)
     recorder = TrajectoryRecorder(example_result_dir)
-    
+
     # Record initial state
     init_timestamp = start_time.strftime("%Y%m%d@%H%M%S")
     recorder.record_init(obs, example, init_timestamp)
-    
+
+    # Collect per-step execution logs for code tasks (appended to eval_detail.json)
+    exec_history = []
+
     while not done and step_idx < max_steps:
         if obs is None:
             logger.error("Observation is None. Waiting a little to do next step.")
@@ -82,6 +101,13 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
                     f"stdout:\n{stdout}\n"
                     f"stderr:\n{stderr}"
                 )
+                # Accumulate for eval_detail.json
+                exec_history.append({
+                    "step": step_idx + 1,
+                    "returncode": returncode,
+                    "stdout": stdout,
+                    "stderr": stderr,
+                })
             
             # Record step data
             recorder.record_step(
@@ -111,8 +137,7 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     # results cannot produce false-positive scores on future runs of the same task.
     env.cleanup_code_outputs()
 
-    with open(os.path.join(example_result_dir, "result.txt"), "w", encoding="utf-8") as f:
-        f.write(f"{result}\n")
+    _write_with_retry(os.path.join(example_result_dir, "result.txt"), f"{result}\n")
 
     # Save detailed evaluation log
     max_score = len(env.metric) if isinstance(env.metric, list) else 1
@@ -127,9 +152,11 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
         "success_rate": success_rate,
         "subtasks": getattr(env, "evaluation_details", {}).get("subtasks", []),
         "timestamp": datetime.datetime.now().isoformat(),
+        # Code-task execution history: one entry per step that ran code
+        "exec_history": exec_history,
     }
-    with open(os.path.join(example_result_dir, "eval_detail.json"), "w", encoding="utf-8") as f:
-        json.dump(eval_log, f, ensure_ascii=False, indent=2)
+    _write_with_retry(os.path.join(example_result_dir, "eval_detail.json"),
+                      json.dumps(eval_log, ensure_ascii=False, indent=2))
     logger.info("Evaluation detail saved to eval_detail.json")
 
     # Record final results

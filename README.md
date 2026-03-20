@@ -171,11 +171,15 @@ Create `config.json` at the project root:
     "OPENAI_API_KEY": "<your-openai-key>",
     "OPENAI_ENDPOINT": "https://api.openai.com/v1",
     "AZURE_API_KEY": "<your-azure-openai-key>",
-    "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/"
+    "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/",
+
+    "MP_API_KEY": "<your-materials-project-api-key>"
 }
 ```
 
-> You only need **one** of the two blocks (OpenAI or Azure OpenAI). The script checks both and raises an error if neither is provided.
+> You only need **one** of the two LLM blocks (OpenAI or Azure OpenAI). The script checks both and raises an error if neither is provided.
+
+> **`MP_API_KEY`** is required for **Code tasks** that query the [Materials Project](https://materialsproject.org) database (`mp` and `optimade` domains). Get your key from [materialsproject.org/dashboard](https://materialsproject.org/dashboard). If omitted, those tasks will fail with an authentication error. `OQMD` and `pymatgen` tasks do not require a key.
 
 ### 2. Build the Docker Image
 
@@ -407,6 +411,8 @@ Extend your `config.json` with Azure ML credentials:
     "AZURE_API_KEY": "<your-azure-openai-key>",
     "AZURE_ENDPOINT": "https://yourendpoint.openai.azure.com/",
 
+    "MP_API_KEY": "<your-materials-project-api-key>",
+
     "AZURE_SUBSCRIPTION_ID": "<your-subscription-id>",
     "AZURE_ML_RESOURCE_GROUP": "<your-resource-group>",
     "AZURE_ML_WORKSPACE_NAME": "<your-workspace-name>",
@@ -415,7 +421,13 @@ Extend your `config.json` with Azure ML credentials:
 }
 ```
 
-`AZURE_INSTANCE_IPS` is used in VM-only mode (see Step 6). Leave it as an empty list for full-cloud mode.
+| Key | Required | Description |
+|-----|----------|-------------|
+| `OPENAI_API_KEY` + `OPENAI_ENDPOINT` | One of the two LLM blocks | OpenAI-compatible API key and base URL |
+| `AZURE_API_KEY` + `AZURE_ENDPOINT` | One of the two LLM blocks | Azure OpenAI key and endpoint |
+| `MP_API_KEY` | For `mp` / `optimade` Code tasks | [Materials Project](https://materialsproject.org/dashboard) API key. CodeAgent injects it into generated scripts at runtime. `oqmd` and `pymatgen` tasks do not need it. |
+| `AZURE_SUBSCRIPTION_ID` / `AZURE_ML_RESOURCE_GROUP` / `AZURE_ML_WORKSPACE_NAME` | Azure cloud mode | Your Azure ML workspace identifiers |
+| `AZURE_INSTANCE_IPS` | VM-only mode only | Public IPs of Compute Instances; leave `[]` for full-cloud mode |
 
 ---
 
@@ -429,12 +441,13 @@ The Windows 11 golden image must be available on Azure Blob Storage so each work
 ```bash
 # Using Azure CLI — upload the snapshot directory
 az storage blob upload-batch \
-    --account-name <your-storage-account> \
-    --destination storage \
-    --source src/mattoolbench-container/vm/storage/
+    --account-name agentsml7737741243 \
+    --destination azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/storage \
+    --source src/mattoolbench-container/vm/storage/ \
+    --account-key "<your-account-key>"
 ```
 
-Or use [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) to drag-and-drop the `vm/storage/` folder into a container named `storage` (matching the default `datastore_input_path`).
+Or use [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) to drag-and-drop the `vm/storage/` folder into the `storage` path inside container `azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f` (matching the default `datastore_input_path`).
 
 The expected layout on Blob after upload:
 ```
@@ -624,9 +637,10 @@ python scripts/show_azure.py \
 
 ```bash
 az storage blob download-batch \
-    --account-name <your-storage-account> \
-    --source agent_outputs/<exp_name> \
-    --destination ./results/
+    --account-name agentsml7737741243 \
+    --source azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/agent_outputs/<exp_name> \
+    --destination ./results/ \
+    --account-key "<your-account-key>"
 ```
 
 ---

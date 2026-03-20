@@ -3,12 +3,25 @@ import os
 import json
 import html as html_lib
 import numpy as np
+import time
 from typing import Dict, Any
 
 class TrajectoryRecorder:
     def __init__(self, result_dir: str):
         self.result_dir = result_dir
-        
+
+    def _ensure_dir_and_open(self, path: str, mode: str, retries: int = 5, delay: float = 0.5):
+        """Open a file, retrying makedirs if Azure Blob Fuse hasn't surfaced the dir yet."""
+        for attempt in range(retries):
+            os.makedirs(os.path.dirname(path), exist_ok=True)
+            try:
+                return open(path, mode, encoding="utf-8" if "b" not in mode else None)
+            except FileNotFoundError:
+                if attempt < retries - 1:
+                    time.sleep(delay)
+                else:
+                    raise
+
     # Keys saved as image files (.png)
     SAVE_IMAGE_KEYS = {"screenshot"}
     # Keys saved as text files (.txt) — agent output for GUI and code agents respectively
@@ -26,7 +39,7 @@ class TrajectoryRecorder:
             if key in self.SAVE_TEXT_KEYS and isinstance(value, str):
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="txt"))
-                with open(file_path, "w", encoding="utf-8") as f:
+                with self._ensure_dir_and_open(file_path, "w") as f:
                     f.write(value if value else "No data available")
                 obs_content[key] = os.path.basename(file_path)
 
@@ -34,7 +47,7 @@ class TrajectoryRecorder:
                 file_path = os.path.join(self.result_dir, file_format.format(
                     key=key, step_idx=step_idx, action_timestamp=action_timestamp, ext="png"))
                 if isinstance(value, bytes):
-                    with open(file_path, "wb") as f:
+                    with self._ensure_dir_and_open(file_path, "wb") as f:
                         f.write(value)
                 elif "PIL" in str(type(value)):
                     value.save(file_path)
@@ -79,11 +92,10 @@ class TrajectoryRecorder:
 
     def record_init(self, obs: Dict[str, Any], example: Dict[str, Any], init_timestamp: str) -> None:
         """Record initial state"""
-        os.makedirs(self.result_dir, exist_ok=True)
         init_dict = self.save_dict(obs, 'reset', init_timestamp)
-        
+
         # Save to JSONL
-        with open(os.path.join(self.result_dir, "traj.jsonl"), "a") as f:
+        with self._ensure_dir_and_open(os.path.join(self.result_dir, "traj.jsonl"), "a") as f:
             traj_data = {
                 "step_num": 0,
                 "action_timestamp": init_timestamp,
@@ -92,9 +104,9 @@ class TrajectoryRecorder:
             traj_data.update(init_dict)
             json.dump(traj_data, f)
             f.write("\n")
-        
+
         # Save to HTML
-        with open(os.path.join(self.result_dir, "traj.html"), "a") as f:
+        with self._ensure_dir_and_open(os.path.join(self.result_dir, "traj.html"), "a") as f:
             f.write(self._get_html_header(example))
             html = []
             html.append(f"<pre>\n{example['instruction']}\n</pre>")
@@ -109,12 +121,11 @@ class TrajectoryRecorder:
                    step_idx: int, action_timestamp: str, elapsed_timestamp: str,
                    action: str, reward: float, done: bool, info: Dict[str, Any]) -> None:
         """Record a single step"""
-        os.makedirs(self.result_dir, exist_ok=True)
         obs_saved_content = self.save_dict(obs, step_idx, action_timestamp) if obs else {}
         logs_saved_content = self.save_dict(logs, step_idx, action_timestamp) if logs else {}
-        
+
         # Save to JSONL
-        with open(os.path.join(self.result_dir, "traj.jsonl"), "a") as f:
+        with self._ensure_dir_and_open(os.path.join(self.result_dir, "traj.jsonl"), "a") as f:
             traj_data = {
                 "step_num": step_idx + 1,
                 "action_timestamp": action_timestamp,
@@ -127,9 +138,9 @@ class TrajectoryRecorder:
             traj_data.update(logs_saved_content)
             json.dump(traj_data, f)
             f.write("\n")
-        
+
         # Save to HTML
-        with open(os.path.join(self.result_dir, "traj.html"), "a") as f:
+        with self._ensure_dir_and_open(os.path.join(self.result_dir, "traj.html"), "a") as f:
             html = []
             html.append(f"<h3>Step {step_idx + 1} ({elapsed_timestamp})</h3>")
             html += self.dict_to_html({
@@ -147,7 +158,7 @@ class TrajectoryRecorder:
 
     def record_end(self, result: float, start_time: datetime.datetime) -> None:
         """Record final results"""
-        with open(os.path.join(self.result_dir, "traj.html"), "a") as f:
+        with self._ensure_dir_and_open(os.path.join(self.result_dir, "traj.html"), "a") as f:
             elapsed_timestamp = f"{datetime.datetime.now() - start_time}"
             f.write(f"<h1>Result: {result}</h1>")
             f.write(f"<h1>Elapsed Time: {elapsed_timestamp}</h1>")

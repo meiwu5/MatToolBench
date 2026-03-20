@@ -6,6 +6,7 @@ Usage:
     python scripts/sync_results.py --local_dir ./results_local --interval 60
     python scripts/sync_results.py --local_dir ./results_local --once   # single sync, no loop
     python scripts/sync_results.py --local_dir ./results_local --exp_name exp0  # filter by exp
+    python scripts/sync_results.py --local_dir ./results_local --remote_path Experiment1/pyautogui/screenshot/doubao-seed-1-8-251228/0/origin
 """
 
 import os
@@ -43,11 +44,15 @@ def get_blob_service_client(ws):
     return client, container_name
 
 
-def sync_once(ws, local_dir: Path, exp_filter: str = None):
+def sync_once(ws, local_dir: Path, exp_filter: str = None, remote_path: str = None):
     client, container_name = get_blob_service_client(ws)
     container_client = client.get_container_client(container_name)
 
-    prefix = REMOTE_BASE + "/"
+    if remote_path:
+        # Strip leading/trailing slashes and build exact prefix
+        prefix = REMOTE_BASE + "/" + remote_path.strip("/") + "/"
+    else:
+        prefix = REMOTE_BASE + "/"
     blobs = list(container_client.list_blobs(name_starts_with=prefix))
 
     if exp_filter:
@@ -91,6 +96,7 @@ def main():
     parser.add_argument("--interval", type=int, default=30, help="Sync interval in seconds (default: 30)")
     parser.add_argument("--once", action="store_true", help="Run once and exit")
     parser.add_argument("--exp_name", default="", help="Filter blobs by experiment name")
+    parser.add_argument("--remote_path", default="", help="Only sync a specific sub-path under agent_outputs/ (e.g. Experiment1/pyautogui/screenshot/doubao-seed-1-8-251228/0/origin)")
     args = parser.parse_args()
 
     local_dir = Path(args.local_dir)
@@ -108,16 +114,17 @@ def main():
     logging.info(f"Connected to workspace: {ws.name}")
 
     exp_filter = args.exp_name or None
+    remote_path = args.remote_path or None
 
     if args.once:
-        sync_once(ws, local_dir, exp_filter)
+        sync_once(ws, local_dir, exp_filter, remote_path)
         return
 
     logging.info(f"Starting continuous sync every {args.interval}s. Press Ctrl+C to stop.")
     while True:
         try:
             logging.info("Syncing...")
-            sync_once(ws, local_dir, exp_filter)
+            sync_once(ws, local_dir, exp_filter, remote_path)
         except Exception as e:
             logging.error(f"Sync error: {e}")
         time.sleep(args.interval)

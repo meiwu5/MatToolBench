@@ -580,6 +580,7 @@ computer.window_manager.switch_to_application("window_name")
 - **If Code Builder was accidentally closed**: press Alt+4 to reopen.
 - **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script; Ctrl+A then Ctrl+V = replace all code in editor.
 - **Before pasting**: click inside the Code Builder editor area to ensure focus, then Ctrl+A to select all existing code, Ctrl+V to paste new code.
+- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file, then paste the script.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -590,6 +591,7 @@ computer.window_manager.switch_to_application("window_name")
 ## DigitalMicrograph / DM
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
 - **File types**: .dm3, .dm4 files.
+- **Left panel**: At startup, a panel on the left side of the screen may be visible containing items such as "Histogram", "Images", "Status", etc. This panel blocks the workspace. **Close it first** by clicking its close button (×) before proceeding with the task.
 
 ## Materials Studio
 - **Initial state**: Application just launched and window maximized. No file is open, no dialogs.
@@ -683,6 +685,7 @@ computer.window_manager.switch_to_application("window_name")
 - **If Code Builder was accidentally closed**: press Alt+4 to reopen.
 - **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script; Ctrl+A then Ctrl+V = replace all code in editor.
 - **Before pasting**: click inside the Code Builder editor area to ensure focus, then Ctrl+A to select all existing code, Ctrl+V to paste new code.
+- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file, then paste the script.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -693,6 +696,7 @@ computer.window_manager.switch_to_application("window_name")
 ## DigitalMicrograph / DM
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
 - **File types**: .dm3, .dm4 files.
+- **Left panel**: At startup, a panel on the left side of the screen may be visible containing items such as "Histogram", "Images", "Status", etc. This panel blocks the workspace. **Close it first** by clicking its close button (×) before proceeding with the task.
 
 ## Materials Studio
 - **Initial state**: Application just launched and window maximized. No file is open, no dialogs.
@@ -744,8 +748,11 @@ The standard workflow for each task is:
 2. **Open Code Builder** — if Code Builder is not already open, press Alt+4 to open it.
    - Check the window title and screen content to confirm Code Builder appeared.
    - If a dialog box appears (e.g., "Save changes?", "Unsaved script"), handle it first.
-3. **Paste and adapt the script** — copy the adapted script to clipboard, click inside the Code Builder
-   editor area, select all (Ctrl+A), then paste (Ctrl+V).
+   - If Code Builder has no editable file tab, press Ctrl+N to create a new Python file.
+3. **Write and input the code** — use the template script (if provided) as a reference. Compose
+   the complete adapted Python script yourself, tailored to the task parameters. Then use
+   `computer.clipboard.copy_text("...full script...")` to load it into the clipboard, click inside
+   the Code Builder editor area, select all (Ctrl+A), and paste (Ctrl+V).
 4. **Run the script** — press F5 to execute. Watch for error dialogs or Python console output.
 5. **Verify output** — confirm the output file was saved at the correct path. If an error occurred,
    read the error message from the screen and fix the script accordingly.
@@ -757,16 +764,17 @@ The standard workflow for each task is:
 - **Is there a blocking dialog?** (e.g., error popup, save dialog, import wizard)
   If yes: dismiss it first (click OK/Cancel/close button) before proceeding.
 - **Did F5 run successfully?** Look for no error dialogs and check that the output file exists.
-  If errors appear: read them from the screen, fix the script, re-paste, and re-run.
+  If errors appear: read them from the screen, fix the script, re-copy to clipboard, re-paste, and re-run.
 - **Is the correct worksheet active?** The script reads from `op.find_sheet()`.
   If multiple sheets exist, click the correct sheet tab before running the script.
 
 Guidelines:
 1. Execute ONE GUI action per step, then wait for the next screen before continuing.
-2. Do not blindly paste and run — always verify Code Builder is open and ready first.
-3. If the script fails, diagnose from the on-screen error message and produce a corrected version.
-4. Always save output files to the exact path specified in the user objective.
-5. Verify results visually before marking DONE.
+2. Do not blindly copy-paste — always verify Code Builder is open and ready first.
+3. The template script is a reference only; adapt it fully to the task before inputting.
+4. If the script fails, diagnose from the on-screen error message and produce a corrected version.
+5. Always save output files to the exact path specified in the user objective.
+6. Verify results visually before marking DONE.
 {script_section}
 # Inputs
 1. User objective
@@ -799,7 +807,7 @@ COMMAND  # or DONE / FAIL / WAIT
 # Available functions
 ```python
 computer.mouse.move_id(id=78)
-computer.mouse.move_abs(x=0.22, y=0.75)
+computer.mouse.move_abs(x=0.22, y=0.75)  # IMPORTANT: x and y are NORMALIZED (0.0–1.0), NOT pixels. Top-left=(0,0), bottom-right=(1,1). Example: center of screen is x=0.5, y=0.5.
 computer.mouse.single_click()
 computer.mouse.double_click()
 computer.mouse.right_click()
@@ -812,12 +820,20 @@ computer.os.open_program("Origin64")
 computer.window_manager.switch_to_application("window_name")
 ```
 
+# IMPORTANT: Coordinate format for move_abs
+`computer.mouse.move_abs(x, y)` takes **normalized** coordinates between 0.0 and 1.0.
+- x=0.0 is the left edge, x=1.0 is the right edge
+- y=0.0 is the top edge, y=1.0 is the bottom edge
+- Example: a button at pixel (640, 400) on a 1280×800 screen → x=0.5, y=0.5
+- **NEVER pass pixel values** (e.g. x=620, x=75, x=316) — this will crash the action.
+
 # Origin-specific tips
-- **Alt+4** opens the Code Builder. Confirm it is open before pasting.
+- **Alt+4** opens the Code Builder. Confirm it is open before inputting code.
 - **F5** runs the script in Code Builder. Watch the output/console area for errors.
-- **Ctrl+A then Ctrl+V** in the Code Builder editor: select all existing code, then paste new code.
+- To input code: use `computer.clipboard.copy_text("...script...")` to load the script into the clipboard, click inside the Code Builder editor area, Ctrl+A to select all, then Ctrl+V to paste.
 - Click the Code Builder editor area before pasting to ensure focus is correct.
 - If Code Builder shows a "modified" indicator (*), clear it with Ctrl+A → Delete before pasting.
+- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
 - Use the Script Window (Window → Script Window) for short LabTalk commands if needed.
 - The active worksheet is accessed via `op.find_sheet()` in the Python script.
 - If multiple worksheets are open, click the correct sheet tab in Origin before running.
@@ -897,9 +913,16 @@ COMMAND  # or DONE / FAIL / WAIT
 # script content, error notes, or other carry-over information
 ```
 
+# IMPORTANT: Coordinate format for move_abs
+`computer.mouse.move_abs(x, y)` takes **normalized** coordinates between 0.0 and 1.0.
+- x=0.0 is the left edge, x=1.0 is the right edge
+- y=0.0 is the top edge, y=1.0 is the bottom edge
+- Example: a button at pixel (640, 400) on a 1280×800 screen → x=0.5, y=0.5
+- **NEVER pass pixel values** (e.g. x=620, x=75, x=316) — this will crash the action.
+
 # Available functions
 ```python
-computer.mouse.move_abs(x=0.22, y=0.75)
+computer.mouse.move_abs(x=0.22, y=0.75)  # x and y are NORMALIZED (0.0–1.0), NOT pixels
 computer.mouse.single_click()
 computer.mouse.double_click()
 computer.mouse.right_click()

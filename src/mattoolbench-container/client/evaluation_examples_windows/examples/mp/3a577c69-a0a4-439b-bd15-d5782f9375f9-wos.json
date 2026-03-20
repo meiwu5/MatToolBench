@@ -4,7 +4,24 @@
   "instruction": "Use mp_api MPRester to query the structure of mp-149, convert it to VASP POSCAR format string, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_1.txt.",
   "source": "https:\\materialsproject.org/",
   "_comments": "comments_placeholder",
-  "config": [],
+  "config": [
+    {
+      "type": "command",
+      "parameters": {
+        "command": [
+          "C:\\Users\\Docker\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
+          "-m",
+          "pip",
+          "install",
+          "--quiet",
+          "--disable-pip-version-check",
+          "mp-api==0.39.5",
+          "emmet-core==0.78.7"
+        ],
+        "shell": false
+      }
+    }
+  ],
   "trajectory": "trajectories\\materialproject\\",
   "related_apps": [
     "MaterialProject",
