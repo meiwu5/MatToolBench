@@ -1,0 +1,156 @@
+\begin{thebibliography}{18}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Ai et~al.(2026)Ai, Feng, Zhang, Sun, Li, Li, Chang, Wu, Wang, Zhai,
+  Zhang, et~al.]{prosoftarena}
+Jiaxin Ai, Yukang Feng, Fanrui Zhang, Jianwen Sun, Zizhen Li, Chuanhao Li,
+  Yifan Chang, Wenxiao Wu, Ruoxi Wang, Mingliang Zhai, Kaipeng Zhang, et~al.
+\newblock {ProSoftArena}: Benchmarking hierarchical capabilities of multimodal
+  agents in professional software environments.
+\newblock \emph{arXiv preprint arXiv:2601.02399}, 2026.
+
+\bibitem[Bonatti et~al.(2025)Bonatti, Zhao, Bonacci, Dupont, Abdali, Li, Lu,
+  Wagle, Koishida, Bucker, Jang, and Hui]{windowsagentarena}
+Rogerio Bonatti, Dan Zhao, Francesco Bonacci, Dillon Dupont, Sara Abdali,
+  Yinheng Li, Yadong Lu, Justin Wagle, Kazuhito Koishida, Arthur Bucker,
+  Lawrence Jang, and Zack Hui.
+\newblock {Windows Agent Arena}: Evaluating multi-modal {OS} agents at scale.
+\newblock In \emph{ICML}, 2025.
+
+\bibitem[Cao et~al.(2024)Cao, Lei, Wu, Chen, Fu, Gao, Xiong, Zhang, Mao, Hu,
+  Xie, Xu, Zhang, Wang, Sun, Yin, Xiong, Ni, Liu, Zhong, Chen, Yu, and
+  Yu]{spider2v}
+Ruisheng Cao, Fangyu Lei, Haoyuan Wu, Jixuan Chen, Yeqiao Fu, Hongcheng Gao,
+  Xinzhuang Xiong, Hanchong Zhang, Yuchen Mao, Wenjing Hu, Tianbao Xie,
+  Hongshen Xu, Danyang Zhang, Sida Wang, Ruoxi Sun, Pengcheng Yin, Caiming
+  Xiong, Ansong Ni, Qian Liu, Victor Zhong, Lu~Chen, Kai Yu, and Tao Yu.
+\newblock {Spider2-V}: How far are multimodal agents from automating data
+  science and engineering workflows?
+\newblock In \emph{NeurIPS}, 2024.
+
+\bibitem[Chen et~al.(2025)Chen, Chen, Ning, Zhang, Wang, Yu, Li, Liao, Wei, Lu,
+  Dey, Xue, Baker, Burns, Adu-Ampratwum, Huang, Ning, Gao, Su, and
+  Sun]{scienceagentbench}
+Ziru Chen, Shijie Chen, Yuting Ning, Qianheng Zhang, Boshi Wang, Botao Yu,
+  Yifei Li, Zeyi Liao, Chen Wei, Zitong Lu, Vishal Dey, Mingyi Xue, Frazier~N.
+  Baker, Benjamin Burns, Daniel Adu-Ampratwum, Xuhui Huang, Xia Ning, Song Gao,
+  Yu~Su, and Huan Sun.
+\newblock {ScienceAgentBench}: Toward rigorous assessment of language agents
+  for data-driven scientific discovery.
+\newblock In \emph{ICLR}, 2025.
+
+\bibitem[Deng et~al.(2023)Deng, Gu, Zheng, Chen, Stevens, Wang, Sun, and
+  Su]{mind2web}
+Xiang Deng, Yu~Gu, Boyuan Zheng, Shijie Chen, Samuel Stevens, Boshi Wang, Huan
+  Sun, and Yu~Su.
+\newblock {Mind2Web}: Towards a generalist agent for the web.
+\newblock In \emph{NeurIPS}, 2023.
+
+\bibitem[Hong et~al.(2024)Hong, Wang, Lv, Xu, Yu, Ji, Wang, Wang, Zhang, Li,
+  et~al.]{cogagent}
+Wenyi Hong, Weihan Wang, Qingsong Lv, Jiazheng Xu, Wenmeng Yu, Junhui Ji, Yan
+  Wang, Zihan Wang, Yuxuan Zhang, Junhui Li, et~al.
+\newblock {CogAgent}: A visual language model for {GUI} agents.
+\newblock \emph{CVPR}, 2024.
+
+\bibitem[Laurent et~al.(2024)Laurent, Janizek, Ruzo, Hinks, Hammerling,
+  Narayanan, Ponnapati, White, and Rodriques]{labbench}
+Jon~M. Laurent, Joseph~D. Janizek, Michael Ruzo, Michaela~M. Hinks, Michael~J.
+  Hammerling, Siddharth Narayanan, Manvitha Ponnapati, Andrew~D. White, and
+  Samuel~G. Rodriques.
+\newblock {LAB-Bench}: Measuring capabilities of language models for biology
+  research.
+\newblock \emph{arXiv preprint arXiv:2407.10362}, 2024.
+
+\bibitem[Liu et~al.(2025)Liu, Hu, Ye, Xu, Srolovitz, and Wen]{mattools}
+Siyu Liu, Bo~Hu, Beilin Ye, Jiamin Xu, David~J. Srolovitz, and Tongqi Wen.
+\newblock {MatTools}: Benchmarking large language models for materials science
+  tools.
+\newblock \emph{arXiv preprint arXiv:2505.10852}, 2025.
+
+\bibitem[Lu et~al.(2025)Lu, Li, Zhang, Yu, Florencio, Zhang, Zhao, and
+  Wei]{lu2024omniparser}
+Yadong Lu, Jianwei Li, Yelong Zhang, Wenhao Yu, Dinei Florencio, Cha Zhang,
+  Michael~Zeng Zhao, and Furu Wei.
+\newblock {OmniParser} for pure vision based {GUI} agent.
+\newblock In \emph{CVPR}, 2025.
+
+\bibitem[OpenAI(2024)]{gpt4o}
+OpenAI.
+\newblock {GPT-4o} system card.
+\newblock \emph{arXiv preprint arXiv:2410.21276}, 2024.
+
+\bibitem[Rawles et~al.(2023)Rawles, Li, Rodriguez, Riva, and Lillicrap]{aitw}
+Christopher Rawles, Alice Li, Daniel Rodriguez, Oriana Riva, and Timothy
+  Lillicrap.
+\newblock Android in the wild: A large-scale dataset for android device
+  control.
+\newblock In \emph{NeurIPS}, 2023.
+
+\bibitem[Shridhar et~al.(2021)Shridhar, Yuan, C{\^o}t{\'e}, Bisk, Trischler,
+  and Hausknecht]{alfworld}
+Mohit Shridhar, Xingdi Yuan, Marc-Alexandre C{\^o}t{\'e}, Yonatan Bisk, Adam
+  Trischler, and Matthew Hausknecht.
+\newblock {ALFWorld}: Aligning text and embodied environments for interactive
+  learning.
+\newblock In \emph{ICLR}, 2021.
+
+\bibitem[Sun et~al.(2026)Sun, Liu, Ma, Ding, Xu, Yin, Zhao, Wu, Cheng, Liu,
+  Wang, Li, Tang, Xie, Feng, Li, Kao, Wang, Qi, Kong, and Wu]{scienceboard}
+Qiushi Sun, Zhoumianze Liu, Chang Ma, Zichen Ding, Fangzhi Xu, Zhangyue Yin,
+  Haiteng Zhao, Zhenyu Wu, Kanzhi Cheng, Zhaoyang Liu, Jianing Wang, Qintong
+  Li, Xiangru Tang, Tianbao Xie, Xiachong Feng, Xiang Li, Ben Kao, Wenhai Wang,
+  Biqing Qi, Lingpeng Kong, and Zhiyong Wu.
+\newblock {ScienceBoard}: Evaluating multimodal autonomous agents in realistic
+  scientific workflows.
+\newblock In \emph{ICLR}, 2026.
+
+\bibitem[Tian et~al.(2024)Tian, Gao, Zhang, Chen, Fan, Guo, Haas, Ji,
+  Krongchon, Li, Liu, Luo, Ma, Tong, Trinh, Tian, Wang, Wu, Xiong, Yin, Zhu,
+  Lieret, Lu, Liu, Du, Tao, Press, Callan, Huerta, and Peng]{scicode}
+Minyang Tian, Luyu Gao, Shizhuo~Dylan Zhang, Xinan Chen, Cunwei Fan, Xuefei
+  Guo, Roland Haas, Pan Ji, Kittithat Krongchon, Yao Li, Shengyan Liu, Di~Luo,
+  Yutao Ma, Hao Tong, Kha Trinh, Chenyu Tian, Zihan Wang, Bohao Wu, Yanyu
+  Xiong, Shengzhu Yin, Minhui Zhu, Kilian Lieret, Yanxin Lu, Genglin Liu,
+  Yufeng Du, Tianhua Tao, Ofir Press, Jamie Callan, Eliu Huerta, and Hao Peng.
+\newblock {SciCode}: A research coding benchmark curated by scientists.
+\newblock In \emph{NeurIPS}, 2024.
+
+\bibitem[Wang et~al.(2024)Wang, Hu, Lu, Zhu, Zhang, Subramaniam, Loomba, Zhang,
+  Sun, and Wang]{scibench}
+Xiaoxuan Wang, Ziniu Hu, Pan Lu, Yanqiao Zhu, Jieyu Zhang, Satyen Subramaniam,
+  Arjun~R. Loomba, Shichang Zhang, Yizhou Sun, and Wei Wang.
+\newblock {SciBench}: Evaluating college-level scientific problem-solving
+  abilities of large language models.
+\newblock In \emph{ICML}, 2024.
+
+\bibitem[Xie et~al.(2024)Xie, Zhang, Chen, Li, Zhao, Cao, Hua, Cheng, Gao, Lu,
+  et~al.]{osworld}
+Tianbao Xie, Danyang Zhang, Jixuan Chen, Xiaochuan Li, Siheng Zhao, Ruisheng
+  Cao, Toh~Jing Hua, Zhoujun Cheng, Dongchan Gao, Shuyu Lu, et~al.
+\newblock {OSWorld}: Benchmarking multimodal agents for open-ended tasks in
+  real computer environments.
+\newblock In \emph{NeurIPS}, 2024.
+
+\bibitem[Zhang et~al.(2025)Zhang, Gan, Wang, Jia, Gu, Chen, Zhu, Ma, Zhou, Li,
+  and Wang]{matscibench}
+Junkai Zhang, Jingru Gan, Xiaoxuan Wang, Zian Jia, Changquan Gu, Jianpeng Chen,
+  Yanqiao Zhu, Mingyu~Derek Ma, Dawei Zhou, Ling Li, and Wei Wang.
+\newblock {MatSciBench}: Benchmarking the reasoning ability of large language
+  models in materials science.
+\newblock \emph{arXiv preprint arXiv:2510.12171}, 2025.
+
+\bibitem[Zhou et~al.(2024)Zhou, Xu, Zhu, Zhou, Lo, Sridhar, Cheng, Ou, Bisk,
+  Fried, Alon, and Neubig]{webarena}
+Shuyan Zhou, Frank~F. Xu, Hao Zhu, Xuhui Zhou, Robert Lo, Abishek Sridhar,
+  Xianyi Cheng, Tianyue Ou, Yonatan Bisk, Daniel Fried, Uri Alon, and Graham
+  Neubig.
+\newblock {WebArena}: A realistic web environment for building autonomous
+  agents.
+\newblock In \emph{ICLR}, 2024.
+
+\end{thebibliography}
