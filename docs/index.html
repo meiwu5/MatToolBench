@@ -1,0 +1,2599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MatToolBench — Materials Science Agent Benchmark</title>
+  <meta name="description" content="MatToolBench: A comprehensive benchmark for evaluating LLM agents on real-world materials science software tools." />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+    :root {
+      --navy:   #1a3a6e;
+      --blue:   #2060a8;
+      --green:  #2e8b48;
+      --orange: #d07810;
+      --bg:     #eef3fb;
+      --card:   #ffffff;
+      --border: #d6e2f0;
+      --text:   #0d1b2e;
+      --muted:  #536278;
+      --na:     #a0b8cc;
+      --row-hover: #f0f6ff;
+      --shadow-sm: 0 2px 10px rgba(26,58,110,.07);
+      --shadow-md: 0 8px 32px rgba(26,58,110,.11);
+      --shadow-lg: 0 20px 60px rgba(26,58,110,.16);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+
+    /* ══════════════════════════════════════
+       NAV  — light frosted glass
+    ══════════════════════════════════════ */
+    nav {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid rgba(26,58,110,.09);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 36px; height: 62px;
+      transition: box-shadow .3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(26,58,110,.1); }
+
+    .nav-logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none;
+    }
+    /* KEY TRICK: multiply blend removes white background on light nav */
+    .nav-logo img {
+      height: 38px; object-fit: contain;
+      mix-blend-mode: multiply;
+    }
+    .nav-logo-text {
+      font-size: 1.08rem; font-weight: 800; letter-spacing: -.025em;
+      color: var(--navy);
+    }
+    .nav-logo-text .t-mat   { color: var(--blue); }
+    .nav-logo-text .t-tool  { color: var(--green); }
+    .nav-logo-text .t-bench { color: var(--orange); }
+
+    .nav-links { display: flex; gap: 4px; align-items: center; }
+    .nav-links a {
+      padding: 6px 14px; border-radius: 7px; font-size: .86rem; font-weight: 600;
+      color: var(--muted); text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+    .nav-links a:hover { background: rgba(26,58,110,.07); color: var(--navy); }
+
+    .lang-btn {
+      margin-left: 8px; padding: 6px 16px; border-radius: 7px;
+      background: var(--navy); color: #fff; border: none; cursor: pointer;
+      font-size: .82rem; font-weight: 700; letter-spacing: .04em;
+      transition: background .15s, transform .12s;
+    }
+    .lang-btn:hover { background: var(--blue); transform: translateY(-1px); }
+
+    /* ══════════════════════════════════════
+       HERO  — light academic gradient
+    ══════════════════════════════════════ */
+    .hero {
+      position: relative;
+      background: linear-gradient(150deg, #bdd5ef 0%, #d8edfb 38%, #c6dff0 70%, #d4eafc 100%);
+      padding: 104px 24px 96px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Subtle graph-paper grid — academic feel */
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(26,58,110,.055) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(26,58,110,.055) 1px, transparent 1px);
+      background-size: 44px 44px;
+      pointer-events: none;
+    }
+
+    /* Floating "atomic" orbs — materials science motif */
+    .mol-orb {
+      position: absolute; border-radius: 50%;
+      border: 2px solid rgba(26,58,110,.13);
+      pointer-events: none; overflow: visible;
+    }
+    .mol-orb::after {
+      content: '';
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%,-50%);
+      width: 10px; height: 10px; border-radius: 50%;
+      background: rgba(26,58,110,.22);
+    }
+    .mol-1 { width: 130px; height: 130px; top: 8%;  left: 6%;  animation: molFloat 9s  ease-in-out infinite; }
+    .mol-2 { width:  70px; height:  70px; top: 65%; left: 3%;  animation: molFloat 7s  ease-in-out infinite reverse; animation-delay:-2s; }
+    .mol-3 { width: 170px; height: 170px; top: 4%;  right: 5%; animation: molFloat 11s ease-in-out infinite; animation-delay:-4s; }
+    .mol-4 { width:  55px; height:  55px; top: 72%; right: 9%; animation: molFloat 8s  ease-in-out infinite; animation-delay:-1s; }
+    .mol-5 { width: 110px; height: 110px; bottom:8%;left: 28%; animation: molFloat 10s ease-in-out infinite; animation-delay:-6s; }
+    .mol-6 { width:  85px; height:  85px; top: 35%; right:18%; animation: molFloat 12s ease-in-out infinite; animation-delay:-3s; }
+
+    @keyframes molFloat {
+      0%,100% { transform: translate(0,0) scale(1); }
+      33%      { transform: translate(14px,-18px) scale(1.03); }
+      66%      { transform: translate(-10px,12px) scale(.97); }
+    }
+
+    /* Hero logo + title inline */
+    .hero-brand {
+      position: relative; z-index: 1;
+      display: inline-flex; align-items: center; gap: 22px;
+      margin-bottom: 24px;
+      animation: fadeUp .7s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-brand img {
+      height: 96px; object-fit: contain;
+      mix-blend-mode: multiply;        /* white bg disappears on light hero */
+      filter: drop-shadow(0 6px 18px rgba(26,58,110,.18));
+    }
+    .hero-title {
+      text-align: left;
+      font-size: clamp(2.6rem, 6vw, 4rem);
+      font-weight: 900; letter-spacing: -.045em; line-height: 1;
+    }
+    .h-mat   { color: var(--blue); }
+    .h-tool  { color: var(--green); }
+    .h-bench { color: var(--orange); }
+
+    .hero-eyebrow {
+      position: relative; z-index: 1;
+      font-size: .78rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 18px;
+      animation: fadeUp .6s .08s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .hero-sub {
+      position: relative; z-index: 1;
+      font-size: 1.06rem; max-width: 680px; margin: 0 auto 32px;
+      color: var(--muted); line-height: 1.88;
+      animation: fadeUp .6s .18s cubic-bezier(.22,1,.36,1) both;
+    }
+
+    .badge-row {
+      position: relative; z-index: 1;
+      display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-bottom: 38px;
+      animation: fadeUp .6s .26s cubic-bezier(.22,1,.36,1) both;
+    }
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(255,255,255,.72);
+      border: 1.5px solid rgba(26,58,110,.14);
+      color: var(--navy);
+      border-radius: 999px; font-size: .79rem; font-weight: 700; padding: 5px 14px;
+      backdrop-filter: blur(8px);
+      transition: background .15s, box-shadow .15s;
+    }
+    .badge:hover { background: rgba(255,255,255,.92); box-shadow: var(--shadow-sm); }
+
+    .hero-links {
+      position: relative; z-index: 1;
+      display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;
+      animation: fadeUp .6s .34s cubic-bezier(.22,1,.36,1) both;
+    }
+    .hero-links a {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 13px 28px; border-radius: 10px; font-size: .93rem; font-weight: 700;
+      text-decoration: none; transition: transform .15s, box-shadow .15s;
+    }
+    .hero-links a:hover { transform: translateY(-2px); }
+    .btn-primary {
+      background: var(--navy); color: #fff;
+      box-shadow: 0 4px 20px rgba(26,58,110,.35);
+    }
+    .btn-primary:hover { background: var(--blue); box-shadow: 0 8px 32px rgba(26,58,110,.42); }
+    .btn-secondary {
+      background: rgba(255,255,255,.78);
+      border: 1.5px solid rgba(26,58,110,.18);
+      color: var(--navy);
+      backdrop-filter: blur(8px);
+    }
+    .btn-secondary:hover { background: #fff; box-shadow: var(--shadow-md); }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══════════════════════════════════════
+       STATS BAR  — white, colored numbers
+    ══════════════════════════════════════ */
+    .stats-bar {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      background: #fff;
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 6px 24px rgba(26,58,110,.07);
+    }
+    .stat-item {
+      padding: 28px 56px; text-align: center;
+      border-right: 1px solid var(--border);
+    }
+    .stat-item:last-child { border-right: none; }
+    .stat-num {
+      font-size: 2.2rem; font-weight: 900; letter-spacing: -.04em;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .stat-label { font-size: .72rem; color: var(--muted); text-transform: uppercase; letter-spacing: .1em; margin-top: 4px; font-weight: 600; }
+
+    /* ══════════════════════════════════════
+       SECTIONS
+    ══════════════════════════════════════ */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 28px; }
+    section { padding: 86px 0; }
+    section:nth-of-type(odd)  { background: #fff; }
+    section:nth-of-type(even) { background: var(--bg); }
+
+    .sec-eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .72rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--blue); background: rgba(32,96,168,.08); border: 1px solid rgba(32,96,168,.18);
+      border-radius: 999px; padding: 4px 14px; margin-bottom: 14px;
+    }
+    .sec-title {
+      font-size: clamp(1.7rem, 3vw, 2.3rem); font-weight: 800; letter-spacing: -.03em;
+      margin-bottom: 16px; color: var(--text);
+    }
+    .sec-title .g { color: var(--green); }
+    .sec-title .b { color: var(--blue); }
+    .sec-body { font-size: .97rem; color: var(--muted); line-height: 1.88; max-width: 760px; }
+
+    /* ── Feature cards ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(265px,1fr)); gap: 22px; margin-top: 40px; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; padding: 0; overflow: hidden;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .25s, transform .25s;
+    }
+    .card:hover { box-shadow: var(--shadow-md); transform: translateY(-4px); }
+    .card-accent { height: 4px; }
+    .card:nth-child(1) .card-accent { background: linear-gradient(90deg,var(--navy),var(--blue)); }
+    .card:nth-child(2) .card-accent { background: linear-gradient(90deg,var(--green),#5ed48a); }
+    .card:nth-child(3) .card-accent { background: linear-gradient(90deg,var(--orange),#f4a54a); }
+    .card-body { padding: 28px 26px; }
+    .card-icon {
+      width: 48px; height: 48px; border-radius: 12px; margin-bottom: 16px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.4rem;
+      background: linear-gradient(135deg,rgba(26,58,110,.07),rgba(32,96,168,.07));
+    }
+    .card h3 { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; color: var(--text); }
+    .card p  { font-size: .875rem; color: var(--muted); line-height: 1.72; }
+    .card-tag {
+      display: inline-block; margin-top: 14px;
+      background: linear-gradient(135deg,var(--navy),var(--blue));
+      color: #fff; border-radius: 999px; font-size: .73rem; font-weight: 700; padding: 3px 12px;
+    }
+
+    /* ── Image showcase (zoomable) ── */
+    .img-showcase {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden;
+      box-shadow: var(--shadow-md); margin-top: 40px;
+      cursor: zoom-in;
+      transition: box-shadow .3s, transform .3s;
+    }
+    .img-showcase:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+    .img-showcase img { width: 100%; display: block; }
+    .img-caption {
+      padding: 14px 28px; font-size: .84rem; color: var(--muted);
+      border-top: 1px solid var(--border); text-align: center;
+      background: #fafcff;
+    }
+    .img-caption strong { color: var(--navy); }
+
+    /* ── Origin gallery ── */
+    .origin-showcase {
+      position: relative;
+      margin-top: 40px;
+      padding: 26px;
+      border-radius: 28px;
+      background: linear-gradient(180deg, rgba(255,255,255,.98) 0%, rgba(244,249,255,.96) 100%);
+      border: 1px solid rgba(32,96,168,.12);
+      box-shadow: 0 18px 44px rgba(26,58,110,.12);
+      overflow: hidden;
+    }
+    .origin-showcase::before,
+    .origin-showcase::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 84px;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .origin-showcase::before {
+      left: 0;
+      background: linear-gradient(90deg, rgba(244,249,255,.98) 0%, rgba(244,249,255,0) 100%);
+    }
+    .origin-showcase::after {
+      right: 0;
+      background: linear-gradient(270deg, rgba(244,249,255,.98) 0%, rgba(244,249,255,0) 100%);
+    }
+    .origin-showcase-track {
+      display: flex;
+      width: max-content;
+      gap: 20px;
+      animation: originScroll 95s linear infinite;
+    }
+    .origin-showcase:hover .origin-showcase-track {
+      animation-play-state: paused;
+    }
+    .origin-group {
+      display: flex;
+      gap: 20px;
+      flex-shrink: 0;
+    }
+    .origin-card {
+      width: 320px;
+      min-height: 292px;
+      flex-shrink: 0;
+      padding: 14px 14px 18px;
+      border-radius: 22px;
+      background: rgba(255,255,255,.94);
+      border: 1px solid rgba(214,226,240,.95);
+      box-shadow: 0 10px 24px rgba(26,58,110,.08);
+      transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+    }
+    .origin-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 36px rgba(26,58,110,.14);
+      border-color: rgba(32,96,168,.2);
+    }
+    .origin-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: contain;
+      display: block;
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+      border: 1px solid rgba(214,226,240,.8);
+      padding: 10px;
+    }
+    .origin-caption {
+      margin-top: 14px;
+      text-align: center;
+      font-size: .92rem;
+      font-weight: 700;
+      letter-spacing: .01em;
+      color: var(--navy);
+    }
+
+    @keyframes originScroll {
+      from { transform: translateX(0); }
+      to { transform: translateX(calc(-50% - 10px)); }
+    }
+
+    /* ── Two-column layout ── */
+    .two-col {
+      display: grid; grid-template-columns: 3fr 2fr; gap: 36px;
+      align-items: start; margin-top: 40px;
+    }
+    .two-col .img-showcase { margin-top: 0; }
+
+    /* ── Pie + text side-by-side ── */
+    .pie-layout {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 40px;
+      align-items: center; margin-top: 40px;
+    }
+    .pie-layout .img-showcase { margin-top: 0; }
+    .pie-text { }
+    .pie-text h3 { font-size: 1.15rem; font-weight: 800; color: var(--text); margin-bottom: 14px; }
+    .pie-text p { font-size: .9rem; color: var(--muted); line-height: 1.8; }
+    .category-list { list-style: none; margin-top: 18px; display: flex; flex-direction: column; gap: 9px; }
+    .category-list li {
+      display: flex; align-items: center; gap: 10px;
+      font-size: .86rem; color: var(--muted);
+    }
+    .cat-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    /* ══════════════════════════════════════
+       TASK STATISTICS TABLE
+    ══════════════════════════════════════ */
+    .task-stats-layout {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 40px;
+      align-items: start;
+      margin-top: 44px;
+    }
+
+    .task-stats-table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .task-stats-caption {
+      padding: 16px 24px 12px;
+      font-size: .82rem;
+      color: var(--muted);
+      line-height: 1.65;
+      border-bottom: 1px solid var(--border);
+      background: #fafcff;
+    }
+    .task-stats-caption strong { color: var(--navy); }
+
+    .task-stats-scroll { overflow-x: auto; }
+
+    .task-stats-tbl {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .86rem;
+      background: var(--card);
+    }
+    .task-stats-tbl thead tr th {
+      background: linear-gradient(180deg, #e8f0fc 0%, #dceaf8 100%);
+      font-weight: 800;
+      padding: 12px 18px;
+      text-align: center;
+      white-space: nowrap;
+      border-bottom: 2px solid var(--border);
+      color: var(--navy);
+      letter-spacing: .01em;
+    }
+    .task-stats-tbl thead tr th:first-child { text-align: left; }
+
+    .task-stats-tbl tbody tr {
+      border-bottom: 1px solid #eef3fb;
+      transition: background .15s;
+    }
+    .task-stats-tbl tbody tr:last-child { border-bottom: none; }
+    .task-stats-tbl tbody tr:hover { background: var(--row-hover); }
+
+    .task-stats-tbl tfoot .ts-total-row {
+      background: linear-gradient(90deg, #e3edf9 0%, #eaf2fc 100%);
+      border-top: 2px solid var(--border);
+    }
+    .task-stats-tbl tfoot .ts-total-row td { padding: 12px 18px; }
+
+    .ts-domain { text-align: left; padding: 11px 18px; }
+    .ts-num, .ts-emh, .ts-avg, .ts-total {
+      text-align: center; padding: 11px 18px; color: var(--muted);
+    }
+    .ts-avg { font-weight: 700; color: var(--blue); }
+    .ts-total { font-weight: 700; color: var(--navy); }
+
+    /* Domain colour badges */
+    .ts-badge {
+      display: inline-block;
+      padding: 3px 11px;
+      border-radius: 20px;
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+    }
+    .ts-avantage { background: #fde8d8; color: #b8470d; }
+    .ts-dm       { background: #d8eaf8; color: #1a5f9e; }
+    .ts-jade     { background: #d6f0e0; color: #1d6e3b; }
+    .ts-ms       { background: #e8d8f8; color: #6a1ab8; }
+    .ts-vesta    { background: #fdf3d0; color: #9a6a00; }
+
+    /* Difficulty mini-legend */
+    .ts-legend {
+      display: flex; gap: 20px; flex-wrap: wrap;
+      padding: 12px 20px;
+      border-top: 1px solid var(--border);
+      background: #fafcff;
+    }
+    .ts-leg-item {
+      display: flex; align-items: center; gap: 7px;
+      font-size: .78rem; color: var(--muted);
+    }
+    .ts-leg-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .ts-easy   { background: #4caf7d; }
+    .ts-medium { background: #f5a623; }
+    .ts-hard   { background: #e05252; }
+
+    @media (max-width: 900px) {
+      .task-stats-layout { grid-template-columns: 1fr; }
+    }
+
+    /* ── Architecture / model figure ── */
+    .model-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-md); margin-top: 40px;
+    }
+    .model-wrap img { width: 100%; display: block; }
+    .model-caption {
+      padding: 16px 28px; font-size: .84rem; color: var(--muted);
+      border-top: 1px solid var(--border); text-align: center; background: #fafcff;
+    }
+
+    /* ── Demo video ── */
+    .video-wrap {
+      background: var(--bg); border: 2px dashed var(--border);
+      border-radius: 18px; overflow: hidden;
+      margin-top: 40px; aspect-ratio: 16/9;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .video-wrap video, .video-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+    .video-placeholder { display: flex; flex-direction: column; align-items: center; gap: 18px; color: var(--muted); }
+    .video-placeholder .play-btn {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: #fff;
+      box-shadow: 0 0 0 12px rgba(26,58,110,.08), 0 0 0 24px rgba(26,58,110,.04);
+    }
+    .video-placeholder p { font-size: .92rem; font-weight: 600; }
+
+    /* ══════════════════════════════════════
+       LEADERBOARD
+    ══════════════════════════════════════ */
+    #leaderboard { padding: 86px 0; }
+
+    .tabs-wrapper {
+      display: flex; flex-direction: column; align-items: flex-start;
+      gap: 10px; margin-bottom: 32px;
+    }
+    .tabs {
+      display: flex; gap: 5px;
+      background: var(--bg); border-radius: 12px; padding: 5px;
+      width: fit-content; border: 1px solid var(--border);
+    }
+    .tab-btn {
+      padding: 9px 24px; border: none; background: none; cursor: pointer;
+      font-size: .9rem; font-weight: 700; color: var(--muted); border-radius: 8px;
+      transition: background .15s, color .15s, box-shadow .15s;
+    }
+    .tab-btn.active {
+      background: var(--card); color: var(--navy);
+      box-shadow: var(--shadow-sm);
+    }
+    .tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,.7); }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    .sub-tabs {
+      display: flex; gap: 4px;
+      background: rgba(255,255,255,.75); border-radius: 10px; padding: 4px;
+      width: fit-content; border: 1px solid var(--border);
+    }
+    .sub-tab-btn {
+      padding: 5px 18px; border: none; background: none; cursor: pointer;
+      font-size: .82rem; font-weight: 600; color: var(--muted); border-radius: 7px;
+      transition: background .15s, color .15s;
+    }
+    .sub-tab-btn.active { background: var(--blue); color: #fff; }
+    .sub-tab-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,.8); }
+
+    .section-header { margin-bottom: 20px; }
+    .section-header h2 { font-size: 1.15rem; font-weight: 800; color: var(--text); }
+    .section-header p  { font-size: .86rem; color: var(--muted); margin-top: 6px; line-height: 1.6; }
+
+    .legend { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 16px; font-size: .82rem; align-items: center; color: var(--muted); }
+    .legend-item { display: flex; align-items: center; gap: 7px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+
+    .table-scroll {
+      overflow-x: auto; border-radius: 14px;
+      border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; background: var(--card); }
+    thead tr:first-child th {
+      background: linear-gradient(180deg, #eef5ff 0%, #e4f0fb 100%);
+      font-weight: 800; padding: 11px 12px; text-align: center;
+      white-space: nowrap; border-bottom: 1px solid var(--border);
+      color: var(--text); position: sticky; top: 0; z-index: 2;
+    }
+    thead tr:last-child th {
+      background: #f4f9ff; font-weight: 700; padding: 8px 12px;
+      white-space: nowrap; border-bottom: 2px solid var(--border);
+      color: var(--muted); font-size: .78rem;
+      position: sticky; top: 0; z-index: 2;
+    }
+    tbody tr:hover { background: var(--row-hover); }
+    tbody td { padding: 9px 12px; border-bottom: 1px solid #edf2f9; text-align: center; white-space: nowrap; }
+    tbody td.col-domain { text-align: left; padding-left: 26px; color: var(--muted); font-weight: 500; }
+    tbody tr.avg-row td { font-style: italic; background: #f4f9ff; font-weight: 700; }
+    tbody tr.group-sep td { border-top: 2px solid var(--border); }
+    td.tool-cell {
+      font-weight: 800; text-align: left; padding-left: 14px;
+      border-right: 2px solid var(--border); color: var(--navy);
+    }
+    th.model-group { border-left: 2px solid var(--border); color: var(--navy) !important; }
+    td.model-group-l { border-left: 2px solid var(--border); }
+
+    .val { font-variant-numeric: tabular-nums; }
+    .val-best {
+      color: #fff; font-weight: 800;
+      background: linear-gradient(135deg, var(--green), #3aaa5c);
+      border-radius: 5px; padding: 2px 7px;
+    }
+    .val-second { color: var(--navy); font-weight: 700; }
+    .val-na { color: var(--na); font-style: italic; }
+
+    /* ── Evaluator-metrics section ── */
+    .val-lo  { color: #b45300; font-weight: 700; }   /* v ≤ 0.94 */
+    .val-mid { color: #1a76c0; }                      /* 0.95–0.99 */
+    th.em-sep, td.em-sep { border-left: 2px solid var(--border) !important; }
+    .sw-label {
+      font-weight: 800; text-align: left; padding-left: 14px !important;
+      color: var(--navy); white-space: nowrap;
+    }
+
+    /* Transposed leaderboard */
+    .model-cell {
+      font-weight: 700; text-align: left; padding-left: 14px;
+      border-right: 2px solid var(--border); color: var(--navy);
+      white-space: nowrap; min-width: 165px;
+    }
+    td.avg-col  { background: rgba(26,58,110,.035); border-left: 1px solid var(--border); }
+    th.avg-th   { background: rgba(26,58,110,.06);  border-left: 1px solid var(--border); font-style: italic; }
+    th.group-header { font-size: .85rem; font-weight: 800; padding: 10px 8px; border-bottom: 1px solid var(--border); }
+    th.group-gui     { background: rgba(32,96,168,.1);  color: var(--navy); border-left: 2px solid rgba(32,96,168,.3); }
+    th.group-origin  { background: rgba(46,139,72,.1);  color: var(--green); border-left: 2px solid rgba(46,139,72,.3); }
+    th.group-code    { background: rgba(208,120,16,.1); color: var(--orange); border-left: 2px solid rgba(208,120,16,.3); }
+    th.group-overall { background: rgba(26,58,110,.13); color: var(--navy); border-left: 2px solid rgba(26,58,110,.4); }
+    td.group-sep-l   { border-left: 2px solid var(--border); }
+    .val-sr { font-size: .71rem; color: var(--muted); margin-top: 2px; line-height: 1.1; }
+
+    /* ══════════════════════════════════════
+       SCROLL ANIMATIONS
+    ══════════════════════════════════════ */
+    .fade-in {
+      opacity: 0; transform: translateY(22px);
+      transition: opacity .65s ease, transform .65s ease;
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    .fade-in-delay-1 { transition-delay: .1s; }
+    .fade-in-delay-2 { transition-delay: .2s; }
+    .fade-in-delay-3 { transition-delay: .3s; }
+
+    /* ══════════════════════════════════════
+       IMAGE LIGHTBOX
+    ══════════════════════════════════════ */
+    .lightbox {
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(8,18,38,.88); backdrop-filter: blur(10px);
+      display: flex; align-items: center; justify-content: center;
+      padding: 24px; cursor: zoom-out;
+      opacity: 0; pointer-events: none;
+      transition: opacity .25s;
+    }
+    .lightbox.open { opacity: 1; pointer-events: auto; }
+    .lightbox img {
+      max-width: 92vw; max-height: 88vh;
+      border-radius: 14px; box-shadow: 0 40px 100px rgba(0,0,0,.5);
+      cursor: default;
+    }
+    .lightbox-close {
+      position: absolute; top: 20px; right: 24px;
+      background: rgba(255,255,255,.15); border: none; color: #fff;
+      width: 44px; height: 44px; border-radius: 50%; font-size: 1.2rem;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background .15s;
+    }
+    .lightbox-close:hover { background: rgba(255,255,255,.28); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    footer {
+      background: var(--navy);
+      color: rgba(255,255,255,.45);
+      text-align: center; padding: 56px 20px;
+    }
+    footer p { font-size: .85rem; line-height: 2.3; }
+    footer a { color: rgba(255,255,255,.65); text-decoration: none; transition: color .15s; }
+    footer a:hover { color: #fff; }
+    footer strong { color: #ddeaff; }
+
+    /* ══════════════════════════════════════
+       I18N
+    ══════════════════════════════════════ */
+    [data-lang-cn] { display: none; }
+    body.zh [data-lang-en] { display: none; }
+    body.zh [data-lang-cn] { display: revert; }
+    p[data-lang-cn], div[data-lang-cn], h1[data-lang-cn], h2[data-lang-cn],
+    h3[data-lang-cn], li[data-lang-cn], span[data-lang-cn] { display: none; }
+    body.zh p[data-lang-cn], body.zh div[data-lang-cn], body.zh h1[data-lang-cn],
+    body.zh h2[data-lang-cn], body.zh h3[data-lang-cn], body.zh li[data-lang-cn],
+    body.zh span[data-lang-cn] { display: block; }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 800px) {
+      nav { padding: 0 16px; }
+      .hero { padding: 68px 16px 60px; }
+      .hero-brand { flex-direction: column; gap: 14px; }
+      .hero-brand img { height: 72px; }
+      .hero-title { text-align: center; font-size: 2.6rem; }
+      .stat-item { padding: 20px 28px; }
+      .two-col, .pie-layout { grid-template-columns: 1fr; }
+      section { padding: 58px 0; }
+      .container { padding: 0 16px; }
+      .origin-showcase { padding: 18px; border-radius: 22px; }
+      .origin-showcase::before,
+      .origin-showcase::after { width: 42px; }
+      .origin-card { width: 270px; min-height: 258px; }
+      .origin-card img { height: 180px; }
+      .origin-showcase-track, .origin-group { gap: 14px; }
+    }
+    @media (max-width: 500px) {
+      .nav-links a[href="#overview"], .nav-links a[href="#demo"] { display: none; }
+      .stat-item { padding: 18px 20px; }
+      .origin-card { width: 230px; min-height: 236px; padding: 12px 12px 16px; }
+      .origin-card img { height: 150px; padding: 8px; }
+      .origin-caption { font-size: .84rem; }
+    }
+
+    /* ══════════════════════════════════════
+       RADAR CHARTS  1×4 strip
+    ══════════════════════════════════════ */
+    .radar-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 32px;
+    }
+    .rs-item {
+      display: flex; flex-direction: column; align-items: center;
+      background: #fff;
+      border-radius: 14px;
+      padding: 8px 4px 4px;
+    }
+    .rs-item canvas { display: block; width: 100% !important; }
+    .rs-title {
+      font-size: .84rem; font-weight: 800; letter-spacing: .06em;
+      text-transform: uppercase; text-align: center; margin-bottom: 2px;
+    }
+    /* Radar view toggle */
+    .radar-view-toggle {
+      display: flex; gap: 0; justify-content: flex-end;
+      margin-top: 24px;
+    }
+    .rvt-btn {
+      padding: 7px 20px; font-size: .83rem; font-weight: 700;
+      border: 1.5px solid var(--border); background: var(--card);
+      color: var(--muted); cursor: pointer; transition: all .2s;
+    }
+    .rvt-btn:first-child { border-radius: 8px 0 0 8px; }
+    .rvt-btn:last-child  { border-radius: 0 8px 8px 0; }
+    .rvt-btn:not(:first-child) { border-left: none; }
+    .rvt-btn.active { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .radar-shared-legend {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 8px 28px; margin-top: 32px;
+      padding: 16px 28px;
+      background: var(--card);
+      border-radius: 14px; border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .rsl-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .9rem; font-weight: 600; color: var(--text);
+    }
+    .rsl-line { width: 22px; height: 3px; border-radius: 2px; flex-shrink: 0; }
+    @media (max-width: 900px)  { .radar-strip { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px)  { .radar-strip { grid-template-columns: 1fr; } }
+  
+    /* ── New domain badge colours ── */
+    .ts-origin   { background: #fde8f8; color: #8b1d8b; }
+    .ts-mp       { background: #d8f0e8; color: #155e35; }
+    .ts-oqmd     { background: #d0e8ff; color: #144f8e; }
+    .ts-optimade { background: #fff0d0; color: #7a4a00; }
+    .ts-pymatgen { background: #ffe0d8; color: #8b2010; }
+    .ts-mixed    { background: #e8e8e8; color: #444; }
+
+    /* ── Category cell in stats table ── */
+    .ts-cat {
+      font-weight: 800; font-size: .78rem; letter-spacing: .06em;
+      text-transform: uppercase; color: var(--navy);
+      border-right: 2px solid var(--border);
+      white-space: nowrap; padding: 11px 14px;
+      vertical-align: middle;
+    }
+    .ts-cat-gui    { color: var(--blue); }
+    .ts-cat-origin { color: #8b1d8b; }
+    .ts-cat-code   { color: var(--green); }
+    .ts-cat-mixed  { color: var(--muted); }
+
+    /* ── LaTeX code block ── */
+    .latex-block {
+      margin-top: 32px; background: #1a1d2e;
+      border-radius: 14px; overflow: hidden;
+      box-shadow: var(--shadow-md);
+    }
+    .latex-block-header {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 18px; background: #242740;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+    }
+    .latex-block-title {
+      font-size: .78rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; color: #7eb8f0;
+    }
+    .latex-copy-btn {
+      font-size: .78rem; font-weight: 700; padding: 4px 14px;
+      border-radius: 6px; border: 1px solid rgba(255,255,255,.18);
+      background: transparent; color: #aac; cursor: pointer;
+      transition: background .15s;
+    }
+    .latex-copy-btn:hover { background: rgba(255,255,255,.1); }
+    .latex-block pre {
+      margin: 0; padding: 18px 20px;
+      font-size: .77rem; line-height: 1.65;
+      color: #c8d8f0; overflow-x: auto;
+      font-family: 'Fira Code', 'Cascadia Code', 'Consolas', monospace;
+      white-space: pre;
+    }
+    .latex-block pre .kw  { color: #7eb8f0; }
+    .latex-block pre .brk { color: #f0c070; }
+
+    /* ── Eval design tables ── */
+    .eval-tables-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 32px; margin-top: 40px;
+    }
+    @media (max-width: 900px) { .eval-tables-grid { grid-template-columns: 1fr; } }
+    .eval-tbl-wrap {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; overflow: hidden; box-shadow: var(--shadow-sm);
+    }
+    .eval-tbl-caption {
+      padding: 14px 18px; background: linear-gradient(90deg,#eef5ff,#f5f9ff);
+      border-bottom: 1px solid var(--border);
+      font-size: .82rem; color: var(--muted); line-height: 1.6;
+    }
+    .eval-tbl-caption strong { color: var(--navy); }
+    .eval-tbl { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    .eval-tbl thead th {
+      background: linear-gradient(180deg,#e8f0fc,#dceaf8);
+      font-weight: 800; padding: 10px 14px; text-align: center;
+      border-bottom: 2px solid var(--border); color: var(--navy);
+      white-space: nowrap;
+    }
+    .eval-tbl thead th:first-child { text-align: left; }
+    .eval-tbl tbody td { padding: 9px 14px; border-bottom: 1px solid #eef3fb; }
+    .eval-tbl tbody tr:last-child td { border-bottom: none; }
+    .eval-tbl tbody tr:hover { background: var(--row-hover); }
+    .eval-tbl td:first-child { font-weight: 700; color: var(--navy); }
+    .eval-tbl td { text-align: center; color: var(--muted); }
+    .eval-tbl td:first-child { text-align: left; }
+    .check-yes { color: var(--green); font-weight: 800; font-size: 1.05rem; }
+    .check-frac { color: var(--blue); font-weight: 700; font-size: .88rem; }
+    .check-no  { color: var(--na); }
+
+    /* ── Ablation Charts ── */
+    .abl-controls {
+      display: flex; gap: 12px; margin: 36px 0 28px;
+      flex-wrap: wrap; align-items: center;
+    }
+    .abl-toggle-group {
+      display: flex; gap: 0;
+      background: rgba(255,255,255,.78);
+      border-radius: 10px; padding: 4px;
+      border: 1px solid var(--border);
+    }
+    .abl-btn {
+      padding: 8px 22px; border: none; background: none;
+      cursor: pointer; font-size: .86rem; font-weight: 700;
+      color: var(--muted); border-radius: 7px;
+      transition: background .18s, color .18s, box-shadow .18s;
+      white-space: nowrap;
+    }
+    .abl-btn.active {
+      background: var(--navy); color: #fff;
+      box-shadow: 0 2px 8px rgba(26,58,110,.22);
+    }
+    .abl-btn:hover:not(.active) { color: var(--text); background: rgba(255,255,255,.9); }
+    .abl-sep {
+      width: 1px; background: var(--border);
+      margin: 4px 6px; flex-shrink: 0;
+    }
+    .abl-charts-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px;
+    }
+    @media (max-width: 720px) { .abl-charts-grid { grid-template-columns: 1fr; } }
+    .abl-chart-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 18px; padding: 22px 20px 16px;
+      box-shadow: var(--shadow-sm);
+      transition: box-shadow .25s, transform .25s;
+    }
+    .abl-chart-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .abl-model-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .abl-model-badge {
+      font-size: .8rem; font-weight: 800; letter-spacing: .05em;
+      padding: 4px 14px; border-radius: 999px;
+    }
+    .abl-badge-seed {
+      background: rgba(32,96,168,.1); color: var(--blue);
+      border: 1px solid rgba(32,96,168,.22);
+    }
+    .abl-badge-gpt {
+      background: rgba(46,139,72,.1); color: var(--green);
+      border: 1px solid rgba(46,139,72,.22);
+    }
+    .abl-metric-note {
+      margin-left: auto; font-size: .74rem; font-weight: 700;
+      color: var(--na); letter-spacing: .04em; text-transform: uppercase;
+    }
+    .abl-canvas-wrap { position: relative; height: 270px; }
+    .abl-shared-legend {
+      display: flex; flex-wrap: wrap; justify-content: center;
+      gap: 6px 28px; margin-top: 20px;
+      padding: 13px 22px; background: var(--card);
+      border-radius: 12px; border: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+    .abl-leg-item {
+      display: flex; align-items: center; gap: 9px;
+      font-size: .84rem; font-weight: 600; color: var(--muted);
+    }
+    .abl-leg-solid {
+      width: 24px; height: 3px; border-radius: 2px; flex-shrink: 0;
+    }
+    .abl-leg-dashed {
+      width: 24px; height: 3px; flex-shrink: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        currentColor 0, currentColor 5px,
+        transparent 5px, transparent 9px
+      );
+    }
+    .abl-leg-area {
+      width: 18px; height: 12px; border-radius: 3px; flex-shrink: 0;
+      background: rgba(100,140,200,.2); border: 1px solid rgba(100,140,200,.3);
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════ LIGHTBOX ═══════════════════ -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox(event)">
+  <button class="lightbox-close" onclick="closeLightbox()">✕</button>
+  <img id="lightbox-img" src="" alt="" onclick="event.stopPropagation()" />
+</div>
+
+<!-- ═══════════════════ NAV ═══════════════════ -->
+<nav id="main-nav">
+  <a class="nav-logo" href="#">
+    <img src="logo.png" alt="MatToolBench" />
+    <span class="nav-logo-text"><span class="t-mat">Mat</span><span class="t-tool">Tool</span><span class="t-bench">Bench</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#overview"    data-lang-en>Overview</a>
+    <a href="#overview"    data-lang-cn>概览</a>
+    <a href="#demo"        data-lang-en>Demo</a>
+    <a href="#demo"        data-lang-cn>演示</a>
+    <a href="#statistics"  data-lang-en>Dataset</a>
+    <a href="#statistics"  data-lang-cn>数据集</a>
+    <a href="#benchmark"   data-lang-en>Benchmark</a>
+    <a href="#benchmark"   data-lang-cn>系统设计</a>
+    <a href="#leaderboard" data-lang-en>Leaderboard</a>
+    <a href="#leaderboard" data-lang-cn>榜单</a>
+    <a href="#ablation"    data-lang-en>Ablation</a>
+    <a href="#ablation"    data-lang-cn>消融</a>
+    <a href="#eval-metrics" data-lang-en>Evaluator</a>
+    <a href="#eval-metrics" data-lang-cn>评测器</a>
+    <a href="https://github.com/meiwu5/MatToolBench" target="_blank">GitHub</a>
+    <button class="lang-btn" onclick="toggleLang()" id="lang-toggle">中文</button>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<div class="hero">
+  <!-- floating molecular orbs (materials science motif) -->
+  <div class="mol-orb mol-1"></div>
+  <div class="mol-orb mol-2"></div>
+  <div class="mol-orb mol-3"></div>
+  <div class="mol-orb mol-4"></div>
+  <div class="mol-orb mol-5"></div>
+  <div class="mol-orb mol-6"></div>
+
+  <!-- Logo + Brand Name -->
+  <div class="hero-brand">
+    <img src="logo.png" alt="MatToolBench Logo" />
+    <div class="hero-title">
+      <span class="h-mat">Mat</span><span class="h-tool">Tool</span><span class="h-bench">Bench</span>
+    </div>
+  </div>
+
+  <div class="hero-eyebrow" data-lang-en>Materials Science Agent Benchmark</div>
+  <div class="hero-eyebrow" data-lang-cn>材料科学智能体基准测试</div>
+
+  <p class="hero-sub" data-lang-en>
+    A comprehensive benchmark for evaluating LLM agents on real-world materials science software —
+    spanning GUI tools, scientific code APIs, and data-retrieval interfaces.
+  </p>
+  <p class="hero-sub" data-lang-cn>
+    一个用于评估大语言模型智能体在真实材料科学软件上表现的综合基准，
+    涵盖图形界面工具、科学代码接口和数据检索平台。
+  </p>
+
+  <div class="badge-row">
+    <span class="badge">🧪 204 Tasks</span>
+    <span class="badge">🔬 10 Domains</span>
+    <span class="badge">🤖 3 Agent Types</span>
+    <span class="badge">📊 7 Models Evaluated</span>
+    <span class="badge">📄 MIT License</span>
+  </div>
+
+  <div class="hero-links">
+    <a href="https://github.com/meiwu5/MatToolBench" target="_blank" class="btn-primary">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+      <span data-lang-en>GitHub Repo</span>
+      <span data-lang-cn>代码仓库</span>
+    </a>
+    <a href="#leaderboard" class="btn-secondary">
+      <span data-lang-en>View Leaderboard ↓</span>
+      <span data-lang-cn>查看榜单 ↓</span>
+    </a>
+    <a href="#demo" class="btn-secondary">
+      <span data-lang-en>▶ Watch Demo</span>
+      <span data-lang-cn>▶ 观看演示</span>
+    </a>
+  </div>
+</div>
+
+<!-- ═══════════════════ STATS BAR ═══════════════════ -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num" data-count="204">0+</div>
+    <div class="stat-label" data-lang-en>Tasks</div>
+    <div class="stat-label" data-lang-cn>任务数</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-count="11">0</div>
+    <div class="stat-label" data-lang-en>Domains</div>
+    <div class="stat-label" data-lang-cn>领域</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-count="7">0</div>
+    <div class="stat-label" data-lang-en>Models Evaluated</div>
+    <div class="stat-label" data-lang-cn>评测模型</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" data-count="3">0</div>
+    <div class="stat-label" data-lang-en>Tool Categories</div>
+    <div class="stat-label" data-lang-cn>工具类别</div>
+  </div>
+</div>
+
+<!-- ═══════════════════ OVERVIEW ═══════════════════ -->
+<section id="overview">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>📌 What is MatToolBench?</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>📌 什么是 MatToolBench？</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>A Desktop Agent Benchmark for <span class="g">Materials Science</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>面向<span class="g">材料科学</span>的桌面智能体基准</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      <strong>MatToolBench</strong> evaluates AI agents on real-world tasks across professional
+      materials characterization and analysis software. It covers three agent types —
+      <strong>GUI Agent</strong> (visual interaction), <strong>Origin Agent</strong>
+      (script-based analysis), and <strong>Code Agent</strong> (programmatic database queries)
+      — running inside a Windows&nbsp;11 virtual machine environment powered by Docker &amp; QEMU.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      <strong>MatToolBench</strong> 在专业材料表征与分析软件上评估 AI 智能体的真实世界任务表现。
+      涵盖三种智能体类型：<strong>GUI Agent</strong>（视觉交互）、<strong>Origin Agent</strong>
+      （脚本分析）和 <strong>Code Agent</strong>（代码数据库查询），
+      均运行于 Docker &amp; QEMU 驱动的 Windows 11 虚拟机环境中。
+    </p>
+
+    <div class="cards">
+      <div class="card fade-in fade-in-delay-1">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-icon">🖥️</div>
+          <h3 data-lang-en>GUI Agent</h3>
+          <h3 data-lang-cn>图形界面智能体</h3>
+          <p data-lang-en>Visually navigates materials software GUIs (Jade, Avantage, VESTA, DM, MatStudio) to complete characterization analysis tasks via screenshots and planned actions.</p>
+          <p data-lang-cn>通过截图与动作规划，视觉操作材料科学软件 GUI（Jade、Avantage、VESTA、DM、MatStudio）完成分析任务。</p>
+          <span class="card-tag">~100 tasks</span>
+        </div>
+      </div>
+      <div class="card fade-in fade-in-delay-2">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-icon">📊</div>
+          <h3 data-lang-en>Origin Agent</h3>
+          <h3 data-lang-cn>Origin 脚本智能体</h3>
+          <p data-lang-en>Writes OriginPro scripts to process experimental data (XRD, XPS, Raman, Cycle, Step, CE) and generate publication-quality plots automatically.</p>
+          <p data-lang-cn>编写 OriginPro 脚本处理实验数据（XRD、XPS、拉曼、循环曲线等）并自动生成图表。</p>
+          <span class="card-tag">~16 tasks</span>
+        </div>
+      </div>
+      <div class="card fade-in fade-in-delay-3">
+        <div class="card-accent"></div>
+        <div class="card-body">
+          <div class="card-icon">💻</div>
+          <h3 data-lang-en>Code Agent</h3>
+          <h3 data-lang-cn>代码数据库智能体</h3>
+          <p data-lang-en>Generates Python code to query materials databases (MP, OQMD, PyMatgen, OPTIMADE) and retrieve structural and thermodynamic properties.</p>
+          <p data-lang-cn>生成 Python 代码查询材料数据库（MP、OQMD、PyMatgen、OPTIMADE），检索结构与热力学性质。</p>
+          <span class="card-tag">~70 tasks</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ DEMO ═══════════════════ -->
+<section id="demo" style="background:var(--bg)">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>▶ Demo</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>▶ 演示视频</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Watch MatToolBench <span class="g">in Action</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>观看 MatToolBench <span class="g">演示</span></h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      See how LLM agents navigate professional materials science software, write analysis scripts,
+      and query scientific databases to complete complex real-world tasks.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      观看 LLM 智能体如何操作专业材料科学软件、编写分析脚本，
+      并查询科学数据库来完成复杂的真实世界任务。
+    </p>
+
+    <!--
+      TO ADD VIDEO:
+      Option A – local file:
+        <video controls poster="thumbnail.jpg"><source src="demo.mp4" type="video/mp4" /></video>
+      Option B – YouTube:
+        <iframe src="https://www.youtube.com/embed/YOUR_ID" allowfullscreen></iframe>
+      Option C – Bilibili:
+        <iframe src="//player.bilibili.com/player.html?bvid=BVxxxxxxx" allowfullscreen></iframe>
+    -->
+    <div class="video-wrap fade-in" id="video-container">
+      <div class="video-placeholder">
+        <div class="play-btn">▶</div>
+        <p data-lang-en>Demo video coming soon</p>
+        <p data-lang-cn>演示视频即将上线</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TASK STATISTICS ═══════════════════ -->
+<section id="statistics">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>📊 Task Statistics</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>📊 任务统计</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Complete Task <span class="g">Statistics</span> Across All Domains</h2>
+    <h2 class="sec-title fade-in" data-lang-cn>全领域<span class="g">任务统计</span>概览</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      MatToolBench comprises <strong>204 tasks</strong> across 11 domains and 3 agent types.
+      GUI tasks span 5 professional software tools and are graded by sub-criteria count —
+      <strong>Easy</strong> (1–3 pts), <strong>Medium</strong> (4 pts), <strong>Hard</strong> (≥5 pts).
+      Origin tasks cover 6 plot types (XRD, XPS, Raman, FTIR, Battery Cycling, Free Energy) with no difficulty split.
+      Code tasks evaluate multi-property database queries across MP, OQMD, OPTIMADE, and Pymatgen.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      MatToolBench 共包含 <strong>204 个任务</strong>，覆盖 11 个领域和 3 种智能体类型。
+      GUI 任务跨越 5 款专业软件工具，按子标准数量分级：<strong>简单</strong>（1–3 分）、<strong>中等</strong>（4 分）、<strong>困难</strong>（≥5 分）。
+      Origin 任务涵盖 6 种图表类型（XRD、XPS、拉曼、FTIR、电化学循环、自由能），无难度区分。
+      Code 任务评测 MP、OQMD、OPTIMADE 和 Pymatgen 的多属性数据库查询。
+    </p>
+
+    <!-- Two-column: table (left) + CLI image (right) -->
+    <div class="task-stats-layout fade-in">
+
+      <!-- Statistics table -->
+      <div class="task-stats-table-wrap">
+        <div class="task-stats-caption" data-lang-en>
+          <strong>Table 1.</strong> Statistics of all benchmark tasks across categories and domains.
+        </div>
+        <div class="task-stats-caption" data-lang-cn>
+          <strong>表 1.</strong> 所有基准任务的类别与领域统计。
+          E&thinsp;/&thinsp;M&thinsp;/&thinsp;H（仅 GUI）：简单&thinsp;/&thinsp;中等&thinsp;/&thinsp;困难，
+          依据子标准数量划分（1–3&thinsp;/&thinsp;4&thinsp;/&thinsp;≥5 分）。
+          Code 任务的"均分"表示每任务的键值/文件匹配标准数。
+        </div>
+        <div class="task-stats-scroll">
+          <table class="task-stats-tbl">
+            <thead>
+              <tr>
+                <th><span data-lang-en>Category</span><span data-lang-cn>类别</span></th>
+                <th><span data-lang-en>Domain</span><span data-lang-cn>领域</span></th>
+                <th><span data-lang-en>#Tasks</span><span data-lang-cn>任务数</span></th>
+                <th>E / M / H</th>
+                <th><span data-lang-en>Avg Pts</span><span data-lang-cn>均分</span></th>
+                <th><span data-lang-en>Total Pts</span><span data-lang-cn>总分</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- GUI -->
+              <tr>
+                <td class="ts-cat ts-cat-gui" rowspan="5"><span data-lang-en>GUI</span><span data-lang-cn>图形界面</span></td>
+                <td class="ts-domain"><span class="ts-badge ts-avantage">Avantage</span></td>
+                <td class="ts-num">20</td><td class="ts-emh">13 / 2 / 5</td>
+                <td class="ts-avg">3.75</td><td class="ts-total">75</td>
+              </tr>
+              <tr>
+                <td class="ts-domain"><span class="ts-badge ts-dm">DM</span></td>
+                <td class="ts-num">20</td><td class="ts-emh">13 / 4 / 3</td>
+                <td class="ts-avg">3.35</td><td class="ts-total">67</td>
+              </tr>
+              <tr>
+                <td class="ts-domain"><span class="ts-badge ts-jade">JADE</span></td>
+                <td class="ts-num">20</td><td class="ts-emh">14 / 3 / 3</td>
+                <td class="ts-avg">3.45</td><td class="ts-total">69</td>
+              </tr>
+              <tr>
+                <td class="ts-domain"><span class="ts-badge ts-ms">MS</span></td>
+                <td class="ts-num">20</td><td class="ts-emh">6 / 6 / 8</td>
+                <td class="ts-avg">4.10</td><td class="ts-total">82</td>
+              </tr>
+              <tr>
+                <td class="ts-domain"><span class="ts-badge ts-vesta">VESTA</span></td>
+                <td class="ts-num">20</td><td class="ts-emh">13 / 2 / 5</td>
+                <td class="ts-avg">3.45</td><td class="ts-total">69</td>
+              </tr>
+              <!-- Origin -->
+              <tr>
+                <td class="ts-cat ts-cat-origin"><span data-lang-en>Origin</span><span data-lang-cn>绘图</span></td>
+                <td class="ts-domain"><span class="ts-badge ts-origin">Origin</span></td>
+                <td class="ts-num">16</td><td class="ts-emh" style="color:var(--na)">—</td>
+                <td class="ts-avg">2.00</td><td class="ts-total">32</td>
+              </tr>
+              <!-- Code (combined) -->
+              <tr>
+                <td class="ts-cat ts-cat-code"><span data-lang-en>Code</span><span data-lang-cn>代码查询</span></td>
+                <td class="ts-domain" style="font-size:.78rem;color:var(--muted)">
+                  <span class="ts-badge ts-mp" style="margin-right:2px;">MP</span>
+                  <span class="ts-badge ts-oqmd" style="margin-right:2px;">OQMD</span>
+                  <span class="ts-badge ts-optimade" style="margin-right:2px;">OPTIMADE</span>
+                  <span class="ts-badge ts-pymatgen">Pymatgen</span>
+                </td>
+                <td class="ts-num">80</td><td class="ts-emh" style="color:var(--na)">—</td>
+                <td class="ts-avg">1</td><td class="ts-total">80</td>
+              </tr>
+              <!-- Mixed -->
+              <tr>
+                <td class="ts-cat ts-cat-mixed"><span data-lang-en>Mixed</span><span data-lang-cn>混合</span></td>
+                <td class="ts-domain"><span class="ts-badge ts-mixed">Mixed</span></td>
+                <td class="ts-num">8</td><td class="ts-emh" style="color:var(--na)">—</td>
+                <td class="ts-avg" style="color:var(--na)">—</td>
+                <td class="ts-total" style="color:var(--na)">—</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- Difficulty mini-legend -->
+        <div class="ts-legend">
+          <span class="ts-leg-item"><span class="ts-leg-dot ts-easy"></span><span data-lang-en>Easy (1–3 pts, GUI)</span><span data-lang-cn>简单（1–3 分，GUI）</span></span>
+          <span class="ts-leg-item"><span class="ts-leg-dot ts-medium"></span><span data-lang-en>Medium (4 pts, GUI)</span><span data-lang-cn>中等（4 分，GUI）</span></span>
+          <span class="ts-leg-item"><span class="ts-leg-dot ts-hard"></span><span data-lang-en>Hard (≥5 pts, GUI)</span><span data-lang-cn>困难（≥5 分，GUI）</span></span>
+        </div>
+      </div>
+
+      <!-- CLI screenshot -->
+      <div class="img-showcase" onclick="openLightbox('cli.png')" style="margin-top:0;">
+        <img src="cli.png" alt="MatToolBench CLI evaluation pipeline" />
+        <div class="img-caption">
+          <strong data-lang-en>Figure 1</strong><strong data-lang-cn>图 1</strong>
+          <span data-lang-en>: CLI output of the automated evaluation pipeline running agent tasks. Click to enlarge.</span>
+          <span data-lang-cn>：自动化评估流水线运行智能体任务的 CLI 输出。点击放大。</span>
+        </div>
+      </div>
+
+    </div><!-- /.task-stats-layout -->
+
+
+  </div>
+</section>
+
+<!-- ═══════════════════ TASK EXAMPLES + DISTRIBUTION ═══════════════════ -->
+<section id="examples">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>🔍 Benchmark Tasks</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>🔍 基准任务</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Real-World <span class="g">Task Examples</span> &amp; Distribution</h2>
+    <h2 class="sec-title fade-in" data-lang-cn>真实世界<span class="g">任务示例</span>与分布</h2>
+
+    <!-- XRD task example — full width -->
+    <div class="img-showcase fade-in" onclick="openLightbox('introduction2.png')">
+      <img src="introduction2.png" alt="XRD Task Example" />
+      <div class="img-caption">
+        <strong data-lang-en>Figure 2</strong><strong data-lang-cn>图 2</strong>
+        <span data-lang-en>: Example GUI task — the agent loads XRD data, identifies diffraction peaks, matches phases from a database, and plots the overlay pattern across 6 sequential steps. Click to enlarge.</span>
+        <span data-lang-cn>：GUI 任务示例——智能体依次加载 XRD 数据、识别衍射峰、从数据库匹配物相，并绘制叠加图谱，共 6 个连续步骤。点击放大。</span>
+      </div>
+    </div>
+
+    <!-- Pie chart + explanation -->
+    <div class="pie-layout fade-in" style="margin-top: 48px;">
+      <div class="img-showcase" onclick="openLightbox('pie.png')" style="margin-top:0;">
+        <img src="pie.png" alt="Task Category Distribution" />
+        <div class="img-caption">
+          <strong data-lang-en>Figure 3</strong><strong data-lang-cn>图 3</strong>
+          <span data-lang-en>: Task category distribution across all 204 benchmark tasks. Click to enlarge.</span>
+          <span data-lang-cn>：204 基准任务的类别分布。点击放大。</span>
+        </div>
+      </div>
+      <div class="pie-text">
+        <h3 data-lang-en>Task Category Breakdown</h3>
+        <h3 data-lang-cn>任务类别细分</h3>
+        <p data-lang-en>
+          Tasks span a wide range of materials science workflows, from crystal structure visualization
+          and XRD/XPS spectral analysis to database queries for thermodynamic properties.
+          Each task is graded by domain-specific sub-criteria, enabling fine-grained
+          evaluation beyond simple pass/fail.
+        </p>
+        <p data-lang-cn>
+          任务覆盖材料科学的多种工作流程，从晶体结构可视化、XRD/XPS 谱图分析，
+          到热力学性质的数据库查询。每个任务按领域特定子标准进行评分，
+          支持超越简单通过/失败的细粒度评估。
+        </p>
+        <ul class="category-list">
+          <li><span class="cat-dot" style="background:#e06c3a"></span><span data-lang-en>Structure Analysis (Avantage, VESTA, Jade)</span><span data-lang-cn>结构分析（Avantage、VESTA、Jade）</span></li>
+          <li><span class="cat-dot" style="background:#3a8ae0"></span><span data-lang-en>Microscopy (Digital Micrograph, MatStudio)</span><span data-lang-cn>显微镜（Digital Micrograph、MatStudio）</span></li>
+          <li><span class="cat-dot" style="background:#2e8b48"></span><span data-lang-en>Data Processing (Origin XRD / XPS / Raman)</span><span data-lang-cn>数据处理（Origin XRD / XPS / 拉曼）</span></li>
+          <li><span class="cat-dot" style="background:#9b59b6"></span><span data-lang-en>Database Queries (MP, OQMD, PyMatgen, OPTIMADE)</span><span data-lang-cn>数据库查询（MP、OQMD、PyMatgen、OPTIMADE）</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ARCHITECTURE ═══════════════════ -->
+<section id="benchmark" style="background:#fff;">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>🏗️ Benchmark Design</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>🏗️ 基准系统设计</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>System <span class="b">Overview</span> &amp; Evaluation Design</h2>
+    <h2 class="sec-title fade-in" data-lang-cn>系统<span class="b">概览</span>与评测设计</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      Tasks are loaded from JSON config files and dispatched to one of three agent pipelines.
+      Each agent interacts with a Windows&nbsp;11 VM (via QEMU inside Docker) or an external
+      database API, and results are evaluated by domain-specific getters and metrics.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      任务从 JSON 配置文件加载，分发到三种智能体流水线之一。
+      每个智能体通过 QEMU（Docker 内）与 Windows 11 虚拟机或外部数据库 API 交互，
+      结果由特定领域的 getter 和评分指标进行评估。
+    </p>
+
+    <div class="model-wrap fade-in">
+      <img src="model.png" alt="MatToolBench System Architecture" />
+      <div class="model-caption">
+        <span data-lang-en>Figure 4: MatToolBench system architecture — task dispatch, agent pipelines, and evaluation flow.</span>
+        <span data-lang-cn>图 4：MatToolBench 系统架构——任务分发、智能体流水线与评估流程。</span>
+      </div>
+    </div>
+
+    <!-- Eval Design Tables -->
+    <div style="margin-top:48px;">
+      <div class="sec-eyebrow fade-in" style="margin-bottom:8px;" data-lang-en>📐 Evaluation Design</div>
+      <div class="sec-eyebrow fade-in" style="margin-bottom:8px;" data-lang-cn>📐 评测设计</div>
+      <p class="sec-body fade-in" data-lang-en>
+        Each domain uses a tailored combination of metric functions. GUI domains rely on
+        <code>exact_match</code> with specialized getter functions; Code domains use
+        partial-credit matching (<code>detect_kv_match</code>) or binary file comparison
+        (<code>detect_file_match</code>).
+      </p>
+      <p class="sec-body fade-in" data-lang-cn>
+        每个领域使用定制化的评测指标组合。GUI 领域使用 <code>exact_match</code> 配合专用 getter 函数；
+        Code 领域使用部分分匹配（<code>detect_kv_match</code>）或二进制文件比对（<code>detect_file_match</code>）。
+      </p>
+    </div>
+
+    <div class="eval-tables-grid fade-in">
+      <!-- Table 2a: Metric functions -->
+      <div class="eval-tbl-wrap">
+        <div class="eval-tbl-caption">
+          <strong data-lang-en>Table 2.</strong>
+          <strong data-lang-cn>表 2.</strong>
+          <span data-lang-en> Metric functions per domain.
+            ✓ = all tasks; fractions = partial usage.</span>
+          <span data-lang-cn> 各领域评测函数。✓ = 全部任务；分数 = 部分使用。</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="eval-tbl">
+            <thead>
+              <tr>
+                <th><span data-lang-en>Domain</span><span data-lang-cn>领域</span></th>
+                <th><code>exact_match</code></th>
+                <th><code>detect_kv</code></th>
+                <th><code>detect_file</code></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span style="font-weight:700">GUI + Origin</span>
+                  <div style="font-size:.74rem;color:var(--muted);margin-top:2px;line-height:1.5">Avantage · DM · JADE<br>MS · VESTA · Origin</div>
+                </td>
+                <td class="check-yes">✓</td><td class="check-no">—</td><td class="check-no">—</td>
+              </tr>
+              <tr><td>OPTIMADE</td><td class="check-yes">✓</td><td class="check-no">—</td><td class="check-no">—</td></tr>
+              <tr><td>MP</td><td class="check-no">—</td><td class="check-frac">14/20</td><td class="check-frac">6/20</td></tr>
+              <tr><td>OQMD</td><td class="check-no">—</td><td class="check-yes">✓</td><td class="check-no">—</td></tr>
+              <tr><td>Pymatgen</td><td class="check-no">—</td><td class="check-no">—</td><td class="check-yes">✓</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Table 3: Getter types (GUI + Origin only) -->
+      <div class="eval-tbl-wrap">
+        <div class="eval-tbl-caption">
+          <strong data-lang-en>Table 3.</strong>
+          <strong data-lang-cn>表 3.</strong>
+          <span data-lang-en> Getter function types per GUI/Origin domain.</span>
+          <span data-lang-cn> GUI / Origin 领域的 getter 函数类型数。</span>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="eval-tbl">
+            <thead>
+              <tr>
+                <th><span data-lang-en>Domain</span><span data-lang-cn>领域</span></th>
+                <th><span data-lang-en>#Getter Types</span><span data-lang-cn>种类数</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Avantage</td><td style="text-align:center;font-weight:700;color:var(--blue)">6</td></tr>
+              <tr><td>DM</td><td style="text-align:center;font-weight:700;color:var(--blue)">6</td></tr>
+              <tr><td>JADE</td><td style="text-align:center;font-weight:700;color:var(--blue)">8</td></tr>
+              <tr><td>MS</td><td style="text-align:center;font-weight:700;color:var(--blue)">5</td></tr>
+              <tr><td>VESTA</td><td style="text-align:center;font-weight:700;color:var(--blue)">8</td></tr>
+              <tr><td>Origin</td><td style="text-align:center;font-weight:700;color:var(--blue)">2</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /.eval-tables-grid -->
+
+  </div>
+</section>
+
+<!-- ═══════════════════ LEADERBOARD ═══════════════════ -->
+<section id="leaderboard" style="background:#fff">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>🏆 Results</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>🏆 评测结果</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Model <span class="b">Leaderboard</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>模型<span class="b">榜单</span></h2>
+
+    <div class="tabs-wrapper fade-in">
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="accuracy" onclick="switchMainTab('accuracy')" data-lang-en>Accuracy</button>
+        <button class="tab-btn active" data-tab="accuracy" onclick="switchMainTab('accuracy')" data-lang-cn>准确性</button>
+        <button class="tab-btn" data-tab="efficiency" onclick="switchMainTab('efficiency')" data-lang-en>Efficiency</button>
+        <button class="tab-btn" data-tab="efficiency" onclick="switchMainTab('efficiency')" data-lang-cn>效率</button>
+      </div>
+      <div class="sub-tabs" id="sub-acc">
+        <button class="sub-tab-btn active" data-acc-sub="score" onclick="switchAccSub('score')" data-lang-en>Score</button>
+        <button class="sub-tab-btn active" data-acc-sub="score" onclick="switchAccSub('score')" data-lang-cn>得分</button>
+        <button class="sub-tab-btn" data-acc-sub="sr" onclick="switchAccSub('sr')" data-lang-en>SR (%)</button>
+        <button class="sub-tab-btn" data-acc-sub="sr" onclick="switchAccSub('sr')" data-lang-cn>成功率 (%)</button>
+      </div>
+      <div class="sub-tabs" id="sub-eff" style="display:none">
+        <button class="sub-tab-btn active" data-eff-sub="eff" onclick="switchEffSub('eff')" data-lang-en>Eff</button>
+        <button class="sub-tab-btn active" data-eff-sub="eff" onclick="switchEffSub('eff')" data-lang-cn>效率</button>
+        <button class="sub-tab-btn" data-eff-sub="effstar" onclick="switchEffSub('effstar')" data-lang-en>Eff*</button>
+        <button class="sub-tab-btn" data-eff-sub="effstar" onclick="switchEffSub('effstar')" data-lang-cn>成功效率</button>
+        <button class="sub-tab-btn" data-eff-sub="ftr" onclick="switchEffSub('ftr')" data-lang-en>FTR (%)</button>
+        <button class="sub-tab-btn" data-eff-sub="ftr" onclick="switchEffSub('ftr')" data-lang-cn>错误终止率 (%)</button>
+      </div>
+    </div>
+
+    <!-- ACCURACY -->
+    <div id="tab-accuracy" class="tab-panel active">
+      <div class="section-header">
+        <h2 data-lang-en>Accuracy Results</h2>
+        <h2 data-lang-cn>准确性结果</h2>
+        <p data-lang-en><strong>Score</strong>: normalized task score averaged over sub-criteria.&ensp;<strong>SR&thinsp;(%)</strong>: success rate (all sub-criteria satisfied).</p>
+        <p data-lang-cn><strong>Score</strong>：子标准归一化平均得分。&ensp;<strong>SR&thinsp;(%)</strong>：成功率（所有子标准均满足）。</p>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot" style="background:var(--green)"></span><span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
+        <div class="legend-item"><span class="dot" style="background:var(--navy)"></span><span data-lang-en>Second best</span><span data-lang-cn>次优</span></div>
+        <div class="legend-item"><span style="color:var(--na);font-style:italic">—</span>&nbsp;<span data-lang-en>Not yet evaluated</span><span data-lang-cn>待评测</span></div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-en>Model</th>
+              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-cn>模型</th>
+              <th colspan="6" class="group-header group-gui">GUI Agent</th>
+              <th colspan="3" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
+              <th colspan="5" class="group-header group-code"   style="border-left:2px solid rgba(208,120,16,.3)">Code Agent</th>
+              <th colspan="1" class="group-header group-overall" style="border-left:2px solid rgba(26,58,110,.4)" data-lang-en>Overall</th>
+              <th colspan="1" class="group-header group-overall" style="border-left:2px solid rgba(26,58,110,.4)" data-lang-cn>总平均</th>
+            </tr>
+            <tr>
+              <th>Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l">XRD</th><th>XPS</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l">Pymatgen</th><th>MP</th><th>OQMD</th><th>OPTIMADE</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l avg-th" data-lang-en>Avg</th>
+              <th class="group-sep-l avg-th" data-lang-cn>均值</th>
+            </tr>
+          </thead>
+          <tbody id="acc-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- EFFICIENCY -->
+    <div id="tab-efficiency" class="tab-panel">
+      <div class="section-header">
+        <h2 data-lang-en>Efficiency Results</h2>
+        <h2 data-lang-cn>效率结果</h2>
+        <p data-lang-en><strong>Eff</strong>: valid-action ratio over all episodes.&ensp;<strong>Eff*</strong>: valid-action ratio on successful episodes only.&ensp;<strong>FTR&thinsp;(%)</strong>: false termination rate.</p>
+        <p data-lang-cn><strong>Eff</strong>：所有回合的有效动作比率。&ensp;<strong>Eff*</strong>：仅成功回合的有效动作比率。&ensp;<strong>FTR</strong>：错误终止率。</p>
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="dot" style="background:var(--green)"></span><span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
+        <div class="legend-item"><span class="dot" style="background:var(--navy)"></span><span data-lang-en>Second best</span><span data-lang-cn>次优</span></div>
+        <div class="legend-item"><span style="color:var(--na);font-style:italic">—</span>&nbsp;<span data-lang-en>Not yet evaluated</span><span data-lang-cn>待评测</span></div>
+      </div>
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-en>Model</th>
+              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-cn>模型</th>
+              <th colspan="6" class="group-header group-gui">GUI Agent</th>
+              <th colspan="3" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
+              <th colspan="5" class="group-header group-code"   style="border-left:2px solid rgba(208,120,16,.3)">Code Agent</th>
+            </tr>
+            <tr>
+              <th>Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l">XRD</th><th>XPS</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l">Pymatgen</th><th>MP</th><th>OQMD</th><th>OPTIMADE</th><th class="avg-th">Avg</th>
+            </tr>
+          </thead>
+          <tbody id="eff-body"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ABLATION ═══════════════════ -->
+<section id="ablation" style="background:var(--bg);">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>🔬 Ablation Study</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>🔬 消融实验</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Ablation <span class="g">Experiments</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn><span class="g">消融</span>实验分析</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      We ablate two key prompt-hint parameters —
+      <code>gui_hint_mode</code> and <code>code_hint_mode</code> — across two frontier
+      models (Seed-1.8 and GPT-5.4). Each panel compares <strong>hint</strong> vs.
+      <strong>no_hint</strong> per domain; the shaded band visualises the performance gap.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      我们对两个关键提示参数（<code>gui_hint_mode</code> 与 <code>code_hint_mode</code>）
+      在 Seed-1.8 与 GPT-5.4 两个前沿模型上进行消融实验。
+      每幅图对比各领域 <strong>hint</strong> 与 <strong>no_hint</strong> 的性能，
+      阴影区域表示两者之间的性能差距。
+    </p>
+
+    <!-- ── Controls ── -->
+    <div class="abl-controls fade-in">
+      <div class="abl-toggle-group" id="ablTaskToggle">
+        <button class="abl-btn active" data-val="gui"  onclick="ablSetTask('gui')">GUI</button>
+        <button class="abl-btn"        data-val="code" onclick="ablSetTask('code')">Code</button>
+      </div>
+      <div class="abl-sep" style="height:32px;align-self:center"></div>
+      <div class="abl-toggle-group" id="ablMetricToggle">
+        <button class="abl-btn active" data-val="sr"    onclick="ablSetMetric('sr')">
+          <span data-lang-en>Success Rate</span><span data-lang-cn>成功率</span>
+        </button>
+        <button class="abl-btn"        data-val="score" onclick="ablSetMetric('score')">
+          <span data-lang-en>Score</span><span data-lang-cn>分数</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- ── 2-column chart grid ── -->
+    <div class="abl-charts-grid fade-in">
+
+      <!-- Seed 1.8 -->
+      <div class="abl-chart-card">
+        <div class="abl-model-header">
+          <span class="abl-model-badge abl-badge-seed">Seed 1.8</span>
+          <span class="abl-metric-note" id="ablMetricLabelSeed">Success Rate</span>
+        </div>
+        <div class="abl-canvas-wrap">
+          <canvas id="ablChartSeed"></canvas>
+        </div>
+      </div>
+
+      <!-- GPT-5.4 -->
+      <div class="abl-chart-card">
+        <div class="abl-model-header">
+          <span class="abl-model-badge abl-badge-gpt">GPT-5.4</span>
+          <span class="abl-metric-note" id="ablMetricLabelGpt">Success Rate</span>
+        </div>
+        <div class="abl-canvas-wrap">
+          <canvas id="ablChartGpt"></canvas>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── Shared legend ── -->
+    <div class="abl-shared-legend fade-in">
+      <div class="abl-leg-item">
+        <div class="abl-leg-solid" style="background:#2060a8"></div>
+        <span data-lang-en>hint (Seed 1.8)</span>
+        <span data-lang-cn>hint（Seed 1.8）</span>
+      </div>
+      <div class="abl-leg-item" style="color:#2060a8">
+        <div class="abl-leg-dashed" style="color:#2060a8"></div>
+        <span style="color:var(--muted)" data-lang-en>no_hint (Seed 1.8)</span>
+        <span style="color:var(--muted)" data-lang-cn>no_hint（Seed 1.8）</span>
+      </div>
+      <div class="abl-leg-item">
+        <div class="abl-leg-solid" style="background:#2e8b48"></div>
+        <span data-lang-en>hint (GPT-5.4)</span>
+        <span data-lang-cn>hint（GPT-5.4）</span>
+      </div>
+      <div class="abl-leg-item" style="color:#2e8b48">
+        <div class="abl-leg-dashed" style="color:#2e8b48"></div>
+        <span style="color:var(--muted)" data-lang-en>no_hint (GPT-5.4)</span>
+        <span style="color:var(--muted)" data-lang-cn>no_hint（GPT-5.4）</span>
+      </div>
+      <div class="abl-leg-item">
+        <div class="abl-leg-area"></div>
+        <span data-lang-en>performance gap</span>
+        <span data-lang-cn>性能差距</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ EVAL METRICS ═══════════════════ -->
+<section id="eval-metrics" style="background:#fff;">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>📐 Evaluation Quality</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>📐 评测质量</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Evaluator <span class="g">Accuracy</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>评测脚本<span class="g">准确率</span></h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      Automated evaluation scripts independently verify every numerical extraction and
+      software-operation judgment.  We report Accuracy, Precision, Recall, and F1 for
+      both the <strong>Score</strong> (numerical value correctness) and
+      <strong>Software</strong> (operation identification) dimensions.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      自动化评测脚本对每项数值提取及软件操作识别进行独立验证，
+      分别从 <strong>数值得分</strong>（Score）和<strong>软件操作</strong>（Software）两个维度报告
+      准确率、精确率、召回率及 F1。
+    </p>
+
+    <!-- colour key -->
+    <div class="legend fade-in" style="margin-bottom:28px">
+      <span data-lang-en style="font-weight:700;color:var(--text)">Colour key:</span>
+      <span data-lang-cn style="font-weight:700;color:var(--text)">颜色说明：</span>
+      <span class="legend-item"><span class="dot" style="background:var(--text)"></span>
+        <span data-lang-en style="font-weight:700">1.00 — perfect</span>
+        <span data-lang-cn style="font-weight:700">1.00 — 满分</span></span>
+      <span class="legend-item"><span class="dot" style="background:#1a76c0"></span>
+        <span data-lang-en style="color:#1a76c0">0.95–0.99 — near-perfect</span>
+        <span data-lang-cn style="color:#1a76c0">0.95–0.99 — 接近满分</span></span>
+      <span class="legend-item"><span class="dot" style="background:#b45300"></span>
+        <span data-lang-en style="color:#b45300;font-weight:700">≤ 0.94 — notable gap</span>
+        <span data-lang-cn style="color:#b45300;font-weight:700">≤ 0.94 — 明显差距</span></span>
+    </div>
+
+    <!-- ── Overall table ── -->
+    <div class="section-header fade-in">
+      <h2 data-lang-en>Overall Performance</h2>
+      <h2 data-lang-cn>整体表现</h2>
+      <p data-lang-en>Macro-averaged across all 20 tasks per software.</p>
+      <p data-lang-cn>每款软件 20 个任务的宏平均值。</p>
+    </div>
+
+    <div class="table-scroll fade-in">
+      <table>
+        <thead>
+          <tr>
+            <th style="text-align:left;padding-left:14px">Software</th>
+            <th colspan="4">Score</th>
+            <th colspan="4" class="em-sep">Software</th>
+          </tr>
+          <tr>
+            <th style="text-align:left;padding-left:14px">—</th>
+            <th>Acc.</th><th>Prec.</th><th>Rec.</th><th>F1</th>
+            <th class="em-sep">Acc.</th><th>Prec.</th><th>Rec.</th><th>F1</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="sw-label">JADE</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val em-sep" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+          </tr>
+          <tr>
+            <td class="sw-label">MS</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val em-sep" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val" style="font-weight:700">1.00</td>
+          </tr>
+          <tr>
+            <td class="sw-label">Avantage</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val val-mid">0.98</td>
+            <td class="val val-mid">0.98</td>
+            <td class="val val-mid">0.98</td>
+            <td class="val em-sep" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.98</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.99</td>
+          </tr>
+          <tr>
+            <td class="sw-label">VESTA</td>
+            <td class="val val-mid">0.98</td>
+            <td class="val val-lo">0.94</td>
+            <td class="val val-mid">0.99</td>
+            <td class="val val-mid">0.97</td>
+            <td class="val em-sep val-mid">0.99</td>
+            <td class="val val-lo">0.94</td>
+            <td class="val" style="font-weight:700">1.00</td>
+            <td class="val val-mid">0.97</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════ ORIGIN GALLERY ═══════════════════ -->
+<section id="origin">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>📈 Origin Gallery</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>📈 Origin 图谱画廊</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Representative <span class="g">Origin</span> Plot Showcase</h2>
+    <h2 class="sec-title fade-in" data-lang-cn>代表性 <span class="g">Origin</span> 图谱展示</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      A curated stream of representative materials-science plots processed in Origin, spanning diffraction,
+      spectroscopy, electrochemistry, thermal analysis, and energy-profile visualization.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      精选展示使用 Origin 处理的代表性材料科学图谱，涵盖衍射、光谱、电化学、热分析与能量示意等多种类型。
+    </p>
+
+    <div class="origin-showcase fade-in">
+      <div class="origin-showcase-track">
+        <div class="origin-group" aria-label="Origin plot gallery set 1">
+          <div class="origin-card"><img src="origin/xrd/brk.png" alt="XRD Pattern"><div class="origin-caption">XRD Pattern</div></div>
+          <div class="origin-card"><img src="origin/xps/nature.png" alt="XPS Spectra"><div class="origin-caption">XPS Spectra</div></div>
+          <div class="origin-card"><img src="origin/ftir/Absorbance.png" alt="FTIR Absorbance"><div class="origin-caption">FTIR Absorbance</div></div>
+          <div class="origin-card"><img src="origin/roman/raman_stack.png" alt="Raman Spectrum"><div class="origin-caption">Raman Spectrum</div></div>
+          <div class="origin-card"><img src="origin/cycle/battery_cycle_performance_dynamic_vertical_line.png" alt="Battery Cycling"><div class="origin-caption">Battery Cycling</div></div>
+          <div class="origin-card"><img src="origin/xps/XPS_Fitted_Spectra_Plot.png" alt="XPS Fitted Spectra"><div class="origin-caption">XPS Fitted Spectra</div></div>
+          <div class="origin-card"><img src="origin/ftir/all.png" alt="FTIR Full Spectra"><div class="origin-caption">FTIR Full Spectra</div></div>
+          <div class="origin-card"><img src="origin/roman/roman_cell.png" alt="Raman Mapping"><div class="origin-caption">Raman Mapping</div></div>
+          <div class="origin-card"><img src="origin/ce/voltage_time_curve_with_inset_optimized.png" alt="Voltage-Time Curve"><div class="origin-caption">Voltage-Time Curve</div></div>
+          <div class="origin-card"><img src="origin/ftir/zoom.png" alt="FTIR Zoomed Spectra"><div class="origin-caption">FTIR Zoomed Spectra</div></div>
+          <div class="origin-card"><img src="origin/step/free_energy_diagram.png" alt="Free Energy Diagram"><div class="origin-caption">Free Energy Diagram</div></div>
+          <div class="origin-card"><img src="origin/roman/roman灰.png" alt="Raman Grayscale"><div class="origin-caption">Raman Grayscale</div></div>
+        </div>
+
+        <div class="origin-group" aria-hidden="true">
+          <div class="origin-card"><img src="origin/xrd/brk.png" alt="XRD Pattern"><div class="origin-caption">XRD Pattern</div></div>
+          <div class="origin-card"><img src="origin/xps/nature.png" alt="XPS Spectra"><div class="origin-caption">XPS Spectra</div></div>
+          <div class="origin-card"><img src="origin/ftir/Absorbance.png" alt="FTIR Absorbance"><div class="origin-caption">FTIR Absorbance</div></div>
+          <div class="origin-card"><img src="origin/roman/raman_stack.png" alt="Raman Spectrum"><div class="origin-caption">Raman Spectrum</div></div>
+          <div class="origin-card"><img src="origin/cycle/battery_cycle_performance_dynamic_vertical_line.png" alt="Battery Cycling"><div class="origin-caption">Battery Cycling</div></div>
+          <div class="origin-card"><img src="origin/xps/XPS_Fitted_Spectra_Plot.png" alt="XPS Fitted Spectra"><div class="origin-caption">XPS Fitted Spectra</div></div>
+          <div class="origin-card"><img src="origin/ftir/all.png" alt="FTIR Full Spectra"><div class="origin-caption">FTIR Full Spectra</div></div>
+          <div class="origin-card"><img src="origin/roman/roman_cell.png" alt="Raman Mapping"><div class="origin-caption">Raman Mapping</div></div>
+          <div class="origin-card"><img src="origin/ce/voltage_time_curve_with_inset_optimized.png" alt="Voltage-Time Curve"><div class="origin-caption">Voltage-Time Curve</div></div>
+          <div class="origin-card"><img src="origin/ftir/zoom.png" alt="FTIR Zoomed Spectra"><div class="origin-caption">FTIR Zoomed Spectra</div></div>
+          <div class="origin-card"><img src="origin/step/free_energy_diagram.png" alt="Free Energy Diagram"><div class="origin-caption">Free Energy Diagram</div></div>
+          <div class="origin-card"><img src="origin/roman/roman灰.png" alt="Raman Grayscale"><div class="origin-caption">Raman Grayscale</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ RADAR CHARTS ═══════════════════ -->
+<section id="radar" style="background:var(--bg);">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>📊 Origin Evaluation</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>📊 Origin 质量评估</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Origin Plotting <span class="g">Quality Scores</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>Origin 绘图<span class="g">质量评分</span></h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      Five evaluators — human users and four frontier LLMs — rate outputs from <strong>Ours</strong>
+      and four baselines on a 1–5 scale across four spectroscopy / diffraction task types.
+      <span style="color:var(--blue);font-weight:700">Ours</span> axis is highlighted in blue; larger area = better quality.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      人类用户和四个前沿大模型对 <strong>Ours</strong> 及四种基线方法进行 1–5 分评分，涵盖四类光谱/衍射任务。
+      <span style="color:var(--blue);font-weight:700">Ours</span> 轴以蓝色高亮显示，面积越大代表质量越高。
+    </p>
+
+    <div class="radar-view-toggle fade-in">
+      <button class="rvt-btn active" id="rvt-anim" onclick="switchRadar('anim')">
+        <span data-lang-en>▶ Auto</span><span data-lang-cn>▶ 动图</span>
+      </button>
+      <button class="rvt-btn" id="rvt-click" onclick="switchRadar('click')">
+        <span data-lang-en>Click to pause</span><span data-lang-cn>点击停留</span>
+      </button>
+      <button class="rvt-btn" id="rvt-static" onclick="switchRadar('static')">
+        <span data-lang-en>Static Image</span><span data-lang-cn>静态图</span>
+      </button>
+    </div>
+
+    <div id="radarInteractiveView">
+    <div class="radar-strip fade-in">
+      <div class="rs-item">
+        <div class="rs-title" style="color:#2060a8">Raman</div>
+        <canvas id="rc0"></canvas>
+      </div>
+      <div class="rs-item">
+        <div class="rs-title" style="color:#2e8b48">XRD</div>
+        <canvas id="rc1"></canvas>
+      </div>
+      <div class="rs-item">
+        <div class="rs-title" style="color:#d07810">XPS</div>
+        <canvas id="rc2"></canvas>
+      </div>
+      <div class="rs-item">
+        <div class="rs-title" style="color:#8e44ad">FTIR</div>
+        <canvas id="rc3"></canvas>
+      </div>
+    </div>
+
+    <div class="radar-shared-legend fade-in" id="radarLegend"></div>
+    </div><!-- #radarInteractiveView -->
+
+    <div id="radarStaticView" style="display:none; margin-top:32px; text-align:center;">
+      <img src="radar_origin/radar_quality.png" alt="Origin Plotting Quality Scores"
+           style="max-width:100%; border-radius:14px; box-shadow:0 4px 28px rgba(26,58,110,.12); cursor:zoom-in;"
+           onclick="openLightbox('radar_origin/radar_quality.png')" />
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer>
+  <p>
+    <strong>MatToolBench</strong> &nbsp;·&nbsp;
+    <a href="https://github.com/meiwu5/MatToolBench">GitHub</a> &nbsp;·&nbsp;
+    <span data-lang-en>MIT License &nbsp;·&nbsp; Built for materials science LLM evaluation</span>
+    <span data-lang-cn>MIT 开源协议 &nbsp;·&nbsp; 材料科学大模型评测</span>
+  </p>
+  <p style="margin-top:12px; font-size:.78rem; opacity:.6;">
+    © 2025 MatToolBench Authors
+  </p>
+</footer>
+
+<!-- ═══════════════════ SCRIPTS ═══════════════════ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+/* ═══ RADAR CHARTS — Origin Plotting Quality Scores ═══ */
+(function () {
+  const AXES  = ['Ours', 'Baseline 1', 'Baseline 2', 'Baseline 3', 'Baseline 4'];
+  const SPECS = ['Raman', 'XRD', 'XPS', 'FTIR'];
+
+  // SPEC_DATA[specType][evaluatorIdx] = [Ours, B1, B2, B3, B4]
+  const SPEC_DATA = {
+    Raman: [
+      [4.17, 3.83, 4.33, 4.00, 4.50],
+      [4.60, 3.60, 4.50, 4.40, 4.27],
+      [4.97, 3.30, 4.80, 4.80, 4.77],
+      [4.93, 3.97, 4.87, 4.40, 4.90],
+      [4.93, 4.33, 4.93, 4.57, 4.77],
+    ],
+    XRD: [
+      [4.00, 3.83, 4.17, 4.17, 4.17],
+      [4.67, 4.40, 4.20, 4.73, 4.53],
+      [4.83, 4.77, 4.70, 4.87, 4.80],
+      [4.90, 4.73, 4.57, 4.87, 4.60],
+      [4.93, 4.37, 4.67, 4.90, 4.50],
+    ],
+    XPS: [
+      [4.33, 3.83, 4.50, 5.00, 4.83],
+      [4.50, 4.10, 4.37, 4.00, 4.50],
+      [4.73, 4.60, 4.57, 4.73, 4.80],
+      [4.83, 4.70, 4.27, 4.73, 4.80],
+      [5.00, 4.83, 4.70, 4.67, 4.93],
+    ],
+    FTIR: [
+      [4.00, 2.67, 3.89, 3.78, 4.11],
+      [4.53, 3.40, 3.77, 4.13, 4.10],
+      [4.93, 2.20, 3.40, 4.70, 4.53],
+      [4.93, 3.27, 4.37, 4.57, 4.57],
+      [4.97, 3.40, 4.57, 4.50, 4.73],
+    ],
+  };
+
+  // evaluator series: [label, hexColor, borderDash]
+  const EVALS = [
+    ['Users',          '#E07820', [5, 3]],
+    ['GPT-5.4',        '#2A9D8F', []    ],
+    ['Gemini-3.1-pro', '#E63946', []    ],
+    ['Seed-1-8',       '#457B9D', []    ],
+    ['Qwen3-VL-235B',  '#7B2D8B', []    ],
+  ];
+
+  function makeOptions() {
+    return {
+      responsive: true,
+      maintainAspectRatio: true,
+      aspectRatio: 1,
+      layout: { padding: 0 },
+      animation: { duration: 850, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(12,22,46,.9)',
+          titleColor: '#fff',
+          bodyColor: '#cce',
+          padding: 10,
+          cornerRadius: 8,
+          titleFont: { size: 12, weight: '700' },
+          bodyFont: { size: 11 },
+          callbacks: { label: c => `  ${c.dataset.label}: ${c.raw.toFixed(2)}` },
+        },
+      },
+      scales: {
+        r: {
+          min: 1, max: 5,
+          ticks: {
+            stepSize: 1,
+            font: { size: 9 },
+            color: '#99a',
+            backdropColor: 'transparent',
+            showLabelBackdrop: false,
+          },
+          pointLabels: {
+            font:  c => ({ size: c.index === 0 ? 10 : 9, weight: c.index === 0 ? '900' : '600' }),
+            color: c => c.index === 0 ? '#1a5cc8' : '#536278',
+            padding: 1,
+          },
+          grid:       { color: 'rgba(26,58,110,.08)' },
+          angleLines: { color: 'rgba(26,58,110,.12)' },
+        },
+      },
+    };
+  }
+
+  function buildDatasets(specKey) {
+    return EVALS.map(([label, color, dash], i) => ({
+      label,
+      data:                SPEC_DATA[specKey][i],
+      borderColor:         color,
+      backgroundColor:     color + '1a',
+      borderWidth:         2,
+      borderDash:          dash,
+      pointBackgroundColor: color,
+      pointBorderColor:    '#fff',
+      pointBorderWidth:    1.5,
+      pointRadius:         3.5,
+      pointHoverRadius:    5.5,
+    }));
+  }
+
+  // ── module-level state ──────────────────────────────────────────────────
+  let currentMode = 'anim';   // 'anim' | 'click' | 'static'
+  let activeEval  = 0;
+  let cycleTimer  = null;
+  const charts    = [];
+
+  function stopCycle() {
+    if (cycleTimer) { clearInterval(cycleTimer); cycleTimer = null; }
+  }
+  function startCycle() {
+    stopCycle();
+    cycleTimer = setInterval(() => {
+      activeEval = (activeEval + 1) % EVALS.length;
+      applyActiveEval(activeEval);
+    }, 1000);
+  }
+
+  function buildLegend(activeIdx) {
+    const el = document.getElementById('radarLegend');
+    if (!el) return;
+    const isClick = currentMode === 'click';
+    el.innerHTML = EVALS.map(([label, color, dash], i) => {
+      const isActive = i === activeIdx;
+      const bg = dash.length
+        ? `background:repeating-linear-gradient(90deg,${color} 0,${color} 5px,transparent 5px,transparent 9px)`
+        : `background:${color}`;
+      const baseStyle = isActive
+        ? `outline:2px solid ${color};outline-offset:3px;border-radius:4px;padding:2px 6px;`
+        : `opacity:${isClick ? '0.5' : '0.45'};padding:2px 6px;`;
+      const clickAttr = isClick
+        ? `role="button" tabindex="0" style="${baseStyle}cursor:pointer;transition:opacity .25s,outline .25s"
+           onclick="window._radarPick(${i})" onkeydown="if(event.key==='Enter')window._radarPick(${i})"`
+        : `style="${baseStyle}transition:opacity .35s,outline .35s"`;
+      return `<span class="rsl-item" ${clickAttr}><span class="rsl-line" style="${bg}"></span>${label}</span>`;
+    }).join('');
+  }
+
+  function applyActiveEval(idx) {
+    charts.forEach(chart => {
+      chart.data.datasets.forEach((ds, i) => {
+        const color = EVALS[i][1];
+        const isActive = i === idx;
+        ds.borderColor       = color + (isActive ? 'ff' : '28');
+        ds.backgroundColor   = color + (isActive ? '2e' : '05');
+        ds.borderWidth       = isActive ? 2.5 : 1;
+        ds.pointRadius       = isActive ? 4.5 : 2;
+        ds.pointBorderWidth  = isActive ? 2 : 1;
+      });
+      chart.update('none');
+    });
+    buildLegend(idx);
+  }
+
+  window._radarPick = function(i) {
+    if (currentMode !== 'click') return;
+    activeEval = i;
+    applyActiveEval(i);
+  };
+
+  function initCharts() {
+    SPECS.forEach((spec, i) => {
+      const canvas = document.getElementById('rc' + i);
+      if (!canvas) return;
+      const ch = new Chart(canvas.getContext('2d'), {
+        type: 'radar',
+        data: { labels: AXES, datasets: buildDatasets(spec) },
+        options: makeOptions(),
+      });
+      charts.push(ch);
+    });
+    applyActiveEval(activeEval);
+    startCycle();
+  }
+
+  let inited = false;
+  const obs = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !inited) {
+      inited = true; initCharts(); obs.disconnect();
+    }
+  }, { threshold: 0.05 });
+  const sec = document.getElementById('radar');
+  if (sec) obs.observe(sec);
+
+  window.switchRadar = function(mode) {
+    currentMode = mode;
+    // show/hide views
+    const iv = document.getElementById('radarInteractiveView');
+    const sv = document.getElementById('radarStaticView');
+    if (iv) iv.style.display = mode !== 'static' ? '' : 'none';
+    if (sv) sv.style.display = mode === 'static'  ? '' : 'none';
+    // toggle button active state
+    ['anim','click','static'].forEach(m => {
+      const btn = document.getElementById('rvt-' + m);
+      if (btn) btn.classList.toggle('active', m === mode);
+    });
+    // cycling
+    if (mode === 'anim') {
+      startCycle();
+    } else {
+      stopCycle();
+    }
+    // re-render legend with/without click handlers
+    buildLegend(activeEval);
+  };
+})();
+</script>
+<script>
+/* ── Nav shadow on scroll ── */
+window.addEventListener('scroll', () => {
+  document.getElementById('main-nav').classList.toggle('scrolled', window.scrollY > 8);
+});
+
+/* ── Scroll fade-in via IntersectionObserver ── */
+const fadeObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.08, rootMargin: '0px 0px -32px 0px' });
+document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
+
+/* ── Animated stats counter ── */
+function animateCount(el) {
+  const target = parseInt(el.dataset.count, 10);
+  const suffix = el.dataset.suffix || '';
+  const dur = 1100;
+  const start = performance.now();
+  const step = (now) => {
+    const p = Math.min((now - start) / dur, 1);
+    const eased = 1 - Math.pow(1 - p, 3);   // ease-out cubic
+    el.textContent = Math.floor(eased * target) + suffix;
+    if (p < 1) requestAnimationFrame(step);
+  };
+  requestAnimationFrame(step);
+}
+const statsObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('[data-count]').forEach(animateCount);
+      statsObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.6 });
+statsObs.observe(document.querySelector('.stats-bar'));
+
+/* ── Lightbox ── */
+function openLightbox(src) {
+  document.getElementById('lightbox-img').src = src;
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeLightbox(e) {
+  if (e && e.target !== document.getElementById('lightbox')) return;
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.querySelector('.lightbox-close').addEventListener('click', () => {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') { document.getElementById('lightbox').classList.remove('open'); document.body.style.overflow = ''; }
+});
+
+/* ── i18n ── */
+function toggleLang() {
+  const isZh = document.body.classList.toggle('zh');
+  document.getElementById('lang-toggle').textContent = isZh ? 'EN' : '中文';
+}
+
+/* ── Tab switching ── */
+let currentAccSub = 'score';
+let currentEffSub = 'eff';
+
+function switchMainTab(name) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-tab="${name}"]`).forEach(b => b.classList.add('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  document.getElementById('sub-acc').style.display = (name === 'accuracy') ? '' : 'none';
+  document.getElementById('sub-eff').style.display = (name === 'efficiency') ? '' : 'none';
+}
+
+function switchAccSub(metric) {
+  currentAccSub = metric;
+  document.querySelectorAll('#sub-acc .sub-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-acc-sub="${metric}"]`).forEach(b => b.classList.add('active'));
+  renderAcc(metric);
+}
+
+function switchEffSub(metric) {
+  currentEffSub = metric;
+  document.querySelectorAll('#sub-eff .sub-tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`[data-eff-sub="${metric}"]`).forEach(b => b.classList.add('active'));
+  renderEff(metric);
+}
+
+/* ── DATA ── */
+const ACC_DATA = [
+  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage', values:[[44.6,35.0],[32.3,20.0],[41.3,35.0],[32.3,15.0],[30.8,10.0],[26.2,15.0],[18.5,15.0]] },
+  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',     values:[[54.2,25.0],[50.8,25.0],[57.6,25.0],[50.8,20.0],[45.8,10.0],[37.3,10.0],[37.3,5.0]] },
+  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',       values:[[56.7,20.0],[52.2,20.0],[40.3,20.0],[50.7,20.0],[52.2,10.0],[6.0,0.0],[38.8,10.0]] },
+  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',       values:[[47.6,15.0],[35.4,10.0],[52.4,20.0],[56.1,30.0],[43.9,0.0],[26.8,0.0],[20.7,0.0]] },
+  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',    values:[[52.2,20.0],[59.4,25.0],[58.0,25.0],[65.2,20.0],[52.2,10.0],[29.0,10.0],[30.4,10.0]] },
+  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[52.1,24.0],[46.0,20.0],[49.9,25.0],[51.0,21.0],[45.0,8.0],[25.1,7.0],[29.1,8.0]] },
+  { tools:'Origin', domain_en:'XRD',      domain_cn:'XRD',      values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
+  { tools:'Origin', domain_en:'XPS',      domain_cn:'XPS',      values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
+  { tools:'Origin', domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
+  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen', values:[[30.0,30.0],[15.0,15.0],[25.0,25.0],[35.0,35.0],[35.0,35.0],[29.4,29.4],[15.0,15.0]] },
+  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',       values:[[25.0,25.0],[22.5,20.0],[21.9,15.0],[17.5,15.0],[25.0,25.0],[10.0,10.0],[10.0,10.0]] },
+  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',     values:[[33.2,10.0],[50.3,30.0],[60.8,50.0],[58.2,45.0],[26.2,10.0],[11.5,0.0],[18.4,0.0]] },
+  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE', values:[[70.0,70.0],[80.0,80.0],[75.0,75.0],[85.0,85.0],[20.0,20.0],[30.0,30.0],[10.0,10.0]] },
+  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[39.6,33.8],[42.0,36.2],[45.7,41.3],[48.9,45.0],[26.6,22.5],[20.2,17.4],[13.4,8.8]] },
+  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均', values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
+];
+
+const EFF_DATA = [
+  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage', values:[[27.8,60.3,25.0],[15.3,28.0,60.0],[17.9,47.8,25.0],[21.6,84.4,50.0],[20.6,84.0,71.4],[null,null,null],[10.3,15.3,66.7]] },
+  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',     values:[[30.8,51.6,50.0],[29.4,68.8,44.4],[28.3,69.6,44.4],[null,null,null],[16.4,61.0,71.4],[null,null,null],[2.6,17.3,0.0]] },
+  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',       values:[[23.5,44.8,42.9],[14.2,38.5,40.0],[9.3,42.8,0.0],[21.4,45.4,57.1],[23.8,63.0,77.8],[null,null,null],[0.0,null,null]] },
+  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',       values:[[4.9,16.0,50.0],[2.5,22.0,50.0],[null,null,null],[null,null,null],[0.0,null,100.0],[52.4,null,null],[0.0,null,null]] },
+  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',    values:[[21.9,55.5,50.0],[17.9,26.8,57.1],[17.9,26.8,57.1],[null,null,null],[33.0,79.0,75.0],[39.4,18.4,83.3],[0.0,null,null]] },
+  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[21.8,45.6,43.6],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  { tools:'Origin', domain_en:'XRD',      domain_cn:'XRD',      values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  { tools:'Origin', domain_en:'XPS',      domain_cn:'XPS',      values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  { tools:'Origin', domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen', values:[[96.0,96.0,70.0],[73.0,96.0,80.0],[null,null,null],[92.3,98.0,55.0],[96.0,96.0,65.0],[null,null,null],[73.0,96.0,81.3]] },
+  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',       values:[[96.0,96.0,75.0],[96.0,96.0,80.0],[96.0,96.0,85.0],[98.0,null,100.0],[95.5,96.0,75.0],[null,null,null],[96.0,96.0,90.0]] },
+  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',     values:[[96.0,96.0,90.0],[39.0,98.0,30.0],[96.0,96.0,96.0],[96.0,96.0,55.0],[96.0,96.0,90.0],[null,null,null],[null,null,null]] },
+  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE', values:[[49.0,null,50.0],[null,null,null],[96.0,96.0,96.0],[96.0,96.0,63.2],[null,null,null],[null,null,null],[null,null,null]] },
+  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均', values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+];
+
+/* ── Ranking helpers ── */
+function rankTop2(vals) {
+  const valid = vals.map((v,i)=>({v,i})).filter(x=>x.v!==null&&!isNaN(x.v));
+  valid.sort((a,b)=>b.v-a.v);
+  return { best: valid[0]?.i, second: valid[1]?.i };
+}
+function rankTop2Low(vals) {
+  const valid = vals.map((v,i)=>({v,i})).filter(x=>x.v!==null&&!isNaN(x.v));
+  valid.sort((a,b)=>a.v-b.v);
+  return { best: valid[0]?.i, second: valid[1]?.i };
+}
+
+/* Render a score cell in the transposed (model-row) table.
+   score: numeric or null; subLine: pre-formatted sub-text HTML string
+   rank: {best, second} across models for THIS column; mi: model index
+   isAvg: style as avg column; sepLeft: add left-border */
+function scoreCell(score, subLine, rank, mi, isAvg, sepLeft) {
+  let tdCls = (isAvg ? ' avg-col' : '') + (sepLeft ? ' group-sep-l' : '');
+  if (score === null || score === undefined) {
+    return `<td class="val-na-cell${tdCls}"><span class="val-na">—</span></td>`;
+  }
+  let valCls = 'val';
+  if (!isAvg && rank?.best   === mi) valCls += ' val-best';
+  else if (!isAvg && rank?.second === mi) valCls += ' val-second';
+  return `<td class="${tdCls}"><span class="${valCls}">${score.toFixed(1)}</span>${subLine}</td>`;
+}
+
+/* ── Render Accuracy table — rows = models, columns = domains ── */
+function renderAcc(metric = 'score') {
+  // metric: 'score' (index 0 primary, index 1 sub) | 'sr' (index 1 primary, index 0 sub)
+  const MODELS = [
+    'doubao-seed-1-8','kimi-k2.5','Claude-sonnet-4.6',
+    'GPT-5.4','qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
+  ];
+
+  const guiRows    = ACC_DATA.filter(r => r.tools === 'GUI');
+  const originRows = ACC_DATA.filter(r => r.tools === 'Origin');
+  const codeRows   = ACC_DATA.filter(r => r.tools === 'Code');
+  const overallRow = ACC_DATA.find(r => r.isOverall);
+  const allDomains = [...guiRows, ...originRows, ...codeRows];
+
+  const primaryIdx   = metric === 'score' ? 0 : 1;
+  const secondaryIdx = metric === 'score' ? 1 : 0;
+  const secondaryLbl = metric === 'score' ? 'SR' : 'Sc';
+  const secondaryFmt = metric === 'score'
+    ? v => `<div class="val-sr">SR:${v.toFixed(0)}%</div>`
+    : v => `<div class="val-sr">Sc:${v.toFixed(1)}</div>`;
+
+  // Per-column rankings based on primary metric
+  const colRanks = allDomains.map(d =>
+    d.isAvg ? null : rankTop2(d.values.map(v => v[primaryIdx]))
+  );
+  const ovRank = overallRow ? rankTop2(overallRow.values.map(v => v[primaryIdx])) : null;
+
+  const originStart = guiRows.length;
+  const codeStart   = guiRows.length + originRows.length;
+
+  let html = '';
+  MODELS.forEach((model, mi) => {
+    html += `<tr><td class="model-cell">${model}</td>`;
+
+    allDomains.forEach((domain, di) => {
+      const vals    = domain.values[mi];
+      const primary = vals[primaryIdx];
+      const secondary = vals[secondaryIdx];
+      const isSepLeft = (di === originStart || di === codeStart);
+      const subLine = (secondary !== null && secondary !== undefined)
+        ? secondaryFmt(secondary) : '';
+      html += scoreCell(primary, subLine, colRanks[di], mi, domain.isAvg, isSepLeft);
+    });
+
+    if (overallRow) {
+      const vals    = overallRow.values[mi];
+      const primary = vals[primaryIdx];
+      const secondary = vals[secondaryIdx];
+      const subLine = (secondary !== null && secondary !== undefined)
+        ? secondaryFmt(secondary) : '';
+      html += scoreCell(primary, subLine, ovRank, mi, true, true);
+    }
+
+    html += '</tr>';
+  });
+
+  document.getElementById('acc-body').innerHTML = html;
+}
+
+/* ── Render Efficiency table — rows = models, columns = domains ── */
+function renderEff(metric = 'eff') {
+  // metric: 'eff' (idx 0) | 'effstar' (idx 1) | 'ftr' (idx 2, lower=better)
+  const MODELS = [
+    'doubao-seed-1-8','kimi-k2.5','Claude-sonnet-4.6',
+    'GPT-5.4','qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
+  ];
+
+  const guiRows    = EFF_DATA.filter(r => r.tools === 'GUI');
+  const originRows = EFF_DATA.filter(r => r.tools === 'Origin');
+  const codeRows   = EFF_DATA.filter(r => r.tools === 'Code');
+  const allDomains = [...guiRows, ...originRows, ...codeRows];
+
+  const metricIdx  = { eff: 0, effstar: 1, ftr: 2 }[metric];
+  const isLowBetter = metric === 'ftr';
+
+  const colRanks = allDomains.map(d => {
+    if (d.isAvg) return null;
+    const vals = d.values.map(v => v[metricIdx]);
+    return isLowBetter ? rankTop2Low(vals) : rankTop2(vals);
+  });
+
+  const originStart = guiRows.length;
+  const codeStart   = guiRows.length + originRows.length;
+
+  let html = '';
+  MODELS.forEach((model, mi) => {
+    html += `<tr><td class="model-cell">${model}</td>`;
+    allDomains.forEach((domain, di) => {
+      const vals    = domain.values[mi]; // [eff, effStar, ftr]
+      const primary = vals[metricIdx];
+      const isSepLeft = (di === originStart || di === codeStart);
+
+      // Sub-line: show the complementary metric
+      let subLine = '';
+      if (metric === 'eff' && vals[1] !== null && vals[1] !== undefined)
+        subLine = `<div class="val-sr">Eff*:${vals[1].toFixed(0)}</div>`;
+      else if (metric === 'effstar' && vals[0] !== null && vals[0] !== undefined)
+        subLine = `<div class="val-sr">Eff:${vals[0].toFixed(0)}</div>`;
+      else if (metric === 'ftr' && vals[0] !== null && vals[0] !== undefined)
+        subLine = `<div class="val-sr">Eff:${vals[0].toFixed(0)}</div>`;
+
+      let tdCls = (domain.isAvg ? ' avg-col' : '') + (isSepLeft ? ' group-sep-l' : '');
+      if (primary === null || primary === undefined) {
+        html += `<td class="val-na-cell${tdCls}"><span class="val-na">—</span></td>`;
+        return;
+      }
+      let rank = colRanks[di];
+      let valCls = 'val';
+      if (!domain.isAvg && rank?.best   === mi) valCls += ' val-best';
+      else if (!domain.isAvg && rank?.second === mi) valCls += ' val-second';
+      html += `<td class="${tdCls}"><span class="${valCls}">${primary.toFixed(1)}</span>${subLine}</td>`;
+    });
+    html += '</tr>';
+  });
+
+  document.getElementById('eff-body').innerHTML = html;
+}
+
+renderAcc('score');
+renderEff('eff');
+</script>
+
+<!-- ═══════════════════ ABLATION CHARTS ═══════════════════ -->
+<script>
+(function () {
+  /* ── Ablation data: hint = main (with hints), no_hint = ablation run (without hints) ── */
+  const ABL = {
+    gui: {
+      // labels order: Jade, DM, MS
+      labels: ['Jade', 'DM', 'MS'],
+      sr: {
+        seed: { hint: [0.25, 0.20, 0.15], no_hint: [0.05, 0.00, 0.15] },
+        gpt:  { hint: [0.20, 0.20, 0.30], no_hint: [0.05, 0.10, 0.10] },
+      },
+      score: {
+        seed: { hint: [0.542, 0.567, 0.476], no_hint: [0.153, 0.418, 0.500] },
+        gpt:  { hint: [0.508, 0.507, 0.561], no_hint: [0.136, 0.418, 0.549] },
+      },
+    },
+    code: {
+      // labels order: MP, OQMD, Optimade, Pymatgen
+      labels: ['MP', 'OQMD', 'Optimade', 'Pymatgen'],
+      sr: {
+        seed: { hint: [0.25, 0.10, 0.70, 0.30], no_hint: [0.20, 0.00, 0.70, 0.20] },
+        gpt:  { hint: [0.15, 0.45, 0.85, 0.35], no_hint: [0.00, 0.45, 0.75, 0.35] },
+      },
+      score: {
+        seed: { hint: [0.250, 0.332, 0.700, 0.300], no_hint: [0.200, 0.000, 0.700, 0.200] },
+        gpt:  { hint: [0.175, 0.582, 0.850, 0.350], no_hint: [0.025, 0.592, 0.750, 0.350] },
+      },
+    },
+  };
+
+  const CLR = { seed: '#2060a8', gpt: '#2e8b48' };
+
+  let ablTask   = 'gui';
+  let ablMetric = 'sr';
+  let seedChart = null;
+  let gptChart  = null;
+
+  /* ── Chart.js options factory ── */
+  function chartOpts(color, yLabel) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      animation: { duration: 480, easing: 'easeOutQuart' },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(10,20,46,.93)',
+          titleColor: '#e8f2ff',
+          bodyColor:  '#aac8ee',
+          padding: 13,
+          cornerRadius: 11,
+          caretSize: 6,
+          titleFont: { size: 12, weight: '700' },
+          bodyFont:  { size: 11.5 },
+          callbacks: {
+            title: items => items[0].label,
+            label: c => {
+              const pct = (c.raw * 100).toFixed(1);
+              const icon = c.dataset.label === 'hint' ? '●' : '○';
+              return `  ${icon} ${c.dataset.label}:  ${pct}%`;
+            },
+            afterBody: items => {
+              if (items.length < 2) return;
+              const a = items[0].raw, b = items[1].raw;
+              const diff = ((a - b) * 100).toFixed(1);
+              return [`  ▲ gap: ${diff > 0 ? '+' : ''}${diff}%`];
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(26,58,110,.055)', drawTicks: false },
+          ticks: { font: { size: 11, weight: '600' }, color: '#536278', padding: 6 },
+          border: { color: 'rgba(26,58,110,.12)' },
+        },
+        y: {
+          min: 0, max: 1,
+          grid: { color: 'rgba(26,58,110,.055)' },
+          ticks: {
+            stepSize: 0.2,
+            font: { size: 10 },
+            color: '#536278',
+            padding: 4,
+            callback: v => (v * 100).toFixed(0) + '%',
+          },
+          title: {
+            display: true,
+            text: yLabel,
+            font: { size: 10.5, weight: '700' },
+            color: '#7a8fa8',
+          },
+          border: { color: 'rgba(26,58,110,.12)' },
+        },
+      },
+    };
+  }
+
+  /* ── Build hint / no_hint dataset pair ── */
+  function buildDatasets(d, color) {
+    const fillColor = color
+      .replace('#', '')
+      .match(/.{2}/g)
+      .map(h => parseInt(h, 16));
+    const fillRgba = `rgba(${fillColor.join(',')},0.13)`;
+
+    return [
+      {
+        label: 'hint',
+        data:  d.hint,
+        borderColor:         color,
+        borderWidth:         2.5,
+        pointBackgroundColor: color,
+        pointBorderColor:    '#fff',
+        pointBorderWidth:    2,
+        pointRadius:         5,
+        pointHoverRadius:    7.5,
+        tension:             0.4,
+        fill: { target: 1, above: fillRgba, below: fillRgba },
+      },
+      {
+        label: 'no_hint',
+        data:  d.no_hint,
+        borderColor:         color + 'aa',
+        borderWidth:         2,
+        borderDash:          [7, 4],
+        pointBackgroundColor: color + 'aa',
+        pointBorderColor:    '#fff',
+        pointBorderWidth:    2,
+        pointRadius:         4,
+        pointHoverRadius:    6.5,
+        tension:             0.4,
+        fill: false,
+      },
+    ];
+  }
+
+  /* ── (Re)draw both charts ── */
+  function renderCharts() {
+    const task   = ABL[ablTask];
+    const metric = task[ablMetric];
+    const labels = task.labels;
+    const yLabel = ablMetric === 'sr' ? 'Success Rate (%)' : 'Score (%)';
+
+    ['Seed', 'Gpt'].forEach(key => {
+      const canvasId = 'ablChart' + key;
+      const dataKey  = key.toLowerCase();
+      const color    = CLR[dataKey];
+
+      const existing = key === 'Seed' ? seedChart : gptChart;
+      if (existing) existing.destroy();
+
+      const newChart = new Chart(
+        document.getElementById(canvasId),
+        {
+          type: 'line',
+          data: { labels, datasets: buildDatasets(metric[dataKey], color) },
+          options: chartOpts(color, yLabel),
+        }
+      );
+      if (key === 'Seed') seedChart = newChart;
+      else                gptChart  = newChart;
+    });
+
+    /* update the "metric" label text in chart headers */
+    const metricText = ablMetric === 'sr' ? 'Success Rate' : 'Score';
+    document.getElementById('ablMetricLabelSeed').textContent = metricText;
+    document.getElementById('ablMetricLabelGpt').textContent  = metricText;
+  }
+
+  /* ── Public toggle handlers (called by onclick) ── */
+  window.ablSetTask = function (task) {
+    ablTask = task;
+    document.querySelectorAll('#ablTaskToggle .abl-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.val === task));
+    renderCharts();
+  };
+
+  window.ablSetMetric = function (metric) {
+    ablMetric = metric;
+    document.querySelectorAll('#ablMetricToggle .abl-btn').forEach(b =>
+      b.classList.toggle('active', b.dataset.val === metric));
+    renderCharts();
+  };
+
+  /* ── Init ── */
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', renderCharts);
+  else
+    renderCharts();
+})();
+</script>
+
+</body>
+</html>
