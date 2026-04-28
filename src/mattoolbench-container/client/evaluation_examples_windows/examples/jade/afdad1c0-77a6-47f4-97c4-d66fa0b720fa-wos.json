@@ -1,96 +1,97 @@
 {
-    "id": "afdad1c0-77a6-47f4-97c4-d66fa0b720fa-wos",
-    "snapshot": "jadelab",
-    "instruction": "Use Jade to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\XRD4.xrdml', apply smoothing once and perform background subtraction.",
-    "source": "https:\\www.example.com/software/jade",
-    "config": [
-        {
-            "type": "execute",
-            "note": "Force-kill any previously running Jade instance before launching a new one",
-            "parameters": {
-                "command": [
-                    "taskkill",
-                    "/F",
-                    "/IM",
-                    "jade6.exe",
-                    "/T"
-                ]
-            }
-        },
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Jade to fully load",
-            "parameters": {
-                "seconds": 30
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','r')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 5
-            }
-        }
-    ],
-    "trajectory": "trajectories/jade/",
-    "related_apps": [
-        "Jade"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_opened",
-                "expected_filename": "XRD4.xrdml"
-            },
-            {
-                "type": "check_smoothing"
-            },
-            {
-                "type": "check_background_removal"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "afdad1c0-77a6-47f4-97c4-d66fa0b720fa-wos",
+  "snapshot": "jadelab",
+  "instruction": "Use Jade to open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Jade\\XRD4.xrdml', apply smoothing once and perform background subtraction.",
+  "source": "https:\\www.example.com/software/jade",
+  "config": [
+    {
+      "type": "execute",
+      "note": "Force-kill any previously running Jade instance before launching a new one",
+      "parameters": {
+        "command": [
+          "taskkill",
+          "/F",
+          "/IM",
+          "jade6.exe",
+          "/T"
+        ]
+      }
+    },
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\MDI Jade 6\\jade6.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Jade to fully load",
+      "parameters": {
+        "seconds": 30
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','r')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 5
+      }
     }
+  ],
+  "trajectory": "trajectories/jade/",
+  "related_apps": [
+    "Jade"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_opened_jade",
+        "expected_filename": "XRD4.xrdml"
+      },
+      {
+        "type": "check_smoothing"
+      },
+      {
+        "type": "check_background_removal"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

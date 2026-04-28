@@ -1,26 +1,27 @@
 {
-  "id": "a0b1c2d3-e4f5-4a6b-9c0d-1e2f3a4b5c6d-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Measure the interatomic distance of the C-C molecule above using get_distance, and save the value 1.54 to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task4.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task4.txt",
-      "dest": "task4.txt"
+    "id": "a0b1c2d3-e4f5-4a6b-9c0d-1e2f3a4b5c6d-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Measure the interatomic distance of the C-C molecule above using get_distance, and save the value 1.54 to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task4.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task4.txt",
+            "dest": "task4.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task4.txt",
+            "dest": "task4_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task4.txt",
-      "dest": "task4_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

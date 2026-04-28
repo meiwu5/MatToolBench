@@ -1,7 +1,7 @@
 {
   "id": "ded106cf-c2f3-436d-9a01-16f4f92e776a-wos",
   "snapshot": "avantagelab",
-  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', intelligently add baseline and perform automatic peak fitting, accept the results, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Fitted.vgp'.",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', intelligently add baseline and perform automatic peak fitting, accept the results, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\O1s_Fitted.vgp'.",
   "source": "https:\\www.example.com/software/avantage",
   "config": [
     {
@@ -82,7 +82,7 @@
     "result": [
       {
         "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Fitted.vgp"
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\O1s_Fitted.vgp"
       },
       {
         "type": "check_multiple_files_imported",
@@ -128,5 +128,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "medium"
 }

@@ -241,6 +241,30 @@ class DesktopEnv(gym.Env):
                 or (len(self.metric) == len(self.result_getter) == len(self.expected_getter) == len(
                     self.metric_options)))
 
+    def cleanup_domain_output(self, domain: str) -> None:
+        """Delete all files inside C:\\...\\output_result\\<domain>\\ before a task starts.
+
+        Preserves the *_right reference subdirectories.
+        """
+        cleanup_code = (
+            "import os, glob\n"
+            f"_dir = r'C:\\\\Users\\\\Docker\\\\Desktop\\\\setup\\\\output_result\\\\{domain}'\n"
+            "if os.path.isdir(_dir):\n"
+            "    for _f in glob.glob(os.path.join(_dir, '*')):\n"
+            "        if os.path.isfile(_f):\n"
+            "            try: os.remove(_f)\n"
+            "            except: pass\n"
+            "        elif os.path.isdir(_f) and not os.path.basename(_f).endswith('_right'):\n"
+            "            import shutil\n"
+            "            try: shutil.rmtree(_f)\n"
+            "            except: pass\n"
+        )
+        try:
+            self.controller.execute_python_windows_command(cleanup_code)
+            logger.info("Cleaned output_result/%s on VM.", domain)
+        except Exception as e:
+            logger.warning("Failed to clean output_result/%s: %s", domain, e)
+
     def cleanup_code_outputs(self) -> None:
         """Clean up code-task output files on the VM after evaluation.
 

@@ -20,6 +20,9 @@ def main():
     origin_eval_model = sys.argv[13] if len(sys.argv) > 13 else ""
     observation_type = sys.argv[14] if len(sys.argv) > 14 else "screenshot"
     max_steps = sys.argv[15] if len(sys.argv) > 15 else "50"
+    gui_hint_mode    = sys.argv[16] if len(sys.argv) > 16 else "hint"
+    code_hint_mode   = sys.argv[17] if len(sys.argv) > 17 else "hint"
+    origin_hint_mode = sys.argv[18] if len(sys.argv) > 18 else "hint"
     if origin_eval_model:
         os.environ["ORIGIN_EVAL_MODEL"] = origin_eval_model
 
@@ -87,7 +90,7 @@ def main():
             time.sleep(60)
     else:
         # launches the client script
-        os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --origin_mode {origin_mode} --observation_type {observation_type} --max_steps {max_steps}")
+        os.system(f"cd /client && python run.py --agent_name {agent} --worker_id {worker_id} --num_workers {num_workers} --result_dir {result_dir} --test_all_meta_path {json_name} --model {model_name} --som_origin {som_origin} --a11y_backend {a11y_backend} --origin_mode {origin_mode} --origin_hint_mode {origin_hint_mode} --gui_hint_mode {gui_hint_mode} --code_hint_mode {code_hint_mode} --observation_type {observation_type} --max_steps {max_steps}")
 
     print("Finished running entry script")
 

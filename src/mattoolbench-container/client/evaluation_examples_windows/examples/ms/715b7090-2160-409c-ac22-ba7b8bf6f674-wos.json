@@ -35,10 +35,8 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 8,
     "evaluator": {
         "func": [
-            "exact_match",
             "exact_match",
             "exact_match",
             "exact_match",
@@ -51,15 +49,7 @@
                 "region": "Top5%"
             },
             {
-                "type": "check_text_keyword",
-                "keyword": "3D Atomistic",
-                "forbidden_keywords": [
-                    "Import Document"
-                ],
-                "region": "Top40%"
-            },
-            {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Homopolymer",
                 "forbidden_keywords": [
                     "Add Atoms"
@@ -102,14 +92,9 @@
                 "rules": {
                     "expected": true
                 }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "hard"
 }

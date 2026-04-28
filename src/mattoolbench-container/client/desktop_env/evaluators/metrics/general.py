@@ -38,9 +38,29 @@ def check_include_exclude(result: str, rules: Dict[str, List[str]]) -> float:
         return 0.
 
 
+def pass_through(result, **options) -> float:
+    """Return *result* directly as the metric score (used with origin_aesthetic_score getter).
+
+    The getter already computes a normalised 0–1 float; this metric just passes it through
+    without comparing against an expected value.  Returns 0.0 if result is None or
+    cannot be converted to float.
+    """
+    if result is None:
+        return 0.0
+    try:
+        return float(result)
+    except (TypeError, ValueError):
+        return 0.0
+
+
 def exact_match(result, rules) -> float:
     expect = rules["expected"]
     print(result, expect)
+
+    # GUI getters return {'score': N, 'max_score': M, ...} instead of a plain bool.
+    # When expected is a boolean, treat score > 0 as True and score == 0 as False.
+    if isinstance(result, dict) and "score" in result and isinstance(expect, bool):
+        return 1. if (result["score"] > 0) == expect else 0.
 
     if result == expect:
         return 1.

@@ -5,21 +5,32 @@ Usage:
     python scripts/clear_agent_outputs.py
     python scripts/clear_agent_outputs.py --prefix agent_outputs/Experiment1
     python scripts/clear_agent_outputs.py --dry-run
+
+Reads AZURE_STORAGE_ACCOUNT, AZURE_STORAGE_KEY, and AZURE_STORAGE_CONTAINER
+from config.json at the repository root.
 """
 
 import argparse
+import json
 import logging
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from pathlib import Path
 
 from azure.storage.blob import BlobServiceClient
 
-ACCOUNT_NAME = "agentsml7737741243"
-ACCOUNT_KEY  = "qnbTuKdsh2yLAh2rSmXGf548SMVAl1Xilcg0oNzOKNIqWpoHF1avCcnfYC+gEggSZEsvS3fF+gYG+AStcmv8vQ=="
-CONTAINER    = "azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f"
-DEFAULT_PREFIX = "agent_outputs/"
-MAX_WORKERS  = 32
+REPO_ROOT = Path(__file__).parent.parent
+DEFAULT_PREFIX = "azureml"
+MAX_WORKERS = 32
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+
+
+def load_config() -> dict:
+    cfg_path = REPO_ROOT / "config.json"
+    if not cfg_path.exists():
+        raise FileNotFoundError(f"config.json not found at {cfg_path}")
+    with open(cfg_path) as f:
+        return json.load(f)
 
 
 def main():
@@ -28,11 +39,16 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="List blobs without deleting")
     args = parser.parse_args()
 
+    cfg = load_config()
+    account_name = cfg["AZURE_STORAGE_ACCOUNT"]
+    account_key = cfg["AZURE_STORAGE_KEY"]
+    container = cfg["AZURE_STORAGE_CONTAINER"]
+
     client = BlobServiceClient(
-        account_url=f"https://{ACCOUNT_NAME}.blob.core.windows.net",
-        credential=ACCOUNT_KEY,
+        account_url=f"https://{account_name}.blob.core.windows.net",
+        credential=account_key,
     )
-    container_client = client.get_container_client(CONTAINER)
+    container_client = client.get_container_client(container)
 
     logging.info(f"Listing blobs under '{args.prefix}' ...")
     blobs = [b.name for b in container_client.list_blobs(name_starts_with=args.prefix)]

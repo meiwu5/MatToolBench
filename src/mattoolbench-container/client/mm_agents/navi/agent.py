@@ -13,10 +13,13 @@ from io import BytesIO
 
 logger = logging.getLogger("desktopenv.agent")
 
-def remove_min_leading_spaces(text):  
-    lines = text.split('\n')  
-    min_spaces = min(len(line) - len(line.lstrip(' ')) for line in lines if line)  
-    return '\n'.join([line[min_spaces:] for line in lines])  
+def remove_min_leading_spaces(text):
+    lines = text.split('\n')
+    min_spaces = min(
+        (len(line) - len(line.lstrip(' ')) for line in lines if line),
+        default=0,
+    )
+    return '\n'.join([line[min_spaces:] for line in lines])
 
 def prev_actions_to_string(prev_actions, n_prev=3):  
     result = ""  
@@ -83,6 +86,7 @@ class NaviAgent:
             auto_window_maximize = False,
             use_last_screen = True,
             temperature: float = 0.5,
+            max_tokens: int = 2048,
     ):
         self.action_space = "code_block"
         self.server = server
@@ -102,6 +106,7 @@ class NaviAgent:
         self.prev_window_rect = None
         self.last_image = None
         self.use_last_screen = use_last_screen
+        self.max_tokens = max_tokens
 
         # hard-coded params
         device = "cpu"
@@ -453,9 +458,13 @@ class NaviAgent:
 
             # send to gpt
             logger.info("Thinking...")
-            plan_result = self.gpt4v_planner.plan(image_prompts, user_question)
+            plan_result = self.gpt4v_planner.plan(image_prompts, user_question, max_tokens=self.max_tokens)
 
         logs['plan_result'] = plan_result
+
+        if plan_result is None:
+            logger.error("plan_result is None (planner returned no response)")
+            return "", ["# plan not found"], logs, {}
 
         # extract the textual memory block
         memory_block = re.search(r'```memory\n(.*?)```', plan_result, re.DOTALL)

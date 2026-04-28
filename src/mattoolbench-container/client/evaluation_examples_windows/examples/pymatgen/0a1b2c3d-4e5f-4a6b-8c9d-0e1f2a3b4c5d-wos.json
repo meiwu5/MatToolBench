@@ -1,26 +1,27 @@
 {
-  "id": "0a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Create a Si diamond structure with lattice constant a=5.43, and save the frac_coords to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task10.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task10.txt",
-      "dest": "task10.txt"
+    "id": "0a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Create a Si diamond structure with lattice constant a=5.43, and save the frac_coords to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task10.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task10.txt",
+            "dest": "task10.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task10.txt",
+            "dest": "task10_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task10.txt",
-      "dest": "task10_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

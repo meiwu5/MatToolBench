@@ -49,15 +49,8 @@ for _mod_name in ("avantage", "jade", "dm", "ms", "vesta", "general", "file"):
     except Exception as _e:
         print(f"[WARN] Could not load getter module '{_mod_name}': {_e}")
 
-# jade and ms both define get_check_dialog_title — keep both accessible
-_jade_mod  = _loaded_mods.get("jade")
-_ms_mod    = _loaded_mods.get("ms")
+_dm_mod    = _loaded_mods.get("dm")
 _vesta_mod = _loaded_mods.get("vesta")
-if _jade_mod: getters.get_check_dialog_title_jade = _jade_mod.get_check_dialog_title
-if _ms_mod:   getters.get_check_dialog_title_ms   = _ms_mod.get_check_dialog_title
-# jade and vesta both define get_check_file_opened; save both explicitly
-if _jade_mod:  getters.get_check_file_opened_jade  = _jade_mod.get_check_file_opened
-if _vesta_mod: getters.get_check_file_opened_vesta = _vesta_mod.get_check_file_opened
 
 
 # ── Mock env ──────────────────────────────────────────────────────────────────
@@ -99,13 +92,7 @@ GETTER_MAP = {
     "check_grid_layout":                   getters.get_check_grid_layout,
     "check_energy_axis_reversed":          getters.get_check_energy_axis_reversed,
     # jade
-    # vesta overwrites get_check_file_opened in the loop; dispatch by file extension:
-    # jade version handles .txt/.raw/.xrdml (XRD files), vesta version handles .cif/.vesta/title_keyword
-    "check_file_opened": lambda env, cfg: (
-        getters.get_check_file_opened_jade(env, cfg)
-        if (cfg.get('expected_filename') or '').lower().endswith(('.txt', '.raw', '.xrdml'))
-        else getters.get_check_file_opened_vesta(env, cfg)
-    ),
+    "check_file_opened_jade":              getters.get_check_file_opened_jade,
     "check_peak_finding":                  getters.get_check_peak_finding,
     "check_peak_add_two":                  getters.get_check_peak_add_two,
     "check_background_removal":            getters.get_check_background_removal,
@@ -115,11 +102,7 @@ GETTER_MAP = {
     "check_axes_menu":                     getters.get_check_axes_menu,
     "check_wpf_refinement":                getters.get_check_wpf_refinement,
     "check_refinement_result":             getters.get_check_refinement_result,
-    # jade uses {"title": ...}, ms uses {"expected_title": ...} — dispatch at runtime
-    "check_dialog_title":                  lambda env, cfg: (
-        getters.get_check_dialog_title_jade(env, cfg) if "title" in cfg
-        else getters.get_check_dialog_title_ms(env, cfg)
-    ),
+    "check_dialog_title_jade":             getters.get_check_dialog_title_jade,
     "check_search_match_elements":         getters.get_check_search_match_elements,
     # dm
     "check_file_import":                   getters.get_check_file_import,
@@ -128,17 +111,20 @@ GETTER_MAP = {
     "check_text_color":                    getters.get_check_text_color,
     "check_checkbox_selected":             getters.get_check_checkbox_selected,
     "check_data_bar_by_text":              getters.get_check_data_bar_by_text,
-    "check_dialog_opened":                 getters.get_check_dialog_opened,
+    "check_dialog_opened_dm":              getters.get_check_dialog_opened_dm,
     "check_roi_copy_and_enlarge":          getters.get_check_roi_copy_and_enlarge,
     "check_filled_box_with_corners":       getters.get_check_filled_box_with_corners,
     "check_text_count_in_dialog":          getters.get_check_text_count_in_dialog,
     # ms
     "check_file_in_title":                 getters.get_check_file_in_title,
+    "check_dialog_title_ms":               getters.get_check_dialog_title_ms,
     "check_text_keyword":                  getters.get_check_text_keyword,
     "check_field_value":                   getters.get_check_field_value,
     "check_multiple_fields":               getters.get_check_multiple_fields,
     "check_visual_similarity":             getters.get_check_visual_similarity,
     # vesta
+    "check_file_opened_vesta":             getters.get_check_file_opened_vesta,
+    "check_dialog_opened_vesta":           getters.get_check_dialog_opened_vesta,
     "check_standard_orientation":          getters.get_check_standard_orientation,
     "check_rotation_90_up":                getters.get_check_rotation_90_up,
     "check_translation":                   getters.get_check_translation,
@@ -265,8 +251,10 @@ def main():
         old_score = None
         rf = task_dir / "result.txt"
         if rf.exists():
-            try: old_score = float(rf.read_text().strip())
-            except: pass
+            try:
+                old_score = float(rf.read_text().strip())
+            except (ValueError, OSError):
+                pass
 
         print(f"\n[{task_id}]")
         eval_log  = reeval_task(task_json, task_dir, result_base_dir)

@@ -89,7 +89,10 @@
         "type": "check_dialog_exists",
         "dialog_title": "Chart",
         "region": "whole",
-        "forbidden_parameter": ["Display selected data", "Grid Properties_"]
+        "forbidden_parameter": [
+          "Display selected data",
+          "Grid Properties_"
+        ]
       },
       {
         "type": "check_dialog_parameter",
@@ -120,5 +123,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "easy"
 }

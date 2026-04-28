@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 18,
     "evaluator": {
         "func": [
             "exact_match",
@@ -51,7 +50,7 @@
                 "region": "Top5%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Homopolymer",
                 "forbidden_keywords": [
                     "Crystal",
@@ -117,5 +116,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "hard"
 }

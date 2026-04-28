@@ -7,7 +7,7 @@ Usage:
 
 Prerequisites:
   - Azure job already submitted with vm_only=true (via run_azure.py --vm_only true)
-  - AZURE_INSTANCE_IP set in config.json, or passed via --instance_ip
+  - Pass --instance_ip <ip>, or the script will auto-detect via Azure ML SDK
 """
 import argparse
 import json
@@ -82,11 +82,7 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
     tag = f"[Worker {worker_id}]"
 
     # ── Resolve Azure instance IP ─────────────────────────────────────────────
-    instance_ips = azure_config.get("AZURE_INSTANCE_IPS", [])
-    instance_ip = (
-        args.instance_ip
-        or (instance_ips[worker_id] if worker_id < len(instance_ips) else None)
-    )
+    instance_ip = args.instance_ip
     if not instance_ip:
         instance_name = f"w{worker_id}{exp['exp_name']}"
         print(f"{tag} No instance IP provided, trying Azure ML SDK for '{instance_name}'...")
@@ -95,8 +91,7 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
     if not instance_ip:
         print(
             f"{tag} ERROR: Cannot determine instance IP.\n"
-            f"  Option 1: Add AZURE_INSTANCE_IPS list to config.json (index = worker_id)\n"
-            f"  Option 2: Pass --instance_ip <ip>"
+            f"  Pass --instance_ip <ip> or ensure the Azure ML SDK can resolve the instance."
         )
         sys.exit(1)
 
@@ -143,7 +138,7 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
             sys.executable, "run.py",
             "--emulator_ip",        local_ip,
             "--agent_name",         exp.get("agent", "auto"),
-            "--model",              exp.get("model_name", "doubao-seed-1-6-thinking-250715"),
+            "--model",              exp.get("model_name", "claude-4-6-sonnet"),
             "--som_origin",         exp.get("som_origin", "oss"),
             "--a11y_backend",       exp.get("a11y_backend", "uia"),
             "--observation_type",   exp.get("observation_type", "screenshot"),
@@ -151,8 +146,14 @@ def run_single_worker(worker_id: int, exp: dict, args, azure_config: dict):
             "--worker_id",          str(worker_id_effective),
             "--result_dir",         args.result_dir,
             "--test_all_meta_path", json_name,
-            "--origin_mode",        exp.get("origin_mode", "script"),
+            "--origin_mode",        exp.get("origin_mode",      "script"),
+            "--origin_hint_mode",   exp.get("origin_hint_mode", "hint"),
+            "--gui_hint_mode",      exp.get("gui_hint_mode", "hint"),
+            "--code_hint_mode",     exp.get("code_hint_mode", "hint"),
             "--max_steps",          str(exp.get("max_steps", 50)),
+            "--max_tokens",         str(exp.get("max_tokens", 2048)),
+            "--origin_max_tokens",  str(exp.get("origin_max_tokens", 8000)),
+            "--origin_eval_model",  exp.get("origin_eval_model", ""),
         ]
         subprocess.run(agent_cmd, cwd=str(DEFAULT_CLIENT_DIR))
 

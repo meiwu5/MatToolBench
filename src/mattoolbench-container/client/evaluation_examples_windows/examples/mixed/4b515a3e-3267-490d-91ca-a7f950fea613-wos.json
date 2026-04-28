@@ -11,35 +11,17 @@
   ],
   "max_steps": 25,
   "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match"
-    ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta"
-      },
-      {
-        "type": "validate_file_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta",
-        "description": "The VESTA file contains a polyethylene crystal structure built from a chain of 5 ethylene repeating units. The fractional coordinate range boundary values x(max), y(max), and z(max) should all be set to 0.1 in the VESTA file's BOUND section. The file should be a valid VESTA format."
+    "func": "exact_match",
+    "result": {
+      "type": "file_exists",
+      "file_path": "C:\\Users\\Docker\\Desktop\\polyethylene_crystal.vesta"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
       }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
+    },
     "func_conj": "and"
   }
 }

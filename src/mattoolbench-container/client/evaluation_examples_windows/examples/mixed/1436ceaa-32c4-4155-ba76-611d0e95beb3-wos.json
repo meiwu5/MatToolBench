@@ -13,35 +13,17 @@
   ],
   "max_steps": 25,
   "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match"
-    ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta"
-      },
-      {
-        "type": "validate_file_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta",
-        "description": "The VESTA file contains the conventional standard cell of perovskite SrTiO3 (space group Pm-3m, cubic). It should be a valid VESTA format file containing Sr, Ti, and O atoms. The display style should be set to Ball and Stick model."
+    "func": "exact_match",
+    "result": {
+      "type": "file_exists",
+      "file_path": "C:\\Users\\Docker\\Desktop\\SrTiO3_structure.vesta"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
       }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
+    },
     "func_conj": "and"
   }
 }

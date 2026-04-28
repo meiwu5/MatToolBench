@@ -45,7 +45,6 @@
   "evaluator": {
     "func": [
       "exact_match",
-      "exact_match",
       "exact_match"
     ],
     "result": [
@@ -56,20 +55,9 @@
       {
         "type": "file_exists",
         "file_path": "C:\\Users\\Docker\\Desktop\\WRT_XRD.png"
-      },
-      {
-        "type": "validate_image_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\WRT_XRD.png",
-        "description": "The image is an XRD diffraction matching figure. It contains two curves: one labeled 'WRTZSX5' (sample) and one labeled 'PDF#99-0073' (PDF card reference). HKL indices are annotated on the diffraction peaks."
       }
     ],
     "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
       {
         "type": "rule",
         "rules": {

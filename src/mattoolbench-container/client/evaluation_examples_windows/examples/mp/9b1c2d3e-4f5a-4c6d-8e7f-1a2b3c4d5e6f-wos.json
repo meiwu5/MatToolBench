@@ -1,43 +1,27 @@
 {
-  "id": "9b1c2d3e-4f5a-4c6d-8e7f-1a2b3c4d5e6f-wos",
-  "snapshot": "materials_project_api_env",
-  "instruction": "Use mp_api to search for all materials with energy_above_hull equal to 0 in the Al-O system, list their material IDs, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_5.txt.",
-  "source": "https:\\materialsproject.org/",
-  "_comments": "comments_placeholder",
-  "config": [
-    {
-      "type": "command",
-      "parameters": {
-        "command": [
-          "C:\\Users\\Docker\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
-          "-m",
-          "pip",
-          "install",
-          "--quiet",
-          "--disable-pip-version-check",
-          "mp-api==0.39.5",
-          "emmet-core==0.78.7"
-        ],
-        "shell": false
-      }
-    }
-  ],
-  "trajectory": "trajectories\\materialproject\\",
-  "related_apps": [
-    "MaterialProject",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_5.txt",
-      "dest": "mp_task_5.txt"
+    "id": "9b1c2d3e-4f5a-4c6d-8e7f-1a2b3c4d5e6f-wos",
+    "snapshot": "materials_project_api_env",
+    "instruction": "Use mp_api to search for all materials with energy_above_hull equal to 0 in the Al-O system, list their material IDs, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_5.txt.",
+    "source": "https:\\materialsproject.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\materialproject\\",
+    "related_apps": [
+        "MaterialProject",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_5.txt",
+            "dest": "mp_task_5.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_5.txt",
+            "dest": "mp_task_5_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_5.txt",
-      "dest": "mp_task_5_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

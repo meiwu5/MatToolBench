@@ -1,7 +1,7 @@
 {
     "id": "aabc1ce6-115a-4041-b94b-a7def1f21b86-wos",
     "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm5.dm5', use Box to draw a frame, set Foreground color to White, enable Filled status.",
+    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm5.dm3', use Box to draw a frame, set Foreground color to White, enable Filled status.",
     "source": "https:\\www.example.com/software/dm",
     "config": [
         {
@@ -50,7 +50,7 @@
         "result": [
             {
                 "type": "check_file_import",
-                "expected_filename": "dm5.dm5"
+                "expected_filename": "dm5.dm3"
             },
             {
                 "type": "check_drawing_tool",
@@ -96,5 +96,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

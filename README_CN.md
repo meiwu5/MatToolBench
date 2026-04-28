@@ -1,13 +1,204 @@
 <div align="center">
 
-# MatToolBench
+<img src="docs/logo.png" width="88" alt="MatToolBench Logo">
+
+<h1><span style="color:#2060a8">Mat</span><span style="color:#2e8b48">Tool</span><span style="color:#d07810">Bench</span></h1>
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
+[![Docker](https://img.shields.io/badge/Docker-mattoolbench%2Fmattoolbench-blue?logo=docker)](https://hub.docker.com/r/mattoolbench/mattoolbench)
+[![Website](https://img.shields.io/badge/Website-MatToolBench-green)](https://meiwu5.github.io/MatToolBench/)
 
 </div>
 
 **MatToolBench** 是一个面向材料科学的桌面 AI 智能体评测基准。它在真实的 Windows 11 虚拟机环境中，对 AI 智能体在专业材料表征软件、计算数据库和脚本数据分析等端到端任务上的能力进行评估，涵盖三类任务——**Origin**（脚本数据分析）、**GUI**（材料软件视觉交互）、**Code**（数据库程序化查询）。
+
+---
+
+## 🎬 演示视频
+
+<video controls src="docs/demo.mp4" style="width:100%;max-width:900px;border-radius:8px"></video>
+
+> **<span style="color:#d07810">⚡ 视频已加速</span>** &nbsp;·&nbsp; 若视频无法内嵌播放，可[直接下载](docs/demo.mp4)。
+
+## 🔬 智能体操作轨迹
+
+真实智能体运行的逐步截图，以 20 倍速播放，每帧对应一次智能体操作。
+
+<table>
+<tr>
+<td align="center"><b>Avantage（XPS）</b><br><img src="docs/trajectories/avantage.gif" width="420" alt="Avantage 轨迹"></td>
+<td align="center"><b>JADE（XRD）</b><br><img src="docs/trajectories/jade.gif" width="420" alt="JADE 轨迹"></td>
+</tr>
+<tr>
+<td align="center"><b>Digital Micrograph</b><br><img src="docs/trajectories/dm.gif" width="420" alt="DM 轨迹"></td>
+<td align="center"><b>Materials Studio</b><br><img src="docs/trajectories/ms.gif" width="420" alt="MS 轨迹"></td>
+</tr>
+<tr>
+<td align="center" colspan="2"><b>VESTA</b><br><img src="docs/trajectories/vesta.gif" width="420" alt="VESTA 轨迹"></td>
+</tr>
+</table>
+
+---
+
+## 📊 主要结果
+
+各模型精度汇总。**Sc.** = 任务归一化得分（0–100）；**SR** = 成功率（%，所有子标准均满足的任务比例）。<b style="color:#c96800">橙色加粗</b>：该领域最佳；<u>下划线</u>：次优；<b style="color:#c0392b"><i>红色粗斜体</i></b>：总体最佳模型。完整的逐领域结果请查看[网站榜单](https://meiwu5.github.io/MatToolBench/#leaderboard)。
+
+<table>
+<thead>
+<tr>
+<th rowspan="2"><b>类别</b></th>
+<th rowspan="2"><b>领域</b></th>
+<th colspan="2" align="center">Doubao<br>seed-1-8</th>
+<th colspan="2" align="center">Kimi<br>k2.5</th>
+<th colspan="2" align="center">Claude<br>sonnet-4.6</th>
+<th colspan="2" align="center"><b style="color:#c0392b"><i>GPT<br>5.4</i></b></th>
+<th colspan="2" align="center">Qwen3-VL<br>235B</th>
+<th colspan="2" align="center">Qwen3-VL<br>32B</th>
+<th colspan="2" align="center">Qwen3-VL<br>8B</th>
+</tr>
+<tr>
+<th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th>
+<th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td rowspan="6"><b>GUI</b></td>
+<td>Avantage</td>
+<td><b style="color:#c96800">44.6</b></td><td><b style="color:#c96800">35.0</b></td>
+<td>32.3</td><td><u>20.0</u></td>
+<td><u>41.3</u></td><td><b style="color:#c96800">35.0</b></td>
+<td>32.3</td><td>15.0</td>
+<td>30.8</td><td>10.0</td>
+<td>26.2</td><td>15.0</td>
+<td>18.5</td><td>15.0</td>
+</tr>
+<tr>
+<td>JADE</td>
+<td><u>54.2</u></td><td><b style="color:#c96800">25.0</b></td>
+<td>50.8</td><td><b style="color:#c96800">25.0</b></td>
+<td><b style="color:#c96800">57.6</b></td><td><b style="color:#c96800">25.0</b></td>
+<td>50.8</td><td><u>20.0</u></td>
+<td>45.8</td><td>10.0</td>
+<td>37.3</td><td>10.0</td>
+<td>37.3</td><td>5.0</td>
+</tr>
+<tr>
+<td>DM</td>
+<td><b style="color:#c96800">56.7</b></td><td><b style="color:#c96800">20.0</b></td>
+<td><u>52.2</u></td><td><b style="color:#c96800">20.0</b></td>
+<td>40.3</td><td><b style="color:#c96800">20.0</b></td>
+<td>50.7</td><td><b style="color:#c96800">20.0</b></td>
+<td><u>52.2</u></td><td><u>10.0</u></td>
+<td>6.0</td><td>0.0</td>
+<td>38.8</td><td><u>10.0</u></td>
+</tr>
+<tr>
+<td>MS</td>
+<td>47.6</td><td>15.0</td>
+<td>35.4</td><td>10.0</td>
+<td><u>52.4</u></td><td><u>20.0</u></td>
+<td><b style="color:#c96800">56.1</b></td><td><b style="color:#c96800">30.0</b></td>
+<td>43.9</td><td>0.0</td>
+<td>26.8</td><td>0.0</td>
+<td>20.7</td><td>0.0</td>
+</tr>
+<tr>
+<td>VESTA</td>
+<td>52.2</td><td><u>20.0</u></td>
+<td><u>59.4</u></td><td><b style="color:#c96800">25.0</b></td>
+<td>58.0</td><td><b style="color:#c96800">25.0</b></td>
+<td><b style="color:#c96800">65.2</b></td><td><u>20.0</u></td>
+<td>52.2</td><td>10.0</td>
+<td>29.0</td><td>10.0</td>
+<td>30.4</td><td>10.0</td>
+</tr>
+<tr>
+<td><i>均值</i></td>
+<td><b style="color:#c96800">52.1</b></td><td><u>24.0</u></td>
+<td>46.0</td><td>20.0</td>
+<td>49.9</td><td><b style="color:#c96800">25.0</b></td>
+<td><u>51.0</u></td><td>21.0</td>
+<td>45.0</td><td>8.0</td>
+<td>25.1</td><td>7.0</td>
+<td>29.1</td><td>8.0</td>
+</tr>
+<tr>
+<td><b>Origin</b></td>
+<td>OriginPro</td>
+<td>11.7</td><td>12.5</td>
+<td>22.5</td><td>25.0</td>
+<td><u>53.1</u></td><td><u>56.3</u></td>
+<td><b style="color:#c96800">63.8</b></td><td><b style="color:#c96800">68.8</b></td>
+<td>6.3</td><td>6.3</td>
+<td>5.3</td><td>6.3</td>
+<td>0.0</td><td>0.0</td>
+</tr>
+<tr>
+<td rowspan="5"><b>Code</b></td>
+<td>Pymatgen</td>
+<td>30.0</td><td>30.0</td>
+<td>15.0</td><td>15.0</td>
+<td>25.0</td><td>25.0</td>
+<td><b style="color:#c96800">35.0</b></td><td><b style="color:#c96800">35.0</b></td>
+<td><b style="color:#c96800">35.0</b></td><td><b style="color:#c96800">35.0</b></td>
+<td><u>29.4</u></td><td><u>29.4</u></td>
+<td>15.0</td><td>15.0</td>
+</tr>
+<tr>
+<td>MP</td>
+<td><b style="color:#c96800">25.0</b></td><td><b style="color:#c96800">25.0</b></td>
+<td><u>22.5</u></td><td><u>20.0</u></td>
+<td>21.9</td><td>15.0</td>
+<td>17.5</td><td>15.0</td>
+<td><b style="color:#c96800">25.0</b></td><td><b style="color:#c96800">25.0</b></td>
+<td>10.0</td><td>10.0</td>
+<td>10.0</td><td>10.0</td>
+</tr>
+<tr>
+<td>OQMD</td>
+<td>33.2</td><td>10.0</td>
+<td>50.3</td><td>30.0</td>
+<td><b style="color:#c96800">60.8</b></td><td><b style="color:#c96800">50.0</b></td>
+<td><u>58.2</u></td><td><u>45.0</u></td>
+<td>26.2</td><td>10.0</td>
+<td>11.5</td><td>0.0</td>
+<td>18.4</td><td>0.0</td>
+</tr>
+<tr>
+<td>OPTIMADE</td>
+<td>70.0</td><td>70.0</td>
+<td><u>80.0</u></td><td><u>80.0</u></td>
+<td>75.0</td><td>75.0</td>
+<td><b style="color:#c96800">85.0</b></td><td><b style="color:#c96800">85.0</b></td>
+<td>20.0</td><td>20.0</td>
+<td>30.0</td><td>30.0</td>
+<td>10.0</td><td>10.0</td>
+</tr>
+<tr>
+<td><i>均值</i></td>
+<td>39.6</td><td>33.8</td>
+<td>42.0</td><td>36.2</td>
+<td><u>45.7</u></td><td><u>41.3</u></td>
+<td><b style="color:#c96800">48.9</b></td><td><b style="color:#c96800">45.0</b></td>
+<td>26.6</td><td>22.5</td>
+<td>20.2</td><td>17.4</td>
+<td>13.4</td><td>8.8</td>
+</tr>
+<tr>
+<td colspan="2"><b>总体均值</b></td>
+<td>42.5</td><td>26.3</td>
+<td>42.0</td><td>27.0</td>
+<td><u>48.5</u></td><td><u>34.6</u></td>
+<td><b style="color:#c0392b"><i>51.5</i></b></td><td><b style="color:#c0392b"><i>35.4</i></b></td>
+<td>33.7</td><td>13.6</td>
+<td>21.2</td><td>11.1</td>
+<td>19.9</td><td>7.5</td>
+</tr>
+</tbody>
+</table>
 
 ---
 
@@ -72,7 +263,7 @@
 | 入口 | `scripts/run-local.sh` | `scripts/run_azure.py` |
 | 存储 | 本地磁盘（`vm/storage/`）| Azure Blob Storage |
 | 并发 | 单机串行 | 多 Job 并行（`num_workers`）|
-| Docker 镜像 | 本地构建 `mattoolbench:latest` | 拉取 `meiwu/mattoolbench:latest` |
+| Docker 镜像 | 本地构建 `mattoolbench:latest` | 拉取 `mattoolbench/mattoolbench:latest` |
 | VM 镜像 | 持久化于 `vm/storage/` | 上传至 Azure datastore |
 
 ---
@@ -84,11 +275,6 @@ MatToolBench/
 ├── config.json                        # API Key、Azure 凭证
 ├── requirements.txt                   # 宿主机依赖（azure-ai-ml 等）
 │
-├── docs/                              # 开发指南
-│   ├── Develop-Agent.md               # 智能体开发指南
-│   ├── Develop-Tasks.md               # 任务开发指南
-│   └── Development-Tips.md            # 调试与开发技巧
-│
 ├── scripts/
 │   ├── build-container-image.sh       # Docker 镜像构建入口
 │   ├── run-local.sh                   # 本地运行脚本
@@ -96,6 +282,7 @@ MatToolBench/
 │   ├── run_local_agent.py             # 本地智能体对接 Azure 云端虚拟机
 │   ├── show_azure.py                  # 汇总 Azure 运行结果
 │   ├── sync_results.py                # 增量同步 Azure 结果到本地文件夹
+│   ├── compute_efficiency.py          # 从 eval_detail.json 计算效率指标
 │   ├── experiments.json               # Azure 实验配置
 │   └── azure_files/                   # Azure 启动脚本
 │       ├── run_entry.py               # 每台 Azure VM 上的 Job 入口
@@ -142,22 +329,69 @@ MatToolBench/
 
 ---
 
-## ☝️ 环境依赖
+## 🚀 快速开始（WSL / Linux）
 
-- Docker 已安装并运行。Windows 用户推荐使用 [Docker + WSL 2](https://docs.docker.com/desktop/wsl/)
+最快的本地运行方式——无需构建镜像。
+
+### 前置准备
+
+- 已安装并运行 [Docker](https://docs.docker.com/desktop/wsl/)（Windows 用户推荐使用 WSL 2）
 - [OpenAI](https://platform.openai.com/docs/introduction) 或 [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) API Key
-- Python 3.12，推荐使用 [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)：
-  ```bash
-  conda create -n mattoolbench python=3.12
-  conda activate mattoolbench
-  ```
+- Python 3.12（推荐使用 [Conda](https://docs.conda.io/projects/conda/en/latest/user-guide/getting-started.html)）
 
-克隆并安装依赖：
+克隆仓库并安装宿主机依赖：
 ```bash
-git clone https://github.com/<your-org>/MatToolBench.git
+git clone https://github.com/meiwu5/MatToolBench.git
 cd MatToolBench
+conda create -n mattoolbench python=3.12
+conda activate mattoolbench
 pip install -r requirements.txt
 ```
+
+### 第一步 — 拉取 Docker 镜像
+
+```bash
+docker pull mattoolbench/mattoolbench:latest
+```
+
+> 镜像约 27 GB，包含完整 Python 环境、模型权重（GroundingDINO、OmniParser）及评测客户端。
+
+### 第二步 — 下载 VM 快照
+
+从 Google Drive 下载预构建的 Windows 11 VM 快照（已预装所有材料科学软件），解压后放入：
+
+**[从 Google Drive 下载 VM 快照](https://drive.google.com/drive/folders/1JEquB482BRsghgyJbWcwEBdZSXL_97e9?usp=drive_link)**
+
+```
+src/mattoolbench-container/vm/storage/
+├── windows.base
+├── windows.boot
+├── windows.mac
+├── windows.rom
+├── windows.vars
+├── windows.ver
+└── data.img
+```
+
+### 第三步 — 配置 API Key
+
+在项目根目录创建 `config.json`：
+```json
+{
+    "OPENAI_API_KEY": "<your-openai-key>",
+    "OPENAI_ENDPOINT": "https://api.openai.com/v1",
+    "MP_API_KEY": "<your-materials-project-api-key>"
+}
+```
+
+### 第四步 — 运行
+
+```bash
+cd scripts
+./run-local.sh
+```
+
+在浏览器打开 **http://localhost:8006** 即可实时观察 Windows 11 虚拟机启动和智能体执行任务的过程。
 
 ---
 
@@ -181,17 +415,31 @@ pip install -r requirements.txt
 
 > **`MP_API_KEY`** 是运行 **Code 类任务**中 [Materials Project](https://materialsproject.org) 数据库查询（`mp` 和 `optimade` 领域）的必填项。请前往 [materialsproject.org/dashboard](https://materialsproject.org/dashboard) 获取 API Key。未填写时，相关任务会报认证错误。`OQMD` 和 `pymatgen` 任务无需此 Key。
 
-### 2. 构建 Docker 镜像
+### 2. Docker 镜像
 
-首次构建（包含 base 镜像）：
+#### 方式 A — 从 Docker Hub 拉取（推荐）
+
+```bash
+docker pull mattoolbench/mattoolbench:latest
+```
+
+两个镜像均已发布至 Docker Hub：
+
+| 镜像 | 大小 | 说明 |
+|------|------|------|
+| `mattoolbench/mattoolbench:latest` | ~27 GB | 完整可运行镜像 |
+| `mattoolbench/mattoolbench-base:latest` | ~21 GB | 基础层（用于自定义构建）|
+
+#### 方式 B — 本地构建
+
 ```bash
 cd scripts
 ./build-container-image.sh --build-base-image true
 ```
 
-> Base 镜像阶段会安装 Python 依赖、CUDA 库并下载模型权重（GroundingDINO、OmniParser），耗时约 **30–60 分钟**，具体取决于网络速度。国内用户建议配置 pip 镜像源加速。
+> Base 镜像阶段会安装 Python 依赖、CUDA 库并下载模型权重，耗时约 **30–60 分钟**。
 
-base 镜像已构建且未变更时，可跳过该步骤：
+base 镜像已构建且未变更时：
 ```bash
 ./build-container-image.sh   # --build-base-image 默认为 false
 ```
@@ -215,7 +463,7 @@ src/mattoolbench-container/vm/image/setup.iso
 
 直接下载我们已配置好的 VM 快照，所有材料科学软件均已安装完毕，无需手动操作。
 
-**下载地址：** [MatToolBench VM Snapshot](TODO)  <!-- 替换为实际下载链接 -->
+**下载地址：** [MatToolBench VM Snapshot](https://drive.google.com/drive/folders/1JEquB482BRsghgyJbWcwEBdZSXL_97e9?usp=drive_link)
 
 解压后将文件放至：
 ```
@@ -252,6 +500,8 @@ src/mattoolbench-container/vm/storage/
 
 > VESTA 为开源软件，可从官网直接下载。其余均为商业软件，请联系相应厂商或通过机构授权获取。
 
+自动化配置脚本还会在 Windows 内安装 VM 服务端 Python 环境（`vm/setup/server/requirements.txt`，用于截图采集、动作执行和无障碍树查询），以及 Code 任务所需的各领域 Python 虚拟环境（mp/oqmd/pymatgen/optimade，位于 `C:\Users\Docker\`）。这些环境由 PowerShell 脚本自动配置，无需手动安装。
+
 **B-2 — 启动 Windows 11 自动安装**
 
 ```bash
@@ -279,7 +529,6 @@ cd scripts
 
 3. 所有软件安装完成后，在 Windows 内正常关机（开始菜单 → 关机）。`vm/storage/` 中的磁盘快照会自动更新。
 
-> **提示：** 也可通过 RDP 连接到 `localhost:3390`（用户名：`Docker`）以获得更流畅的安装体验。
 
 #### 3.3 保存与复用 VM 快照
 
@@ -379,13 +628,6 @@ Azure 部署通过 Azure ML Compute Instance 在多台云服务器上并行运�
                 └── 运行 Python 智能体（run.py）
 ```
 
-Azure 部署支持**两种模式**：
-
-| 模式 | 适用场景 | 方式 |
-|------|----------|------|
-| **全云模式** | 智能体在 Azure VM 内运行，全程自动化 | `vm_only: false` |
-| **VM-only + 本地智能体** | Windows VM 在 Azure，智能体代码在本地运行 | `vm_only: true` + `run_local_agent.py` |
-
 ---
 
 ### 第一步 — Azure 环境准备
@@ -418,7 +660,9 @@ Azure 部署支持**两种模式**：
     "AZURE_ML_RESOURCE_GROUP": "<your-resource-group>",
     "AZURE_ML_WORKSPACE_NAME": "<your-workspace-name>",
 
-    "AZURE_INSTANCE_IPS": []
+    "AZURE_STORAGE_ACCOUNT": "<your-storage-account-name>",
+    "AZURE_STORAGE_KEY": "<your-storage-account-key>",
+    "AZURE_STORAGE_CONTAINER": "<your-blob-container-name>"
 }
 ```
 
@@ -428,7 +672,7 @@ Azure 部署支持**两种模式**：
 | `AZURE_API_KEY` + `AZURE_ENDPOINT` | LLM 二选一 | Azure OpenAI Key 和端点 |
 | `MP_API_KEY` | `mp` / `optimade` Code 任务必填 | [Materials Project](https://materialsproject.org/dashboard) API Key。CodeAgent 运行时会将其注入生成的脚本中。`oqmd` 和 `pymatgen` 任务无需此 Key。 |
 | `AZURE_SUBSCRIPTION_ID` / `AZURE_ML_RESOURCE_GROUP` / `AZURE_ML_WORKSPACE_NAME` | Azure 云端模式必填 | Azure ML 工作区标识信息 |
-| `AZURE_INSTANCE_IPS` | 仅 VM-only 模式使用 | 各 Compute Instance 的公网 IP；全云模式填 `[]` 即可 |
+| `AZURE_STORAGE_ACCOUNT` / `AZURE_STORAGE_KEY` / `AZURE_STORAGE_CONTAINER` | Azure 云端模式 | `clear_agent_outputs.py` 所需的存储账号凭证 |
 
 ---
 
@@ -442,13 +686,13 @@ Windows 11 黄金镜像必须提前上传到 Azure Blob Storage，各 Worker 启
 ```bash
 # 使用 Azure CLI 批量上传
 az storage blob upload-batch \
-    --account-name agentsml7737741243 \
-    --destination azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/storage \
+    --account-name <your-storage-account> \
+    --destination <your-blob-container>/storage \
     --source src/mattoolbench-container/vm/storage/ \
     --account-key "<your-account-key>"
 ```
 
-也可使用 [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) 将 `vm/storage/` 文件夹拖拽上传至容器 `azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f` 中的 `storage` 路径（与 `datastore_input_path` 默认值对应）。
+也可使用 [Azure Storage Explorer](https://azure.microsoft.com/en-us/products/storage/storage-explorer) 将 `vm/storage/` 文件夹拖拽上传至对应 Blob 容器中的 `storage` 路径（与 `experiments.json` 中 `datastore_input_path` 对应）。
 
 上传后 Blob 中的预期目录结构：
 ```
@@ -486,7 +730,7 @@ azcopy copy scripts/azure_files/compute-instance-startup.sh \
 {
   "experiment_1": {
     "ci_startup_script_path": "Users/<your-username>/compute-instance-startup.sh",
-    "docker_img_name":        "meiwu/mattoolbench:latest",
+    "docker_img_name":        "mattoolbench/mattoolbench:latest",
     "datastore_input_path":   "storage",
     "exp_name":               "Experiment1",
     "vm_size":                "Standard_D8_V3",
@@ -497,7 +741,9 @@ azcopy copy scripts/azure_files/compute-instance-startup.sh \
     "a11y_backend":           "uia",
     "origin_mode":            "script",
     "json_name":              "evaluation_examples_windows/test_all.json",
-    "vm_only":                false
+    "max_steps":              50,
+    "max_tokens":             2048,
+    "origin_max_tokens":      8000,
   }
 }
 ```
@@ -507,7 +753,7 @@ azcopy copy scripts/azure_files/compute-instance-startup.sh \
 | 参数 | 说明 | 默认值 |
 |------|------|--------|
 | `ci_startup_script_path` | 启动脚本在 ML 工作区文件存储中的路径 | — |
-| `docker_img_name` | 各 VM 拉取的 Docker Hub 镜像 | `meiwu/mattoolbench:latest` |
+| `docker_img_name` | 各 VM 拉取的 Docker Hub 镜像 | `mattoolbench/mattoolbench:latest` |
 | `datastore_input_path` | Azure Blob 中 VM 快照的路径 | `storage` |
 | `exp_name` | 实验名称，同时作为 Azure ML Experiment 名称 | — |
 | `vm_size` | 每台 Compute Instance 的 Azure VM 规格 | `Standard_D8_V3` |
@@ -518,7 +764,6 @@ azcopy copy scripts/azure_files/compute-instance-startup.sh \
 | `a11y_backend` | 无障碍后端（`uia`、`win32`）| `uia` |
 | `origin_mode` | 模板脚本注入（`script`、`no_script`）| `script` |
 | `json_name` | 容器内的任务列表 JSON | `evaluation_examples_windows/test_all.json` |
-| `vm_only` | 若为 `true`，仅启动 VM；智能体通过 `run_local_agent.py` 在本地运行 | `false` |
 | `use_managed_identity` | 使用 Azure 托管身份代替服务主体 | `false` |
 
 ---
@@ -547,63 +792,7 @@ python show_azure.py \
 
 ---
 
-### 第七步（可选）— VM-Only 模式 + 本地智能体
-
-当你希望 **Windows VM 运行在 Azure**、而**智能体代码在本地执行**时使用此模式——例如需要快速迭代智能体逻辑，而不希望每次都重新构建 Docker 镜像。
-
-**7.1 — 仅启动 VM**
-
-将 `experiments.json` 中的 `vm_only` 设为 `true`，然后提交任务：
-```bash
-python run_azure.py --experiments_json experiments.json
-```
-
-每个 Job 会启动 Windows 虚拟机后持续等待 SSH 隧道连接。VM 在容器内暴露两个端口：
-- Windows API：**5000**
-- QEMU QMP：**7200**
-
-**7.2 — 获取各 Compute Instance 的公网 IP**
-
-在 Azure ML 门户中查看：
-> 计算 → Compute Instance → 选择实例 → SSH 端点
-
-也可直接将 IP 列表写入 `config.json`（列表索引 = Worker ID）：
-```json
-"AZURE_INSTANCE_IPS": ["20.1.2.3", "20.1.2.4", "20.1.2.5"]
-```
-
-Azure ML Compute Instance 默认 SSH 端口为 **50000**。
-
-**7.3 — 在本地运行智能体**
-
-单个 Worker：
-```bash
-cd scripts
-python run_local_agent.py --exp_name experiment_1 --worker_id 0
-```
-
-全部 Worker 并行（Worker 数量取自 `experiments.json` 中的 `num_workers`）：
-```bash
-python run_local_agent.py --exp_name experiment_1 --all_workers
-```
-
-`run_local_agent.py` 会自动完成：
-- 为每台 Azure Compute Instance 建立 SSH 隧道
-- 为每个 Worker 分配独立的本地回环地址（`127.0.0.1`、`127.0.0.2`……），避免端口 5000 冲突
-- 等待 Windows VM 就绪（最长 10 分钟）
-- 启动 Python 智能体，连接至对应的隧道端点
-
-其他常用参数：
-```
---instance_ip  <ip>    手动指定单个 Worker 的 IP（覆盖 config.json）
---ssh_port     <port>  SSH 端口（默认：50000）
---pem_path     <path>  SSH 私钥路径（.pem 文件）
---result_dir   <path>  本地结果保存目录（默认：./results）
-```
-
----
-
-### 第八步 — 收集结果
+### 第七步 — 收集结果
 
 结果写入 `workspaceblobstore` 中的 `agent_outputs/` 路径（Azure Blob 输出数据集）。
 
@@ -640,8 +829,8 @@ python scripts/show_azure.py \
 
 ```bash
 az storage blob download-batch \
-    --account-name agentsml7737741243 \
-    --source azureml-blobstore-def316fc-b1ca-4794-9c54-5841c66f1f9f/agent_outputs/<exp_name> \
+    --account-name <your-storage-account> \
+    --source <your-blob-container>/agent_outputs/<exp_name> \
     --destination ./results/ \
     --account-key "<your-account-key>"
 ```
@@ -650,7 +839,9 @@ az storage blob download-batch \
 
 ## 🤖 智能体详情
 
-### 智能体路由（`--agent_name`）
+### 智能体路由
+
+`--agent` 参数（或 `experiments.json` 中的 `agent` 字段）控制每个任务使用哪类智能体。默认 `auto` 模式根据任务领域自动选择。
 
 | 值 | 智能体类 | 适用领域 |
 |---|---|---|
@@ -658,52 +849,59 @@ az storage blob download-batch \
 | `gui` | `GUIAgent` | avantage、dm、jade、vesta、ms |
 | `code` | `CodeAgent` | mp、oqmd、pymatgen、optimade |
 | `origin` | `OriginAgent` | origin |
-| `navi` | `NaviAgent` | 通用视觉智能体（旧版，兼容用）|
 
-### GUIAgent（NaviAgent）
+### 观测模型
 
-材料软件 GUI 视觉交互智能体，每步执行流程：
-1. 对 Windows VM 截图
-2. 运行 **ScreenParser（SoM）** 识别并标注 UI 元素
-3. 将标注截图传入 **LLMPlanner**（支持任意 OpenAI 兼容模型）
-4. 通过 VM 控制器执行规划动作（点击、输入、滚动、快捷键）
+所有 GUI 和 Origin 任务的默认观测方式是**原始截图**（`observation_type=screenshot`，`som_origin=no_omni`）：截图直接传给 LLM，不叠加任何 Set-of-Marks（SoM）元素标注框。这是主基准评测所使用的配置。
 
-#### 屏幕解析模式（`--som_origin`）
+消融实验提供六种观测模式：
 
-| `som_origin` | 解析方式 | 速度 | 需要无障碍树 | 本地模型 |
-|---|---|---|---|---|
-| `oss` *（默认）* | Tesseract OCR | 快 | 否 | 否 |
-| `a11y` | Windows 无障碍树（UIA/Win32）| 中 | **是** | 否 |
-| `mixed-oss` | 无障碍树 + Tesseract OCR 融合 | 慢 | **是** | 否 |
-| `mixed` | 无障碍树 + GroundingDINO | 慢 | **是** | 是 |
-| `omni` | OmniParser（YOLO + Florence）| 慢 | 否 | 是 |
-| `mixed-omni` | 无障碍树 + OmniParser | 最慢 | **是** | 是 |
-
-#### 观测类型（`--observation_type`）
-
-控制每步从 VM 采集哪些数据，**必须与 `som_origin` 匹配**。
-
-| `observation_type` | 是否采集无障碍树 | 配合使用 |
+| `som_origin` | `observation_type` | 说明 |
 |---|---|---|
-| `screenshot` *（默认）* | 否 | `oss`、`omni` |
-| `a11y_tree` | **是** | `a11y`、`mixed-oss`、`mixed`、`mixed-omni` |
-| `screenshot_a11y_tree` | **是** | 同 `a11y_tree` |
+| `no_omni` *（主评测）* | `screenshot` | 原始截图，无元素标注 |
+| `oss` | `screenshot` | 截图 + OCR 文本区域叠加 |
+| `omni` | `screenshot` | 截图 + OmniParser 元素框（YOLO + Florence）|
+| `a11y` | `a11y_tree` | 仅 Windows 无障碍树（无截图）|
+| `mixed-oss` | `a11y_tree` | 无障碍树 + OCR 融合 |
+| `mixed-omni` | `a11y_tree` | 无障碍树 + OmniParser 融合 |
 
-> **重要提示：** 当 `som_origin=oss`（默认）时，无障碍树根本不会被使用。如果仍然采集它（`observation_type=a11y_tree`），每步会白白浪费 5–60 秒在缓慢的 Windows UIA API 调用上。除非使用基于无障碍树的 SoM 模式，否则始终保持 `observation_type=screenshot`。
+> 需要 `a11y_tree` 的模式会触发 Windows UIA API 调用，每步可能耗时 5–60 秒。除非 `som_origin` 确实需要无障碍树，请勿设置 `observation_type=a11y_tree`。
+
+### 动作空间
+
+所有智能体生成 Python 代码字符串，通过 HTTP 发送至 VM 服务端并用 `exec()` 执行。VM 服务端暴露一个 `Computer` 对象，包含五个子模块：
+
+| 模块 | 方法示例 |
+|---|---|
+| `computer.mouse` | `move(x, y)`、`click(x, y)`、`double_click(x, y)`、`scroll(x, y, dx, dy)` |
+| `computer.keyboard` | `type(text)`、`hotkey(*keys)`、`key_down(key)`、`key_up(key)` |
+| `computer.clipboard` | `get_text()`、`set_text(text)` |
+| `computer.os` | `run(cmd)`、`get_pid(name)` |
+| `computer.window` | `activate(pid)`、`maximize(pid)`、`get_rect(pid)` |
+
+### GUIAgent
+
+`GUIAgent` 是 `NaviAgent` 的薄封装，每步执行：
+1. 对 Windows VM 截图
+2. 可选叠加 SoM 元素标注（默认关闭，`no_omni`）
+3. 将截图（及可选元素列表）与领域专用系统提示词一起发送给 LLM
+4. 解析返回的 Python 代码块并在 VM 上执行
+
+系统提示词包含每款材料科学软件的逐应用启动指导（文件打开对话框、非标准首步操作、关键快捷键）。可通过 `--gui_hint_mode hint/no_hint` 开启或关闭（用于消融）。
 
 ### OriginAgent
 
-继承自 NaviAgent，执行流程：
+`OriginAgent` 继承 `NaviAgent`，但专门操作 OriginPro Code Builder（Alt+4）：
 1. 在 OriginPro 中打开数据文件（Ctrl+O）
 2. 打开 Code Builder（Alt+4）
-3. 编写或调整 OriginPro Python 脚本（可选：参考 `origin_draw/` 中的领域模板）
-4. 运行脚本（F5）生成输出图表
+3. 通过剪贴板粘贴 Python 脚本，按 F5 运行
+4. LLM 在领域模板脚本基础上进行调整（来自 `client/origin_draw/`），而非从零编写
 
 `--origin_mode` 参数：
 - `script` *（默认）* — LLM 以领域模板脚本为上下文进行调整
 - `no_script` — LLM 从零编写脚本（消融基线）
 
-`--origin_category` 模板类型：
+可用模板：
 
 | 类别 | 脚本文件 | 分析类型 |
 |---|---|---|
@@ -713,127 +911,113 @@ az storage blob download-batch \
 | `raman` | `roman.py` | 拉曼光谱 |
 | `cycle` | `cycle.py` | 电化学循环 |
 | `bs` | `BS.py` | 能带结构 |
-| `step` | `step.py` | 自由能阶跃 |
+| `step` | `step.py` | 自由能阶跃图 |
 | `ce` | `CE.py` | 库仑效率 |
-| `auto` *（默认）* | — | 从每个任务的 JSON 配置自动读取 |
 
 ### CodeAgent
 
-纯文本智能体，执行流程：
-1. LLM 生成 Python 代码，查询材料数据库（MP、OQMD、PyMatgen、OPTIMADE）
-2. 在 VM 内使用对应虚拟环境执行代码
-3. 失败时将 stdout/stderr 反馈给 LLM 进行自我纠错
-4. 最多重试 `--code_retries` 次（默认：15）
+`CodeAgent` 是纯文本（无截图）智能体：
+1. LLM 生成 Python 代码块，查询目标材料数据库
+2. 代码写入 VM 临时文件，在对应领域虚拟环境中执行（`oqmd`、`pymatgen`、`optimade` venv，位于 `C:\Users\Docker\`）
+3. 若代码失败，将 stdout/stderr 反馈给 LLM 进行自我纠错
+4. 生成-纠错循环持续至 `max_steps` 次；代码退出码为 0 时立即终止任务
 
 ---
 
-## 🔬 消融实验设计
+## 📊 评测体系
 
-所有消融实验均以 **GPT-5 为骨干模型**，设置 `temperature: 0.0` 确保结果可复现。一键运行全部消融实验：
+MatToolBench 采用**双层评测框架**：准确率指标（已有）与效率指标（新增），两者独立记录于每个任务的 `eval_detail.json` 中，互不干扰。
 
-```bash
-bash scripts/run_ablations.sh
+### 准确率指标
+
+每个任务的评测函数在其 JSON 配置的 `"evaluator"` 字段中定义。目前支持三种评测类型：
+
+| 评测函数 | 适用任务 | 评分方式 |
+|---------|---------|---------|
+| `detect_file_match` | PyMatgen 任务 | 输出文件内容与 Gold 文件完全二进制匹配（0.0 或 1.0）|
+| `detect_kv_match` | MP、OQMD 任务 | 按键值对匹配比例计分（`匹配数 / Gold 键总数`），数值容差 rtol=1e-3 |
+| `exact_match` + `file_exists` | OPTIMADE 任务 | 输出文件存在则得 1.0，否则 0.0 |
+
+OPTIMADE 任务结果具有不确定性（随提供商/时间变化），因此引入 **`score_by_attempts`** 标志，用尝试效率分覆盖原始文件存在分：
+
+```
+score_by_attempts = (max_steps − 首次成功步骤编号 + 1) / max_steps
 ```
 
-### 维度一 — Origin：模板脚本注入
+首次尝试即生成可运行代码得分最高，每次失败重试线性扣分。
 
-验证向 OriginAgent 系统提示词中注入预编写的领域模板脚本，是否能提升 Origin 绘图任务的成功率。
+### 效率指标
 
-| 配置文件 | `origin_mode` | 说明 |
-|---|---|---|
-| `ablation_origin_script.json` | `script` | OriginAgent 接收领域模板脚本作为上下文 |
-| `ablation_origin_noscript.json` | `no_script` | OriginAgent 从零编写脚本（基准线）|
+效率指标与准确率完全独立，存储于 `eval_detail.json`：
 
-**研究问题：** 为 LLM 提供特定任务的 OriginPro 脚本模板，相比从零生成是否有显著帮助？
+| 字段 | 公式 | 适用范围 |
+|------|------|---------|
+| `steps_taken` | 任务实际使用的总步数 | 所有任务 |
+| `step_efficiency` | `1 − (steps_taken − 1) / (max_steps − 1)` | 所有任务 |
+| `first_success_step` | 第一次 `returncode == 0` 的步骤编号 | 仅 Code 任务 |
 
-### 维度二 — GUI：屏幕解析方式（SoM 模式）
+`step_efficiency` 取值范围 0.0–1.0：第 1 步完成为 1.0，跑满 `max_steps` 为 0.0。
 
-对比四种不同的屏幕解析策略在材料科学 GUI 任务上的效果。
-
-| 配置文件 | `som_origin` | `observation_type` | 解析方式 | 说明 |
-|---|---|---|---|---|
-| `ablation_gui_som_oss.json` | `oss` | `screenshot` | Tesseract OCR | 仅 OCR，无结构信息（基准线）|
-| `ablation_gui_som_a11y.json` | `a11y` | `a11y_tree` | Windows 无障碍树 | 纯结构信息，无视觉输入 |
-| `ablation_gui_som_mixed.json` | `mixed-oss` | `a11y_tree` | 无障碍树 + OCR 融合 | 多模态融合 |
-| `ablation_gui_som_omni.json` | `omni` | `screenshot` | OmniParser（YOLO + Florence）| 端到端视觉解析 |
-
-**研究问题：** 对于预训练时未见过的专业材料软件（Jade、VESTA 等），视觉定位是否优于结构化无障碍信息？
-
-### 主实验 — LLM 模型对比
-
-在完整 MatToolBench（全任务类型）上对比多个 LLM 骨干模型。运行命令：
+### 效率报告生成
 
 ```bash
-bash scripts/run_main.sh
+# 单个实验
+python scripts/compute_efficiency.py --result_dir ./results/Experiment1
+
+# 多模型对比
+python scripts/compute_efficiency.py \
+    --result_dir ./results/ModelA \
+    --result_dir ./results/ModelB \
+    --output_json efficiency_comparison.json
 ```
 
-| 配置文件 | 模型 | 测试任务集 |
-|---|---|---|
-| `main_gpt_5.json` | GPT-5 | 全部（GUI + Origin + Code）|
-| `main_gpt_5_mini.json` | GPT-5-mini | 全部 |
-| `main_claude_sonnet_4_6.json` | Claude Sonnet 4.6 | 全部 |
-| `main_qwen_max.json` | Qwen-Max | 全部 |
-| `main_gemini_1.5_pro.json` | Gemini 1.5 Pro | 全部 |
+输出示例（按领域分组）：
 
-### 关键配置参数
+```
+Domain         N  StepEff  StepEff(ok)  CodeEff  N_code  N_ok
+mp            20   0.72        0.81        N/A       0     14
+oqmd          20   0.68        0.79       0.72      20     11
+pymatgen      20   0.81        0.89       0.80      20     17
+optimade      10   0.52        0.71       0.60      10      6
+```
 
-| 参数 | 说明 | 可选值 / 默认值 |
-|---|---|---|
-| `agent_name` | 智能体类型 | `auto` *（默认）*、`gui`、`code`、`origin`、`navi` |
-| `som_origin` | GUI/Origin 智能体的屏幕解析方式 | `oss` *（默认）*、`a11y`、`mixed-oss`、`mixed`、`omni`、`mixed-omni` |
-| `observation_type` | 每步从 VM 采集的数据类型 | `screenshot` *（默认）*、`a11y_tree` |
-| `origin_mode` | 是否向 OriginAgent 注入领域模板脚本 | `script` *（默认）*、`no_script` |
-| `origin_category` | OriginAgent 模板脚本类别 | `auto` *（默认）*、`xrd`、`xps`、`ftir`、`raman`、`cycle`、`bs`、`step`、`ce` |
-| `model` | LLM 骨干模型 | `gpt-5`、`claude-sonnet-4-6`、`qwen-max`、… |
-| `temperature` | LLM 采样温度 | 主实验/消融用 `0.0`，默认 `1.0` |
-| `max_steps` | 每任务最大步数 | `50` *（默认）* |
-| `sleep_after_execution` | 每次动作后等待秒数 | `3` *（默认）* |
-| `code_retries` | CodeAgent 最大自我纠错重试次数 | `15` *（默认）* |
-| `a11y_backend` | Windows 无障碍 API 后端 | `uia` *（默认）*、`win32` |
-| `diff_lvl` | 任务难度 | `normal` *（默认）*、`hard` |
-| `num_workers` | 并行 Worker 数量（Azure 多机）| `1` *（默认）* |
+- **StepEff**：该领域所有任务的平均步骤效率
+- **StepEff(ok)**：仅统计成功完成任务（success_rate=1）的步骤效率
+- **CodeEff**：代码尝试效率（首次 `returncode==0` 的步骤位置），仅 Code 任务
 
 ---
 
-## ⚡ 性能调优说明
+## 📂 任务输入数据
 
-每个 Agent 步骤涉及两个可能很慢的操作：**VM 观测采集** 和 **LLM 推理**。遵循以下建议可避免不必要的延迟。
+`evaluation_examples_windows/examples/<domain>/` 中的每个任务都引用一个或多个输入数据文件，这些文件在 VM 中预置于 `C:\Users\Docker\Desktop\setup\dependencies\<software>\`。源文件存储在仓库 `src/mattoolbench-container/vm/setup/dependencies/` 下，由 PowerShell 安装脚本自动复制到 VM 中。
 
-### 观测采集
+### 各软件输入数据文件
 
-无障碍树（`observation_type=a11y_tree`）需要调用 Windows UIA API，**每步可能耗时 5–60 秒**，且返回大量 XML 数据。只在真正需要时才开启：
-
-| `som_origin` | 所需 `observation_type` | 说明 |
-|---|---|---|
-| `oss` *（默认）* | `screenshot` | 无需无障碍树 |
-| `omni` | `screenshot` | 无需无障碍树 |
-| `a11y` | `a11y_tree` | 无障碍树是唯一输入 |
-| `mixed-oss`、`mixed`、`mixed-omni` | `a11y_tree` | 无障碍树用于区域过滤 |
-
-默认 `observation_type` 已设为 `screenshot`。仅在使用基于无障碍树的 SoM 模式时才改为 `a11y_tree`。
-
-### LLM 推理
-
-影响每步发送 token 数量的因素：
-
-| 因素 | 当前设置 | 影响 |
-|---|---|---|
-| 候选元素列表 | 自动截断至 4 000 字符 | 高 |
-| 历史动作数量 | `n_prev=3`（保留最近 3 步）| 中 |
-| 截图分辨率 | 最大边缩放至 768 px | 中 |
-| 最大输出 token 数 | GUI 2048，Code 1500 | 中 |
-
-如果使用**思考模型**（如 Qwen3-Thinking），每次响应都会先输出长篇 `<think>…</think>` 内容，大幅增加延迟。如不需要推理过程，可通过 API 的 `extra_body` 参数关闭思考模式。
+| 软件 | 格式 | 文件 |
+|------|------|------|
+| **Avantage**（XPS）| `.VGD`、`.vgp` | `C1s Scan.VGD`、`O1s Scan.VGD`、`XPS Survey.VGD`、`Zn2p Scan.VGD`、`Zn.vgp` |
+| **Digital Micrograph**（TEM）| `.dm3` | `dm1.dm3` – `dm10.dm3`、`5.dm3` |
+| **Jade**（XRD）| `.jip`、`.xrdml`、`.txt` | `XRD1`–`XRD4`（`.jip` + `.xrdml`）、`WRT-ZSX-5.jip/.txt` |
+| **Materials Studio** | `.xsd` | `Al2O3.xsd`、`Fe.xsd`、`LiF.xsd`、`AIGH-mol.xsd`、`Novolac4.xsd`、`SuperSi.xsd`、`TMOS.xsd`、`urea.xsd` |
+| **VASP** | `POSCAR` | Al（bulk/workfunc）、Au（slab）、BN（DOS）、CoO（spin）、Cu（ENCUT/slab）、Fe（lattice/slab）、Ge（band）、graphene、MgO（k-mesh）、Ni（spin）、Pt（slab）、Si（surface）、SrTiO3、Ti、TiO2（DFT+U）、WS2（HSE）、ZnO（relax）、`vasprun.xml` |
+| **VESTA**（晶体结构）| `.cif` | Al₂O₃、MgO、Fe、Si、NaCl、GaAs、Cu、C（石墨）、GaN、Au |
+| **OriginPro** | `.ogwu`、`.opju`、`.txt` | XRD1–2（`.txt`）、XPS_1/XPS2（`.ogwu`）、Cycle1–2、CE1–2、Book2–3、book9、CPO1（`.opju`）、CPO2、step（`.opju`）、PDF 参考文件 |
 
 ---
 
 ## 📊 实验结果
 
-每个任务完成后，得分会追加写入结果目录下的 `scores_summary.csv`。汇总所有消融实验：
+每个任务完成后，得分追加写入结果目录下的 `scores_summary.csv`，同时生成包含准确率与效率完整字段的 `eval_detail.json`。
 
+汇总准确率结果：
 ```bash
 cd src/mattoolbench-container/client
 python print_ablation_results.py
+```
+
+生成效率分析报告：
+```bash
+python scripts/compute_efficiency.py --result_dir ./results/Experiment1
 ```
 
 ---
@@ -848,9 +1032,9 @@ python print_ablation_results.py
 ## 📖 引用
 
 ```bibtex
-@article{mattoolbench2024,
-  title   = {MatToolBench: Benchmarking Desktop AI Agents for Materials Science},
-  year    = {2024},
+@article{mattoolbench2025,
+  title   = {MatToolBench: Revealing the Transfer Gap of Multimodal Agents in Professional Materials Science Workflows},
+  year    = {2025},
 }
 ```
 

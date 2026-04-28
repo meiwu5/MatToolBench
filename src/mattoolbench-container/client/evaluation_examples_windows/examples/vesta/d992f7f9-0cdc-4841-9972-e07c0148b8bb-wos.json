@@ -1,89 +1,90 @@
 {
-    "id": "d992f7f9-0cdc-4841-9972-e07c0148b8bb-wos",
-    "snapshot": "vestalab",
-    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-1265_MgO.cif', open Orientation, set the up vector to [3,3,3].",
-    "source": "https:\\www.example.com/software/vesta",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for VESTA to fully load",
-            "parameters": {
-                "seconds": 20
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 3
-            }
-        }
-    ],
-    "trajectory": "trajectories/vesta/",
-    "related_apps": [
-        "Vesta"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_opened",
-                "expected_filename": "mp-1265_MgO.cif"
-            },
-            {
-                "type": "check_dialog_opened",
-                "title_keyword": "Orientation"
-            },
-            {
-                "type": "check_orientation_vector",
-                "expected_values": [
-                    3,
-                    3,
-                    3
-                ]
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "d992f7f9-0cdc-4841-9972-e07c0148b8bb-wos",
+  "snapshot": "vestalab",
+  "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-1265_MgO.cif', open Orientation, set the up vector to [3,3,3].",
+  "source": "https:\\www.example.com/software/vesta",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for VESTA to fully load",
+      "parameters": {
+        "seconds": 20
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 3
+      }
     }
+  ],
+  "trajectory": "trajectories/vesta/",
+  "related_apps": [
+    "Vesta"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_opened_vesta",
+        "expected_filename": "mp-1265_MgO.cif"
+      },
+      {
+        "type": "check_dialog_opened_vesta",
+        "title_keyword": "Orientation"
+      },
+      {
+        "type": "check_orientation_vector",
+        "expected_values": [
+          3,
+          3,
+          3
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

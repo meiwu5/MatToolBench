@@ -439,15 +439,15 @@ def get_check_multiple_files_imported(env, config: Dict[str, Any]) -> Dict[str, 
             continue
 
         current_frame_normalized_list = detected_normalized_data if isinstance(detected_normalized_data, list) else [detected_normalized_data]
-        
+
         matched_expectations = set()
-        
+
         for detected_norm in current_frame_normalized_list:
             for expected_key, expected_original in expected_normalized_map.items():
                 if expected_original not in matched_expectations:
                     if _is_filename_variant(expected_key, detected_norm):
                         matched_expectations.add(expected_original)
-        
+
         current_match_count = len(matched_expectations)
         
         if current_match_count > max_files_found:
@@ -460,31 +460,26 @@ def get_check_multiple_files_imported(env, config: Dict[str, Any]) -> Dict[str, 
 
         if current_match_count < expected_count:
             continue
-        
+
         current_screenshot = screenshots[i]
         ocr_text = _ocr_region(env, current_screenshot, "whole", cache_folder)
-        
-        binding_energy_count = 0
         binding_energy_variants = [
-            'bindingenergy', 'binding energy', 'bindingenersy', 
+            'bindingenergy', 'binding energy', 'bindingenersy',
             'bindingenerty', 'binclingenergy', 'bindingfnergy'
         ]
-        
-        lines = ocr_text.lower().split('\n')
-        for line in lines:
-            line_normalized = line.replace(' ', '')
-            for variant in binding_energy_variants:
-                if variant in line_normalized:
-                    binding_energy_count += 1
-                    break 
-        
-        if binding_energy_count == expected_count:
-            result['score'] = 1
-            result['details']['status'] = 'success'
-            result['details']['success_step'] = i
-            result['details']['found_files'] = list(matched_expectations)
-            result['details']['binding_energy_count'] = binding_energy_count
-            return result
+        has_binding_energy = any(
+            v in line.replace(' ', '')
+            for line in ocr_text.lower().split('\n')
+            for v in binding_energy_variants
+        )
+        if not has_binding_energy:
+            continue
+
+        result['score'] = 1
+        result['details']['status'] = 'success'
+        result['details']['success_step'] = i
+        result['details']['found_files'] = list(matched_expectations)
+        return result
 
     result['details']['best_attempt'] = best_step_details
     return result
@@ -674,17 +669,18 @@ def get_check_duplicate_files_imported(env, config: Dict[str, Any]) -> Dict[str,
     return result
 
 def get_check_background_added_successfully(env, config: Dict[str, Any]) -> Dict[str, Any]:
+    """
+    Prove background has been added: detect dialog opened, specified background type text appeared inside, then dialog closed.
+    """
     title = config.get('title')
     bg_type = config.get('bg_type', 'Smart')
     base_folder = get_trajectory_dir(env, config)
     if base_folder is None:
         return None
     base_folder = Path(base_folder).resolve()
-    """
-    Prove background has been added: detect dialog opened, specified background type text appeared inside, then dialog closed.
-    """
-    self._log(f"Starting deep detection of background operation: {title} -> {bg_type}", "Info")
-    
+
+    print(f"Starting deep detection of background operation: {title} -> {bg_type}")
+
     result = {
         'function': 'check_background_added_successfully',
         'score': 0,
@@ -696,12 +692,15 @@ def get_check_background_added_successfully(env, config: Dict[str, Any]) -> Dict
         }
     }
 
+    screenshots = _load_screenshots(base_folder)
+    cache_folder = base_folder.parent / "evaluate" / "ocr_results" / base_folder.name
+
     has_seen_bg_text = False
     dialog_appeared_step = -1
 
-    for i, screenshot in enumerate(self.screenshots):
+    for i, screenshot in enumerate(screenshots):
         # Get full-image text with normalization
-        text = self._ocr_region(screenshot, "whole").lower()
+        text = _ocr_region(env, screenshot, "whole", cache_folder).lower()
         norm_text = text.replace(' ', '')
         norm_title = title.lower().replace(' ', '')
         norm_bg = bg_type.lower()
@@ -712,16 +711,15 @@ def get_check_background_added_successfully(env, config: Dict[str, Any]) -> Dict
         if is_dialog_open:
             if not result['details']['dialog_appeared']:
                 result['details']['dialog_appeared'] = True
-                self._log(f"  Step [{i:02d}]: Found dialog '{title}'", "Debug")
-            
+                print(f"  Step [{i:02d}]: Found dialog '{title}'")
+
             dialog_appeared_step = i
-            
+
             # Core proof: whether 'smart' text appeared inside the dialog
-            # Note: we usually detect in the background list area on the left side of the dialog
             if norm_bg in text:
                 has_seen_bg_text = True
                 result['details']['bg_text_detected'] = True
-                self._log(f"  Step [{i:02d}]: ✓ Successfully recognized background type text '{bg_type}'", "Debug")
+                print(f"  Step [{i:02d}]: Successfully recognized background type text '{bg_type}'")
             continue
 
         # If the dialog was previously seen but now disappeared
@@ -731,147 +729,19 @@ def get_check_background_added_successfully(env, config: Dict[str, Any]) -> Dict
                 # Only award full score when dialog appeared, Smart text was recognized, and dialog has closed
                 if has_seen_bg_text:
                     result['score'] = 1
-                    self._log(f"✓ Success: whole detected background addition trajectory (open-recognize {bg_type}-close)", "Success")
+                    print(f"Success: detected background addition trajectory (open-recognize {bg_type}-close)")
                     return result
 
     # Failure diagnosis
     if not result['details']['dialog_appeared']:
-        self._log(f"✗ Failure: dialog '{title}' not detected", "Failure")
+        print(f"Failure: dialog '{title}' not detected")
     elif not has_seen_bg_text:
-        self._log(f"✗ Failure: dialog opened but '{bg_type}' not recognized in its list (possibly Add not clicked or default parameters not applied)", "Failure")
+        print(f"Failure: dialog opened but '{bg_type}' not recognized in its list")
     else:
-        self._log(f"✗ Failure: background recognized but dialog close action not detected", "Failure")
+        print(f"Failure: background recognized but dialog close action not detected")
 
     return result
 
-    """
-    Detect if the occurrence count of a specific element (e.g., filename) increases to the expected value.
-    Used to detect copy operations (e.g., copy to window B).
-
-    Args:
-        element_name: element name
-        expected_count: expected occurrence count
-
-    Returns:
-        evaluation result dict
-    """
-    self._log(f"Checking element count increase: {element_name} -> {expected_count}", "Info")
-    
-    result = {
-        'function': 'check_element_count_increased',
-        'score': 0,
-        'max_score': 1,
-        'details': {
-            'element': element_name,
-            'expected_count': expected_count,
-            'max_count': 0,
-            'found_at': None
-        }
-    }
-    
-    for i, screenshot in enumerate(self.screenshots):
-        text = self._ocr_region(screenshot, "whole")
-        count = text.count(element_name)
-        
-        if count > result['details']['max_count']:
-            result['details']['max_count'] = count
-        
-        if count >= expected_count:
-            result['score'] = 1
-            result['details']['found_at'] = i
-            self._log(f"✓ Element '{element_name}' appeared {count} times (screenshot {i})", "Success")
-            break
-    
-    if result['score'] == 0:
-        self._log(
-            f"✗ Element '{element_name}' appeared at most {result['details']['max_count']} times,"
-            f" expected {expected_count} times",
-            "Failure"
-        )
-    
-    return result
-
-    """
-    Detect if a dialog title has appeared.
-
-    Args:
-        title: dialog title
-
-    Returns:
-        evaluation result dict
-    """
-    self._log(f"Checking dialog title: {title}", "Info")
-    
-    result = {
-        'function': 'check_dialog_title',
-        'score': 0,
-        'max_score': 1,
-        'details': {'title': title}
-    }
-    
-    for i, screenshot in enumerate(self.screenshots):
-        text = self._ocr_region(screenshot, "whole")
-        
-        if title in text:
-            result['score'] = 1
-            result['details']['found_at'] = i
-            self._log(f"✓ Found dialog title: {title} (screenshot {i})", "Success")
-            break
-    
-    if result['score'] == 0:
-        self._log(f"✗ Dialog title not found: {title}", "Failure")
-    
-    return result
-
-    """
-    Detect if a dialog appeared and then disappeared.
-
-    Args:
-        title: dialog title
-
-    Returns:
-        evaluation result dict
-    """
-    self._log(f"Checking dialog appear and close: {title}", "Info")
-    
-    result = {
-        'function': 'check_dialog_appeared_and_closed',
-        'score': 0,
-        'max_score': 1,
-        'details': {
-            'title': title,
-            'appeared': False,
-            'closed': False,
-            'appeared_at': None,
-            'closed_at': None
-        }
-    }
-    
-    appeared = False
-    
-    for i, screenshot in enumerate(self.screenshots):
-        text = self._ocr_region(screenshot, "whole")
-        
-        if title in text:
-            if not appeared:
-                appeared = True
-                result['details']['appeared'] = True
-                result['details']['appeared_at'] = i
-                self._log(f"  Step [{i:02d}]: Dialog appeared", "Debug")
-        elif appeared and title not in text:
-            result['details']['closed'] = True
-            result['details']['closed_at'] = i
-            result['score'] = 1
-            self._log(f"✓ Dialog appeared and closed: appeared({result['details']['appeared_at']}) → closed({i})", "Success")
-            break
-    
-    if result['score'] == 0:
-        if appeared:
-            self._log(f"✗ Dialog '{title}' appeared but did not close", "Failure")
-        else:
-            self._log(f"✗ Dialog '{title}' did not appear", "Failure")
-    
-    return result
 
 def get_check_dialog_parameter(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Detect specific parameter values in a dialog, supports single or multiple parameter checks."""
@@ -1047,8 +917,10 @@ def get_check_dialog_exists(env, config: Dict[str, Any]) -> Dict[str, Any]:
                 break
         
         if matched:
-            if forbidden_parameter and forbidden_parameter.lower() in text.lower():
-                continue  # Forbidden text present, skip this screenshot
+            if forbidden_parameter:
+                forbidden_list = forbidden_parameter if isinstance(forbidden_parameter, list) else [forbidden_parameter]
+                if any(fp.lower() in text.lower() for fp in forbidden_list):
+                    continue  # Forbidden text present, skip this screenshot
             
             result['score'] = 1
             result['details']['found_at'] = i

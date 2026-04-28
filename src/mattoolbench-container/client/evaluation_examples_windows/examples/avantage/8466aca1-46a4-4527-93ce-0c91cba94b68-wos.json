@@ -1,7 +1,7 @@
 {
   "id": "8466aca1-46a4-4527-93ce-0c91cba94b68-wos",
   "snapshot": "avantagelab",
-  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', perform automatic peak fitting and accept the results, then export the fitting parameter table to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls'.",
+  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Zn2p Scan.VGD', perform automatic peak fitting and accept the results, then export the fitting parameter table to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\Zn2p_PeakFit_Params.xls'.",
   "source": "https:\\www.example.com/software/avantage",
   "config": [
     {
@@ -81,7 +81,7 @@
     "result": [
       {
         "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\Zn2p_PeakFit_Params.xls"
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\Zn2p_PeakFit_Params.xls"
       },
       {
         "type": "check_multiple_files_imported",
@@ -116,5 +116,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "easy"
 }

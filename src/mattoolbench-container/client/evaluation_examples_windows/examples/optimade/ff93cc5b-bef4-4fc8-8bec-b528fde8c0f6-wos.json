@@ -1,0 +1,28 @@
+{
+    "id": "ff93cc5b-bef4-4fc8-8bec-b528fde8c0f6-wos",
+    "snapshot": "optimadelab",
+    "instruction": "Use the OPTIMADE API to query all structures with chemical_formula_reduced = \"H2O\". Save the total count of matching structures to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_13.txt'.",
+    "source": "https://www.optimade.org/",
+    "_comments": "OPTIMADE API task, no file input required",
+    "config": [],
+    "trajectory": "trajectories\\optimade\\",
+    "related_apps": [
+        "Python",
+        "OPTIMADE"
+    ],
+    "evaluator": {
+        "func": "exact_match",
+        "result": {
+            "type": "file_exists_nonempty",
+            "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_13.txt"
+        },
+        "expected": {
+            "type": "rule",
+            "rules": {
+                "expected": true
+            }
+        },
+        "score_by_attempts": true
+    },
+    "difficulty": "easy"
+}

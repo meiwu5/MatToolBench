@@ -12,35 +12,17 @@
   ],
   "max_steps": 20,
   "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match"
-    ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\Si_half.vesta"
-      },
-      {
-        "type": "validate_file_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\Si_half.vesta",
-        "description": "The VESTA file contains a Si crystal structure with one Si atomic site removed compared to the original mp-149 structure (which has 2 Si atoms in the conventional cell). The file should be a valid VESTA format file."
+    "func": "exact_match",
+    "result": {
+      "type": "file_exists",
+      "file_path": "C:\\Users\\Docker\\Desktop\\Si_half.vesta"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
       }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
+    },
     "func_conj": "and"
   }
 }

@@ -11,6 +11,7 @@ import json
 from pathlib import Path
 from typing import List, Dict, Any, Tuple, Optional
 from datetime import datetime
+from itertools import combinations
 import easyocr
 from PIL import Image
 import numpy as np
@@ -76,7 +77,7 @@ def _extract_step_number(filename: str) -> int:
 def _get_ocr_reader():
     """Get OCR reader singleton."""
     if not hasattr(_get_ocr_reader, 'reader'):
-        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=True)
+        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=False)
     return _get_ocr_reader.reader
 
 
@@ -561,7 +562,7 @@ def get_check_checkbox_selected(env, config: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def get_check_dialog_opened(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_dialog_opened_dm(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Detect dialog title and field values."""
     title_keyword = config.get('title_keyword', '')
     field_checks = config.get('field_checks')

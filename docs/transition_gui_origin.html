@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GUI → Origin Transition</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root { --navy:#1a3a6e; --blue:#2060a8; --green:#2e8b48; --orange:#d07810; --purple:#7b3fa8; }
+
+  body {
+    background:linear-gradient(150deg,#bdd5ef 0%,#d8edfb 38%,#c6dff0 70%,#d4eafc 100%);
+    width:100vw; height:100vh; overflow:hidden;
+    font-family:'Inter',system-ui,sans-serif;
+  }
+  #grid {
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(26,58,110,.04) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(26,58,110,.04) 1px,transparent 1px);
+    background-size:44px 44px; pointer-events:none;
+  }
+
+  #stage {
+    position:relative; width:100%; height:100%;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:48px 72px; gap:20px;
+  }
+
+  /* ── Eyebrow + Title ── */
+  #eyebrow {
+    font-size:16px; font-weight:800; letter-spacing:.18em; text-transform:uppercase;
+    color:rgba(26,58,110,.42);
+    opacity:0; transform:translateY(-14px);
+    transition:opacity .5s ease, transform .5s cubic-bezier(.16,1,.3,1);
+  }
+  #title {
+    font-size:clamp(56px,7vw,88px); font-weight:900; letter-spacing:-.045em;
+    color:var(--navy); text-align:center; line-height:1;
+    margin-bottom:8px;
+    clip-path:inset(0 100% 0 0);
+    transition:clip-path .9s cubic-bezier(.77,0,.175,1);
+  }
+  #title span { color:var(--blue); }
+
+  #subtitle {
+    font-size:clamp(18px,2.2vw,26px); font-weight:500; color:rgba(26,58,110,.52);
+    text-align:center; line-height:1.5; max-width:700px;
+    opacity:0; transition:opacity .6s ease;
+  }
+
+  /* ── Flow row ── */
+  #flow {
+    display:flex; align-items:stretch; gap:0;
+    width:100%; max-width:1100px;
+    opacity:0; transform:translateY(24px);
+    transition:opacity .6s ease, transform .6s cubic-bezier(.16,1,.3,1);
+  }
+
+  /* panels */
+  .panel {
+    background:rgba(255,255,255,.76);
+    border:1.5px solid rgba(26,58,110,.14);
+    border-radius:22px; padding:28px 32px;
+    backdrop-filter:blur(14px);
+    box-shadow:0 12px 44px rgba(26,58,110,.11);
+    flex:1;
+  }
+  .panel-label {
+    font-size:12px; font-weight:800; letter-spacing:.16em; text-transform:uppercase;
+    color:rgba(26,58,110,.4); margin-bottom:18px;
+  }
+  .tool-row {
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border-radius:12px; margin-bottom:8px;
+    background:rgba(32,96,168,.07);
+    opacity:0; transform:translateX(-16px);
+    transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .tool-row:last-child { margin-bottom:0; }
+  .tool-name { font-size:20px; font-weight:800; color:var(--navy); }
+  .tool-tag {
+    margin-left:auto; font-size:13px; font-weight:700;
+    color:rgba(32,96,168,.6); background:rgba(32,96,168,.1);
+    padding:3px 10px; border-radius:999px;
+  }
+
+  /* Arrow middle */
+  #arrow-col {
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:0 28px; gap:16px; flex-shrink:0; width:200px;
+  }
+  #arrow-label {
+    font-size:14px; font-weight:800; letter-spacing:.1em; text-transform:uppercase;
+    color:rgba(26,58,110,.45); opacity:0; transition:opacity .5s ease;
+    text-align:center;
+  }
+  #arrow-canvas { display:block; }
+  #arrow-formats {
+    font-size:14px; font-weight:700; letter-spacing:.06em;
+    color:rgba(26,58,110,.38); opacity:0; transition:opacity .5s ease;
+    text-align:center;
+  }
+
+  /* Origin panel */
+  .panel-origin { border-color:rgba(123,63,168,.22); }
+  .origin-badge {
+    display:inline-block; padding:5px 16px; border-radius:999px;
+    background:rgba(123,63,168,.1); color:var(--purple);
+    font-size:13px; font-weight:800; letter-spacing:.08em; text-transform:uppercase;
+    margin-bottom:18px;
+  }
+  .plot-chip {
+    display:flex; align-items:center; gap:12px;
+    padding:10px 14px; border-radius:12px; margin-bottom:8px;
+    background:rgba(123,63,168,.07);
+    opacity:0; transform:translateX(16px);
+    transition:opacity .4s ease, transform .4s cubic-bezier(.16,1,.3,1);
+  }
+  .plot-chip:last-child { margin-bottom:0; }
+  .plot-name { font-size:20px; font-weight:800; color:var(--navy); }
+  .plot-type {
+    margin-left:auto; font-size:13px; font-weight:700;
+    color:rgba(123,63,168,.6); background:rgba(123,63,168,.1);
+    padding:3px 10px; border-radius:999px;
+  }
+
+  /* Fade + controls */
+  #fade { position:fixed; inset:0; background:linear-gradient(150deg,#bdd5ef 0%,#d8edfb 38%,#c6dff0 70%,#d4eafc 100%); opacity:0; pointer-events:none; transition:opacity 1.2s ease; }
+  #timer-bar { position:fixed; bottom:0; left:0; height:3px; width:0%; background:linear-gradient(90deg,var(--blue),var(--green),var(--purple)); z-index:100; }
+  #replay-btn { position:fixed; bottom:20px; right:20px; padding:9px 20px; background:rgba(255,255,255,.7); border:1.5px solid rgba(26,58,110,.18); color:var(--navy); font-family:'Inter',sans-serif; font-size:12px; font-weight:700; letter-spacing:.09em; text-transform:uppercase; cursor:pointer; opacity:0; border-radius:9px; backdrop-filter:blur(8px); transition:all .4s; }
+  #replay-btn:hover { background:rgba(255,255,255,.95); }
+</style>
+</head>
+<body>
+<div id="grid"></div>
+<div id="stage">
+  <div id="eyebrow">Real-World Workflow</div>
+  <div id="title">GUI Tools <span>→</span> OriginPro</div>
+
+  <div id="flow">
+    <!-- Left: GUI tools -->
+    <div class="panel">
+      <div class="panel-label">GUI Analysis Software</div>
+      <div class="tool-row" id="t0"><span class="tool-name">Jade</span><span class="tool-tag">XRD</span></div>
+      <div class="tool-row" id="t1"><span class="tool-name">Avantage</span><span class="tool-tag">XPS</span></div>
+      <div class="tool-row" id="t2"><span class="tool-name">DM</span><span class="tool-tag">TEM / EELS</span></div>
+      <div class="tool-row" id="t3"><span class="tool-name">VESTA</span><span class="tool-tag">Crystal Structure</span></div>
+      <div class="tool-row" id="t4"><span class="tool-name">MatStudio</span><span class="tool-tag">Simulation</span></div>
+    </div>
+
+    <!-- Arrow -->
+    <div id="arrow-col">
+      <div id="arrow-label">Data Export</div>
+      <canvas id="arrow-canvas" width="160" height="48"></canvas>
+      <div id="arrow-formats">.csv &nbsp;·&nbsp; .txt &nbsp;·&nbsp; .opj</div>
+    </div>
+
+    <!-- Right: Origin -->
+    <div class="panel panel-origin">
+      <div class="panel-label"><span class="origin-badge">OriginPro</span></div>
+      <div class="plot-chip" id="p0"><span class="plot-name">XRD Pattern</span><span class="plot-type">Diffraction</span></div>
+      <div class="plot-chip" id="p1"><span class="plot-name">XPS Spectra</span><span class="plot-type">Spectroscopy</span></div>
+      <div class="plot-chip" id="p2"><span class="plot-name">Raman</span><span class="plot-type">Spectroscopy</span></div>
+      <div class="plot-chip" id="p3"><span class="plot-name">Battery Cycling</span><span class="plot-type">Electrochemistry</span></div>
+      <div class="plot-chip" id="p4"><span class="plot-name">Free Energy</span><span class="plot-type">Thermodynamics</span></div>
+    </div>
+  </div>
+
+  <div id="subtitle">
+    In real materials science, GUI analysis results are routinely exported and
+    visualized in OriginPro for publication-quality figures —
+    a cross-tool workflow MatToolBench explicitly evaluates.
+  </div>
+</div>
+
+<div id="fade"></div>
+<div id="timer-bar"></div>
+<button id="replay-btn">↺ Replay</button>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Arrow animation
+const arrowCanvas = document.getElementById('arrow-canvas');
+const actx = arrowCanvas.getContext('2d');
+const AW = 160, AH = 48;
+
+function drawArrow(progress) {
+  actx.clearRect(0, 0, AW, AH);
+  const endX = 10 + (130 * progress);
+  // shaft
+  actx.beginPath();
+  actx.moveTo(10, AH/2);
+  actx.lineTo(endX, AH/2);
+  actx.strokeStyle = '#2060a8';
+  actx.lineWidth = 3;
+  actx.lineCap = 'round';
+  actx.stroke();
+  // head
+  if (progress > 0.85) {
+    const alpha = (progress - 0.85) / 0.15;
+    actx.globalAlpha = alpha;
+    actx.beginPath();
+    actx.moveTo(140, AH/2 - 10);
+    actx.lineTo(152, AH/2);
+    actx.lineTo(140, AH/2 + 10);
+    actx.strokeStyle = '#2060a8';
+    actx.lineWidth = 3;
+    actx.lineCap = 'round';
+    actx.lineJoin = 'round';
+    actx.stroke();
+    actx.globalAlpha = 1;
+  }
+  // flow dots
+  if (progress === 1) {
+    const t = (Date.now() / 900) % 1;
+    for (let i = 0; i < 3; i++) {
+      const tp = (t + i/3) % 1;
+      const x = 16 + tp * 118;
+      actx.beginPath();
+      actx.arc(x, AH/2, 4, 0, Math.PI*2);
+      actx.fillStyle = `rgba(32,96,168,${0.7 - Math.abs(tp-0.5)*0.8})`;
+      actx.fill();
+    }
+  }
+}
+
+let dotsRunning = false;
+function animDots() {
+  if (!dotsRunning) return;
+  drawArrow(1);
+  requestAnimationFrame(animDots);
+}
+
+const TOTAL = 11000;
+let tStart = null;
+function tick(ts) {
+  if (!tStart) tStart = ts;
+  const p = Math.min((ts-tStart)/TOTAL*100, 100);
+  document.getElementById('timer-bar').style.width = p + '%';
+  if (p < 100) requestAnimationFrame(tick);
+}
+
+function resetAll() {
+  tStart = null;
+  dotsRunning = false;
+  document.getElementById('timer-bar').style.width = '0';
+  document.getElementById('eyebrow').style.opacity = '0';
+  document.getElementById('eyebrow').style.transform = 'translateY(-14px)';
+  document.getElementById('title').style.clipPath = 'inset(0 100% 0 0)';
+  document.getElementById('subtitle').style.opacity = '0';
+  document.getElementById('flow').style.opacity = '0';
+  document.getElementById('flow').style.transform = 'translateY(24px)';
+  document.getElementById('arrow-label').style.opacity = '0';
+  document.getElementById('arrow-formats').style.opacity = '0';
+  ['t0','t1','t2','t3','t4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.opacity='0'; el.style.transform='translateX(-16px)';
+  });
+  ['p0','p1','p2','p3','p4'].forEach(id => {
+    const el = document.getElementById(id);
+    el.style.opacity='0'; el.style.transform='translateX(16px)';
+  });
+  document.getElementById('fade').style.opacity = '0';
+  document.getElementById('replay-btn').style.opacity = '0';
+  actx.clearRect(0,0,AW,AH);
+}
+
+async function run() {
+  resetAll();
+  requestAnimationFrame(tick);
+
+  await wait(300);
+  const ey = document.getElementById('eyebrow');
+  ey.style.opacity='1'; ey.style.transform='translateY(0)';
+
+  await wait(300);
+  document.getElementById('title').style.clipPath = 'inset(0 0% 0 0)';
+
+  await wait(800);
+  const flow = document.getElementById('flow');
+  flow.style.opacity='1'; flow.style.transform='translateY(0)';
+
+  await wait(400);
+  for (let i=0; i<5; i++) {
+    const el = document.getElementById('t'+i);
+    el.style.opacity='1'; el.style.transform='translateX(0)';
+    await wait(110);
+  }
+
+  // Arrow draw
+  await wait(200);
+  document.getElementById('arrow-label').style.opacity='1';
+  const drawStart = performance.now();
+  await new Promise(resolve => {
+    function step(now) {
+      const t = Math.min((now-drawStart)/700, 1);
+      drawArrow(t);
+      if (t<1) requestAnimationFrame(step);
+      else resolve();
+    }
+    requestAnimationFrame(step);
+  });
+  document.getElementById('arrow-formats').style.opacity='1';
+  dotsRunning = true;
+  animDots();
+
+  // Origin chips
+  await wait(200);
+  for (let i=0; i<5; i++) {
+    const el = document.getElementById('p'+i);
+    el.style.opacity='1'; el.style.transform='translateX(0)';
+    await wait(110);
+  }
+
+  await wait(600);
+  document.getElementById('subtitle').style.opacity='1';
+
+  await wait(3200);
+  dotsRunning = false;
+  document.getElementById('fade').style.opacity='1';
+  await wait(1400);
+  document.getElementById('replay-btn').style.transition='opacity .5s ease';
+  document.getElementById('replay-btn').style.opacity='1';
+}
+
+document.getElementById('replay-btn').addEventListener('click', ()=>{
+  document.getElementById('replay-btn').style.opacity='0';
+  setTimeout(run, 400);
+});
+
+run();
+</script>
+</body>
+</html>

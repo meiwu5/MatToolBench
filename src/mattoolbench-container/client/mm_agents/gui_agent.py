@@ -35,6 +35,8 @@ class GUIAgent(NaviAgent):
         auto_window_maximize: bool = False,
         use_last_screen: bool = True,
         temperature: float = 0.5,
+        max_tokens: int = 2048,
+        use_software_hints: bool = True,
     ):
         super().__init__(
             server=server,
@@ -45,10 +47,14 @@ class GUIAgent(NaviAgent):
             auto_window_maximize=auto_window_maximize,
             use_last_screen=use_last_screen,
             temperature=temperature,
+            max_tokens=max_tokens,
         )
         # Replace the generic planner prompt with the GUI-specific one.
-        if som_origin == "no_omni":
-            self.gpt4v_planner.system_prompt = planner_messages.raw_gui_system_message
-        else:
-            self.gpt4v_planner.system_prompt = planner_messages.gui_system_message
-        logger.info("GUIAgent initialised (model=%s, server=%s)", model, server)
+        raw = som_origin == "no_omni"
+        self.gpt4v_planner.system_prompt = planner_messages.build_gui_system_message(
+            use_software_hints=use_software_hints, raw=raw
+        )
+        logger.info(
+            "GUIAgent initialised (model=%s, server=%s, use_software_hints=%s)",
+            model, server, use_software_hints,
+        )

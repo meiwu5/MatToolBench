@@ -1,87 +1,88 @@
 {
-    "id": "2df33fe3-44e3-4c03-b7f0-a847df2e2a0a-wos",
-    "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm5.dm3', use Oval tool to draw a circle in the top-right corner, set Foreground Color to red.",
-    "source": "https:\\www.example.com/software/dm",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for DigitalMicrograph to fully load",
-            "parameters": {
-                "seconds": 1
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 1
-            }
-        }
-    ],
-    "trajectory": "trajectories/dm/",
-    "related_apps": [
-        "Dm"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_import",
-                "expected_filename": "dm5.dm3"
-            },
-            {
-                "type": "check_drawing_tool",
-                "tool_name": "Oval"
-            },
-            {
-                "type": "check_border_color",
-                "box_color": "red",
-                "region": "whole",
-                "shape_type": "oval"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "2df33fe3-44e3-4c03-b7f0-a847df2e2a0a-wos",
+  "snapshot": "dmlab",
+  "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm5.dm3', use Oval tool to draw a circle in the top-right corner, set Foreground Color to red.",
+  "source": "https:\\www.example.com/software/dm",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for DigitalMicrograph to fully load",
+      "parameters": {
+        "seconds": 1
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 1
+      }
     }
+  ],
+  "trajectory": "trajectories/dm/",
+  "related_apps": [
+    "Dm"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_import",
+        "expected_filename": "dm5.dm3"
+      },
+      {
+        "type": "check_drawing_tool",
+        "tool_name": "Oval"
+      },
+      {
+        "type": "check_border_color",
+        "box_color": "red",
+        "region": "whole",
+        "shape_type": "oval"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

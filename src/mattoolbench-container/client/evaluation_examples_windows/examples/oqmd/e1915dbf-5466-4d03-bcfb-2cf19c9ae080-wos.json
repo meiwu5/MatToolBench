@@ -1,27 +1,27 @@
 {
-  "id": "e1915dbf-5466-4d03-bcfb-2cf19c9ae080-wos",
-  "snapshot": "oqmdlab",
-  "instruction": "Query the OQMD database to count all binary compounds containing Al (element_set=Al AND ntypes=2), and save the total count to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_6.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-  "source": "https://oqmd.org/",
-  "_comments": "OQMD REST API task",
-  "config": [],
-  "trajectory": "trajectories\\oqmd\\",
-  "related_apps": [
-    "OQMD",
-    "Python"
-  ],
-  "max_steps": 8,
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_6.txt",
-      "dest": "oqmd_task_6.txt"
+    "id": "e1915dbf-5466-4d03-bcfb-2cf19c9ae080-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database to count all binary compounds containing Al (element_set=Al AND ntypes=2), and save the total count to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_6.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_6.txt",
+            "dest": "oqmd_task_6.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_6.txt",
+            "dest": "oqmd_task_6_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_6.txt",
-      "dest": "oqmd_task_6_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

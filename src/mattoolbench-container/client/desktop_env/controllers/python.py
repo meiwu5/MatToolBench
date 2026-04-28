@@ -167,7 +167,9 @@ class PythonController:
         if command in ['WAIT', 'FAIL', 'DONE']:
             return
 
-        payload = {"command": command}
+        # Disable PyAutoGUI fail-safe so mouse moves to screen corners don't abort the script.
+        _prefix = "import pyautogui; pyautogui.FAILSAFE = False\n"
+        payload = {"command": _prefix + command}
 
         headers = {
             'Content-Type': 'application/json'

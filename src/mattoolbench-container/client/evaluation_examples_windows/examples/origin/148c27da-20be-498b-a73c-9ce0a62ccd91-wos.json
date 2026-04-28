@@ -1,137 +1,134 @@
 {
-    "id": "148c27da-20be-498b-a73c-9ce0a62ccd91-wos",
-    "snapshot": "originlab",
-    "instruction": "Open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\origin\\Cycle2.ogwu', plot a battery cycling performance figure with labels ['Bare Zn', 'AIL@Zn'], use colors '#CF302D' and '#7E90E4' with circle markers, You can press Alt+4 to open the Code Builder to write and run scripts. Save the figure as 'cycle2.png' to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png'.",
-    "source": "https://www.originlab.com/",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files\\OriginLab\\Origin2026\\Origin64.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Origin to fully load",
-            "parameters": {
-                "seconds": 30
-            }
-        },
-        {
-            "type": "execute",
-            "note": "Press Ctrl+O to open the file dialog",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey('ctrl', 'o')"
-                ],
-                "shell": false
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for file dialog",
-            "parameters": {
-                "seconds": 3
-            }
-        },
-        {
-            "type": "execute",
-            "note": "Paste file path into dialog",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyperclip, pyautogui, time; pyautogui.FAILSAFE=False; pyperclip.copy(r'C:\\\\Users\\\\Docker\\\\Desktop\\\\setup\\\\dependencies\\\\origin\\\\Cycle2.ogwu'); time.sleep(0.2); pyautogui.hotkey('ctrl', 'v')"
-                ],
-                "shell": false
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for file dialog",
-            "parameters": {
-                "seconds": 3
-            }
-        },
-        {
-            "type": "execute",
-            "note": "Press Enter to open the file",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.press('enter')"
-                ],
-                "shell": false
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for file to finish loading",
-            "parameters": {
-                "seconds": 8
-            }
-        },
-        {
-            "type": "execute",
-            "note": "Press Alt+4 to open Code Builder",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey(\"alt\", \"4\")"
-                ],
-                "shell": false
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for Code Builder to open",
-            "parameters": {
-                "seconds": 3
-            }
-        }
-    ],
-    "trajectory": "trajectories\\origin\\",
-    "related_apps": [
-        "Origin"
-    ],
-    "max_steps": 15,
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png"
-            },
-            {
-                "type": "validate_image_with_model",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png",
-                "description": "The image is a battery cycling performance figure. Legend labels 'Bare Zn' and 'AIL@Zn' are present. Colors close to red (#CF302D) and blue-purple (#7E90E4) are used. Circle markers are used for data points."
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "148c27da-20be-498b-a73c-9ce0a62ccd91-wos",
+  "snapshot": "originlab",
+  "instruction": "Open 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\origin\\Cycle2.ogwu', plot a battery cycling performance figure with labels ['Bare Zn', 'AIL@Zn'], use colors '#CF302D' and '#7E90E4' with circle markers, You can press Alt+4 to open the Code Builder to write and run scripts. Save the figure as 'cycle2.png' to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png'.",
+  "source": "https://www.originlab.com/",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files\\OriginLab\\Origin2026\\Origin64.exe"
+        ]
+      }
     },
-    "origin_category": "cycle"
+    {
+      "type": "sleep",
+      "note": "Wait for Origin to fully load",
+      "parameters": {
+        "seconds": 30
+      }
+    },
+    {
+      "type": "execute",
+      "note": "Press Ctrl+O to open the file dialog",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey('ctrl', 'o')"
+        ],
+        "shell": false
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for file dialog",
+      "parameters": {
+        "seconds": 3
+      }
+    },
+    {
+      "type": "execute",
+      "note": "Paste file path into dialog",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyperclip, pyautogui, time; pyautogui.FAILSAFE=False; pyperclip.copy(r'C:\\\\Users\\\\Docker\\\\Desktop\\\\setup\\\\dependencies\\\\origin\\\\Cycle2.ogwu'); time.sleep(0.2); pyautogui.hotkey('ctrl', 'v')"
+        ],
+        "shell": false
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for file dialog",
+      "parameters": {
+        "seconds": 3
+      }
+    },
+    {
+      "type": "execute",
+      "note": "Press Enter to open the file",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.press('enter')"
+        ],
+        "shell": false
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for file to finish loading",
+      "parameters": {
+        "seconds": 8
+      }
+    },
+    {
+      "type": "execute",
+      "note": "Press Alt+4 to open Code Builder",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui, time; pyautogui.FAILSAFE=False; time.sleep(0.3); pyautogui.hotkey(\"alt\", \"4\")"
+        ],
+        "shell": false
+      },
+      "hint_only": true
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for Code Builder to open",
+      "parameters": {
+        "seconds": 3
+      },
+      "hint_only": true
+    }
+  ],
+  "trajectory": "trajectories\\origin\\",
+  "related_apps": [
+    "Origin"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "pass_through"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png"
+      },
+      {
+        "type": "origin_aesthetic_score",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\cycle2.png",
+        "description": "The image is a battery cycling performance figure. Legend labels 'Bare Zn' and 'AIL@Zn' are present. Colors close to red (#CF302D) and blue-purple (#7E90E4) are used. Circle markers are used for data points."
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      null
+    ],
+    "func_conj": "and"
+  },
+  "origin_category": "cycle",
+  "difficulty": "medium"
 }

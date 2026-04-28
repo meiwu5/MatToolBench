@@ -276,7 +276,7 @@ def _extract_imax(text: str) -> Optional[int]:
 def _get_ocr_reader():
     """Get OCR reader singleton."""
     if not hasattr(_get_ocr_reader, 'reader'):
-        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=True)
+        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=False)
     return _get_ocr_reader.reader
 
 
@@ -366,7 +366,7 @@ def _identify_files_in_screenshots(env, screenshots: List[Path], cache_folder: O
 
 # ============ Core Check Functions ============
 
-def get_check_file_opened(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_file_opened_jade(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if the file has been opened."""
     expected_filename = config.get('expected_filename')
     base_folder = get_trajectory_dir(env, config)
@@ -794,7 +794,7 @@ def get_check_refinement_result(env, config: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def get_check_dialog_title(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_dialog_title_jade(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check dialog title."""
     base_folder = get_trajectory_dir(env, config)
     if base_folder is None:

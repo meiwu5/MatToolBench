@@ -14,3 +14,12 @@ sudo systemctl stop named.service
 
 # Stop nginx running on port 80
 sudo service nginx stop
+
+# Stop pyproxy running on port 8888
+sudo systemctl stop pyproxy
+
+# Stop pyproxy running on port 8888
+fuser -k 8888/tcp
+
+#clean images volumes
+# sudo docker system prune -a -f --volumes

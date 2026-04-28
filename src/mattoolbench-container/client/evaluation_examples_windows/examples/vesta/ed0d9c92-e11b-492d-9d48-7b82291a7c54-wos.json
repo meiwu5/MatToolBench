@@ -51,18 +51,18 @@
         ],
         "result": [
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "expected_filename": "mp-22862_NaCl.cif"
             },
             {
-                "type": "check_dialog_opened",
+                "type": "check_dialog_opened_vesta",
                 "title_keyword": "Bonds"
             },
             {
                 "type": "check_bonds_cleared"
             },
             {
-                "type": "check_dialog_opened",
+                "type": "check_dialog_opened_vesta",
                 "title_keyword": "Edit Data"
             },
             {
@@ -123,5 +123,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "hard"
 }

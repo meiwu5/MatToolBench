@@ -66,15 +66,15 @@
         "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_theta.pdf"
       },
       {
-        "type": "check_file_opened",
+        "type": "check_file_opened_jade",
         "expected_filename": "XRD1.xrdml"
       },
       {
-        "type": "check_dialog_title",
+        "type": "check_dialog_title_jade",
         "title": "Theta Calibration of Whole Pattern"
       },
       {
-        "type": "check_dialog_title",
+        "type": "check_dialog_title_jade",
         "title": "Theta Calibration Report"
       }
     ],
@@ -105,5 +105,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "medium"
 }

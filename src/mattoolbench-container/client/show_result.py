@@ -83,7 +83,7 @@ def get_result(target_dir):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Run end-to-end evaluation on the benchmark")
     parser.add_argument("--action_space", type=str, default="pyautogui", help="Action type")
-    parser.add_argument("--use_model", type=str, default="gpt-4o", help="Model type") #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-4o or gpt-4-1106-vision-preview
+    parser.add_argument("--use_model", type=str, default="gpt-4o", help="Model type") #gpt-5.4 or gpt-5.4 or gpt-4o or gpt-4-1106-vision-preview
     parser.add_argument("--observation_type", type=str, default="a11y_tree", help="Observation type")
     parser.add_argument("--result_dir", type=str, default="./results", help="Result directory")
     parser.add_argument("--trial_id", type=int, default=0, help="Trial ID")

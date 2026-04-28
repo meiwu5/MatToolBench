@@ -323,7 +323,7 @@ def get_check_file_in_title(env, config: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def get_check_dialog_title(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_dialog_title_ms(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if a dialog with the specified title appeared (supports forbidden keywords)."""
     expected_title = config.get('expected_title', '')
     region = config.get('region', 'whole')

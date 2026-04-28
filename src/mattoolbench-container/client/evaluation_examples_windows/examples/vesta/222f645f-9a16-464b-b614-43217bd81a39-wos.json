@@ -51,11 +51,11 @@
         ],
         "result": [
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "expected_filename": "mp-804_GaN.cif"
             },
             {
-                "type": "check_dialog_opened",
+                "type": "check_dialog_opened_vesta",
                 "title_keyword": "Boundary"
             },
             {
@@ -63,7 +63,7 @@
                 "y_max": 2
             },
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "title_keyword": "Properties"
             },
             {
@@ -114,5 +114,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "hard"
 }

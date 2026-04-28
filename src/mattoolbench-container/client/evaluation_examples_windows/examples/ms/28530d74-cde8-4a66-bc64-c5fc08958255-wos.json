@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 13,
     "evaluator": {
         "func": [
             "exact_match",
@@ -63,7 +62,7 @@
                 "region": "Top50%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Build Crystal",
                 "forbidden_keywords": [
                     "Unbuild Crystal",
@@ -110,5 +109,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

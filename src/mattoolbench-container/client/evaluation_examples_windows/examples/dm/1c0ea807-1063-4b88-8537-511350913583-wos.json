@@ -1,87 +1,88 @@
 {
-    "id": "1c0ea807-1063-4b88-8537-511350913583-wos",
-    "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm4.dm3', use Box tool to draw a box at the image center, set Foreground Color to Red.",
-    "source": "https:\\www.example.com/software/dm",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for DigitalMicrograph to fully load",
-            "parameters": {
-                "seconds": 1
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 1
-            }
-        }
-    ],
-    "trajectory": "trajectories/dm/",
-    "related_apps": [
-        "Dm"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_import",
-                "expected_filename": "dm4.dm3"
-            },
-            {
-                "type": "check_drawing_tool",
-                "tool_name": "Box"
-            },
-            {
-                "type": "check_border_color",
-                "box_color": "red",
-                "region": "whole",
-                "shape_type": "box"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "1c0ea807-1063-4b88-8537-511350913583-wos",
+  "snapshot": "dmlab",
+  "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm4.dm3', use Box tool to draw a box at the image center, set Foreground Color to Red.",
+  "source": "https:\\www.example.com/software/dm",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for DigitalMicrograph to fully load",
+      "parameters": {
+        "seconds": 1
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 1
+      }
     }
+  ],
+  "trajectory": "trajectories/dm/",
+  "related_apps": [
+    "Dm"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_import",
+        "expected_filename": "dm4.dm3"
+      },
+      {
+        "type": "check_drawing_tool",
+        "tool_name": "Box"
+      },
+      {
+        "type": "check_border_color",
+        "box_color": "red",
+        "region": "whole",
+        "shape_type": "box"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

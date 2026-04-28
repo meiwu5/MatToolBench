@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 8,
     "evaluator": {
         "func": [
             "exact_match",
@@ -58,7 +57,7 @@
                 "region": "Top40%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Display Style",
                 "forbidden_keywords": [
                     "Hide",
@@ -104,5 +103,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

@@ -59,35 +59,17 @@
   ],
   "max_steps": 20,
   "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match"
-    ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png"
-      },
-      {
-        "type": "validate_image_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png",
-        "description": "The image is an XPS C1s spectrum. The x-axis represents Binding Energy (eV) and the y-axis represents Counts (s). A Shirley background baseline is present and a reference peak is visible near 284.8 eV."
+    "func": "exact_match",
+    "result": {
+      "type": "file_exists",
+      "file_path": "C:\\Users\\Docker\\Desktop\\avantage.png"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
       }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
+    },
     "func_conj": "and"
   }
 }

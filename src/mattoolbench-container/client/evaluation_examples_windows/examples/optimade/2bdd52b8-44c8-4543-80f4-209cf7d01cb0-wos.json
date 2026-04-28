@@ -10,11 +10,10 @@
         "Python",
         "OPTIMADE"
     ],
-    "max_steps": 13,
     "evaluator": {
         "func": "exact_match",
         "result": {
-            "type": "file_exists",
+            "type": "file_exists_nonempty",
             "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\optimade\\opt_task_10.txt"
         },
         "expected": {
@@ -22,6 +21,8 @@
             "rules": {
                 "expected": true
             }
-        }
-    }
+        },
+        "score_by_attempts": true
+    },
+    "difficulty": "medium"
 }
