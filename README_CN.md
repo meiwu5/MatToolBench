@@ -1,8 +1,6 @@
 <div align="center">
 
-<img src="docs/logo.png" width="88" alt="MatToolBench Logo">
-
-<h1><span style="color:#2060a8">Mat</span><span style="color:#2e8b48">Tool</span><span style="color:#d07810">Bench</span></h1>
+<h1><img src="docs/logo.png" height="55" alt="MatToolBench Logo">&nbsp;&nbsp;<span style="color:#2060a8">Mat</span><span style="color:#2e8b48">Tool</span><span style="color:#d07810">Bench</span></h1>
 
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
@@ -21,51 +19,37 @@
 
 > **<span style="color:#d07810">⚡ 视频已加速</span>** &nbsp;·&nbsp; 若视频无法内嵌播放，可[直接下载](docs/demo.mp4)。
 
-## 🔬 智能体操作轨迹
-
-真实智能体运行的逐步截图，以 20 倍速播放，每帧对应一次智能体操作。
-
-<table>
-<tr>
-<td align="center"><b>Avantage（XPS）</b><br><img src="docs/trajectories/avantage.gif" width="420" alt="Avantage 轨迹"></td>
-<td align="center"><b>JADE（XRD）</b><br><img src="docs/trajectories/jade.gif" width="420" alt="JADE 轨迹"></td>
-</tr>
-<tr>
-<td align="center"><b>Digital Micrograph</b><br><img src="docs/trajectories/dm.gif" width="420" alt="DM 轨迹"></td>
-<td align="center"><b>Materials Studio</b><br><img src="docs/trajectories/ms.gif" width="420" alt="MS 轨迹"></td>
-</tr>
-<tr>
-<td align="center" colspan="2"><b>VESTA</b><br><img src="docs/trajectories/vesta.gif" width="420" alt="VESTA 轨迹"></td>
-</tr>
-</table>
-
----
-
 ## 📊 主要结果
 
-各模型精度汇总。**Sc.** = 任务归一化得分（0–100）；**SR** = 成功率（%，所有子标准均满足的任务比例）。<b style="color:#c96800">橙色加粗</b>：该领域最佳；<u>下划线</u>：次优；<b style="color:#c0392b"><i>红色粗斜体</i></b>：总体最佳模型。完整的逐领域结果请查看[网站榜单](https://meiwu5.github.io/MatToolBench/#leaderboard)。
+各模型精度汇总。**Sc.** = 任务归一化得分（0–100）；**SR** = 成功率（%，所有子标准均满足的任务比例）。<b style="color:#c96800">橙色加粗</b>：该领域最佳；<u>下划线</u>：次优；<b style="color:#c0392b"><i>红色粗斜体</i></b>：总体最佳模型。
 
 <table>
 <thead>
-<tr>
-<th rowspan="2"><b>类别</b></th>
-<th rowspan="2"><b>领域</b></th>
-<th colspan="2" align="center">Doubao<br>seed-1-8</th>
-<th colspan="2" align="center">Kimi<br>k2.5</th>
-<th colspan="2" align="center">Claude<br>sonnet-4.6</th>
-<th colspan="2" align="center"><b style="color:#c0392b"><i>GPT<br>5.4</i></b></th>
-<th colspan="2" align="center">Qwen3-VL<br>235B</th>
-<th colspan="2" align="center">Qwen3-VL<br>32B</th>
-<th colspan="2" align="center">Qwen3-VL<br>8B</th>
+<tr bgcolor="#1a3a6e">
+<th align="left"><span style="color:white">类别</span></th>
+<th align="left"><span style="color:white">领域</span></th>
+<th colspan="2" align="center"><span style="color:white">Doubao<br>seed-1-8</span></th>
+<th colspan="2" align="center"><span style="color:white">Kimi<br>k2.5</span></th>
+<th colspan="2" align="center"><span style="color:white">Claude<br>sonnet-4.6</span></th>
+<th colspan="2" align="center"><b><i><span style="color:#ffd060">GPT<br>5.4</span></i></b></th>
+<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>235B</span></th>
+<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>32B</span></th>
+<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>8B</span></th>
 </tr>
-<tr>
-<th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th>
-<th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th><th>Sc.</th><th>SR</th>
+<tr bgcolor="#2d5580">
+<th></th><th></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
 </tr>
 </thead>
 <tbody>
-<tr>
-<td rowspan="6"><b>GUI</b></td>
+<tr bgcolor="#f0f5ff">
+<td rowspan="6" bgcolor="#2060a8" align="center"><b><span style="color:white">GUI</span></b></td>
 <td>Avantage</td>
 <td><b style="color:#c96800">44.6</b></td><td><b style="color:#c96800">35.0</b></td>
 <td>32.3</td><td><u>20.0</u></td>
@@ -75,7 +59,7 @@
 <td>26.2</td><td>15.0</td>
 <td>18.5</td><td>15.0</td>
 </tr>
-<tr>
+<tr bgcolor="#f0f5ff">
 <td>JADE</td>
 <td><u>54.2</u></td><td><b style="color:#c96800">25.0</b></td>
 <td>50.8</td><td><b style="color:#c96800">25.0</b></td>
@@ -85,7 +69,7 @@
 <td>37.3</td><td>10.0</td>
 <td>37.3</td><td>5.0</td>
 </tr>
-<tr>
+<tr bgcolor="#f0f5ff">
 <td>DM</td>
 <td><b style="color:#c96800">56.7</b></td><td><b style="color:#c96800">20.0</b></td>
 <td><u>52.2</u></td><td><b style="color:#c96800">20.0</b></td>
@@ -95,7 +79,7 @@
 <td>6.0</td><td>0.0</td>
 <td>38.8</td><td><u>10.0</u></td>
 </tr>
-<tr>
+<tr bgcolor="#f0f5ff">
 <td>MS</td>
 <td>47.6</td><td>15.0</td>
 <td>35.4</td><td>10.0</td>
@@ -105,7 +89,7 @@
 <td>26.8</td><td>0.0</td>
 <td>20.7</td><td>0.0</td>
 </tr>
-<tr>
+<tr bgcolor="#f0f5ff">
 <td>VESTA</td>
 <td>52.2</td><td><u>20.0</u></td>
 <td><u>59.4</u></td><td><b style="color:#c96800">25.0</b></td>
@@ -115,7 +99,7 @@
 <td>29.0</td><td>10.0</td>
 <td>30.4</td><td>10.0</td>
 </tr>
-<tr>
+<tr bgcolor="#dce8ff">
 <td><i>均值</i></td>
 <td><b style="color:#c96800">52.1</b></td><td><u>24.0</u></td>
 <td>46.0</td><td>20.0</td>
@@ -125,8 +109,8 @@
 <td>25.1</td><td>7.0</td>
 <td>29.1</td><td>8.0</td>
 </tr>
-<tr>
-<td><b>Origin</b></td>
+<tr bgcolor="#f0f8f3">
+<td bgcolor="#2e8b48" align="center"><b><span style="color:white">Origin</span></b></td>
 <td>OriginPro</td>
 <td>11.7</td><td>12.5</td>
 <td>22.5</td><td>25.0</td>
@@ -136,8 +120,8 @@
 <td>5.3</td><td>6.3</td>
 <td>0.0</td><td>0.0</td>
 </tr>
-<tr>
-<td rowspan="5"><b>Code</b></td>
+<tr bgcolor="#fffbf0">
+<td rowspan="5" bgcolor="#d07810" align="center"><b><span style="color:white">Code</span></b></td>
 <td>Pymatgen</td>
 <td>30.0</td><td>30.0</td>
 <td>15.0</td><td>15.0</td>
@@ -147,7 +131,7 @@
 <td><u>29.4</u></td><td><u>29.4</u></td>
 <td>15.0</td><td>15.0</td>
 </tr>
-<tr>
+<tr bgcolor="#fffbf0">
 <td>MP</td>
 <td><b style="color:#c96800">25.0</b></td><td><b style="color:#c96800">25.0</b></td>
 <td><u>22.5</u></td><td><u>20.0</u></td>
@@ -157,7 +141,7 @@
 <td>10.0</td><td>10.0</td>
 <td>10.0</td><td>10.0</td>
 </tr>
-<tr>
+<tr bgcolor="#fffbf0">
 <td>OQMD</td>
 <td>33.2</td><td>10.0</td>
 <td>50.3</td><td>30.0</td>
@@ -167,7 +151,7 @@
 <td>11.5</td><td>0.0</td>
 <td>18.4</td><td>0.0</td>
 </tr>
-<tr>
+<tr bgcolor="#fffbf0">
 <td>OPTIMADE</td>
 <td>70.0</td><td>70.0</td>
 <td><u>80.0</u></td><td><u>80.0</u></td>
@@ -177,7 +161,7 @@
 <td>30.0</td><td>30.0</td>
 <td>10.0</td><td>10.0</td>
 </tr>
-<tr>
+<tr bgcolor="#ffe8c0">
 <td><i>均值</i></td>
 <td>39.6</td><td>33.8</td>
 <td>42.0</td><td>36.2</td>
@@ -187,8 +171,8 @@
 <td>20.2</td><td>17.4</td>
 <td>13.4</td><td>8.8</td>
 </tr>
-<tr>
-<td colspan="2"><b>总体均值</b></td>
+<tr bgcolor="#ede8f8">
+<td colspan="2" bgcolor="#3a2a6e"><b><span style="color:white">总体均值</span></b></td>
 <td>42.5</td><td>26.3</td>
 <td>42.0</td><td>27.0</td>
 <td><u>48.5</u></td><td><u>34.6</u></td>
