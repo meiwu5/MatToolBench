@@ -16,11 +16,61 @@
 
 ## 🎬 Demo
 
-<p align="center">
-  <a href="https://meiwu5.github.io/mattoolbench_demo/demo.html">
-    <img src="https://raw.githubusercontent.com/meiwu5/mattoolbench_demo/main/demo_cover.png" width="720">
-  </a>
-</p>
+<div class="video-container" onclick="playVideo()">
+  <img id="cover" src="demo_cover.png" class="cover">
+  <div class="play-button"></div>
+
+  <video id="video" controls width="800" style="display:none;">
+    <source src="https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4" type="video/mp4">
+  </video>
+</div>
+
+<style>
+.video-container {
+  position: relative;
+  width: 800px;
+  margin: auto;
+  cursor: pointer;
+}
+
+.cover {
+  width: 100%;
+  border-radius: 12px;
+}
+
+/* ▶ 播放按钮（三角形） */
+.play-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80px;
+  height: 80px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 50%;
+}
+
+.play-button::after {
+  content: '';
+  position: absolute;
+  left: 32px;
+  top: 24px;
+  border-style: solid;
+  border-width: 16px 0 16px 26px;
+  border-color: transparent transparent transparent white;
+}
+</style>
+
+<script>
+function playVideo() {
+  document.getElementById("cover").style.display = "none";
+  document.querySelector(".play-button").style.display = "none";
+
+  const video = document.getElementById("video");
+  video.style.display = "block";
+  video.play();
+}
+</script>
 
 <p align="center">
   👉 Click the image to play the demo
