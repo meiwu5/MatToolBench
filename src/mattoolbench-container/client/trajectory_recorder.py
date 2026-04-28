@@ -92,6 +92,8 @@ class TrajectoryRecorder:
 
     def record_init(self, obs: Dict[str, Any], example: Dict[str, Any], init_timestamp: str) -> None:
         """Record initial state"""
+        if obs is None:
+            obs = {}
         init_dict = self.save_dict(obs, 'reset', init_timestamp)
 
         # Save to JSONL

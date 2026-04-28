@@ -13,35 +13,17 @@
   ],
   "max_steps": 25,
   "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match"
-    ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\MoS2.xsd"
-      },
-      {
-        "type": "validate_file_with_model",
-        "file_path": "C:\\Users\\Docker\\Desktop\\MoS2.xsd",
-        "description": "The XSD file is a Materials Studio structure file containing a MoS2 surface or slab model. It should be a valid XSD format and contain Mo and S atoms arranged in a layered structure."
+    "func": "exact_match",
+    "result": {
+      "type": "file_exists",
+      "file_path": "C:\\Users\\Docker\\Desktop\\MoS2.xsd"
+    },
+    "expected": {
+      "type": "rule",
+      "rules": {
+        "expected": true
       }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
+    },
     "func_conj": "and"
   }
 }

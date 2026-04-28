@@ -18,10 +18,9 @@ ENV HF_ENDPOINT=${HF_ENDPOINT}
 
 # Optional HTTP/HTTPS proxy for pip and wget inside the build
 # Example: --build-arg HTTP_PROXY=http://host.docker.internal:7890
+# Note: ARG (not ENV) — proxy is only needed during build, not baked into runtime image
 ARG HTTP_PROXY=""
 ARG HTTPS_PROXY=""
-ENV http_proxy=${HTTP_PROXY}
-ENV https_proxy=${HTTPS_PROXY}
 
 # Install necessary packages and clean up in one layer to reduce image size
 ENV DEBIAN_FRONTEND=noninteractive
@@ -33,7 +32,8 @@ RUN apt-get update && apt-get install -y \
     python3-dev \
     build-essential \
     tesseract-ocr \
-    tinyproxy \
+    libxml2-dev \
+    libxslt1-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # OPTIONAL: Copy CUDA libraries and binaries from CUDA stage
@@ -50,6 +50,10 @@ RUN ln -s /usr/local/bin/python /usr/bin/python && \
 
 # Copy client application and requirements
 COPY src/mattoolbench-container/client/requirements.txt /client/requirements.txt
+
+# Copy full client code (evaluators, agents, etc.) into the image
+# so that local changes to evaluator logic are included in the build.
+COPY src/mattoolbench-container/client/ /client/
 
 # Install Python dependencies from requirements.txt
 # Combine all Python package installations into one RUN statement to minimize layering

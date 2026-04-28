@@ -1,27 +1,27 @@
 {
-  "id": "fdd03bc1-4e28-40a2-bc16-e922c2394232-wos",
-  "snapshot": "oqmdlab",
-  "instruction": "Query the OQMD database for elemental Fe (element_set=Fe AND ntypes=1), get the first result, extract name/delta_e/stability/spacegroup, and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_2.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-  "source": "https://oqmd.org/",
-  "_comments": "OQMD REST API task",
-  "config": [],
-  "trajectory": "trajectories\\oqmd\\",
-  "related_apps": [
-    "OQMD",
-    "Python"
-  ],
-  "max_steps": 8,
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_2.txt",
-      "dest": "oqmd_task_2.txt"
+    "id": "fdd03bc1-4e28-40a2-bc16-e922c2394232-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for elemental Fe (element_set=Fe AND ntypes=1), get the first result, extract name/delta_e/stability/spacegroup, and save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_2.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_2.txt",
+            "dest": "oqmd_task_2.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_2.txt",
+            "dest": "oqmd_task_2_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_2.txt",
-      "dest": "oqmd_task_2_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

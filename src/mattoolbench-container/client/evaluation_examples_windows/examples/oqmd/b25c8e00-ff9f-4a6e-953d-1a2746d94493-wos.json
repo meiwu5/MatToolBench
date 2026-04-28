@@ -1,27 +1,27 @@
 {
-  "id": "b25c8e00-ff9f-4a6e-953d-1a2746d94493-wos",
-  "snapshot": "oqmdlab",
-  "instruction": "Query the OQMD database for all stable Cu-Au binary compounds (element_set=Cu,Au AND ntypes=2), sorted by delta_e, save each entry's name/composition/delta_e to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_17.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-  "source": "https://oqmd.org/",
-  "_comments": "OQMD REST API task",
-  "config": [],
-  "trajectory": "trajectories\\oqmd\\",
-  "related_apps": [
-    "OQMD",
-    "Python"
-  ],
-  "max_steps": 18,
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_17.txt",
-      "dest": "oqmd_task_17.txt"
+    "id": "b25c8e00-ff9f-4a6e-953d-1a2746d94493-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for Cu-Au binary compounds (element_set=Cu,Au AND ntypes=2) using limit=10. Sort the returned results by delta_e ascending in Python. Save the total count (data_available from API metadata) and all returned entries' entry_id/name/composition/delta_e to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_17.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_17.txt",
+            "dest": "oqmd_task_17.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_17.txt",
+            "dest": "oqmd_task_17_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_17.txt",
-      "dest": "oqmd_task_17_right.txt"
-    }
-  }
+    "difficulty": "medium"
 }

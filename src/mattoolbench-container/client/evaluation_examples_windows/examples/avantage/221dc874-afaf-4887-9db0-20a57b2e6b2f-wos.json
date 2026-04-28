@@ -1,7 +1,7 @@
 {
     "id": "221dc874-afaf-4887-9db0-20a57b2e6b2f-wos",
     "snapshot": "avantagelab",
-    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Survey Scan.VGD', intelligently add peak background in C1s and fit the C\u2013C peak, then apply charge compensation shift of +360 eV to all spectra in the active documents, and save the full corrected set to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp'.",
+    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\C1s Scan.VGD', 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD' and 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\Survey Scan.VGD', intelligently add peak background in C1s and fit the C–C peak, then apply charge compensation shift of +360 eV to all spectra in the active documents, and save the full corrected set to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\ZnO_Full_Calibrated.vgp'.",
     "source": "https:\\www.example.com/software/avantage",
     "config": [
         {
@@ -84,7 +84,7 @@
         "result": [
             {
                 "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\ZnO_Full_Calibrated.vgp"
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\ZnO_Full_Calibrated.vgp"
             },
             {
                 "type": "check_multiple_files_imported",
@@ -160,5 +160,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "hard"
 }

@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 13,
     "evaluator": {
         "func": [
             "exact_match",
@@ -62,7 +61,7 @@
                 "region": "Top50%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Build Surface",
                 "forbidden_keywords": [
                     "Cleave Surface"
@@ -96,5 +95,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

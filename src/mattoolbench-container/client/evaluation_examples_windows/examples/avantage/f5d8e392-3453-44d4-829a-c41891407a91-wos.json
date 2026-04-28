@@ -1,152 +1,153 @@
 {
-  "id": "f5d8e392-3453-44d4-829a-c41891407a91-wos",
-  "snapshot": "avantagelab",
-  "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', add a Peak (range start 545 eV, end 540 eV), lock it, perform fitting, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Baseline_Fit.vgp'.",
-  "source": "https:\\www.example.com/software/avantage",
-  "config": [
-    {
-      "type": "launch",
-      "parameters": {
-        "command": [
-          "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
-        ]
-      }
-    },
-    {
-      "type": "sleep",
-      "note": "Wait for Avantage to load",
-      "parameters": {
-        "seconds": 8
-      }
-    },
-    {
-      "type": "execute",
-      "parameters": {
-        "command": [
-          "python",
-          "-c",
-          "import pyautogui; pyautogui.press('right')"
-        ]
-      }
-    },
-    {
-      "type": "sleep",
-      "parameters": {
-        "seconds": 2
-      }
-    },
-    {
-      "type": "execute",
-      "parameters": {
-        "command": [
-          "python",
-          "-c",
-          "import pyautogui; pyautogui.press('enter')"
-        ]
-      }
-    },
-    {
-      "type": "sleep",
-      "parameters": {
-        "seconds": 2
-      }
-    },
-    {
-      "type": "execute",
-      "parameters": {
-        "command": [
-          "python",
-          "-c",
-          "import pyautogui; pyautogui.hotkey('ctrl','o')"
-        ]
-      }
-    },
-    {
-      "type": "sleep",
-      "parameters": {
-        "seconds": 2
-      }
-    }
-  ],
-  "trajectory": "trajectories/avantage/",
-  "related_apps": [
-    "Avantage"
-  ],
-  "evaluator": {
-    "func": [
-      "exact_match",
-      "exact_match",
-      "exact_match",
-      "exact_match",
-      "exact_match"
+    "id": "f5d8e392-3453-44d4-829a-c41891407a91-wos",
+    "snapshot": "avantagelab",
+    "instruction": "Open ADVANTAGE software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\Avantage\\O1s Scan.VGD', add a Peak (range start 545 eV, end 540 eV), lock it, perform fitting, then save the active document to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\O1s_Baseline_Fit.vgp'.",
+    "source": "https:\\www.example.com/software/avantage",
+    "config": [
+        {
+            "type": "launch",
+            "parameters": {
+                "command": [
+                    "C:\\Program Files\\Thermo Scientific\\Avantage\\bin\\Avantage.exe"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "note": "Wait for Avantage to load",
+            "parameters": {
+                "seconds": 8
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('right')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.press('enter')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        },
+        {
+            "type": "execute",
+            "parameters": {
+                "command": [
+                    "python",
+                    "-c",
+                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
+                ]
+            }
+        },
+        {
+            "type": "sleep",
+            "parameters": {
+                "seconds": 2
+            }
+        }
     ],
-    "result": [
-      {
-        "type": "file_exists",
-        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avanatage\\O1s_Baseline_Fit.vgp"
-      },
-      {
-        "type": "check_multiple_files_imported",
-        "expected_files": [
-          "O1s Scan"
-        ]
-      },
-      {
-        "type": "check_dialog_exists",
-        "dialog_title": "Peak Add",
-        "region": "40% on the left"
-      },
-      {
-        "type": "check_dialog_parameter",
-        "dialog_title": "Peak Add",
-        "parameter_name": [
-          "Start (eV)",
-          "End (eV)"
+    "trajectory": "trajectories/avantage/",
+    "related_apps": [
+        "Avantage"
+    ],
+    "evaluator": {
+        "func": [
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match",
+            "exact_match"
         ],
-        "expected_value": [
-          "545",
-          "540"
+        "result": [
+            {
+                "type": "file_exists",
+                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\avantage\\O1s_Baseline_Fit.vgp"
+            },
+            {
+                "type": "check_multiple_files_imported",
+                "expected_files": [
+                    "O1s Scan"
+                ]
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Peak Add",
+                "region": "40% on the left"
+            },
+            {
+                "type": "check_dialog_parameter",
+                "dialog_title": "Peak Add",
+                "parameter_name": [
+                    "Start (eV)",
+                    "End (eV)"
+                ],
+                "expected_value": [
+                    "545",
+                    "540"
+                ],
+                "region": "40% on the left"
+            },
+            {
+                "type": "check_dialog_exists",
+                "dialog_title": "Peak Fitting",
+                "region": "20% on the left"
+            }
         ],
-        "region": "40% on the left"
-      },
-      {
-        "type": "check_dialog_exists",
-        "dialog_title": "Peak Fitting",
-        "region": "20% on the left"
-      }
-    ],
-    "expected": [
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      },
-      {
-        "type": "rule",
-        "rules": {
-          "expected": true
-        }
-      }
-    ],
-    "func_conj": "and"
-  }
+        "expected": [
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
+            }
+        ],
+        "func_conj": "and"
+    },
+    "difficulty": "hard"
 }

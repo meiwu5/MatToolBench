@@ -1,26 +1,27 @@
 {
-  "id": "6a7b8c9d-0e1f-4a2b-4c5d-6e7f8091a2b3-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Use pymatgen to parse C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\vasprun.xml, extract the final energy (e_0_energy from the last ionic step), and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task16.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task16.txt",
-      "dest": "task16.txt"
+    "id": "6a7b8c9d-0e1f-4a2b-4c5d-6e7f8091a2b3-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Use pymatgen to parse C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\vasprun.xml, extract the final energy from the last ionic step (use e_0_energy if available, otherwise fall back to e_fr_energy), and save the raw float value to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task16.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task16.txt",
+            "dest": "task16.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task16.txt",
+            "dest": "task16_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task16.txt",
-      "dest": "task16_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

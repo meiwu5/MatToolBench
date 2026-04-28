@@ -1,4 +1,5 @@
 numpy>=1.26.0
+aiohttp>=3.9.0
 Pillow>=10.3.0
 fabric
 gymnasium>=0.29.0

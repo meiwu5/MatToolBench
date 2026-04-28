@@ -1,43 +1,27 @@
 {
-  "id": "2b3c4d5e-6f70-4891-a234-bcdefabcdef0-wos",
-  "snapshot": "materials_project_api_env",
-  "instruction": "Use mp_api to query mp-1201 and record its band gap, magnetic ordering, and is_magnetic, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_16.txt.",
-  "source": "https:\\materialsproject.org/",
-  "_comments": "comments_placeholder",
-  "config": [
-    {
-      "type": "command",
-      "parameters": {
-        "command": [
-          "C:\\Users\\Docker\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
-          "-m",
-          "pip",
-          "install",
-          "--quiet",
-          "--disable-pip-version-check",
-          "mp-api==0.39.5",
-          "emmet-core==0.78.7"
-        ],
-        "shell": false
-      }
-    }
-  ],
-  "trajectory": "trajectories\\materialproject\\",
-  "related_apps": [
-    "MaterialProject",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_16.txt",
-      "dest": "mp_task_16.txt"
+    "id": "2b3c4d5e-6f70-4891-a234-bcdefabcdef0-wos",
+    "snapshot": "materials_project_api_env",
+    "instruction": "Use mp_api to query mp-1201 and record its band gap, magnetic ordering, and is_magnetic, and save them to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_16.txt.",
+    "source": "https:\\materialsproject.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\materialproject\\",
+    "related_apps": [
+        "MaterialProject",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_16.txt",
+            "dest": "mp_task_16.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_16.txt",
+            "dest": "mp_task_16_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_16.txt",
-      "dest": "mp_task_16_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

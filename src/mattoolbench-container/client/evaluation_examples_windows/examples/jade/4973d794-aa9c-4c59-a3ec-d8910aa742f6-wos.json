@@ -66,14 +66,14 @@
         "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\jade\\WRT_PDF1.txt"
       },
       {
-        "type": "check_file_opened",
+        "type": "check_file_opened_jade",
         "expected_filename": "WRT-ZSX-5.txt"
       },
       {
         "type": "check_background_removal"
       },
       {
-        "type": "check_dialog_title",
+        "type": "check_dialog_title_jade",
         "title": "Search/Match Display"
       }
     ],
@@ -104,5 +104,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "medium"
 }

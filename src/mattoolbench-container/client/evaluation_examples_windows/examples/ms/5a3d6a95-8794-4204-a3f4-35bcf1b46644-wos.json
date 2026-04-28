@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 18,
     "evaluator": {
         "func": [
             "exact_match",
@@ -58,7 +57,7 @@
                 "region": "Top50%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Charges",
                 "forbidden_keywords": [
                     "Crystal",
@@ -97,5 +96,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

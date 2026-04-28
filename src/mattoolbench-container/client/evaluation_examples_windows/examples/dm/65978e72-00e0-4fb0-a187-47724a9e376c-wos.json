@@ -1,106 +1,107 @@
 {
-    "id": "65978e72-00e0-4fb0-a187-47724a9e376c-wos",
-    "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm1.dm3', use Box inside lattice to draw a frame not exceeding lattice, use RectangleROI inside Box, copy Rectangle region and place it bottom-right, save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\Publication_1.dm3'.",
-    "source": "https:\\www.example.com/software/dm",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for DigitalMicrograph to fully load",
-            "parameters": {
-                "seconds": 1
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 1
-            }
-        }
-    ],
-    "trajectory": "trajectories/dm/",
-    "related_apps": [
-        "Dm"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "file_exists",
-                "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\Publication_1.dm3"
-            },
-            {
-                "type": "check_file_import",
-                "expected_filename": "dm1.dm3"
-            },
-            {
-                "type": "check_drawing_tool",
-                "tool_name": "Box"
-            },
-            {
-                "type": "check_drawing_tool",
-                "tool_name": "RectangleROI"
-            },
-            {
-                "type": "check_roi_copy_and_enlarge"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "65978e72-00e0-4fb0-a187-47724a9e376c-wos",
+  "snapshot": "dmlab",
+  "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm1.dm3', use Box inside lattice to draw a frame not exceeding lattice, use RectangleROI inside Box, copy Rectangle region and place it bottom-right, save to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\Publication_1.dm3'.",
+  "source": "https:\\www.example.com/software/dm",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for DigitalMicrograph to fully load",
+      "parameters": {
+        "seconds": 1
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 1
+      }
     }
+  ],
+  "trajectory": "trajectories/dm/",
+  "related_apps": [
+    "Dm"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "file_exists",
+        "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\dm\\Publication_1.dm3"
+      },
+      {
+        "type": "check_file_import",
+        "expected_filename": "dm1.dm3"
+      },
+      {
+        "type": "check_drawing_tool",
+        "tool_name": "Box"
+      },
+      {
+        "type": "check_drawing_tool",
+        "tool_name": "RectangleROI"
+      },
+      {
+        "type": "check_roi_copy_and_enlarge"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "medium"
 }

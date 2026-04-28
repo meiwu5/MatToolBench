@@ -75,7 +75,7 @@ def _extract_step_number(filename: str) -> int:
 def _get_ocr_reader():
     """Get OCR reader singleton."""
     if not hasattr(_get_ocr_reader, 'reader'):
-        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=True)
+        _get_ocr_reader.reader = easyocr.Reader(['en'], gpu=False)
     return _get_ocr_reader.reader
 
 
@@ -92,17 +92,17 @@ def _crop_central_region(img_path: Path, save_path: Path, crop_cache_folder: Pat
     """Crop the center region of the image (removing Top10%, bottom20%, left 35%)."""
     img = Image.open(img_path)
     width, height = img.size
-    
+
     left = int(width * 0.35)
     right = width
     top = int(height * 0.1)
     bottom = int(height * 0.8)
-    
+
     cropped = img.crop((left, top, right, bottom))
-    
+
     if save_path is None:
         save_path = crop_cache_folder / f"cropped_{img_path.stem}.png"
-    
+
     cropped.save(save_path)
     return save_path
 
@@ -111,11 +111,11 @@ def _prepare_reference_image(ref_path: Path, output_name: str, crop_cache_folder
     """Prepare a cropped version of the reference image."""
     if not ref_path or not ref_path.exists():
         return None
-    
+
     ref_cropped_path = crop_cache_folder / output_name
     if not ref_cropped_path.exists():
         _crop_central_region(ref_path, ref_cropped_path, crop_cache_folder)
-    
+
     return ref_cropped_path
 
 
@@ -201,53 +201,50 @@ def _calculate_visual_similarity(screenshot_path: Path, reference_cropped: Path,
     """Calculate visual similarity between screenshot and reference image."""
     if reference_cropped is None:
         return 0.0, None
-    
+
     screenshot_cropped_path = crop_cache_folder / f"cropped_{screenshot_path.stem}.png"
-    
+
     if not screenshot_cropped_path.exists():
         screenshot_cropped_path = _crop_central_region(screenshot_path, screenshot_cropped_path, crop_cache_folder)
-    
+
     try:
         from skimage.metrics import structural_similarity as ssim
         from skimage import io, transform
-        
+
         img1 = io.imread(reference_cropped)
         img2 = io.imread(screenshot_cropped_path)
-        
+
         if img1.shape != img2.shape:
             img2 = transform.resize(img2, img1.shape, anti_aliasing=True, preserve_range=True)
             img2 = img2.astype(img1.dtype)
-        
+
         if len(img1.shape) == 3:
             img1_gray = np.mean(img1, axis=2).astype(np.uint8)
         else:
             img1_gray = img1
-            
+
         if len(img2.shape) == 3:
             img2_gray = np.mean(img2, axis=2).astype(np.uint8)
         else:
             img2_gray = img2
-        
+
         similarity = ssim(img1_gray, img2_gray, data_range=255)
         return max(0.0, min(1.0, similarity)), screenshot_cropped_path
-        
+
     except ImportError:
-        # Fallback
+        # Fallback: MSE-based similarity
         try:
             img1 = Image.open(reference_cropped).convert('L')
             img2 = Image.open(screenshot_cropped_path).convert('L')
-            
+
             if img1.size != img2.size:
                 img2 = img2.resize(img1.size, Image.Resampling.LANCZOS)
-            
+
             arr1 = np.array(img1, dtype=np.float32)
             arr2 = np.array(img2, dtype=np.float32)
-            
+
             mse = np.mean((arr1 - arr2) ** 2)
-            max_mse = 255 ** 2
-            similarity = 1 - (mse / max_mse)
-            
-            return max(0.0, min(1.0, similarity)), screenshot_cropped_path
+            return max(0.0, min(1.0, 1 - (mse / (255 ** 2)))), screenshot_cropped_path
         except Exception:
             return 0.0, screenshot_cropped_path
     except Exception:
@@ -281,12 +278,15 @@ def _extract_filename_from_text(text: str) -> Optional[str]:
 
 # ============ Core Check Functions ============
 
-def get_check_file_opened(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_file_opened_vesta(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if the file has been opened."""
-    expected_filename = config.get('expected_filename')
+    expected_filename = config.get('expected_filename') or ''
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return {'function': 'check_file_opened', 'expected_file': expected_filename,
+                'score': 0, 'max_score': 1, 'details': {'error': 'trajectory dir not found'}}
     base_folder = Path(base_folder).resolve()
-    
+
     result = {
         'function': 'check_file_opened',
         'expected_file': expected_filename,
@@ -294,22 +294,22 @@ def get_check_file_opened(env, config: Dict[str, Any]) -> Dict[str, Any]:
         'max_score': 1,
         'details': {'found_at_step': None, 'status': 'not_found'}
     }
-    
+
     screenshots = _load_screenshots(base_folder)
-    
+
     if len(screenshots) < 1:
         result['details']['error'] = "Insufficient number of screenshots"
         return result
-    
+
     cache_folder = base_folder.parent / "evaluate" / "ocr_results" / base_folder.name
-    
+
     # Identify files in all screenshots
     screenshot_files = []
     for screenshot in screenshots:
         title_text = _ocr_region(env, screenshot, "Top5%", cache_folder)
         current_file = _extract_filename_from_text(title_text)
         screenshot_files.append(current_file)
-    
+
     expected_base = expected_filename.replace('.cif', '').replace('.vesta', '')
     
     found_index = -1
@@ -335,6 +335,8 @@ def get_check_standard_orientation(env, config: Dict[str, Any]) -> Dict[str, Any
     """Check if rotated to standard crystallographic orientation (text detection + visual similarity)."""
     similarity_threshold = config.get('similarity_threshold', 0.9)
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     reference_image_path = None  # use vesta_images/ fallback below
 
@@ -412,6 +414,8 @@ def get_check_rotation_90_up(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check upward rotation by 90 degrees."""
     similarity_threshold = config.get('similarity_threshold', 0.9)
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     rotation_90_reference = None  # use vesta_images/ fallback below
     
@@ -481,6 +485,8 @@ def get_check_translation(env, config: Dict[str, Any]) -> Dict[str, Any]:
     units = config.get('units', 400)
     similarity_threshold = config.get('similarity_threshold', 0.9)
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     translation_reference = None  # use vesta_images/ fallback below
     
@@ -553,6 +559,8 @@ def get_check_style_change(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check style modification (simplified: OCR detection only)."""
     target_style = config.get('target_style')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -588,6 +596,8 @@ def get_check_atom_info_dialog(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check atom information dialog."""
     atom_type = config.get('atom_type')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -626,6 +636,8 @@ def get_check_atom_info_dialog(env, config: Dict[str, Any]) -> Dict[str, Any]:
 def get_check_atom_deletion(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check atom deletion operation."""
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -667,6 +679,8 @@ def get_check_bond_display(env, config: Dict[str, Any]) -> Dict[str, Any]:
     atom_b = config.get('atom_b')
     possible_pairs = config.get('possible_pairs')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     def normalize_label(label: str) -> str:
@@ -742,6 +756,8 @@ def get_check_zoom(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check model zoom state (Zoom In 100%)."""
     similarity_threshold = config.get('similarity_threshold', 0.9)
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     zoom_100_reference = None  # use vesta_images/ fallback below
     
@@ -814,6 +830,8 @@ def get_check_zoom(env, config: Dict[str, Any]) -> Dict[str, Any]:
 def get_check_axes_toggle(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if axis display state has been toggled (simplified: text change detection only)."""
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -854,11 +872,13 @@ def get_check_axes_toggle(env, config: Dict[str, Any]) -> Dict[str, Any]:
     return result
 
 
-def get_check_dialog_opened(env, config: Dict[str, Any]) -> Dict[str, Any]:
+def get_check_dialog_opened_vesta(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Detect dialog title and field values (pure OCR version)."""
     title_keyword = config.get('title_keyword', 'Properties')
     field_checks = config.get('field_checks')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -978,6 +998,8 @@ def get_check_polyhedral_style(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if Polyhedral style is set to the specified style number (simplified: OCR detection)."""
     style_number = config.get('style_number')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1010,6 +1032,8 @@ def get_check_orientation_vector(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check Upward vector in Orientation dialog (simplified)."""
     expected_values = config.get('expected_values')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1044,6 +1068,8 @@ def get_check_lattice_plane(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if a plane with the specified hkl has been added in Lattice Planes dialog."""
     expected_hkl = config.get('expected_hkl')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1077,6 +1103,8 @@ def get_check_lattice_plane(env, config: Dict[str, Any]) -> Dict[str, Any]:
 def get_check_boundary_settings(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check Boundary settings (fractional coordinate ranges)."""
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1104,7 +1132,7 @@ def get_check_boundary_settings(env, config: Dict[str, Any]) -> Dict[str, Any]:
             # Simplified: check if expected value is included
             all_matched = True
             for key, expected_value in config.items():
-                if key == 'base_folder':
+                if key in ('base_folder', 'type'):
                     continue
                 
                 # Check if value is included
@@ -1124,6 +1152,8 @@ def get_check_boundary_settings(env, config: Dict[str, Any]) -> Dict[str, Any]:
 def get_check_bonds_cleared(env, config: Dict[str, Any]) -> Dict[str, Any]:
     """Check if the Bonds table has been cleared."""
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1184,6 +1214,8 @@ def get_check_atom_coordinates_in_edit_data(env, config: Dict[str, Any]) -> Dict
     atom_label = config.get('atom_label')
     expected_coords = config.get('expected_coords')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1255,6 +1287,8 @@ def get_check_multiple_lattice_planes(env, config: Dict[str, Any]) -> Dict[str, 
     """Check the number of lattice planes added in the Lattice Planes dialog."""
     expected_count = config.get('expected_count')
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {
@@ -1320,6 +1354,8 @@ def get_check_properties_field(env, config: Dict[str, Any]) -> Dict[str, Any]:
     tolerance = config.get('tolerance', 0.05)
     
     base_folder = get_trajectory_dir(env, config)
+    if base_folder is None:
+        return None
     base_folder = Path(base_folder).resolve()
     
     result = {

@@ -22,7 +22,7 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="auto"
-model="doubao-seed-1-6-thinking-250715-mini"
+model="gpt-5.4-mini"
 som_origin="a11y"
 a11y_backend="uia"
 gpu_enabled=false
@@ -129,6 +129,10 @@ while [[ $# -gt 0 ]]; do
             AZURE_ENDPOINT="$2"
             shift 2
             ;;
+        --mp-api-key)
+            MP_API_KEY="$2"
+            shift 2
+            ;;
         --origin-eval-model)
             ORIGIN_EVAL_MODEL="$2"
             shift 2
@@ -163,7 +167,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <auto|gui|code|origin|navi> : Agent to use (default: auto — routes by domain)"
-            echo "  --model <model>: The model to use (default: doubao-seed-1-6-thinking-250715-mini, available options are: doubao-seed-1-6-thinking-250715, doubao-seed-1-6-thinking-250715-mini, gpt-5, gpt-4-1106-vision-preview)"
+            echo "  --model <model>: The model to use (default: gpt-5.4-mini, available options are: gpt-5.4, gpt-5.4-mini, gpt-5, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
@@ -322,10 +326,17 @@ invoke_docker_container() {
         fi
     fi
 
+    # Materials Project API key — required for mp_api tasks
+    [ -n "$MP_API_KEY" ] && docker_command+=" -e MP_API_KEY=$MP_API_KEY"
+
     # Origin eval model — dedicated vision LLM for scoring Origin task outputs
     [ -n "$ORIGIN_EVAL_MODEL"   ] && docker_command+=" -e ORIGIN_EVAL_MODEL=$ORIGIN_EVAL_MODEL"
     [ -n "$ORIGIN_EVAL_API_KEY" ] && docker_command+=" -e ORIGIN_EVAL_API_KEY=$ORIGIN_EVAL_API_KEY"
     [ -n "$ORIGIN_EVAL_BASE_URL"] && docker_command+=" -e ORIGIN_EVAL_BASE_URL=$ORIGIN_EVAL_BASE_URL"
+
+    # Ensure internal VM addresses bypass any baked-in http_proxy env var
+    docker_command+=" -e no_proxy=20.20.20.21,20.20.20.1,localhost,127.0.0.1"
+    docker_command+=" -e NO_PROXY=20.20.20.21,20.20.20.1,localhost,127.0.0.1"
 
     # Add the image name with tag
     docker_command+=" $mattoolbench_full_image_name:$mattoolbench_image_tag"

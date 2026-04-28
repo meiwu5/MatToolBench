@@ -1,26 +1,27 @@
 {
-  "id": "d3e4f5a6-b7c8-4d9e-0f1a-2b3c4d5e6f70-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Create a CsCl structure and execute make_supercell([2,2,1]), record the number of supercell sites (should be 8), and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt",
-      "dest": "task7.txt"
+    "id": "d3e4f5a6-b7c8-4d9e-0f1a-2b3c4d5e6f70-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Create a CsCl structure (lattice a=4.2, Cs at [0,0,0], Cl at [0.5,0.5,0.5]) and create a [2,2,1] supercell using `structure * [2, 2, 1]`, record the number of supercell sites (num_sites, should be 8) as a plain integer, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task7.txt",
+            "dest": "task7.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task7.txt",
+            "dest": "task7_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task7.txt",
-      "dest": "task7_right.txt"
-    }
-  }
+    "difficulty": "medium"
 }

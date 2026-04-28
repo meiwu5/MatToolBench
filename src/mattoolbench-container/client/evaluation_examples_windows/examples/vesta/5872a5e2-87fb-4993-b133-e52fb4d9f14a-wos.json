@@ -1,85 +1,86 @@
 {
-    "id": "5872a5e2-87fb-4993-b133-e52fb4d9f14a-wos",
-    "snapshot": "vestalab",
-    "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-66_C.cif', check the current coordinate axes (a, b, c) display status: if shown, hide them; if hidden, show them.",
-    "source": "https:\\www.example.com/software/vesta",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for VESTA to fully load",
-            "parameters": {
-                "seconds": 20
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 3
-            }
-        }
-    ],
-    "trajectory": "trajectories/vesta/",
-    "related_apps": [
-        "Vesta"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_opened",
-                "expected_filename": "mp-66_C.cif"
-            },
-            {
-                "type": "check_dialog_opened",
-                "title_keyword": "Properties",
-                "filename": "mp-66_C.cif"
-            },
-            {
-                "type": "check_axes_toggle"
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "5872a5e2-87fb-4993-b133-e52fb4d9f14a-wos",
+  "snapshot": "vestalab",
+  "instruction": "Import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VESTA\\mp-66_C.cif', check the current coordinate axes (a, b, c) display status: if shown, hide them; if hidden, show them.",
+  "source": "https:\\www.example.com/software/vesta",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Users\\Docker\\Desktop\\Setup\\VESTA-win64\\VESTA-win64\\VESTA.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for VESTA to fully load",
+      "parameters": {
+        "seconds": 20
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 3
+      }
     }
+  ],
+  "trajectory": "trajectories/vesta/",
+  "related_apps": [
+    "Vesta"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_opened_vesta",
+        "expected_filename": "mp-66_C.cif"
+      },
+      {
+        "type": "check_dialog_opened_vesta",
+        "title_keyword": "Properties",
+        "filename": "mp-66_C.cif"
+      },
+      {
+        "type": "check_axes_toggle"
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 18,
     "evaluator": {
         "func": [
             "exact_match",
@@ -59,7 +58,7 @@
                 "region": "Top50%"
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Add Atoms",
                 "forbidden_keywords": [
                     "Crystal",
@@ -67,7 +66,7 @@
                 ]
             },
             {
-                "type": "check_dialog_title",
+                "type": "check_dialog_title_ms",
                 "expected_title": "Display Style",
                 "forbidden_keywords": [
                     "Hide",
@@ -113,5 +112,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

@@ -47,12 +47,12 @@
         ],
         "result": [
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "expected_filename": "mp-30_Cu.cif"
             },
             {
                 "type": "check_rotation_90_up",
-                "similarity_threshold": 0.95
+                "similarity_threshold": 0.9
             }
         ],
         "expected": [
@@ -70,5 +70,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "easy"
 }

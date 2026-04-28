@@ -1,7 +1,7 @@
 {
   "id": "8c9d0e1f-2a3b-4c4d-6e7f-8091a2b3c4d5-wos",
   "snapshot": "pymatgen_python_env",
-  "instruction": "Use pymatgen to read C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\POSCAR, treat the number of sites as the magmoms list length, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task18.txt.",
+  "instruction": "Use pymatgen to read C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\POSCAR, extract the number of sites (num_sites) from the structure, and save it as a plain integer string to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task18.txt.",
   "source": "https:\\pymatgen.org/",
   "_comments": "comments_placeholder",
   "config": [],
@@ -22,5 +22,6 @@
       "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task18.txt",
       "dest": "task18_right.txt"
     }
-  }
+  },
+  "difficulty": "medium"
 }

@@ -5,13 +5,48 @@ import numpy as np
 from scipy.signal import find_peaks
 from typing import Sequence, Optional, List
 
-colors = ['#EF0000', '#FEC211', '#3BC371']
+# ====================== Color Palette Options ======================
+# Change ACTIVE_PALETTE to switch between schemes.
+# Each palette is a list of colors for [spectrum-1, spectrum-2, spectrum-3, ...].
+# Add more entries to extend beyond 3 spectra.
+
+COLOR_PALETTES = {
+    # ── Publication / journal styles ───────────────────────────────
+    "tab10":        ['#D62728', '#1F77B4', '#2CA02C'],   # matplotlib default, red/blue/green
+    "nature":       ['#E64B35', '#4DBBD5', '#00A087'],   # Nature journal palette
+    "science":      ['#3B4992', '#EE0011', '#008B45'],   # Science journal palette
+    "cell":         ['#DF8244', '#5B9BD5', '#70AD47'],   # Cell/iScience palette
+
+    # ── Colorblind-safe ────────────────────────────────────────────
+    "tol_bright":   ['#EE6677', '#4477AA', '#228833'],   # Paul Tol bright (8-color safe)
+    "tol_muted":    ['#CC6677', '#4477AA', '#117733'],   # Paul Tol muted
+    "okabe_ito":    ['#E69F00', '#56B4E9', '#009E73'],   # Okabe-Ito (most widely cited)
+
+    # ── Warm tones ─────────────────────────────────────────────────
+    "warm":         ['#C0392B', '#E67E22', '#D4AC0D'],   # deep red / orange / gold
+    "sunset":       ['#D62728', '#FF7F0E', '#E377C2'],   # red / orange / pink
+
+    # ── Cool tones ─────────────────────────────────────────────────
+    "cool":         ['#2980B9', '#8E44AD', '#17A589'],   # steel blue / violet / teal
+    "ocean":        ['#1A5276', '#2471A3', '#5DADE2'],   # dark→light blue gradient
+
+    # ── Neutral / minimal ──────────────────────────────────────────
+    "earth":        ['#6E2C00', '#B7770D', '#1E8449'],   # dark red-brown / amber / forest
+    "pastel":       ['#E88080', '#80AAE8', '#80D4A8'],   # soft pastel trio
+    "slate":        ['#2C3E50', '#7F8C8D', '#BDC3C7'],   # dark slate gradient
+
+    # ── Grayscale (for B&W printing) ───────────────────────────────
+    "grayscale":    ['#222222', '#777777', '#BBBBBB'],   # black / mid-gray / light-gray
+}
+
+ACTIVE_PALETTE = "tab10"   # ← change this line to switch palette
+colors = COLOR_PALETTES[ACTIVE_PALETTE]
 
 # User input
-lamda = ['ex: 532 nm']
+lamda = 'ex: 532 nm'
 label=[]
 is_2D_mark = False
-is_Roman_ratio = True
+is_Raman_ratio = True
 is_Ratio__mark=True
 is_Peak_annotate= True
 is_Peak_label=True
@@ -232,7 +267,10 @@ def plot_offset_stacked(
     save_path: Optional[str] = None,
     is_Raman_ratio: bool = True,
     is_Ratio__mark=True,
-    is_Peak_annotate=True
+    is_Peak_annotate=True,
+    is_2D_mark: bool = True,
+    peak_label_style: str = "horizontal",
+    is_Peak_label: bool = True,
 ):
     """
     Parameters:
@@ -289,7 +327,7 @@ def plot_offset_stacked(
 
     # Excitation wavelength
     if lamda:
-        ax.text(0.98, 0.94, lamda[0], transform=ax.transAxes, fontsize=20, fontweight='bold',
+        ax.text(0.98, 0.94, lamda, transform=ax.transAxes, fontsize=20, fontweight='bold',
                 ha='right', va='top', color='black')
 
     # Sample labels (key fix: hide if label is empty or None)
@@ -347,6 +385,7 @@ def plot_offset_stacked(
                             transform=ax.transAxes,
                             fontsize=16, fontweight='bold', color=color_for(i),
                             ha='left', va='top')
+                    current_x += col_spacing
 
         except Exception as e:
             print(f"Failed to annotate ID/IG: {e}")
@@ -365,10 +404,10 @@ def plot_offset_stacked(
 
     # Whether to use arrows to indicate G-peak shift
     if is_Peak_annotate==True:
-        ax.annotate('', xy=(1580, 0.9), xytext=(1594, 0.9),
+        ax.annotate('', xy=(0.54, 0.88), xytext=(0.60, 0.88),
                 arrowprops=dict(arrowstyle='fancy', color='black', linewidth=2,
                 mutation_scale=30),
-                xycoords='data', textcoords='data')
+                xycoords='axes fraction', textcoords='axes fraction')
     # Whether to write peak positions
     if is_Peak_label:
         nominal_positions = [1350, 1580, 2700]
@@ -435,15 +474,12 @@ def plot_offset_stacked(
 
     plt.tight_layout()
     if save_path:
-        if save_path:
-            plt.savefig(save_path,
-                        dpi=300,
-                        bbox_inches='tight',
-                        pad_inches=0.4,
-                        transparent=True,
-                        facecolor='white')
-            print(f"Publication-quality Raman plot saved: {save_path}")
-        print(f"Plot saved: {save_path}")
+        plt.savefig(save_path,
+                    dpi=300,
+                    bbox_inches='tight',
+                    pad_inches=0.4,
+                    facecolor='white')
+        print(f"Publication-quality Raman plot saved: {save_path}")
     plt.show()
 
 # ==================== Main flow ====================
@@ -455,5 +491,8 @@ xmin, xmax = soft_scale(p_list, x, is_2D_mark=is_2D_mark)
 xmin, xmax, step = raman_ticks(xmin, xmax)
 print(f"100% data-driven display range: {xmin:.0f} → {xmax:.0f} cm⁻¹ (step {step})")
 [x_masked, y_shifted, y_masked, shifts, maxima, minima] = auto_offset(x, y, xmin=xmin, xmax=xmax, gap_ratio=0.25)
-plot_offset_stacked(x_masked, y_shifted, y_masked,shifts, xmin, xmax, colors, lamda, label, save_path,is_Raman_ratio=is_Roman_ratio,is_Ratio__mark=is_Ratio__mark,is_Peak_annotate=is_Peak_annotate)
+plot_offset_stacked(x_masked, y_shifted, y_masked, shifts, xmin, xmax, colors, lamda, label, save_path,
+                    is_Raman_ratio=is_Raman_ratio, is_Ratio__mark=is_Ratio__mark,
+                    is_Peak_annotate=is_Peak_annotate, is_2D_mark=is_2D_mark,
+                    peak_label_style=peak_label_style, is_Peak_label=is_Peak_label)
 print("Stacked Raman spectrum plot successfully generated!")

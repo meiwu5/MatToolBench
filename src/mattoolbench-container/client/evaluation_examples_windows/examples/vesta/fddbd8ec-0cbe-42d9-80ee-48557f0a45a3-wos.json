@@ -53,11 +53,11 @@
                 "file_path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\vesta\\MgO_radius.vesta"
             },
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "expected_filename": "mp-1265_MgO.cif"
             },
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "title_keyword": "Properties"
             },
             {
@@ -84,8 +84,15 @@
                 "rules": {
                     "expected": true
                 }
+            },
+            {
+                "type": "rule",
+                "rules": {
+                    "expected": true
+                }
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "medium"
 }

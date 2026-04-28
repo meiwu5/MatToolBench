@@ -1,27 +1,27 @@
 {
-  "id": "7b3b07b2-57a2-489b-8577-3836099e0c80-wos",
-  "snapshot": "oqmdlab",
-  "instruction": "Query the OQMD database for Ga-N compounds with band gap between 1.0 and 2.0 eV (element_set=Ga,N AND band_gap>1.0 AND band_gap<2.0), save the total count and first result's details to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_10.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
-  "source": "https://oqmd.org/",
-  "_comments": "OQMD REST API task",
-  "config": [],
-  "trajectory": "trajectories\\oqmd\\",
-  "related_apps": [
-    "OQMD",
-    "Python"
-  ],
-  "max_steps": 13,
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_10.txt",
-      "dest": "oqmd_task_10.txt"
+    "id": "7b3b07b2-57a2-489b-8577-3836099e0c80-wos",
+    "snapshot": "oqmdlab",
+    "instruction": "Query the OQMD database for Ga-N compounds with band gap between 1.0 and 2.0 eV (element_set=Ga,N AND band_gap>1.0 AND band_gap<2.0), save the total count and first result's details to 'C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_10.txt'. Use the OQMD REST API directly with the `requests` library (endpoint: https://oqmd.org/oqmdapi/formationenergy), do NOT use qmpy_rester.",
+    "source": "https://oqmd.org/",
+    "_comments": "OQMD REST API task",
+    "config": [],
+    "trajectory": "trajectories\\oqmd\\",
+    "related_apps": [
+        "OQMD",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd\\oqmd_task_10.txt",
+            "dest": "oqmd_task_10.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_10.txt",
+            "dest": "oqmd_task_10_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\oqmd_right\\oqmd_task_10.txt",
-      "dest": "oqmd_task_10_right.txt"
-    }
-  }
+    "difficulty": "medium"
 }

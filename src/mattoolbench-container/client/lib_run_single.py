@@ -35,6 +35,9 @@ time_limit = data["time_limit"]
 def run_single_example(agent, env, example, max_steps, instruction, args, example_result_dir, scores):
     agent.reset()
     obs = env.reset(task_config=example)
+    if obs is None:
+        logger.error("env.reset() returned None for example %s — skipping.", example.get("id", "unknown"))
+        return
     done = False
     step_idx = 0
 
@@ -131,6 +134,24 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     logger.info("Running evaluator(s)...")
     result = env.evaluate()
     logger.info("Result: %.2f", result)
+
+    # ---------------------------------------------------------------------------
+    # Attempt-based scoring: for tasks where exact content cannot be verified
+    # (e.g. OPTIMADE — results are non-deterministic across providers/time),
+    # set "score_by_attempts": true in the evaluator config.
+    # Score = (max_steps - first_success_step + 1) / max_steps
+    # where "success" means returncode == 0 AND the output file exists (result > 0).
+    # If the file was never produced (result == 0), score stays 0.
+    # ---------------------------------------------------------------------------
+    if example.get("evaluator", {}).get("score_by_attempts", False) and exec_history:
+        if result > 0:
+            first_ok = next((e["step"] for e in exec_history if e.get("returncode") == 0), None)
+            if first_ok is not None:
+                result = (max_steps - first_ok + 1) / max_steps
+                result = max(0.0, min(1.0, result))
+                logger.info("Attempt-based score: first_ok_step=%d, max_steps=%d → %.4f",
+                            first_ok, max_steps, result)
+
     scores.append(result)
 
     # Clean up code-task output files on the VM after evaluation, so stale
@@ -143,6 +164,19 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
     max_score = len(env.metric) if isinstance(env.metric, list) else 1
     precision = result / max_score if max_score > 0 else 0.0
     success_rate = 1 if result >= max_score else 0
+
+    # Efficiency metrics (independent of accuracy)
+    # step_efficiency: 1.0 if done in 1 step, 0.0 if took all max_steps
+    steps_taken = step_idx  # step_idx was incremented at end of each loop iteration
+    step_efficiency = (
+        max(0.0, 1.0 - (steps_taken - 1) / (max_steps - 1))
+        if max_steps > 1 else 1.0
+    )
+    first_success_step = (
+        next((e["step"] for e in exec_history if e.get("returncode") == 0), None)
+        if exec_history else None
+    )
+
     eval_log = {
         "task_id": example.get("id", "unknown"),
         "instruction": example.get("instruction", ""),
@@ -152,6 +186,11 @@ def run_single_example(agent, env, example, max_steps, instruction, args, exampl
         "success_rate": success_rate,
         "subtasks": getattr(env, "evaluation_details", {}).get("subtasks", []),
         "timestamp": datetime.datetime.now().isoformat(),
+        # Efficiency metrics
+        "max_steps": max_steps,
+        "steps_taken": steps_taken,
+        "step_efficiency": round(step_efficiency, 4),
+        "first_success_step": first_success_step,
         # Code-task execution history: one entry per step that ran code
         "exec_history": exec_history,
     }

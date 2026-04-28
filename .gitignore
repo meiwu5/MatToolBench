@@ -1,3 +1,14 @@
+# Paper directory — not part of the open-source release
+MatToolBench_paper/
+
+# Large binary files in docs — exclude MP4 and PDF, keep HTML/PNG/GIF
+docs/*.mp4
+docs/4月27日.mp4
+docs/*.pdf
+docs/SCIENCEBOARD*
+docs/radar_origin/*.pdf
+docs/radar_origin/*.xlsx
+
 # a few testing images
 *.proposed_region_screenbert_test.png
 *.proposed_region_screenbert_test.png

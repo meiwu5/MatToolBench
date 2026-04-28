@@ -76,11 +76,15 @@ from .msedge import (
 )
 from .origin import (
     get_validate_image_with_model,
-    get_file_exists
+    get_validate_file_with_model,
+    get_file_contains,
+    get_file_exists,
+    get_file_exists_nonempty,
+    get_origin_aesthetic_score,
 )
 
 from .jade import (
-    get_check_file_opened,
+    get_check_file_opened_jade,
     get_check_peak_finding,
     get_check_peak_add_two,
     get_check_background_removal,
@@ -90,7 +94,7 @@ from .jade import (
     get_check_axes_menu,
     get_check_wpf_refinement,
     get_check_refinement_result,
-    get_check_dialog_title,
+    get_check_dialog_title_jade,
     get_check_search_match_elements
 )
 from .avantage import (
@@ -109,11 +113,11 @@ from .avantage import (
 from .dm import (
     get_check_file_import,
     get_check_ocr_text,
-    get_check_drawing_tool, 
+    get_check_drawing_tool,
     get_check_text_color,
     get_check_border_color,
     get_check_checkbox_selected,
-    get_check_dialog_opened,
+    get_check_dialog_opened_dm,
     get_check_data_bar_by_text,
     get_check_roi_copy_and_enlarge,
     get_check_filled_box_with_corners,
@@ -121,7 +125,7 @@ from .dm import (
 )
 
 from .vesta import (
-    get_check_file_opened,
+    get_check_file_opened_vesta,
     get_check_standard_orientation,
     get_check_rotation_90_up,
     get_check_translation,
@@ -131,19 +135,20 @@ from .vesta import (
     get_check_bond_display,
     get_check_zoom,
     get_check_axes_toggle,
-    get_check_dialog_opened,
+    get_check_dialog_opened_vesta,
     get_check_polyhedral_style,
     get_check_orientation_vector,
     get_check_lattice_plane,
     get_check_multiple_lattice_planes,
     get_check_boundary_settings,
     get_check_bonds_cleared,
-    get_check_atom_coordinates_in_edit_data
+    get_check_atom_coordinates_in_edit_data,
+    get_check_properties_field
 )
 
 from .ms import (
     get_check_file_in_title,
-    get_check_dialog_title,
+    get_check_dialog_title_ms,
     get_check_text_keyword,
     get_check_field_value,
     get_check_visual_similarity,

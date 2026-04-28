@@ -1,5 +1,9 @@
 azure-ai-ml
 azure-identity
+azure-storage-blob
 azureml-core
 azureml-dataset-runtime
+matplotlib
+numpy
 pandas
+tqdm

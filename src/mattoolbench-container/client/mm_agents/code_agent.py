@@ -48,6 +48,8 @@ CATEGORY_TO_VENV: dict = {
 
 # Temp script path written inside the VM for each execution attempt.
 TEMP_SCRIPT = r"C:\Users\Docker\Desktop\setup\mat_temp_solution.py"
+# Output capture file — cmd.exe redirects stdout/stderr here so we can read it back.
+TEMP_OUTPUT = r"C:\Users\Docker\Desktop\setup\mat_temp_output.txt"
 
 
 def _python_exe(venv_name: str) -> str:
@@ -59,17 +61,22 @@ def _make_run_action(code: str, venv_name: str) -> str:
     """
     Return a Python code string (executed inside the VM) that:
       1. Writes `code` to TEMP_SCRIPT via base64 (immune to any quote/backslash issues).
-      2. Runs TEMP_SCRIPT with the venv Python interpreter.
-      3. Prints stdout / stderr for logging.
+      2. Opens a visible cmd.exe window that activates the venv and runs the script,
+         redirecting stdout+stderr to TEMP_OUTPUT (CREATE_NEW_CONSOLE is incompatible
+         with PIPE on Windows, so we use file redirection to capture output).
+      3. Reads TEMP_OUTPUT and prints it for the harness to parse.
     """
     import base64
     encoded = base64.b64encode(code.encode("utf-8")).decode("ascii")
     python_exe = _python_exe(venv_name)
+    activate_bat = rf"{VENV_BASE}\{venv_name}\Scripts\activate.bat"
 
     lines = [
-        "import subprocess, os, base64",
+        "import subprocess, os, base64, time",
         f'_script = r"{TEMP_SCRIPT}"',
+        f'_output = r"{TEMP_OUTPUT}"',
         f'_python_exe = r"{python_exe}"',
+        f'_activate = r"{activate_bat}"',
         f'_code = base64.b64decode("{encoded}").decode("utf-8")',
         "os.makedirs(os.path.dirname(_script), exist_ok=True)",
         'with open(_script, "w", encoding="utf-8") as _f:',
@@ -80,13 +87,19 @@ def _make_run_action(code: str, venv_name: str) -> str:
         '    print("RETURNCODE:", 127)',
         "else:",
         "    try:",
-        "        _result = subprocess.run(",
-        "            [_python_exe, _script],",
-        "            capture_output=True, text=True, timeout=300",
+        # Build cmd command: activate venv then run script, redirect output to file
+        '        _cmd = f\'cmd /c ""{_activate}" && "{_python_exe}" "{_script}" > "{_output}" 2>&1"\'',
+        "        _proc = subprocess.Popen(",
+        "            _cmd,",
+        "            shell=True,",
+        "            creationflags=subprocess.CREATE_NEW_CONSOLE,",
         "        )",
-        '        print("SCRIPT_STDOUT:", _result.stdout[:3000])',
-        '        print("SCRIPT_STDERR:", _result.stderr[:3000])',
-        '        print("RETURNCODE:", _result.returncode)',
+        "        _proc.wait(timeout=300)",
+        "        _rc = _proc.returncode",
+        '        _out = open(_output, encoding="utf-8", errors="replace").read() if os.path.exists(_output) else ""',
+        '        print("SCRIPT_STDOUT:", _out[:3000])',
+        '        print("SCRIPT_STDERR:")',
+        '        print("RETURNCODE:", _rc)',
         "    except Exception as _e:",
         '        print("SCRIPT_STDOUT:")',
         '        print("SCRIPT_STDERR:", str(_e))',
@@ -117,6 +130,8 @@ class CodeAgent:
         server: str = "oai",
         model: str = "gpt-4o",
         temperature: float = 0.2,
+        max_tokens: int = 2048,
+        use_api_hints: bool = True,
     ):
         self.action_space = "code_block"   # required by DesktopEnv / lib_run_single
         self.task_category = task_category.lower()
@@ -125,7 +140,12 @@ class CodeAgent:
         # Text-only planner (images are not needed for code tasks).
         self.planner = LLMPlanner(server=server, model=model, temperature=temperature)
         mp_api_key = os.getenv("MP_API_KEY") or os.getenv("MAPI_KEY") or ""
-        self.planner.system_prompt = planner_messages.build_code_system_message(mp_api_key)
+        print(f"MP_API_KEY: {mp_api_key[:10]}..." if mp_api_key else "MP_API_KEY: NOT SET")
+        self.planner.system_prompt = planner_messages.build_code_system_message(
+            mp_api_key, use_api_hints=use_api_hints
+        )
+
+        self.max_tokens = max_tokens
 
         # Per-episode state
         self._prev_code: Optional[str] = None
@@ -133,8 +153,8 @@ class CodeAgent:
         self._succeeded: bool = False
 
         logger.info(
-            "CodeAgent initialised (category=%s, venv=%s, model=%s)",
-            self.task_category, self.venv_name, model,
+            "CodeAgent initialised (category=%s, venv=%s, model=%s, use_api_hints=%s)",
+            self.task_category, self.venv_name, model, use_api_hints,
         )
 
     # ------------------------------------------------------------------
@@ -170,7 +190,7 @@ class CodeAgent:
 
         # --- Call LLM (text only, no images) -----------------------------
         logger.info("CodeAgent: calling LLM…")
-        llm_response = self.planner.plan(images=[], user_query=user_msg, max_tokens=1500)
+        llm_response = self.planner.plan(images=[], user_query=user_msg, max_tokens=self.max_tokens)
         logs["llm_response"] = llm_response
 
         # --- Parse code block --------------------------------------------

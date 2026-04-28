@@ -10,7 +10,6 @@ import argparse
 import time
 
 # imports from SDK V2
-from datetime import datetime
 
 from azure.ai.ml import Input, MLClient, Output, command
 from azure.ai.ml.constants import AssetTypes, InputOutputModes
@@ -18,9 +17,9 @@ from azure.identity import DefaultAzureCredential
 from azure.ai.ml.entities import ComputeInstance, AmlCompute, Data, ScriptReference, SetupScripts, IdentityConfiguration, ManagedIdentityConfiguration, UserIdentityConfiguration, AssignedUserConfiguration
 
 # imports for SDK V1
-from azureml.core import Workspace, Dataset, Experiment, Environment, Datastore, ScriptRunConfig
+from azureml.core import Workspace, Dataset, Experiment, Datastore, ScriptRunConfig
 from azureml.core.authentication import AzureCliAuthentication
-from azureml.core.runconfig import RunConfiguration, DockerConfiguration  
+from azureml.core.runconfig import RunConfiguration, DockerConfiguration
 from azureml.core.compute import ComputeTarget
 from azureml.core.environment import Environment, DockerSection
 from azureml.data.dataset_consumption_config import DatasetConsumptionConfig
@@ -55,11 +54,13 @@ def load_args_as_dict():
     parser.add_argument('--exp_name', default='exp0', help='Experiment name (default: exp0)')  
     parser.add_argument('--num_workers', type=int, default=1, help='Number of Worker Instances (default: 1)')  
     parser.add_argument('--use_managed_identity', type=bool, default=False, help='Use Managed Identity (default: False)')  
-    parser.add_argument('--json_name', default='evaluation_examples_windows/mp.json', help='Name of the JSON file (default: evaluation_examples_windows/mp.json)')  
-    parser.add_argument('--model_name', default='doubao-seed-1-6-thinking-250715', help='Model name (default: doubao-seed-1-6-thinking-250715)') #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-5 or gpt-4-1106-vision-preview  
+    parser.add_argument('--json_name', default='evaluation_examples_windows/record.json', help='Name of the JSON file (default: evaluation_examples_windows/record.json)')  
+    parser.add_argument('--model_name', default='gpt-5.4', help='Model name (default: gpt-5.4)') #gpt-5.4 or gpt-5.4 or gpt-5 or gpt-4-1106-vision-preview  
     parser.add_argument('--som_origin', default='oss', help='Origin of the SOM (default: internal)') #internal or oss or a11y or mixed
     parser.add_argument('--a11y_backend', default='uia', help='Type of acc tree. uia more precise, win32 faster') #uia (slower) or win32 (faster)
     parser.add_argument('--origin_mode', default='script', help='Whether OriginAgent uses template scripts: script | no_script (default: script)')
+    parser.add_argument('--gui_hint_mode', default='hint', help='GUI task ablation: hint (default) | no_hint. Controls whether per-app startup hints are included in the GUI agent prompt.')
+    parser.add_argument('--code_hint_mode', default='hint', help='Code task ablation: hint (default) | no_hint. Controls whether API reference examples are included in the Code agent prompt.')
     parser.add_argument('--vm_size', default='Standard_D8_v3', help='VM size (default: Standard_D8_v3)')
     parser.add_argument('--vm_only', default='false', help='Start VM only, no agent (for local agent mode) (default: false)')
     parser.add_argument('--origin_eval_model', default='', help='Dedicated vision LLM for evaluating Origin task outputs (default: empty, falls back to agent model)')
@@ -131,7 +132,10 @@ def launch_vm_and_job(  worker_id,
                         som_origin: str,
                         a11y_backend: str,
                         origin_mode: str,
-                        vm_size: str,
+                        origin_hint_mode: str = 'hint',
+                        gui_hint_mode: str = 'hint',
+                        code_hint_mode: str = 'hint',
+                        vm_size: str = 'Standard_D8_v3',
                         vm_only: str = 'false',
                         origin_eval_model: str = '',
                         observation_type: str = 'screenshot',
@@ -189,13 +193,14 @@ def launch_vm_and_job(  worker_id,
     if azure_config.get('MP_API_KEY'):
         run_config.environment_variables["MP_API_KEY"] = azure_config['MP_API_KEY']
 
+
     input_dataset = Dataset.File.from_files(path=(datastore, datastore_input_path))
     input = input_dataset.as_named_input('input').as_mount('/tmp/input')
     output = OutputFileDatasetConfig(destination=(datastore, '/agent_outputs/'))
 
     src = ScriptRunConfig(source_directory="./azure_files",
                         script='run_entry.py',
-                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, origin_mode, vm_only, origin_eval_model, observation_type, max_steps],
+                        arguments=[input, output, exp_name, num_workers, worker_id, agent, json_name, model_name, som_origin, a11y_backend, origin_mode, vm_only, origin_eval_model, observation_type, max_steps, gui_hint_mode, code_hint_mode, origin_hint_mode],
                         run_config=run_config)
 
     experiment = Experiment(workspace=ws, name=exp_name)  
@@ -204,11 +209,17 @@ def launch_vm_and_job(  worker_id,
     # get a URL for the status of the job  
     logging.info(f'Job submitted: {run.get_portal_url()}\nJob started on compute instance {compute_instance_name}\nJob ID: {run.id}')
 
-    # Monitor the job  
+    # Monitor the job
     logging.info("Waiting for job completion...")
-    run.wait_for_completion(show_output=False)  
-  
-    logging.info(f"Job completed on compute instance {compute_instance_name}. Skipping instance deletion.")
+    try:
+        run.wait_for_completion(show_output=False)
+        logging.info(f"Job completed on compute instance {compute_instance_name}. Stopping instance...")
+    finally:
+        try:
+            ml_client.compute.begin_stop(compute_instance_name).wait()
+            logging.info(f"Compute instance {compute_instance_name} stopped.")
+        except Exception as e:
+            logging.warning(f"Failed to stop compute instance {compute_instance_name}: {e}")
     
 
 def launch_experiment(config):
@@ -274,7 +285,7 @@ def launch_experiment(config):
         name = instance_names[i] if i < len(instance_names) else None
         p = Process(target=launch_vm_and_job, args=(i, config['exp_name'], docker_config, config['datastore_input_path'],
             resolved_num_workers, config['agent'], azure_config, config['docker_img_name'], config['ci_startup_script_path'],
-            config['use_managed_identity'], resolved_json, config['model_name'], config['som_origin'], config['a11y_backend'], config.get('origin_mode', 'script'), config['vm_size'], config.get('vm_only', 'false'), config.get('origin_eval_model', ''), config.get('observation_type', 'screenshot'), config.get('max_steps', 50), name))
+            config['use_managed_identity'], resolved_json, config['model_name'], config['som_origin'], config['a11y_backend'], config.get('origin_mode', 'script'), config.get('origin_hint_mode', 'hint'), config.get('gui_hint_mode', 'hint'), config.get('code_hint_mode', 'hint'), config['vm_size'], config.get('vm_only', 'false'), config.get('origin_eval_model', ''), config.get('observation_type', 'screenshot'), config.get('max_steps', 50), name))
         experiments.append(p)
         p.start()
 

@@ -76,7 +76,8 @@ from .general import (
     diff_text_file,
     literal_match,
     detect_file_match,
-    detect_kv_match
+    detect_kv_match,
+    pass_through,
 )
 from .gimp import (
     check_structure_sim_resized,

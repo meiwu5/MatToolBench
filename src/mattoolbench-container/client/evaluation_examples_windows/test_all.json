@@ -43,38 +43,6 @@
         "d4c4aaa4-4d6d-4699-bc60-d6cb03242fc1-wos",
         "d80a0293-928a-4cbc-a748-2d5dbb485ef0-wos"
     ],
-    "jade": [
-        "118d2cfe-b882-49b0-bed5-da819eab3709-wos",
-        "2efd9e24-cb68-4747-9f39-d7320aa81a0c-wos",
-        "3b4fa9f6-6931-4504-98b1-b84274bdb2eb-wos",
-        "41e17db0-d5b7-420a-baf5-1a6038b6c80c-wos",
-        "4973d794-aa9c-4c59-a3ec-d8910aa742f6-wos",
-        "5494ba8e-795f-44e4-a8e9-3a65c1a2767f-wos",
-        "57677714-9db5-45cc-84fe-6ad99d99c316-wos",
-        "62e1248d-4389-4319-8464-1b15ffc262bc-wos",
-        "65fda072-8a48-4cc2-8fa2-fb1df4603e39-wos",
-        "704049ba-c745-47cf-aad1-5d2d9a96eb6f-wos",
-        "7160f4b3-a9eb-4f0f-9401-09860da52c56-wos",
-        "9dc3c028-8dcd-42f7-bc72-b45edf9f451e-wos",
-        "a4afa623-5f81-4122-9602-2bbb5b09d6e3-wos",
-        "afdad1c0-77a6-47f4-97c4-d66fa0b720fa-wos",
-        "b077c612-d588-4b5a-b8f4-e368fb49538b-wos",
-        "b50170fb-a14c-4d4c-8d1c-6225fa6e0062-wos",
-        "ba385f74-4470-48e1-bfff-1de0d5fdf1df-wos",
-        "d0952949-bd2b-4ab8-adef-3edfd07b7936-wos",
-        "d692e150-9ded-4408-8945-4df8b0c1df7d-wos",
-        "e288fc76-443c-47f3-af80-924f017acef6-wos"
-    ],
-    "mixed": [
-        "e532dde2-dbc1-4573-9957-44cde3b31a72-wos",
-        "c949b96c-4d66-4671-910b-29013a96578c-wos",
-        "cd7d938b-ad2e-4d57-b6b1-5a13c9bee507-wos",
-        "e4e9cb3c-9c8a-4daa-9b65-0572127d2590-wos",
-        "61d54506-166a-456c-ac43-d177df54b3e8-wos",
-        "ee1d2827-ea34-4162-9e35-6118fd14b51b-wos",
-        "1436ceaa-32c4-4155-ba76-611d0e95beb3-wos",
-        "4b515a3e-3267-490d-91ca-a7f950fea613-wos"
-    ],
     "mp": [
         "0b1c2d3e-4f5a-6b7c-8d9e-0f1a2b3c4d5e-wos",
         "1a2b3c4d-5e6f-4780-9123-abcdefabcdef-wos",
@@ -121,15 +89,25 @@
     ],
     "optimade": [
         "00208ace-5e9d-4cb5-9b09-43546dee46da-wos",
+        "179abdb1-d3bc-4708-8c7a-e4e4338bfd18-wos",
+        "1f454aed-932b-4d6a-a4eb-a34cc7c2c1d6-wos",
+        "274e5c63-4f0d-4a60-9eb6-24451ff40cfe-wos",
+        "27bad59d-088c-4780-8015-16f62fe86d63-wos",
+        "290b5cae-a7d2-4c3c-9c37-6fb57578acf4-wos",
         "2bdd52b8-44c8-4543-80f4-209cf7d01cb0-wos",
         "40a1aa4d-9be9-4d03-9ddc-d3e7d0d2d242-wos",
+        "4ffa032b-dd6d-45db-99ba-c83cc5c619b6-wos",
         "59a26b92-ab20-488f-91f4-f78d549ebc88-wos",
+        "61e0f702-9e30-419c-929a-74563c403338-wos",
+        "62a449bd-65f1-49ee-b20c-eb9f37c7379b-wos",
         "6997ec94-9a90-4d9b-8da6-382adb1116c2-wos",
+        "7607f9f4-38ba-41a2-9870-1570b4cd6db2-wos",
         "989b21da-031c-4837-95e9-1bb9211e3c04-wos",
         "a31af921-d4c2-4978-8938-688e8b6c47d8-wos",
         "afd3bbd5-54e8-41b4-9b95-ee528b4108a9-wos",
         "ceab792f-3557-4eef-81a0-c578eb4c8486-wos",
-        "ef016d1f-2f6e-4538-baff-f0a9bfeda1e7-wos"
+        "ef016d1f-2f6e-4538-baff-f0a9bfeda1e7-wos",
+        "ff93cc5b-bef4-4fc8-8bec-b528fde8c0f6-wos"
     ],
     "oqmd": [
         "0ee247fd-9f81-4b77-923d-495a0c43ce13-wos",
@@ -152,24 +130,6 @@
         "e1915dbf-5466-4d03-bcfb-2cf19c9ae080-wos",
         "e22c4852-afaa-498e-bb02-9fcf321f0106-wos",
         "fdd03bc1-4e28-40a2-bc16-e922c2394232-wos"
-    ],
-    "origin": [
-        "02fbd221-fdbd-4694-8a1d-9d0de807d6a1-wos",
-        "148c27da-20be-498b-a73c-9ce0a62ccd91-wos",
-        "308c27f7-e175-4ad7-8e55-8e6338feb2bb-wos",
-        "41a7d011-916c-43c3-bd56-732f8b9b6b57-wos",
-        "5ab55722-9775-4074-ae3c-ca56028acc5f-wos",
-        "634ccacd-fa76-49c9-b6b2-6a9001e48dc0-wos",
-        "69ce3867-61ee-4003-8210-8e0bcb515b16-wos",
-        "7882dead-9244-492a-af65-c020c6b358b9-wos",
-        "8c025e58-55fa-4ce5-b3c3-0de39ee0f498-wos",
-        "a86687bd-69b4-4190-a62a-b090a40cd1dc-wos",
-        "b2896858-c227-440f-84be-44761cf5e2ca-wos",
-        "b96ec3c7-3969-4127-83f7-49394c501048-wos",
-        "cdb7990a-4171-419a-a8f2-58fbe7de55eb-wos",
-        "d379fd90-2dec-419c-8a02-3bc48024486b-wos",
-        "df0b71c4-eaa2-4df4-9904-783537c2292a-wos",
-        "f8813427-c0e1-45a1-a585-0e9c1ad23fad-wos"
     ],
     "pymatgen": [
         "0a1b2c3d-4e5f-4a6b-8c9d-0e1f2a3b4c5d-wos",
@@ -214,5 +174,24 @@
         "e8831368-8617-4754-bc91-a921bd463561-wos",
         "ed0d9c92-e11b-492d-9d48-7b82291a7c54-wos",
         "fddbd8ec-0cbe-42d9-80ee-48557f0a45a3-wos"
+    ],
+    "origin": [
+        "02fbd221-fdbd-4694-8a1d-9d0de807d6a1-wos",
+        "148c27da-20be-498b-a73c-9ce0a62ccd91-wos",
+        "308c27f7-e175-4ad7-8e55-8e6338feb2bb-wos",
+        "41a7d011-916c-43c3-bd56-732f8b9b6b57-wos",
+        "5ab55722-9775-4074-ae3c-ca56028acc5f-wos",
+        "634ccacd-fa76-49c9-b6b2-6a9001e48dc0-wos",
+        "69ce3867-61ee-4003-8210-8e0bcb515b16-wos",
+        "7882dead-9244-492a-af65-c020c6b358b9-wos",
+        "8c025e58-55fa-4ce5-b3c3-0de39ee0f498-wos",
+        "a86687bd-69b4-4190-a62a-b090a40cd1dc-wos",
+        "b2896858-c227-440f-84be-44761cf5e2ca-wos",
+        "b96ec3c7-3969-4127-83f7-49394c501048-wos",
+        "cdb7990a-4171-419a-a8f2-58fbe7de55eb-wos",
+        "d379fd90-2dec-419c-8a02-3bc48024486b-wos",
+        "df0b71c4-eaa2-4df4-9904-783537c2292a-wos",
+        "f8813427-c0e1-45a1-a585-0e9c1ad23fad-wos"
     ]
+
 }

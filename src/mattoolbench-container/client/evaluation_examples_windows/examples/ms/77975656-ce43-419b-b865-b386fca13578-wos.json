@@ -35,7 +35,6 @@
     "related_apps": [
         "Materials Studio"
     ],
-    "max_steps": 8,
     "evaluator": {
         "func": [
             "exact_match",
@@ -89,5 +88,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "easy"
 }

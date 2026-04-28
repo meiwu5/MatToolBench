@@ -61,7 +61,7 @@
     ],
     "result": [
       {
-        "type": "check_file_opened",
+        "type": "check_file_opened_jade",
         "expected_filename": "XRD1.xrdml"
       },
       {
@@ -93,5 +93,6 @@
       }
     ],
     "func_conj": "and"
-  }
+  },
+  "difficulty": "easy"
 }

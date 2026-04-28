@@ -1,14 +1,14 @@
 #!/bin/bash
 
 agent="auto"
-model="doubao-seed-1-6-thinking-250715"
+model="gpt-5.4"
 som_origin="oss"
 a11y_backend="uia"
 clean_results=true
 worker_id="0"
 num_workers="1"
 result_dir="./results"
-json_name="evaluation_examples_windows/mp.json"
+json_name="evaluation_examples_windows/record.json"
 diff_lvl="normal"
 
 # parse agent argument
@@ -58,14 +58,14 @@ while [[ $# -gt 0 ]]; do
             echo "Usage: $0 [options]"
             echo "Options:"
             echo "  --agent <auto|gui|code|origin|navi>  The agent to use (default: auto)"
-            echo "  --model <model>                 The model to use (default: doubao-seed-1-6-thinking-250715, available options are: doubao-seed-1-6-thinking-250715, doubao-seed-1-6-thinking-250715, gpt-4o, gpt-4-1106-vision-preview)"
+            echo "  --model <model>                 The model to use (default: gpt-5.4, available options are: gpt-5.4, gpt-5.4, gpt-4o, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>       The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss)"
             echo "  --a11y-backend <a11y_backend>   The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --clean-results <bool>          Clean the results directory before running the client (default: true)"
             echo "  --worker-id <id>                The worker ID"
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
-            echo "  --json-name <name>              The name of the JSON file to use (default: mp.json)"
+            echo "  --json-name <name>              The name of the JSON file to use (default: record.json)"
             echo "  --diff-lvl <level>              The difficulty level of benchmark (default: normal, available options are: normal, hard)"  
             exit 0
             ;;

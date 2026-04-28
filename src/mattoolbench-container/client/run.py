@@ -52,6 +52,9 @@ def _build_agent(agent_type: str, domain: str, args, som_config, origin_category
         For Origin agents, the task category used to select the template script
         (e.g. "xrd", "xps").  None means no script injection.
     """
+    max_tokens = getattr(args, "max_tokens", 2048)
+    origin_max_tokens = getattr(args, "origin_max_tokens", 8000)
+
     if agent_type == "navi":
         return NaviAgent(
             server="oai",
@@ -59,24 +62,34 @@ def _build_agent(agent_type: str, domain: str, args, som_config, origin_category
             som_config=som_config,
             som_origin=args.som_origin,
             temperature=args.temperature,
+            max_tokens=max_tokens,
         )
     if agent_type == "gui":
+        use_software_hints = getattr(args, "gui_hint_mode", "hint") == "hint"
         return GUIAgent(
             server="oai",
             model=args.model,
             som_config=som_config,
             som_origin=args.som_origin,
             temperature=args.temperature,
+            max_tokens=max_tokens,
+            use_software_hints=use_software_hints,
         )
     if agent_type == "code":
+        use_api_hints = getattr(args, "code_hint_mode", "hint") == "hint"
         return CodeAgent(
             task_category=domain,
             server="oai",
             model=args.model,
             temperature=args.temperature,
+            max_tokens=max_tokens,
+            use_api_hints=use_api_hints,
         )
     if agent_type in ("origin", "origin_code"):
-        use_scripts = getattr(args, "origin_mode", "script") == "script"
+        origin_mode      = getattr(args, "origin_mode",      "script")
+        origin_hint_mode = getattr(args, "origin_hint_mode", "hint")
+        use_hint    = (origin_hint_mode == "hint")
+        use_scripts = (origin_mode == "script") and use_hint
         return OriginAgent(
             server="oai",
             model=args.model,
@@ -86,6 +99,8 @@ def _build_agent(agent_type: str, domain: str, args, som_config, origin_category
             use_last_screen=True,
             task_category=origin_category,
             use_scripts=use_scripts,
+            use_hint=use_hint,
+            max_tokens=origin_max_tokens,
         )
     raise ValueError(f"Unknown agent type: {agent_type}")
 
@@ -190,18 +205,56 @@ def config() -> argparse.Namespace:
     # ---------------------------------------------------------------------------
     # Ablation flags
     # ---------------------------------------------------------------------------
-    # Origin task ablation: whether to inject domain template scripts into the prompt.
-    #   script    → inject pre-written template from origin_draw/ (default, best condition)
-    #   no_script → LLM writes the full script from scratch (ablation baseline)
+    # Origin task ablation — two orthogonal flags (mirrors gui_hint_mode / code_hint_mode):
+    #   origin_mode:      script    → inject domain template script (default)
+    #                     no_script → no template; LLM writes from scratch
+    #   origin_hint_mode: hint      → include full OriginLab workflow instructions (default)
+    #                     no_hint   → omit all Origin-specific guidance (strongest baseline)
+    # Note: use_scripts is forced False when origin_hint_mode=no_hint (template requires hint context).
     parser.add_argument(
         "--origin_mode", type=str, default="script",
         choices=["script", "no_script"],
         help=(
-            "Origin task ablation.  "
-            "'script': inject domain template script into prompt (default).  "
-            "'no_script': no template provided, LLM writes from scratch."
+            "Origin template ablation.  "
+            "'script': inject domain-specific Python template into prompt (default).  "
+            "'no_script': no template; LLM writes the full script from scratch."
         ),
     )
+    parser.add_argument(
+        "--origin_hint_mode", type=str, default="hint",
+        choices=["hint", "no_hint"],
+        help=(
+            "Origin workflow-hint ablation.  "
+            "'hint': include OriginLab workflow instructions, key shortcuts, and data-access rules (default).  "
+            "'no_hint': omit all Origin-specific guidance; strongest ablation baseline."
+        ),
+    )
+    # Code task ablation: whether to inject API reference examples into the prompt.
+    #   hint    → include MP/OQMD/OPTIMADE/pymatgen code examples (default)
+    #   no_hint → only general rules; LLM relies on its own API knowledge
+    parser.add_argument(
+        "--code_hint_mode", type=str, default="hint",
+        choices=["hint", "no_hint"],
+        help=(
+            "Code task ablation.  "
+            "'hint': include per-API code examples and constraints (default).  "
+            "'no_hint': no API examples, LLM writes from its own knowledge."
+        ),
+    )
+
+    # GUI task ablation: whether to inject per-app startup hints into the prompt.
+    #   hint    → include per-application shortcuts and initial states (default)
+    #   no_hint → only generic agent instructions; no app-specific guidance
+    parser.add_argument(
+        "--gui_hint_mode", type=str, default="hint",
+        choices=["hint", "no_hint"],
+        help=(
+            "GUI task ablation.  "
+            "'hint': include per-application startup state and shortcuts (default).  "
+            "'no_hint': no app-specific hints, LLM relies on generic instructions only."
+        ),
+    )
+
     # Origin task category (used to select which template script to inject).
     # If 'auto', the agent tries to infer the category from the task JSON.
     parser.add_argument(
@@ -214,17 +267,22 @@ def config() -> argparse.Namespace:
     )
 
     # lm config
-    parser.add_argument("--model", type=str, default="doubao-seed-1-6-thinking-250715") #doubao-seed-1-6-thinking-250715 or doubao-seed-1-6-thinking-250715 or gpt-4o or gpt-4-1106-vision-preview
+    parser.add_argument("--model", type=str, default="gpt-5.4") #gpt-5.4 or gpt-5.4 or gpt-4o or gpt-4-1106-vision-preview
     parser.add_argument("--temperature", type=float, default=1.0)
     parser.add_argument("--top_p", type=float, default=0.9)
-    parser.add_argument("--max_tokens", type=int, default=1500)
+    parser.add_argument("--max_tokens", type=int, default=2048,
+        help="Max output tokens for GUI / Code agents (default: 2048).")
+    parser.add_argument("--origin_max_tokens", type=int, default=8000,
+        help="Max output tokens for Origin agent (default: 8000).")
     parser.add_argument("--stop_token", type=str, default=None)
+    parser.add_argument("--origin_eval_model", type=str, default="",
+        help="Vision model used to evaluate Origin figure outputs (default: falls back to agent model).")
 
     # example config
     parser.add_argument("--domain", type=str, default="all")
     parser.add_argument("--emulator_ip", type=str, default="20.20.20.21")
 
-    parser.add_argument("--test_all_meta_path", type=str, default="evaluation_examples_windows/mp.json") # or test_custom.json for a single task
+    parser.add_argument("--test_all_meta_path", type=str, default="evaluation_examples_windows/record.json") # or test_custom.json for a single task
 
     # logging related
     parser.add_argument("--result_dir", type=str, default="./results")
@@ -290,8 +348,12 @@ def test(
         "trial_id": args.trial_id,
         "worker_id": args.worker_id,
         "num_workers": args.num_workers,
-        "origin_mode": getattr(args, "origin_mode", "script"),
+        "origin_mode":      getattr(args, "origin_mode",      "script"),
+        "origin_hint_mode": getattr(args, "origin_hint_mode", "hint"),
+        "gui_hint_mode":    getattr(args, "gui_hint_mode",    "hint"),
+        "code_hint_mode":   getattr(args, "code_hint_mode",   "hint"),
         "origin_category": getattr(args, "origin_category", "auto"),
+        "origin_max_tokens": getattr(args, "origin_max_tokens", 8000),
     }
 
     # Base dir for this model/trial – results are organised by domain beneath it.
@@ -384,6 +446,16 @@ def test(
                 if _cat:
                     agent.update_task_category(_cat)
 
+            # In no_hint mode for Origin tasks, strip setup steps that are
+            # marked "hint_only" (e.g. opening Code Builder) so the agent
+            # cannot infer the intended workflow from the environment state.
+            if domain in _ORIGIN_DOMAINS and getattr(args, "origin_hint_mode", "hint") == "no_hint":
+                example = dict(example)
+                example["config"] = [
+                    s for s in example.get("config", [])
+                    if not s.get("hint_only", False)
+                ]
+
             instruction = example["instruction"]
 
             logger.info(f"[Instruction]: {instruction}")
@@ -411,6 +483,9 @@ def test(
             root_logger.addHandler(task_log_handler)
             # }}} Example Logging Config
             
+            # Clean the domain output folder on the VM before each task
+            env.cleanup_domain_output(domain)
+
             # example start running
             try:
                 lib_run_single.run_single_example(agent, env, example, max_steps, instruction, args, example_result_dir,
@@ -455,43 +530,55 @@ def test(
                 _domain_scores.setdefault(domain, {"scores": [], "success": [], "tasks": []})
                 _domain_scores[domain]["scores"].append(_last_score)
                 _domain_scores[domain]["success"].append(_last_success)
+                # Read difficulty from task config file
+                _difficulty = example.get("difficulty", "unknown")
                 _domain_scores[domain]["tasks"].append({
                     "task_id": example_id,
                     "score": _last_score,
                     "success": _last_success,
+                    "difficulty": _difficulty,
                     "instruction": instruction,
                 })
-                # Write per-domain task results JSON after every task (for live monitoring).
-                _domain_dir = os.path.join(_model_result_dir, domain)
-                os.makedirs(_domain_dir, exist_ok=True)
-                _task_results_path = os.path.join(_domain_dir, f"task_results_w{args.worker_id}.json")
-                with open(_task_results_path, "w", encoding="utf-8") as _f:
-                    json.dump(_domain_scores[domain]["tasks"], _f, ensure_ascii=False, indent=2)
             finally:
                 # Cleanup task log handler
                 root_logger.removeHandler(task_log_handler)
                 task_log_handler.close()
 
-        # Write per-domain summary JSON after all examples in this domain finish.
+        # Write per-domain results_by_difficulty.json after all examples in this domain finish.
         if domain in _domain_scores:
             _d = _domain_scores[domain]
             _n = len(_d["scores"])
-            _domain_summary = {
+            _domain_dir = os.path.join(_model_result_dir, domain)
+            os.makedirs(_domain_dir, exist_ok=True)
+
+            # Group tasks by difficulty
+            _by_diff = {"easy": [], "medium": [], "hard": [], "unknown": []}
+            for _t in _d["tasks"]:
+                _by_diff.setdefault(_t["difficulty"], []).append(_t)
+
+            _diff_out = {
                 "domain": domain,
-                "worker_id": args.worker_id,
                 "num_tasks": _n,
                 "avg_score": round(sum(_d["scores"]) / _n, 4) if _n else 0.0,
                 "success_rate": round(sum(_d["success"]) / _n, 4) if _n else 0.0,
                 "num_success": sum(_d["success"]),
+                "by_difficulty": {
+                    diff: {
+                        "tasks": tasks,
+                        "num_tasks": len(tasks),
+                        "num_success": sum(t["success"] for t in tasks),
+                        "success_rate": round(sum(t["success"] for t in tasks) / len(tasks), 4) if tasks else 0.0,
+                        "avg_score": round(sum(t["score"] for t in tasks) / len(tasks), 4) if tasks else 0.0,
+                    }
+                    for diff, tasks in _by_diff.items() if tasks
+                },
             }
-            _domain_dir = os.path.join(_model_result_dir, domain)
-            os.makedirs(_domain_dir, exist_ok=True)
-            _domain_summary_path = os.path.join(_domain_dir, f"summary_w{args.worker_id}.json")
-            with open(_domain_summary_path, "w", encoding="utf-8") as _f:
-                json.dump(_domain_summary, _f, ensure_ascii=False, indent=2)
-            logger.info(f"Domain summary saved: {domain}/summary_w{args.worker_id}.json "
-                        f"(success_rate={_domain_summary['success_rate']:.2%}, "
-                        f"avg_score={_domain_summary['avg_score']:.4f})")
+            _diff_path = os.path.join(_domain_dir, "results_by_difficulty.json")
+            with open(_diff_path, "w", encoding="utf-8") as _f:
+                json.dump(_diff_out, _f, ensure_ascii=False, indent=2)
+            logger.info(f"Domain results saved: {domain}/results_by_difficulty.json "
+                        f"(success_rate={_diff_out['success_rate']:.2%}, "
+                        f"avg_score={_diff_out['avg_score']:.4f})")
 
     env.close()
     # logger.info(f"UPDATED SCORES: {scores}")
@@ -559,8 +646,9 @@ def get_result(action_space, use_model, observation_type, result_dir, trial_id, 
                     if "result.txt" in os.listdir(example_path):
                         # empty all files under example_id
                         try:
-                            all_result.append(float(open(os.path.join(example_path, "result.txt"), "r").read()))
-                        except:
+                            with open(os.path.join(example_path, "result.txt"), "r") as _rf:
+                                all_result.append(float(_rf.read()))
+                        except (OSError, ValueError):
                             all_result.append(0.0)
 
     if not all_result:
@@ -596,8 +684,41 @@ for sig in ('TERM', 'HUP', 'INT'):
 if __name__ == '__main__':
     ####### The complete version of the list of examples #######
     os.environ["TOKENIZERS_PARALLELISM"] = "false"
+
+    # Load API keys into the environment.  Priority order:
+    #   1. Already set in environment (e.g. docker run -e KEY=xxx)
+    #   2. config.json in the repo root (local / dev runs outside Docker)
+    _CONFIG_KEYS = [
+        "MP_API_KEY",
+        "OPENAI_API_KEY", "OPENAI_ENDPOINT",
+        "AZURE_API_KEY",  "AZURE_ENDPOINT",
+        "ORIGIN_EVAL_API_KEY", "ORIGIN_EVAL_BASE_URL", "ORIGIN_EVAL_MODEL",
+    ]
+    _cfg_loaded = False
+    for _cfg_path in [
+        # Repo-root config.json when running locally (not inside Docker)
+        os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "..", "..", "config.json")),
+        # Mounted path inside Docker (docker run -v .../config.json:/config.json)
+        "/config.json",
+    ]:
+        if os.path.isfile(_cfg_path):
+            try:
+                with open(_cfg_path, encoding="utf-8") as _f:
+                    _cfg = json.load(_f)
+                for _k in _CONFIG_KEYS:
+                    if not os.environ.get(_k) and _cfg.get(_k):
+                        os.environ[_k] = str(_cfg[_k])
+                _cfg_loaded = True
+                break
+            except Exception:
+                pass
+
     args = config()
     setup_logging(args)
+
+    # --origin_eval_model CLI arg (or experiments.json value) takes top priority.
+    if args.origin_eval_model:
+        os.environ["ORIGIN_EVAL_MODEL"] = args.origin_eval_model
 
     wait_for_server(args.emulator_ip)
 

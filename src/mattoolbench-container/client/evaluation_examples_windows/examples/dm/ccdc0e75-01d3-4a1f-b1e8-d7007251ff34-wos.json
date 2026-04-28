@@ -1,91 +1,92 @@
 {
-    "id": "ccdc0e75-01d3-4a1f-b1e8-d7007251ff34-wos",
-    "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm9.dm3', measure average and standard deviation of pixels in a selected region.",
-    "source": "https:\\www.example.com/software/dm",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for DigitalMicrograph to fully load",
-            "parameters": {
-                "seconds": 1
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 1
-            }
-        }
-    ],
-    "trajectory": "trajectories/dm/",
-    "related_apps": [
-        "Dm"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_import",
-                "expected_filename": "dm9.dm3"
-            },
-            {
-                "type": "check_ocr_text",
-                "target_text": [
-                    "Mean and Std"
-                ],
-                "region": "whole"
-            },
-            {
-                "type": "check_ocr_text",
-                "target_text": [
-                    "Results",
-                    "Standard Deviation"
-                ]
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "ccdc0e75-01d3-4a1f-b1e8-d7007251ff34-wos",
+  "snapshot": "dmlab",
+  "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm9.dm3', measure average and standard deviation of pixels in a selected region.",
+  "source": "https:\\www.example.com/software/dm",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for DigitalMicrograph to fully load",
+      "parameters": {
+        "seconds": 1
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 1
+      }
     }
+  ],
+  "trajectory": "trajectories/dm/",
+  "related_apps": [
+    "Dm"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_import",
+        "expected_filename": "dm9.dm3"
+      },
+      {
+        "type": "check_ocr_text",
+        "target_text": [
+          "Mean and Std"
+        ],
+        "region": "whole"
+      },
+      {
+        "type": "check_ocr_text",
+        "target_text": [
+          "Results",
+          "Standard Deviation"
+        ]
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

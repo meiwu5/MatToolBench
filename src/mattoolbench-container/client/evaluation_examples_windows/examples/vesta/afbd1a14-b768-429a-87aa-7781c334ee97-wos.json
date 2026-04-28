@@ -47,7 +47,7 @@
         ],
         "result": [
             {
-                "type": "check_file_opened",
+                "type": "check_file_opened_vesta",
                 "expected_filename": "mp-66_C.cif"
             },
             {
@@ -72,5 +72,6 @@
             }
         ],
         "func_conj": "and"
-    }
+    },
+    "difficulty": "easy"
 }

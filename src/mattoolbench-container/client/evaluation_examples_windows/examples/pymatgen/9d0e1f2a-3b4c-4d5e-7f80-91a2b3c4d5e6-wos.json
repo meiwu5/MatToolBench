@@ -1,7 +1,7 @@
 {
   "id": "9d0e1f2a-3b4c-4d5e-7f80-91a2b3c4d5e6-wos",
   "snapshot": "pymatgen_python_env",
-  "instruction": "Use pymatgen to read dependencies/VASP/POSCAR, extract the number of atoms and lattice constant a, and save to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task19.txt.",
+  "instruction": "Use pymatgen to read C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\POSCAR, extract the number of atoms (num_sites) and lattice constant a, and save as '{num_atoms} {lattice_a:.3f}' to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task19.txt.",
   "source": "https:\\pymatgen.org/",
   "_comments": "comments_placeholder",
   "config": [],
@@ -22,5 +22,6 @@
       "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task19.txt",
       "dest": "task19_right.txt"
     }
-  }
+  },
+  "difficulty": "medium"
 }

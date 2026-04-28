@@ -1,26 +1,27 @@
 {
-  "id": "1b2c3d4e-5f6a-4b7c-9d0e-1f2a3b4c5d6e-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Calculate the volume attribute of a hexagonal Ti structure with a=4.0, c=6.0, and save the value (approximately 83.1384) to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task11.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task11.txt",
-      "dest": "task11.txt"
+    "id": "1b2c3d4e-5f6a-4b7c-9d0e-1f2a3b4c5d6e-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Calculate the volume attribute of a hexagonal Ti structure with a=4.0, c=6.0, and save the value (approximately 83.1384) to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task11.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task11.txt",
+            "dest": "task11.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task11.txt",
+            "dest": "task11_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task11.txt",
-      "dest": "task11_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

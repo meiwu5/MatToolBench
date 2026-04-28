@@ -224,6 +224,7 @@ Input:
 9. Textual memory: Stored information for future steps
 10. Additional human context: User-provided information
 
+
 Output:
 1. Screen analysis: Briefly describe both the previous (unannotated) and current (annotated) screens and their relation to the objective
 2. Multi-step plan: Outline expected actions and screens, and your current progress
@@ -370,6 +371,7 @@ Guidelines:
 4. Prefer keyboard shortcuts when they are reliable.
 5. When clicking, estimate the center of the target and use normalized coordinates with `computer.mouse.move_abs(x=..., y=...)`.
 6. Do not use `computer.mouse.move_id(...)` or `computer.clipboard.copy_image(...)` in this mode because no IDs are available.
+
 
 Input:
 1. User objective
@@ -564,7 +566,7 @@ computer.window_manager.switch_to_application("window_name")
 
 ## Jade (XRD analysis)
 - **Initial state**: The "Read Pattern Files" database dialog is PRE-OPENED at startup (Ctrl+R was pressed). Your VERY FIRST action must be to CLOSE this dialog (click its Close button). It is for reference patterns only — NOT for opening sample data files.
-- **To open a sample file**: after closing the dialog, use File → Open. File types: .raw, .txt, .mdi.
+- **To open a sample file**: after closing the dialog, use Ctrl+R. File types: .raw, .txt, .mdi.
 - **Whole Pattern Fitting / Rietveld**: access via the Refinement menu.
 
 ## Avantage (XPS analysis)
@@ -580,7 +582,7 @@ computer.window_manager.switch_to_application("window_name")
 - **If Code Builder was accidentally closed**: press Alt+4 to reopen.
 - **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
 - **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
-- **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
+- **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then copy and paste the script — `computer.clipboard.copy_text("...script...")` followed by `computer.clipboard.paste()`. **Never use `computer.keyboard.write()` for scripts** — it only supports ASCII and will corrupt any Unicode characters.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -594,14 +596,38 @@ computer.window_manager.switch_to_application("window_name")
 - **Left panel**: At startup, a panel on the left side of the screen may be visible containing items such as "Histogram", "Images", "Status", etc. This panel blocks the workspace. **Close it first** by clicking its close button (×) before proceeding with the task.
 
 ## Materials Studio
+- **CRITICAL — Maximize window first**: Before doing ANYTHING else, verify the Materials Studio window fills the entire screen. If it is NOT maximized (you can see desktop or window borders), press Win+Up or click the maximize button (top-right of the window) IMMEDIATELY. All coordinate-based clicks assume a fully maximized window — clicking on a non-maximized window will land in the wrong place and cause every subsequent action to fail.
 - **Initial state**: Application just launched and window maximized. No file is open, no dialogs.
 - **To open a file**: File → Open (Ctrl+O), then navigate to or type the file path.
+- **If the required project file is already open** (visible in the title bar or Project panel), do NOT reopen it — proceed directly to the next step of the task.
 
 ## General
 - Always save output files to the exact path specified in the user objective.
 - If a dialog box appears unexpectedly, handle it (confirm, cancel, or type path) before continuing with the main task.
 - If a pre-triggered dialog is no longer visible at the start (it may have been dismissed), re-trigger it using the shortcut noted above.
 """
+
+
+_GUI_HINTS_HEADER = "\n# Per-application startup state and key shortcuts"
+
+
+def build_gui_system_message(use_software_hints: bool = True, raw: bool = False) -> str:
+    """Return the GUI agent system prompt.
+
+    Args:
+        use_software_hints: If True (default), include the per-application
+            startup state and keyboard shortcuts section.  Set to False for
+            the software-hint ablation — the model receives only generic GUI
+            agent instructions with no app-specific guidance.
+        raw: If True, use the raw-screenshot (no-SoM) variant of the prompt.
+    """
+    base_msg = raw_gui_system_message if raw else gui_system_message
+    if use_software_hints:
+        return base_msg
+    idx = base_msg.find(_GUI_HINTS_HEADER)
+    if idx == -1:
+        return base_msg
+    return base_msg[:idx].rstrip() + "\n"
 
 
 raw_gui_system_message = """\
@@ -680,12 +706,22 @@ computer.window_manager.switch_to_application("window_name")
 - **Display Modes**: accessible from the toolbar or View menu; switches between stacked / overlay / individual graph views.
 - **Peak fitting**: under the Processing menu.
 
-## Origin (data analysis / plotting)
-- **Initial state**: The target .opju file is ALREADY OPEN and Code Builder is ALREADY OPEN (Alt+4 was pre-pressed). Do NOT try to open the file or reopen Code Builder — go straight to entering and running the script.
-- **If Code Builder was accidentally closed**: press Alt+4 to reopen.
-- **Key shortcuts**: Alt+4 = open Code Builder; F5 = run script in Code Builder.
-- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
-- **How to enter code**: click inside the Code Builder editor area to ensure focus, press Ctrl+A to select all existing code, press Delete to clear it, then use `computer.keyboard.write("...full script...")` to type the script directly into the editor.
+## Origin (Data Analysis / Plotting)
+- **Initial State**: The target `.opju` file is already open, and Code Builder is already open (activated via Alt+4). Do not reopen the file or Code Builder.
+- **Shortcuts**: 
+  - Alt+4 = Open Code Builder
+  - F5 = Run the current script
+  - Ctrl+N = Create a new Python file
+- **Recommended Code Input Procedure (Strongly Recommended)**:
+  1. Click on the editor area to ensure it has focus.
+  2. Press **Ctrl + A** to select all existing code, then press **Delete** to clear the editor.
+  3. Use `computer.clipboard.copy_text(""full Python script here"")` to copy the complete script to the clipboard.
+  4. Execute `computer.clipboard.paste()` to paste the code into the editor.
+  5. After pasting, check the screenshot. If there is garbled text or severe indentation errors:
+     - Press **Ctrl + A** again to select all, then **Delete** to clear the editor.
+     - Split the script into 2–3 smaller parts and paste them separately using the clipboard method (separate each part with clear comment lines).
+  6. Once the code appears correct and properly formatted, press **F5** to run the script.
+- **Why we do not recommend using `keyboard.write` directly**: OriginPro's Code Builder has poor compatibility with long keyboard-simulated input. It frequently causes garbled characters and `IndentationError`.
 
 ## VESTA (crystal structure visualisation)
 - **Initial state**: A file Open dialog was PRE-TRIGGERED at startup (Ctrl+O was pressed). If a dialog is visible, type the file path and press Enter.
@@ -699,8 +735,10 @@ computer.window_manager.switch_to_application("window_name")
 - **Left panel**: At startup, a panel on the left side of the screen may be visible containing items such as "Histogram", "Images", "Status", etc. This panel blocks the workspace. **Close it first** by clicking its close button (×) before proceeding with the task.
 
 ## Materials Studio
+- **CRITICAL — Maximize window first**: Before doing ANYTHING else, verify the Materials Studio window fills the entire screen. If it is NOT maximized (you can see desktop or window borders), press Win+Up or click the maximize button (top-right of the window) IMMEDIATELY. All coordinate-based clicks assume a fully maximized window — clicking on a non-maximized window will land in the wrong place and cause every subsequent action to fail.
 - **Initial state**: Application just launched and window maximized. No file is open, no dialogs.
 - **To open a file**: File → Open (Ctrl+O), then navigate to or type the file path.
+- **If the required project file is already open** (visible in the title bar or Project panel), do NOT reopen it — proceed directly to the next step of the task.
 
 ## General
 - Always save output files to the exact path specified in the user objective.
@@ -713,21 +751,79 @@ computer.window_manager.switch_to_application("window_name")
 # Origin Agent system prompt  (for OriginLab script-based plotting tasks)
 # ---------------------------------------------------------------------------
 
-def build_origin_system_message(related_apps=None, script_content=None):
-    apps_str = ", ".join(related_apps) if related_apps else "Origin"
+_ORIGIN_WORKFLOW_HINT = """\
 
+# Origin workflow and key shortcuts (CRITICAL — read before acting)
+
+**Available Python packages** (only these are installed in our environment): `originpro`, `numpy`, `pandas`, `matplotlib`, `scipy`, `re`, `os`, `math`. Do not import any other packages.
+
+**Standard workflow for each task:**
+
+**Before acting, check the current screen state to decide your starting point:**
+
+- **If the active window is Code Builder** (window title contains "Code Builder"): the data file is already loaded in Origin's worksheet. **Do NOT open the data file again.** Skip steps 1–2 and start from step 3 (or step 4 if a `.py` tab is already open).
+- **If the active window is the Origin main window** (no Code Builder visible): start from step 1.
+
+1. **Import the data file** — press Ctrl+O in the Origin main window to open the file-open dialog.
+   - Type the exact file path from the task objective in the **Open dialog** and press Enter. Do NOT enter the file path in Code Builder.
+   - Confirm the worksheet is loaded and visible before proceeding.
+   - If a warning or import dialog appears, handle it (click OK/Next/Finish) first.
+2. **Open Code Builder** — press Alt+4. Confirm the window title changed.
+   - If a "Save changes?" dialog appears, handle it first.
+3. **Create a new Python file** — press Ctrl+N.
+   - When prompted for a filename, type the name matching the plot type:
+     `raman.py`, `ftir.py`, `xrd.py`, `xps.py`, `bs.py`, `cycle.py`, `ce.py`, `step.py`.
+   - Confirm the new file tab is visible before entering code.
+4. **Enter the code** — click inside the editor area, then paste via clipboard:
+   ```python
+   computer.clipboard.copy_text("...full adapted script...")
+   computer.clipboard.paste()
+   ```
+   **NEVER use `computer.keyboard.write()` for scripts** — it only supports ASCII and will corrupt Unicode characters.
+5. **Run the script** — press F5. Watch for error dialogs or Python console output.
+6. **Verify output** — confirm the output file exists at the correct path.
+7. **Mark DONE** — only after visually confirming the result is correct.
+
+**Key shortcuts:** Ctrl+O = open file dialog; Alt+4 = Code Builder; Ctrl+N = new Python file; F5 = run script.
+
+**If a script error occurs:** read the error, fix the script, press Ctrl+A then Delete to clear the editor, re-paste and press F5.
+
+**Data access in scripts:** Data is loaded via the Open dialog (step 1). In the script, access it with `wks = op.find_sheet()` — never use `op.open()` or `try/except` blocks for file loading.
+
+**If the input file has a `.ogwu` extension:** open it via File → Open; the worksheet is then accessible via `op.find_sheet()`.
+
+**If multiple worksheets are open:** click the correct sheet tab before running the script.\
+"""
+
+
+def _build_origin_workflow_section(use_hint: bool, script_section: str) -> str:
+    """Return the workflow hint block + optional script section, or empty string.
+
+    use_hint=True  → full Origin workflow instructions + script_section appended
+    use_hint=False → no workflow hint and no script (no_hint ablation baseline)
+    """
+    if not use_hint:
+        return ""
+    return _ORIGIN_WORKFLOW_HINT + script_section
+
+
+def build_origin_system_message(related_apps=None, script_content=None, extra_note=None, use_hint=True):
     if script_content:
-        script_section = f"""\
+        extra_note_block = f"\n{extra_note}" if extra_note else ""
+        script_section = f"""
+# Reference template script
+A domain-specific Python template script is provided below as a reference. Use it as the basis for your script.
 
-# Pre-written template script
-A domain-specific Python template script is provided below. It is already tested and correct.
-Your job is to:
-1. Read the task objective carefully.
-2. Adapt ONLY the user-configurable parameters at the top of the script (variable names, sheet names,
-   labels, colors, save path, etc.) to match the task.
-3. Keep the plotting/analysis logic unchanged.
-4. Type the adapted script into Origin's Code Builder via `computer.keyboard.write(...)` and run it with F5.
+CRITICAL RULES:
+- **Do NOT add `op.open(...)` or any file-loading code.** The data file is already loaded in
+  Origin's worksheet before the script runs. The script accesses data via `op.find_sheet()`.
+- **Do NOT add fallback/simulation data or try/except blocks** around the data loading.
+- **Use the reference script EXACTLY as provided. Do NOT modify labels, colors, modes, or any other parameters.**
 
+The ONLY parameter you MUST update:
+1. **`save_path`** — set to the EXACT output file path from the task instruction.
+   Example: `save_path = r'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\FTIR3.png'`
+{extra_note_block}
 ```python
 {script_content}
 ```
@@ -735,197 +831,63 @@ Your job is to:
     else:
         script_section = ""
 
+    _task_desc = (
+        "You complete tasks by writing Python (originpro) scripts in Origin's Code Builder and running them, "
+        "while observing the GUI and taking direct GUI actions when needed."
+        if use_hint else
+        "You complete tasks by interacting with OriginLab through the GUI to produce the required plots and output files. "
+        "Explore the interface freely to determine the best approach."
+    )
+
     return f"""\
-You are Origin Script Helper, an AI agent that operates OriginLab to complete plotting and \
-data-analysis tasks. You interact with Origin both by writing Python (originpro) scripts AND \
-by observing the current GUI state and taking direct GUI actions when needed.
+You are an AI agent that controls OriginLab to complete plotting and data-analysis tasks.
 
-The relevant application(s) for this task: {apps_str}.
+{_task_desc}
 
-# Core workflow
-The standard workflow for each task is:
-1. **Verify GUI state** — check the current screen. Confirm which window is active and what is visible.
-2. **Open Code Builder** — if Code Builder is not already open, press Alt+4 to open it.
-   - Check the window title and screen content to confirm Code Builder appeared.
-   - If a dialog box appears (e.g., "Save changes?", "Unsaved script"), handle it first.
-   - If Code Builder has no editable file tab, press Ctrl+N to create a new Python file.
-3. **Enter the code** — click inside the Code Builder editor area to ensure focus. Press Ctrl+A
-   to select all existing code, then Delete to clear it. Then use
-   `computer.keyboard.write("...full script...")` to type the complete adapted script directly
-   into the editor.
-4. **Run the script** — press F5 to execute inside Code Builder. Watch for error dialogs or
-   Python console output.
-5. **Verify output** — confirm the output file was saved at the correct path. If an error occurred,
-   read the error message from the screen and fix the script accordingly.
-6. **Mark DONE** — only after visually confirming the output file exists and looks correct.
+Follow these guidelines:
+1. Plan efficiently with minimal steps. Do not try to complete the entire task in one step.
+2. Execute ONE action per step, then wait for the next screen before continuing.
+3. Verify progress after each step using the previous image and actions.
+4. Use element IDs for interactions whenever possible.
 
-# GUI state checks (do these at EVERY step)
-- **Is Code Builder open?** Look for "Code Builder" in the window title or as a visible panel.
-  If not open: `computer.keyboard.press("alt+4")` or use the menu View → Code Builder.
-- **Is there a blocking dialog?** (e.g., error popup, save dialog, import wizard)
-  If yes: dismiss it first (click OK/Cancel/close button) before proceeding.
-- **Did F5 run successfully?** Look for no error dialogs and check that the output file exists.
-  If errors appear: read them from the screen, fix the script, clear the editor (Ctrl+A → Delete),
-  re-type the corrected script with `computer.keyboard.write(...)`, and press F5 again.
-- **Is the correct worksheet active?** The script reads from `op.find_sheet()`.
-  If multiple sheets exist, click the correct sheet tab before running the script.
+# General rules (CRITICAL)
+- If the screen has not changed after 2 consecutive identical or near-identical actions, STOP repeating that action. Instead, try a completely different approach: use a keyboard shortcut, click a different button, or rethink your plan.
+- When closing a dialog, prefer clicking the text-labeled button (e.g. "Close", "Cancel", "OK") over the small X icon, as text buttons are larger and easier to hit accurately.
+- Always save output files to the exact path specified in the user objective.
+- If a dialog box appears unexpectedly, handle it (confirm, cancel, or dismiss) before continuing.
 
-Guidelines:
-1. Execute ONE GUI action per step, then wait for the next screen before continuing.
-2. Do not blindly copy-paste — always verify Code Builder is open and ready first.
-3. The template script is a reference only; adapt it fully to the task before inputting.
-4. If the script fails, diagnose from the on-screen error message and produce a corrected version.
-5. Always save output files to the exact path specified in the user objective.
-6. Verify results visually before marking DONE.
-{script_section}
 # Inputs
 1. User objective
-2. Window title (use this to detect which app/dialog is currently active)
-3. All window names
+2. Window title (active window)
+3. All window names (open apps)
 4. Clipboard content
-5. Text rendering (OCR) — use this to read error messages, dialog text, file paths
-6. Candidate screen elements (IDs for buttons, tabs, editor areas)
-7. Screen images (previous + current annotated)
-8. History of previous actions
+5. Text rendering (OCR)
+6. Candidate screen elements (ID, Type, Content, Location)
+7. Screen images (previous unannotated + current annotated)
+8. History of previous N actions
 9. Textual memory
 
 # Outputs
-1. Screen analysis: what is currently on screen, which window/dialog is active, any errors visible
-2. Plan: what steps remain to complete the task
-3. Next step rationale: which GUI element or keyboard shortcut to use and why
-4. Decision:
+1. Screen analysis: briefly describe the current screen and its relation to the objective.
+2. Multi-step plan: outline expected steps and current progress.
+3. Next step rationale: explain which element or shortcut to use and why.
+4. Decision block:
 ```decision
 COMMAND  # or DONE / FAIL / WAIT
 ```
-5. Action:
+5. Action code block:
 ```python
-# ONE computer module call (GUI action or clipboard operation)
+# one action using the computer module
 ```
-6. Memory:
+6. Memory update:
 ```memory
-# script content, error messages, or other info to carry across steps
+# key information to remember across steps
 ```
 
 # Available functions
 ```python
 computer.mouse.move_id(id=78)
-computer.mouse.move_abs(x=0.22, y=0.75)  # IMPORTANT: x and y are NORMALIZED (0.0–1.0), NOT pixels. Top-left=(0,0), bottom-right=(1,1). Example: center of screen is x=0.5, y=0.5.
-computer.mouse.single_click()
-computer.mouse.double_click()
-computer.mouse.right_click()
-computer.mouse.scroll(dir="down")
-computer.keyboard.write("text")
-computer.keyboard.press("key")   # e.g. "f5", "ctrl+a", "ctrl+v", "enter", "escape"
-computer.clipboard.copy_text("text")
-computer.clipboard.paste()
-computer.os.open_program("Origin64")
-computer.window_manager.switch_to_application("window_name")
-```
-
-# IMPORTANT: Coordinate format for move_abs
-`computer.mouse.move_abs(x, y)` takes **normalized** coordinates between 0.0 and 1.0.
-- x=0.0 is the left edge, x=1.0 is the right edge
-- y=0.0 is the top edge, y=1.0 is the bottom edge
-- Example: a button at pixel (640, 400) on a 1280×800 screen → x=0.5, y=0.5
-- **NEVER pass pixel values** (e.g. x=620, x=75, x=316) — this will crash the action.
-
-# Origin-specific tips
-- **Alt+4** opens the Code Builder. Confirm it is open before entering code.
-- **F5** runs the script in Code Builder. Watch the output/console area for errors.
-- **How to enter code**: click inside the Code Builder editor area to focus it, press Ctrl+A to
-  select all existing code, press Delete to clear, then use `computer.keyboard.write("...script...")`
-  to type the script directly into the editor.
-- **If Code Builder has no editable file tab** (no file name tab visible in the editor area): press Ctrl+N to create a new Python file first.
-- Use the Script Window (Window → Script Window) for short LabTalk commands if needed.
-- The active worksheet is accessed via `op.find_sheet()` in the Python script.
-- If multiple worksheets are open, click the correct sheet tab in Origin before running.
-- If the input data file has a **`.ogwu`** extension, it is an Origin project/worksheet file and cannot be directly imported as plain data. Convert it first: open it in Origin (File → Open), then export/save the data sheet as `.csv` or `.txt` via File → Export → ASCII before using it in scripts.
-"""
-
-
-def build_origin_raw_system_message(related_apps=None, script_content=None):
-    apps_str = ", ".join(related_apps) if related_apps else "Origin"
-
-    if script_content:
-        script_section = f"""\
-
-# Pre-written template script
-A domain-specific Python template script is provided below. It is already tested and correct.
-Your job is to:
-1. Read the task objective carefully.
-2. Adapt ONLY the user-configurable parameters at the top of the script.
-3. Keep the plotting/analysis logic unchanged.
-4. Type the adapted script into Origin's Code Builder via `computer.keyboard.write(...)` and run it with F5.
-
-```python
-{script_content}
-```
-"""
-    else:
-        script_section = ""
-
-    return f"""\
-You are Origin Script Helper, an AI agent that operates OriginLab using raw screenshots only.
-
-No element IDs or annotated regions are available in this mode. You must inspect the screenshot and estimate click positions with normalized coordinates.
-
-The relevant application(s) for this task: {apps_str}.
-
-# Core workflow
-1. Verify which window or dialog is active from the raw screenshot.
-2. Open Code Builder if needed, usually with Alt+4. If no editable file tab, press Ctrl+N.
-3. Click inside the Code Builder editor area to focus it, press Ctrl+A, then Delete to clear.
-4. Use `computer.keyboard.write("...full script...")` to type the script into the editor.
-5. Press F5 to run the script inside Code Builder.
-6. Inspect the raw screenshot for success, dialogs, or errors.
-7. Mark DONE only after visually confirming the result.
-
-Guidelines:
-1. Execute ONE coherent GUI interaction per step.
-2. Prefer keyboard shortcuts when possible.
-3. Use `computer.mouse.move_abs(...)` for coordinate-based clicks.
-4. Do not use `computer.mouse.move_id(...)` or `computer.clipboard.copy_image(...)` in this mode.
-5. If the script fails, read the visible error from the raw screenshot and correct the script.
-6. Always save output files to the exact path specified in the task.
-7. If the input data file has a **`.ogwu`** extension, convert it first (File → Open in Origin, then export as `.csv`/`.txt`) before importing or processing with scripts.
-{script_section}
-# Inputs
-1. User objective
-2. Window title
-3. All window names
-4. Clipboard content
-5. Screenshot size
-6. Raw screenshot attachments (previous screenshots may also be included)
-7. History of previous actions
-8. Textual memory
-
-# Outputs
-1. Screen analysis
-2. Plan
-3. Next-step rationale with approximate click target when needed
-4. Decision:
-```decision
-COMMAND  # or DONE / FAIL / WAIT
-```
-5. Action:
-```python
-# ONE coordinate-based interaction or keyboard shortcut
-```
-6. Memory:
-```memory
-# script content, error notes, or other carry-over information
-```
-
-# IMPORTANT: Coordinate format for move_abs
-`computer.mouse.move_abs(x, y)` takes **normalized** coordinates between 0.0 and 1.0.
-- x=0.0 is the left edge, x=1.0 is the right edge
-- y=0.0 is the top edge, y=1.0 is the bottom edge
-- Example: a button at pixel (640, 400) on a 1280×800 screen → x=0.5, y=0.5
-- **NEVER pass pixel values** (e.g. x=620, x=75, x=316) — this will crash the action.
-
-# Available functions
-```python
-computer.mouse.move_abs(x=0.22, y=0.75)  # x and y are NORMALIZED (0.0–1.0), NOT pixels
+computer.mouse.move_abs(x=0.22, y=0.75)
 computer.mouse.single_click()
 computer.mouse.double_click()
 computer.mouse.right_click()
@@ -934,24 +896,132 @@ computer.keyboard.write("text")
 computer.keyboard.press("key")
 computer.clipboard.copy_text("text")
 computer.clipboard.paste()
-computer.os.open_program("Origin64")
+computer.os.open_program("program_name")
 computer.window_manager.switch_to_application("window_name")
 ```
+{_build_origin_workflow_section(use_hint, script_section)}"""
+
+
+def build_origin_raw_system_message(related_apps=None, script_content=None, extra_note=None, use_hint=True):
+    if script_content:
+        extra_note_block = f"\n{extra_note}" if extra_note else ""
+        script_section = f"""
+# Reference template script
+A domain-specific Python template script is provided below as a reference. Use it as the basis for your script.
+
+CRITICAL RULES:
+- **Do NOT add `op.open(...)` or any file-loading code.** The data file is already loaded in
+  Origin's worksheet before the script runs. The script accesses data via `op.find_sheet()`.
+- **Do NOT add fallback/simulation data or try/except blocks** around the data loading.
+- **Use the reference script EXACTLY as provided. Do NOT modify labels, colors, modes, or any other parameters.**
+
+The ONLY parameter you MUST update:
+1. **`save_path`** — set to the EXACT output file path from the task instruction.
+   Example: `save_path = r'C:\\Users\\Docker\\Desktop\\setup\\output_result\\origin\\FTIR3.png'`
+{extra_note_block}
+```python
+{script_content}
+```
 """
+    else:
+        script_section = ""
+
+    _task_desc = (
+        "You complete tasks by writing Python (originpro) scripts in Origin's Code Builder and running them, "
+        "while observing the raw GUI screenshots and taking direct GUI actions when needed."
+        if use_hint else
+        "You complete tasks by interacting with OriginLab through the GUI to produce the required plots and output files. "
+        "Explore the interface freely to determine the best approach."
+    )
+
+    return f"""\
+You are an AI agent that controls OriginLab using raw screenshots only.
+
+This mode does not provide element IDs or annotated bounding boxes. You must inspect the screenshot and estimate click locations with normalized coordinates.
+
+{_task_desc}
+
+Follow these guidelines:
+1. Plan efficiently with minimal steps. Do not try to complete the entire task in one step.
+2. Execute ONE coherent interaction per step, then wait for the next screen.
+3. Use `computer.mouse.move_abs(x=..., y=...)` for clicks — coordinates are NORMALIZED (0.0–1.0), NOT pixels.
+4. Prefer keyboard shortcuts when reliable.
+5. Do not use `computer.mouse.move_id(...)` in this mode — no element IDs are available.
+6. Verify progress by comparing the latest screenshot with previous screenshots and action history.
+
+# General rules (CRITICAL)
+- If the screen has not changed after 2 consecutive identical or near-identical actions, STOP repeating that action. Instead, try a completely different approach: use a keyboard shortcut, click a different button, or rethink your plan.
+- When closing a dialog, prefer clicking the text-labeled button (e.g. "Close", "Cancel", "OK") over the small X icon.
+- Always save output files to the exact path specified in the user objective.
+- If a dialog box appears unexpectedly, handle it (confirm, cancel, or dismiss) before continuing.
+
+# Inputs
+1. User objective
+2. Window title (active window)
+3. All window names (open apps)
+4. Clipboard content
+5. Raw screenshot attachments (previous screenshots may also be included)
+6. History of previous actions
+7. Textual memory
+
+# Outputs
+1. Screen analysis: briefly describe the current screen and its relation to the objective.
+2. Multi-step plan: outline expected steps and current progress.
+3. Next step rationale: explain which area to click or shortcut to use, with estimated coordinates.
+4. Decision block:
+```decision
+COMMAND  # or DONE / FAIL / WAIT
+```
+5. Action code block:
+```python
+# one coordinate-based interaction or keyboard shortcut
+```
+6. Memory update:
+```memory
+# key information to remember across steps
+```
+
+# Available functions
+```python
+computer.mouse.move_abs(x=0.22, y=0.75)
+computer.mouse.single_click()
+computer.mouse.double_click()
+computer.mouse.right_click()
+computer.mouse.scroll(dir="down")
+computer.keyboard.write("text")
+computer.keyboard.press("key")
+computer.clipboard.copy_text("text")
+computer.clipboard.paste()
+computer.os.open_program("program_name")
+computer.window_manager.switch_to_application("window_name")
+```
+{_build_origin_workflow_section(use_hint, script_section)}"""
 
 
 # ---------------------------------------------------------------------------
 # Code Agent system prompt  (for API / database tasks: OQMD, Materials Project …)
 # ---------------------------------------------------------------------------
 
-def build_code_system_message(mp_api_key: str = "") -> str:
-    """Build the system prompt for CodeAgent, optionally embedding the MP API key."""
+_CODE_API_HINTS_HEADER = "\n# API reference"
+
+
+def build_code_system_message(mp_api_key: str = "", use_api_hints: bool = True) -> str:
+    """Build the system prompt for CodeAgent.
+
+    Args:
+        mp_api_key: If provided, embeds the key directly into the prompt so the
+            LLM can use it without os.getenv().
+        use_api_hints: If True (default), include the '# API reference' section
+            with concrete code examples for MP, OQMD, OPTIMADE and pymatgen.
+            Set to False for the code-hint ablation — the LLM receives only
+            general rules and must rely on its own knowledge of each API.
+    """
     api_key_section = ""
     if mp_api_key:
         api_key_section = f"""
 - **Materials Project API key**: use `MP_API_KEY = "{mp_api_key}"` at the top of your script. Use this variable whenever `MPRester` or OPTIMADE MP queries need a key. Do NOT use os.getenv() or dotenv.
 """
-    return f"""\
+    full_msg = f"""\
 You are MatCode Helper, an AI agent that writes Python scripts to query materials-science databases and APIs.
 
 Your output is a single, complete, self-contained Python script that:
@@ -962,6 +1032,11 @@ Your output is a single, complete, self-contained Python script that:
 Rules:
 - Output ONLY a ```python ... ``` code block. No prose before or after.
 - Do NOT include venv activation — the correct environment is already active.
+- **Python version is 3.10** — do NOT use syntax or stdlib features from Python 3.11+
+  (e.g. `typing.NotRequired`, `tomllib`, `match` statements with complex patterns).
+  Use `typing_extensions` for anything not in `typing` on 3.10.
+- **mp-api version is 0.39.5 / emmet-core 0.78.7** — use only the API surface available
+  in these versions. Do not use fields or methods added in later releases.
 - Use only packages available in the task environment (requests, mp_api, pymatgen, optimade-client, qmpy_rester, etc.).
 - Handle errors gracefully (try/except) and always write a result file even if partial data is retrieved.
 - Do not open any GUI windows.
@@ -979,17 +1054,33 @@ with MPRester(MP_API_KEY) as mpr:
 ```
 
 ## OQMD (`oqmd` tasks)
+**IMPORTANT: Use `requests` directly with the REST API endpoint below. Do NOT use `qmpy_rester` — it is NOT available in the venv.**
+**IMPORTANT: Always use retry logic with a short per-attempt timeout — oqmd.org can be slow from cloud environments.**
 ```python
-import requests
+import requests, time
 OQMD_API = "https://oqmd.org/oqmdapi/formationenergy"
-resp = requests.get(OQMD_API, params={{"format": "json", "filter": "element_set=Fe,O AND ntypes=2", "limit": 100, "offset": 0}}, timeout=60)
-data = resp.json()["data"]   # list of entry dicts
+
+def oqmd_get(params, retries=5, timeout=60):
+    for i in range(retries):
+        try:
+            resp = requests.get(OQMD_API, params=params, timeout=timeout)
+            resp.raise_for_status()
+            return resp.json()
+        except Exception as e:
+            if i < retries - 1:
+                time.sleep(5 * (i + 1))
+            else:
+                raise
+
+data = oqmd_get({{"format": "json", "filter": "element_set=Fe,O AND ntypes=2", "limit": 10, "offset": 0}})["data"]
 # each entry has: name, entry_id, delta_e, stability, spacegroup, volume, unit_cell, site_atoms, …
 ```
 
 ## OPTIMADE (`optimade` tasks)
-**IMPORTANT: Do NOT use `OptimadeClient` — it has connection issues on this server. Use `requests` directly instead.**
+**Available packages: `requests`, `optimade` (base), `optimade[server]`.**
+**Do NOT use `OptimadeClient` from `optimade.client` — it is not installed.**
 
+Preferred approach — use `requests` directly (most reliable):
 ```python
 import requests
 
@@ -1015,15 +1106,30 @@ entries = optimade_query('nelements=2 AND elements HAS "Si"')
 #   "chemical_formula_reduced": "...", "nsites": N,
 #   "lattice_vectors": [[...],[...],[...]], "cartesian_site_positions": [...],
 #   "species_at_sites": [...], "_mp_bandgap": ..., ...}}}}
+```
+
+Alternative — use `optimade` base package models/filters (no `OptimadeClient`):
+```python
+from optimade.filterparser import LarkParser
+from optimade.filtertransformers.mongo import MongoTransformer
+# parse and validate OPTIMADE filter strings
+parser = LarkParser()
+tree = parser.parse('nelements=2 AND elements HAS "Si"')
+```
 
 # If also need MPRester for the same task, import and use MP_API_KEY as above.
-```
 
 ## pymatgen (pure-Python tasks, no external API)
 - `from pymatgen.core import Structure, Lattice, Element`
 - `from pymatgen.symmetry.analyzer import SpacegroupAnalyzer`
 - `from pymatgen.io.vasp import Poscar`
 - Use `Structure.to(fmt="poscar")` / `Structure.from_file(path)` for file I/O."""
+    if use_api_hints:
+        return full_msg
+    idx = full_msg.find(_CODE_API_HINTS_HEADER)
+    if idx == -1:
+        return full_msg
+    return full_msg[:idx].rstrip() + "\n"
 
 
 # Backward-compatible constant (no API key injected).

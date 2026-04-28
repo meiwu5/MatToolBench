@@ -1,7 +1,7 @@
 from mp_api.client import MPRester
 
 # 你的API密钥
-api_key = "oUXXrSHjpKWSbjmHP1HT5YNVZCi21rbP"
+api_key = ""
 
 with MPRester(api_key) as mpr:
     # 下载指定10个材料ID的数据

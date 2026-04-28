@@ -480,6 +480,18 @@
       font-weight: 700;
       letter-spacing: .02em;
     }
+    .software-links {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+      margin: 0 0 28px; font-size: .85rem; color: var(--muted);
+    }
+    .software-links a {
+      display: inline-block; padding: 3px 11px;
+      border: 1px solid var(--border); border-radius: 20px;
+      font-size: .82rem; color: var(--navy); text-decoration: none;
+      transition: background .15s, color .15s;
+    }
+    .software-links a:hover { background: var(--navy); color: #fff; border-color: var(--navy); }
+
     .ts-avantage { background: #fde8d8; color: #b8470d; }
     .ts-dm       { background: #d8eaf8; color: #1a5f9e; }
     .ts-jade     { background: #d6f0e0; color: #1d6e3b; }
@@ -589,21 +601,21 @@
       overflow-x: auto; border-radius: 14px;
       border: 1px solid var(--border); box-shadow: var(--shadow-sm);
     }
-    table { width: 100%; border-collapse: collapse; font-size: .82rem; background: var(--card); }
+    table { width: 100%; border-collapse: collapse; font-size: .78rem; background: var(--card); }
     thead tr:first-child th {
       background: linear-gradient(180deg, #eef5ff 0%, #e4f0fb 100%);
-      font-weight: 800; padding: 11px 12px; text-align: center;
+      font-weight: 800; padding: 9px 8px; text-align: center;
       white-space: nowrap; border-bottom: 1px solid var(--border);
       color: var(--text); position: sticky; top: 0; z-index: 2;
     }
     thead tr:last-child th {
-      background: #f4f9ff; font-weight: 700; padding: 8px 12px;
+      background: #f4f9ff; font-weight: 700; padding: 7px 8px;
       white-space: nowrap; border-bottom: 2px solid var(--border);
-      color: var(--muted); font-size: .78rem;
+      color: var(--muted); font-size: .74rem;
       position: sticky; top: 0; z-index: 2;
     }
     tbody tr:hover { background: var(--row-hover); }
-    tbody td { padding: 9px 12px; border-bottom: 1px solid #edf2f9; text-align: center; white-space: nowrap; }
+    tbody td { padding: 7px 8px; border-bottom: 1px solid #edf2f9; text-align: center; white-space: nowrap; }
     tbody td.col-domain { text-align: left; padding-left: 26px; color: var(--muted); font-weight: 500; }
     tbody tr.avg-row td { font-style: italic; background: #f4f9ff; font-weight: 700; }
     tbody tr.group-sep td { border-top: 2px solid var(--border); }
@@ -615,12 +627,32 @@
     td.model-group-l { border-left: 2px solid var(--border); }
 
     .val { font-variant-numeric: tabular-nums; }
+    /* per-domain best → green */
     .val-best {
       color: #fff; font-weight: 800;
-      background: linear-gradient(135deg, var(--green), #3aaa5c);
+      background: linear-gradient(135deg, #1e7e40, #27ae60);
       border-radius: 5px; padding: 2px 7px;
+      box-shadow: 0 1px 4px rgba(39,174,96,.35);
     }
-    .val-second { color: var(--navy); font-weight: 700; }
+    /* per-domain second best → blue underline */
+    .val-second {
+      color: #1a6fb5; font-weight: 700;
+      border-bottom: 2px solid #2980b9;
+      padding-bottom: 1px;
+    }
+    /* Overall column best → red */
+    .val-best-overall {
+      color: #fff; font-weight: 800;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      border-radius: 5px; padding: 2px 7px;
+      box-shadow: 0 1px 4px rgba(192,57,43,.35);
+    }
+    /* Overall column second → red underline */
+    .val-second-overall {
+      color: #c0392b; font-weight: 700;
+      border-bottom: 2px solid #e74c3c;
+      padding-bottom: 1px;
+    }
     .val-na { color: var(--na); font-style: italic; }
 
     /* ── Evaluator-metrics section ── */
@@ -634,18 +666,27 @@
 
     /* Transposed leaderboard */
     .model-cell {
-      font-weight: 700; text-align: left; padding-left: 14px;
+      font-weight: 700; text-align: left; padding-left: 10px;
       border-right: 2px solid var(--border); color: var(--navy);
-      white-space: nowrap; min-width: 165px;
+      white-space: nowrap; min-width: 148px;
     }
-    td.avg-col  { background: rgba(26,58,110,.035); border-left: 1px solid var(--border); }
-    th.avg-th   { background: rgba(26,58,110,.06);  border-left: 1px solid var(--border); font-style: italic; }
+    /* Origin is a single aggregate column — keep it narrow */
+    th.group-origin { min-width: 0; }
+    td.origin-col, th.origin-col { width: 56px; min-width: 56px; max-width: 64px; }
+    td.avg-col  { background: rgba(26,58,110,.055); border-left: 2px solid rgba(26,58,110,.15); font-weight: 600; }
+    th.avg-th   { background: rgba(26,58,110,.09);  border-left: 2px solid rgba(26,58,110,.2); font-style: italic; }
+    /* Overall column — red-tinted, right border separator */
+    td.overall-col { background: rgba(192,57,43,.07); border-right: 3px solid rgba(192,57,43,.35); font-weight: 700; }
+    th.overall-th  { background: rgba(192,57,43,.12); border-right: 3px solid rgba(192,57,43,.35); }
     th.group-header { font-size: .85rem; font-weight: 800; padding: 10px 8px; border-bottom: 1px solid var(--border); }
     th.group-gui     { background: rgba(32,96,168,.1);  color: var(--navy); border-left: 2px solid rgba(32,96,168,.3); }
     th.group-origin  { background: rgba(46,139,72,.1);  color: var(--green); border-left: 2px solid rgba(46,139,72,.3); }
     th.group-code    { background: rgba(208,120,16,.1); color: var(--orange); border-left: 2px solid rgba(208,120,16,.3); }
-    th.group-overall { background: rgba(26,58,110,.13); color: var(--navy); border-left: 2px solid rgba(26,58,110,.4); }
+    th.group-overall { background: rgba(192,57,43,.14); color: #b03020; border-right: 3px solid rgba(192,57,43,.35); }
     td.group-sep-l   { border-left: 2px solid var(--border); }
+    /* Rank badge on model name */
+    .rank-badge { display:inline-block; min-width:18px; font-size:.72rem; font-weight:800; color:#fff;
+      background: rgba(26,58,110,.7); border-radius:3px; padding:1px 4px; margin-right:5px; text-align:center; }
     .val-sr { font-size: .71rem; color: var(--muted); margin-top: 2px; line-height: 1.1; }
 
     /* ══════════════════════════════════════
@@ -960,6 +1001,156 @@
       width: 18px; height: 12px; border-radius: 3px; flex-shrink: 0;
       background: rgba(100,140,200,.2); border: 1px solid rgba(100,140,200,.3);
     }
+    .abl-leg-dotted {
+      width: 24px; height: 3px; flex-shrink: 0;
+      background: repeating-linear-gradient(
+        90deg,
+        currentColor 0, currentColor 3px,
+        transparent 3px, transparent 6px
+      );
+    }
+    .abl-badge-claude {
+      background: rgba(123,63,168,.1); color: #7b3fa8;
+      border: 1px solid rgba(123,63,168,.22);
+    }
+    .abl-divider {
+      margin: 56px 0 0;
+      border: none;
+      border-top: 2px dashed var(--border);
+      position: relative;
+    }
+    .abl-divider-label {
+      position: absolute; top: -13px; left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg);
+      padding: 0 18px;
+      font-size: .72rem; font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted);
+    }
+    .abl-subsec-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: .7rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--green); background: rgba(46,139,72,.07); border: 1px solid rgba(46,139,72,.18);
+      border-radius: 999px; padding: 4px 14px;
+      margin: 44px 0 10px;
+    }
+    .abl-subsec-title {
+      font-size: 1.12rem; font-weight: 800; color: var(--text); margin-bottom: 8px;
+    }
+    .abl-subsec-body {
+      font-size: .9rem; color: var(--muted); line-height: 1.82; max-width: 760px;
+      margin-bottom: 28px;
+    }
+    /* ── Ablation parameter table ── */
+    .abl-param-table-wrap {
+      overflow-x: auto; margin-bottom: 36px;
+    }
+    .abl-param-table {
+      width: 100%; border-collapse: collapse;
+      font-size: .84rem; color: var(--text);
+    }
+    .abl-param-table th {
+      background: #f4f6f9; font-weight: 700; letter-spacing: .04em;
+      padding: 9px 14px; border-bottom: 2px solid #dde1e8;
+      white-space: nowrap; text-align: left;
+    }
+    .abl-param-table td {
+      padding: 8px 14px; border-bottom: 1px solid #edf0f5;
+      vertical-align: middle;
+    }
+    .abl-param-table tr:last-child td { border-bottom: none; }
+    .abl-param-table tr:hover td { background: #f8f9fc; }
+    .abl-param-table td:first-child { font-weight: 700; color: var(--green); }
+    .abl-param-table .origin-row td:first-child { color: #7b3fa8; }
+    .abl-param-table code {
+      background: #f0f2f7; padding: 1px 5px; border-radius: 4px;
+      font-size: .82em;
+    }
+    .abl-param-table .tick   { color: #2e8b48; font-weight: 800; }
+    .abl-param-table .cross  { color: #c0392b; font-weight: 800; }
+    .abl-param-table .cond-label {
+      display: inline-block;
+      padding: 2px 9px; border-radius: 999px; font-size: .78em; font-weight: 700;
+    }
+    .abl-param-table .cond-full    { background: #e6f4ec; color: #1d6e38; }
+    .abl-param-table .cond-partial { background: #fff3cd; color: #7d5700; }
+    .abl-param-table .cond-none    { background: #fdecea; color: #9c2718; }
+    .abl-table-note {
+      margin: .6em 0 0; font-size: .82em; color: var(--muted);
+      line-height: 1.55; padding: 0 .2em;
+    }
+    .abl-table-note sup { font-size: .85em; }
+
+    /* ══════════════════════════════════════
+       TRAJECTORY VIEWER
+    ══════════════════════════════════════ */
+    .traj-tool-tabs {
+      display: flex; flex-wrap: wrap; gap: 10px;
+      justify-content: center; margin-bottom: 28px;
+    }
+    .traj-tab {
+      padding: 8px 22px; border-radius: 999px;
+      border: 2px solid var(--border); background: var(--card);
+      font-size: .88rem; font-weight: 700; cursor: pointer;
+      color: var(--muted); transition: all .2s;
+    }
+    .traj-tab.active { border-color: transparent; color: #fff; box-shadow: var(--shadow-sm); }
+    .traj-task-info { text-align: center; max-width: 720px; margin: 0 auto 22px; }
+    .traj-task-label {
+      font-size: .74rem; font-weight: 700; color: var(--muted);
+      text-transform: uppercase; letter-spacing: .1em; margin-bottom: 6px;
+    }
+    .traj-task-desc {
+      font-size: .95rem; font-weight: 500; color: var(--text); line-height: 1.55;
+    }
+    .traj-viewer-wrap { max-width: 900px; margin: 0 auto; }
+    .traj-viewer { display: flex; align-items: center; gap: 14px; }
+    .traj-nav-btn {
+      width: 46px; height: 46px; border-radius: 50%;
+      border: 2px solid var(--border); background: var(--card);
+      font-size: 1.2rem; cursor: pointer; flex-shrink: 0;
+      color: var(--navy); transition: all .15s;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .traj-nav-btn:hover:not(:disabled) { background: var(--navy); color: #fff; border-color: var(--navy); }
+    .traj-nav-btn:disabled { opacity: .3; cursor: not-allowed; }
+    .traj-img-box {
+      flex: 1; position: relative; border-radius: 14px; overflow: hidden;
+      box-shadow: var(--shadow-md); background: #0d1b2e; aspect-ratio: 16 / 9;
+    }
+    .traj-img-box img {
+      width: 100%; height: 100%; object-fit: contain; display: block; transition: opacity .18s;
+    }
+    .traj-img-box img.fading { opacity: 0; }
+    .traj-step-badge {
+      position: absolute; bottom: 12px; right: 14px;
+      background: rgba(0,0,0,.55); color: #fff; backdrop-filter: blur(6px);
+      border-radius: 20px; padding: 3px 13px;
+      font-size: .82rem; font-weight: 700; pointer-events: none;
+    }
+    .traj-dots { display: flex; gap: 7px; justify-content: center; margin-top: 14px; }
+    .traj-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--border); cursor: pointer; transition: background .15s, transform .15s;
+    }
+    .traj-dot.active { transform: scale(1.45); }
+    .traj-download-row {
+      text-align: center; margin-top: 44px; padding-top: 32px; border-top: 1px solid var(--border);
+    }
+    .traj-download-row p { font-size: .9rem; color: var(--muted); margin-bottom: 18px; }
+    .traj-dl-btn {
+      display: inline-flex; align-items: center; gap: 9px;
+      padding: 12px 30px; border-radius: 10px; text-decoration: none;
+      font-size: .9rem; font-weight: 700; transition: all .2s;
+      background: linear-gradient(135deg, var(--navy), var(--blue));
+      color: #fff; box-shadow: var(--shadow-sm);
+    }
+    .traj-dl-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    @media (max-width: 640px) {
+      .traj-nav-btn { width: 36px; height: 36px; font-size: 1rem; }
+      .traj-viewer { gap: 8px; }
+    }
 
   </style>
 </head>
@@ -992,6 +1183,8 @@
     <a href="#ablation"    data-lang-cn>消融</a>
     <a href="#eval-metrics" data-lang-en>Evaluator</a>
     <a href="#eval-metrics" data-lang-cn>评测器</a>
+    <a href="#trajectory"   data-lang-en>Trajectories</a>
+    <a href="#trajectory"   data-lang-cn>参考轨迹</a>
     <a href="https://github.com/meiwu5/MatToolBench" target="_blank">GitHub</a>
     <button class="lang-btn" onclick="toggleLang()" id="lang-toggle">中文</button>
   </div>
@@ -1041,13 +1234,23 @@
       <span data-lang-en>GitHub Repo</span>
       <span data-lang-cn>代码仓库</span>
     </a>
+    <a href="#demo" class="btn-secondary">
+      <span data-lang-en>▶ Watch Demo</span>
+      <span data-lang-cn>▶ 观看演示</span>
+    </a>
     <a href="#leaderboard" class="btn-secondary">
       <span data-lang-en>View Leaderboard ↓</span>
       <span data-lang-cn>查看榜单 ↓</span>
     </a>
-    <a href="#demo" class="btn-secondary">
-      <span data-lang-en>▶ Watch Demo</span>
-      <span data-lang-cn>▶ 观看演示</span>
+    <a href="https://drive.google.com/drive/folders/1JEquB482BRsghgyJbWcwEBdZSXL_97e9?usp=drive_link" target="_blank" class="btn-primary">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16"><path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1z"/><path d="M5 11.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m-2 0a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0m5-2H5a.5.5 0 0 0 0 1h3a.5.5 0 0 0 0-1"/></svg>
+      <span data-lang-en>VM Image &amp; Setup</span>
+      <span data-lang-cn>虚拟机镜像与配置</span>
+    </a>
+    <a href="https://drive.google.com/drive/folders/12fmmf8sXYNRslch-7w7mYktyTfV0GNcc?usp=drive_link" target="_blank" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 87.3 78" fill="currentColor"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0a15.6 15.6 0 0 0 2.1 7.9z" fill="#0066da"/><path d="M43.65 25L29.9 1.2a15.3 15.3 0 0 0-3.3 3.3L2.1 45.5A15.6 15.6 0 0 0 0 53H27.5z" fill="#00ac47"/><path d="M73.55 76.8a15.3 15.3 0 0 0 3.3-3.3l1.6-2.75 7.65-13.25a15.6 15.6 0 0 0 2.1-7.9H59.8l5.85 11.45z" fill="#ea4335"/><path d="M43.65 25L57.4 1.2A15.3 15.3 0 0 0 49.5 0h-11.7a15.3 15.3 0 0 0-7.9 1.2z" fill="#00832d"/><path d="M59.8 53H27.5l-13.75 23.8a15.3 15.3 0 0 0 7.9 1.2h44.1a15.3 15.3 0 0 0 7.9-1.2z" fill="#2684fc"/><path d="M73.4 26.5l-13.75-23.8a15.3 15.3 0 0 0-2.25-1.5L43.65 25 59.8 53h27.45a15.6 15.6 0 0 0-2.1-7.9z" fill="#ffba00"/></svg>
+      <span data-lang-en>Evaluate Dataset</span>
+      <span data-lang-cn>评测数据集</span>
     </a>
   </div>
 </div>
@@ -1149,10 +1352,12 @@
     <p class="sec-body fade-in" data-lang-en>
       See how LLM agents navigate professional materials science software, write analysis scripts,
       and query scientific databases to complete complex real-world tasks.
+      <strong style="color:#d07810">⚡ Sped up</strong>
     </p>
     <p class="sec-body fade-in" data-lang-cn>
       观看 LLM 智能体如何操作专业材料科学软件、编写分析脚本，
       并查询科学数据库来完成复杂的真实世界任务。
+      <strong style="color:#d07810">⚡ 视频已加速</strong>
     </p>
 
     <!--
@@ -1165,11 +1370,9 @@
         <iframe src="//player.bilibili.com/player.html?bvid=BVxxxxxxx" allowfullscreen></iframe>
     -->
     <div class="video-wrap fade-in" id="video-container">
-      <div class="video-placeholder">
-        <div class="play-btn">▶</div>
-        <p data-lang-en>Demo video coming soon</p>
-        <p data-lang-cn>演示视频即将上线</p>
-      </div>
+      <video controls preload="metadata" style="width:100%;height:100%;display:block;border-radius:inherit;background:#000">
+        <source src="demo.mp4" type="video/mp4">
+      </video>
     </div>
   </div>
 </section>
@@ -1196,6 +1399,17 @@
       Origin 任务涵盖 6 种图表类型（XRD、XPS、拉曼、FTIR、电化学循环、自由能），无难度区分。
       Code 任务评测 MP、OQMD、OPTIMADE 和 Pymatgen 的多属性数据库查询。
     </p>
+
+    <div class="software-links fade-in">
+      <span data-lang-en>Official software sites:</span>
+      <span data-lang-cn>软件官网：</span>
+      <a href="https://jp-minerals.org/vesta/en/" target="_blank">VESTA</a>
+      <a href="https://materialsdata.com/jade.html" target="_blank">JADE</a>
+      <a href="https://www.originlab.com/" target="_blank">OriginPro</a>
+      <a href="https://www.3ds.com/products/biovia/materials-studio" target="_blank">Materials Studio</a>
+      <a href="https://www.thermofisher.com/us/en/home/materials-science/learning-center/surface-analysis/xps.html" target="_blank">Avantage</a>
+      <a href="https://www.gatan.com/products/tem-analysis/gatan-microscopy-suite-software" target="_blank">Digital Micrograph</a>
+    </div>
 
     <!-- Two-column: table (left) + CLI image (right) -->
     <div class="task-stats-layout fade-in">
@@ -1228,22 +1442,22 @@
               <tr>
                 <td class="ts-cat ts-cat-gui" rowspan="5"><span data-lang-en>GUI</span><span data-lang-cn>图形界面</span></td>
                 <td class="ts-domain"><span class="ts-badge ts-avantage">Avantage</span></td>
-                <td class="ts-num">20</td><td class="ts-emh">13 / 2 / 5</td>
-                <td class="ts-avg">3.75</td><td class="ts-total">75</td>
+                <td class="ts-num">20</td><td class="ts-emh">14 / 2 / 4</td>
+                <td class="ts-avg">3.25</td><td class="ts-total">65</td>
               </tr>
               <tr>
                 <td class="ts-domain"><span class="ts-badge ts-dm">DM</span></td>
-                <td class="ts-num">20</td><td class="ts-emh">13 / 4 / 3</td>
+                <td class="ts-num">20</td><td class="ts-emh">13 / 5 / 2</td>
                 <td class="ts-avg">3.35</td><td class="ts-total">67</td>
               </tr>
               <tr>
                 <td class="ts-domain"><span class="ts-badge ts-jade">JADE</span></td>
-                <td class="ts-num">20</td><td class="ts-emh">14 / 3 / 3</td>
-                <td class="ts-avg">3.45</td><td class="ts-total">69</td>
+                <td class="ts-num">20</td><td class="ts-emh">15 / 5 / 0</td>
+                <td class="ts-avg">2.95</td><td class="ts-total">59</td>
               </tr>
               <tr>
                 <td class="ts-domain"><span class="ts-badge ts-ms">MS</span></td>
-                <td class="ts-num">20</td><td class="ts-emh">6 / 6 / 8</td>
+                <td class="ts-num">20</td><td class="ts-emh">6 / 11 / 3</td>
                 <td class="ts-avg">4.10</td><td class="ts-total">82</td>
               </tr>
               <tr>
@@ -1355,6 +1569,66 @@
           <li><span class="cat-dot" style="background:#9b59b6"></span><span data-lang-en>Database Queries (MP, OQMD, PyMatgen, OPTIMADE)</span><span data-lang-cn>数据库查询（MP、OQMD、PyMatgen、OPTIMADE）</span></li>
         </ul>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ TRAJECTORY VIEWER ═══════════════════ -->
+<section id="trajectory" style="background:#fff;">
+  <div class="container">
+    <div class="sec-eyebrow fade-in" data-lang-en>🎬 Reference Trajectories</div>
+    <div class="sec-eyebrow fade-in" data-lang-cn>🎬 参考操作轨迹</div>
+
+    <h2 class="sec-title fade-in" data-lang-en>Step-by-Step <span class="g">Human Reference Trajectories</span></h2>
+    <h2 class="sec-title fade-in" data-lang-cn>逐步 <span class="g">人类参考操作</span> 回放</h2>
+
+    <p class="sec-body fade-in" data-lang-en>
+      Browse human-recorded reference trajectories for selected GUI tasks across five materials science tools.
+      Each step captures the correct desktop action sequence for completing the instruction,
+      serving as the ground-truth basis for automated evaluation accuracy.
+    </p>
+    <p class="sec-body fade-in" data-lang-cn>
+      浏览五款材料科学软件上选定 GUI 任务的人类示范操作轨迹。
+      每一步均记录完成该指令的正确桌面操作序列，作为自动化评测准确率校验的标准参照。
+    </p>
+
+    <!-- Tool selector tabs -->
+    <div class="traj-tool-tabs fade-in" id="trajTabs"></div>
+
+    <!-- Task description -->
+    <div class="traj-task-info fade-in">
+      <div class="traj-task-label" id="trajTaskLabel">TASK</div>
+      <div class="traj-task-desc" data-lang-en id="trajTaskDescEn"></div>
+      <div class="traj-task-desc" data-lang-cn id="trajTaskDescCn"></div>
+    </div>
+
+    <!-- Screenshot viewer -->
+    <div class="traj-viewer-wrap fade-in">
+      <div class="traj-viewer">
+        <button class="traj-nav-btn" id="trajPrev" onclick="trajNav(-1)" disabled>&#8592;</button>
+        <div class="traj-img-box">
+          <img id="trajImg" src="" alt="Trajectory screenshot" />
+          <div class="traj-step-badge" id="trajBadge">Step 1 / 1</div>
+        </div>
+        <button class="traj-nav-btn" id="trajNext" onclick="trajNav(+1)">&#8594;</button>
+      </div>
+      <div class="traj-dots" id="trajDots"></div>
+    </div>
+
+    <!-- Download full dataset -->
+    <div class="traj-download-row fade-in">
+      <p data-lang-en>
+        The complete reference trajectory dataset — 100 human-recorded GUI instruction trajectories across five materials science tools — is available on Google Drive.
+      </p>
+      <p data-lang-cn>
+        完整参考轨迹数据集（五款材料科学软件共 100 条人类 GUI 操作指令轨迹）已托管于 Google Drive。
+      </p>
+      <a href="https://drive.google.com/drive/folders/12fmmf8sXYNRslch-7w7mYktyTfV0GNcc?usp=drive_link"
+         target="_blank" class="traj-dl-btn">
+        <svg width="16" height="16" viewBox="0 0 87.3 78" fill="currentColor" style="display:inline-block;vertical-align:middle;margin-right:6px;"><path d="M6.6 66.85l3.85 6.65c.8 1.4 1.95 2.5 3.3 3.3l13.75-23.8H0a15.6 15.6 0 0 0 2.1 7.9z" fill="#0066da"/><path d="M43.65 25L29.9 1.2a15.3 15.3 0 0 0-3.3 3.3L2.1 45.5A15.6 15.6 0 0 0 0 53H27.5z" fill="#00ac47"/><path d="M73.55 76.8a15.3 15.3 0 0 0 3.3-3.3l1.6-2.75 7.65-13.25a15.6 15.6 0 0 0 2.1-7.9H59.8l5.85 11.45z" fill="#ea4335"/><path d="M43.65 25L57.4 1.2A15.3 15.3 0 0 0 49.5 0h-11.7a15.3 15.3 0 0 0-7.9 1.2z" fill="#00832d"/><path d="M59.8 53H27.5l-13.75 23.8a15.3 15.3 0 0 0 7.9 1.2h44.1a15.3 15.3 0 0 0 7.9-1.2z" fill="#2684fc"/><path d="M73.4 26.5l-13.75-23.8a15.3 15.3 0 0 0-2.25-1.5L43.65 25 59.8 53h27.45a15.6 15.6 0 0 0-2.1-7.9z" fill="#ffba00"/></svg>
+        <span data-lang-en>Download on Google Drive</span>
+        <span data-lang-cn>在 Google Drive 下载</span>
+      </a>
     </div>
   </div>
 </section>
@@ -1495,10 +1769,10 @@
         <button class="sub-tab-btn" data-acc-sub="sr" onclick="switchAccSub('sr')" data-lang-cn>成功率 (%)</button>
       </div>
       <div class="sub-tabs" id="sub-eff" style="display:none">
-        <button class="sub-tab-btn active" data-eff-sub="eff" onclick="switchEffSub('eff')" data-lang-en>Eff</button>
-        <button class="sub-tab-btn active" data-eff-sub="eff" onclick="switchEffSub('eff')" data-lang-cn>效率</button>
-        <button class="sub-tab-btn" data-eff-sub="effstar" onclick="switchEffSub('effstar')" data-lang-en>Eff*</button>
-        <button class="sub-tab-btn" data-eff-sub="effstar" onclick="switchEffSub('effstar')" data-lang-cn>成功效率</button>
+        <button class="sub-tab-btn active" data-eff-sub="steps" onclick="switchEffSub('steps')" data-lang-en>Steps</button>
+        <button class="sub-tab-btn active" data-eff-sub="steps" onclick="switchEffSub('steps')" data-lang-cn>步数</button>
+        <button class="sub-tab-btn" data-eff-sub="stepsstar" onclick="switchEffSub('stepsstar')" data-lang-en>Steps*</button>
+        <button class="sub-tab-btn" data-eff-sub="stepsstar" onclick="switchEffSub('stepsstar')" data-lang-cn>步数*</button>
         <button class="sub-tab-btn" data-eff-sub="ftr" onclick="switchEffSub('ftr')" data-lang-en>FTR (%)</button>
         <button class="sub-tab-btn" data-eff-sub="ftr" onclick="switchEffSub('ftr')" data-lang-cn>错误终止率 (%)</button>
       </div>
@@ -1513,28 +1787,30 @@
         <p data-lang-cn><strong>Score</strong>：子标准归一化平均得分。&ensp;<strong>SR&thinsp;(%)</strong>：成功率（所有子标准均满足）。</p>
       </div>
       <div class="legend">
-        <div class="legend-item"><span class="dot" style="background:var(--green)"></span><span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
-        <div class="legend-item"><span class="dot" style="background:var(--navy)"></span><span data-lang-en>Second best</span><span data-lang-cn>次优</span></div>
-        <div class="legend-item"><span style="color:var(--na);font-style:italic">—</span>&nbsp;<span data-lang-en>Not yet evaluated</span><span data-lang-cn>待评测</span></div>
+        <div class="legend-item"><span class="val val-best" style="font-size:.78rem;padding:1px 6px">99</span>&nbsp;<span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
+        <div class="legend-item"><span class="val val-second" style="font-size:.78rem">99</span>&nbsp;<span data-lang-en>2nd per domain</span><span data-lang-cn>领域次优</span></div>
+        <div class="legend-item"><span class="val val-best-overall" style="font-size:.78rem;padding:1px 6px">99</span>&nbsp;<span data-lang-en>Best overall</span><span data-lang-cn>总体最优</span></div>
+        <div class="legend-item"><span class="val val-second-overall" style="font-size:.78rem">99</span>&nbsp;<span data-lang-en>2nd overall</span><span data-lang-cn>总体次优</span></div>
+        <div class="legend-item"><span style="color:var(--na);font-style:italic">—</span>&nbsp;<span data-lang-en>Not evaluated</span><span data-lang-cn>待评测</span></div>
       </div>
       <div class="table-scroll">
         <table>
           <thead>
             <tr>
-              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-en>Model</th>
-              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-cn>模型</th>
-              <th colspan="6" class="group-header group-gui">GUI Agent</th>
-              <th colspan="3" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
+              <th rowspan="2" style="text-align:left; min-width:148px" data-lang-en>Model</th>
+              <th rowspan="2" style="text-align:left; min-width:148px" data-lang-cn>模型</th>
+              <th colspan="1" class="group-header group-overall" data-lang-en>Overall</th>
+              <th colspan="1" class="group-header group-overall" data-lang-cn>总平均</th>
+              <th colspan="6" class="group-header group-gui" style="border-left:2px solid rgba(32,96,168,.3)">GUI Agent</th>
+              <th colspan="1" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
               <th colspan="5" class="group-header group-code"   style="border-left:2px solid rgba(208,120,16,.3)">Code Agent</th>
-              <th colspan="1" class="group-header group-overall" style="border-left:2px solid rgba(26,58,110,.4)" data-lang-en>Overall</th>
-              <th colspan="1" class="group-header group-overall" style="border-left:2px solid rgba(26,58,110,.4)" data-lang-cn>总平均</th>
             </tr>
             <tr>
-              <th>Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
-              <th class="group-sep-l">XRD</th><th>XPS</th><th class="avg-th">Avg</th>
+              <th class="avg-th overall-th" data-lang-en>Avg</th>
+              <th class="avg-th overall-th" data-lang-cn>均值</th>
+              <th class="group-sep-l">Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l avg-th origin-col">Origin</th>
               <th class="group-sep-l">Pymatgen</th><th>MP</th><th>OQMD</th><th>OPTIMADE</th><th class="avg-th">Avg</th>
-              <th class="group-sep-l avg-th" data-lang-en>Avg</th>
-              <th class="group-sep-l avg-th" data-lang-cn>均值</th>
             </tr>
           </thead>
           <tbody id="acc-body"></tbody>
@@ -1547,27 +1823,31 @@
       <div class="section-header">
         <h2 data-lang-en>Efficiency Results</h2>
         <h2 data-lang-cn>效率结果</h2>
-        <p data-lang-en><strong>Eff</strong>: valid-action ratio over all episodes.&ensp;<strong>Eff*</strong>: valid-action ratio on successful episodes only.&ensp;<strong>FTR&thinsp;(%)</strong>: false termination rate.</p>
-        <p data-lang-cn><strong>Eff</strong>：所有回合的有效动作比率。&ensp;<strong>Eff*</strong>：仅成功回合的有效动作比率。&ensp;<strong>FTR</strong>：错误终止率。</p>
+        <p data-lang-en><strong>Steps</strong>: mean steps across all episodes (max 50, lower = better).&ensp;<strong>Steps*</strong>: mean steps on successful episodes only.&ensp;<strong>FTR&thinsp;(%)</strong>: false termination rate (lower = better).</p>
+        <p data-lang-cn><strong>步数</strong>：所有回合平均步数（满分50步，越少越高效）。&ensp;<strong>步数*</strong>：仅成功回合平均步数。&ensp;<strong>FTR</strong>：错误终止率（越低越好）。</p>
       </div>
       <div class="legend">
-        <div class="legend-item"><span class="dot" style="background:var(--green)"></span><span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
-        <div class="legend-item"><span class="dot" style="background:var(--navy)"></span><span data-lang-en>Second best</span><span data-lang-cn>次优</span></div>
-        <div class="legend-item"><span style="color:var(--na);font-style:italic">—</span>&nbsp;<span data-lang-en>Not yet evaluated</span><span data-lang-cn>待评测</span></div>
+        <div class="legend-item"><span class="val val-best" style="font-size:.78rem;padding:1px 6px">99</span>&nbsp;<span data-lang-en>Best per domain</span><span data-lang-cn>领域最优</span></div>
+        <div class="legend-item"><span class="val val-second" style="font-size:.78rem">99</span>&nbsp;<span data-lang-en>2nd per domain</span><span data-lang-cn>领域次优</span></div>
+        <div class="legend-item"><span class="val-na" style="font-style:normal;font-size:.75rem">N/A</span>&nbsp;<span data-lang-en>No successful episodes (Steps*) / no early terminations (FTR)</span><span data-lang-cn>无成功回合（步数*）/ 无提前终止（FTR）</span></div>
       </div>
       <div class="table-scroll">
         <table>
           <thead>
             <tr>
-              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-en>Model</th>
-              <th rowspan="2" style="text-align:left; min-width:165px" data-lang-cn>模型</th>
-              <th colspan="6" class="group-header group-gui">GUI Agent</th>
-              <th colspan="3" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
+              <th rowspan="2" style="text-align:left; min-width:148px" data-lang-en>Model</th>
+              <th rowspan="2" style="text-align:left; min-width:148px" data-lang-cn>模型</th>
+              <th colspan="1" class="group-header group-overall" data-lang-en>Overall</th>
+              <th colspan="1" class="group-header group-overall" data-lang-cn>总平均</th>
+              <th colspan="6" class="group-header group-gui" style="border-left:2px solid rgba(32,96,168,.3)">GUI Agent</th>
+              <th colspan="1" class="group-header group-origin" style="border-left:2px solid rgba(46,139,72,.3)">Origin Agent</th>
               <th colspan="5" class="group-header group-code"   style="border-left:2px solid rgba(208,120,16,.3)">Code Agent</th>
             </tr>
             <tr>
-              <th>Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
-              <th class="group-sep-l">XRD</th><th>XPS</th><th class="avg-th">Avg</th>
+              <th class="avg-th overall-th" data-lang-en>Avg</th>
+              <th class="avg-th overall-th" data-lang-cn>均值</th>
+              <th class="group-sep-l">Avantage</th><th>JADE</th><th>DM</th><th>MS</th><th>VESTA</th><th class="avg-th">Avg</th>
+              <th class="group-sep-l avg-th origin-col">Origin</th>
               <th class="group-sep-l">Pymatgen</th><th>MP</th><th>OQMD</th><th>OPTIMADE</th><th class="avg-th">Avg</th>
             </tr>
           </thead>
@@ -1587,18 +1867,174 @@
     <h2 class="sec-title fade-in" data-lang-en>Ablation <span class="g">Experiments</span></h2>
     <h2 class="sec-title fade-in" data-lang-cn><span class="g">消融</span>实验分析</h2>
 
-    <p class="sec-body fade-in" data-lang-en>
-      We ablate two key prompt-hint parameters —
-      <code>gui_hint_mode</code> and <code>code_hint_mode</code> — across two frontier
-      models (Seed-1.8 and GPT-5.4). Each panel compares <strong>hint</strong> vs.
-      <strong>no_hint</strong> per domain; the shaded band visualises the performance gap.
-    </p>
-    <p class="sec-body fade-in" data-lang-cn>
-      我们对两个关键提示参数（<code>gui_hint_mode</code> 与 <code>code_hint_mode</code>）
-      在 Seed-1.8 与 GPT-5.4 两个前沿模型上进行消融实验。
-      每幅图对比各领域 <strong>hint</strong> 与 <strong>no_hint</strong> 的性能，
-      阴影区域表示两者之间的性能差距。
-    </p>
+    <!-- ════ Unified Ablation Parameter Table ════ -->
+    <div class="abl-param-table-wrap fade-in" data-lang-en>
+      <table class="abl-param-table">
+        <thead>
+          <tr>
+            <th>Task Type</th>
+            <th>Parameter</th>
+            <th>Value</th>
+            <th>Condition</th>
+            <th>Template Script</th>
+            <th>Workflow Hint</th>
+            <th>Env Setup<sup>†</sup></th>
+            <th>Injected Content</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">GUI</td>
+            <td rowspan="2"><code>gui_hint_mode</code></td>
+            <td><code>hint</code></td>
+            <td><span class="cond-label cond-full">full</span></td>
+            <td class="tick">—</td>
+            <td class="tick">✓</td>
+            <td>—</td>
+            <td>GUI workflow instructions</td>
+          </tr>
+          <tr>
+            <td><code>no_hint</code></td>
+            <td><span class="cond-label cond-none">baseline</span></td>
+            <td class="cross">—</td>
+            <td class="cross">✗</td>
+            <td>—</td>
+            <td>generic agent guidelines only</td>
+          </tr>
+          <tr>
+            <td rowspan="2">Code</td>
+            <td rowspan="2"><code>code_hint_mode</code></td>
+            <td><code>hint</code></td>
+            <td><span class="cond-label cond-full">full</span></td>
+            <td class="tick">—</td>
+            <td class="tick">✓</td>
+            <td>—</td>
+            <td>API usage examples &amp; docs</td>
+          </tr>
+          <tr>
+            <td><code>no_hint</code></td>
+            <td><span class="cond-label cond-none">baseline</span></td>
+            <td class="cross">—</td>
+            <td class="cross">✗</td>
+            <td>—</td>
+            <td>generic agent guidelines only</td>
+          </tr>
+          <tr class="origin-row">
+            <td rowspan="3">Origin</td>
+            <td rowspan="3"><code>origin_mode</code> ×<br><code>origin_hint_mode</code></td>
+            <td><code>script</code> + <code>hint</code></td>
+            <td><span class="cond-label cond-full">full</span></td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td>domain template + OriginLab workflow</td>
+          </tr>
+          <tr class="origin-row">
+            <td><code>no_script</code> + <code>hint</code></td>
+            <td><span class="cond-label cond-partial">partial</span></td>
+            <td class="cross">✗</td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td>OriginLab workflow only</td>
+          </tr>
+          <tr class="origin-row">
+            <td><code>no_script</code> + <code>no_hint</code></td>
+            <td><span class="cond-label cond-none">baseline</span></td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td>generic agent guidelines only</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="abl-table-note"><sup>†</sup> <b>Env Setup</b>: whether the task environment pre-opens Code Builder (Alt+4) before the episode begins. In <code>no_hint</code> mode this step is suppressed so the agent must independently discover the workflow tool, providing a clean baseline.</p>
+    </div>
+
+    <div class="abl-param-table-wrap fade-in" data-lang-cn>
+      <table class="abl-param-table">
+        <thead>
+          <tr>
+            <th>任务类型</th>
+            <th>参数</th>
+            <th>取值</th>
+            <th>条件</th>
+            <th>模板脚本</th>
+            <th>工作流提示</th>
+            <th>环境初始化<sup>†</sup></th>
+            <th>注入内容</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td rowspan="2">GUI</td>
+            <td rowspan="2"><code>gui_hint_mode</code></td>
+            <td><code>hint</code></td>
+            <td><span class="cond-label cond-full">完整</span></td>
+            <td class="tick">—</td>
+            <td class="tick">✓</td>
+            <td>—</td>
+            <td>GUI 工作流指令</td>
+          </tr>
+          <tr>
+            <td><code>no_hint</code></td>
+            <td><span class="cond-label cond-none">基线</span></td>
+            <td class="cross">—</td>
+            <td class="cross">✗</td>
+            <td>—</td>
+            <td>仅通用 Agent 指令</td>
+          </tr>
+          <tr>
+            <td rowspan="2">Code</td>
+            <td rowspan="2"><code>code_hint_mode</code></td>
+            <td><code>hint</code></td>
+            <td><span class="cond-label cond-full">完整</span></td>
+            <td class="tick">—</td>
+            <td class="tick">✓</td>
+            <td>—</td>
+            <td>API 使用示例与文档</td>
+          </tr>
+          <tr>
+            <td><code>no_hint</code></td>
+            <td><span class="cond-label cond-none">基线</span></td>
+            <td class="cross">—</td>
+            <td class="cross">✗</td>
+            <td>—</td>
+            <td>仅通用 Agent 指令</td>
+          </tr>
+          <tr class="origin-row">
+            <td rowspan="3">Origin</td>
+            <td rowspan="3"><code>origin_mode</code> ×<br><code>origin_hint_mode</code></td>
+            <td><code>script</code> + <code>hint</code></td>
+            <td><span class="cond-label cond-full">完整</span></td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td>领域模板脚本 + OriginLab 工作流</td>
+          </tr>
+          <tr class="origin-row">
+            <td><code>no_script</code> + <code>hint</code></td>
+            <td><span class="cond-label cond-partial">部分</span></td>
+            <td class="cross">✗</td>
+            <td class="tick">✓</td>
+            <td class="tick">✓</td>
+            <td>仅 OriginLab 工作流提示</td>
+          </tr>
+          <tr class="origin-row">
+            <td><code>no_script</code> + <code>no_hint</code></td>
+            <td><span class="cond-label cond-none">基线</span></td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td class="cross">✗</td>
+            <td>仅通用 Agent 指令</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="abl-table-note"><sup>†</sup> <b>环境初始化</b>：任务开始前是否通过 setup 脚本自动打开 Code Builder（Alt+4）。在 <code>no_hint</code> 模式下该步骤被跳过，Agent 需从 Origin 主界面独立发现操作工具，从而构成干净的基线对照。</p>
+    </div>
+
+    <!-- ════ Part 1: GUI & Code ════ -->
+    <div class="abl-subsec-eyebrow fade-in" data-lang-en>🖥 GUI &amp; Code Tasks</div>
+    <div class="abl-subsec-eyebrow fade-in" data-lang-cn>🖥 GUI 与 Code 任务</div>
 
     <!-- ── Controls ── -->
     <div class="abl-controls fade-in">
@@ -1644,7 +2080,7 @@
 
     </div>
 
-    <!-- ── Shared legend ── -->
+    <!-- ── Legend: GUI / Code ── -->
     <div class="abl-shared-legend fade-in">
       <div class="abl-leg-item">
         <div class="abl-leg-solid" style="background:#2060a8"></div>
@@ -1670,6 +2106,45 @@
         <div class="abl-leg-area"></div>
         <span data-lang-en>performance gap</span>
         <span data-lang-cn>性能差距</span>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════
+         DIVIDER — Origin is separate
+    ════════════════════════════════════════ -->
+    <hr class="abl-divider fade-in">
+    <div class="abl-divider-label">
+      <span data-lang-en>Origin Tasks</span>
+      <span data-lang-cn>Origin 任务</span>
+    </div>
+
+    <!-- ════ Part 2: Origin ════ -->
+    <div class="abl-subsec-eyebrow fade-in" style="color:#7b3fa8;background:rgba(123,63,168,.07);border-color:rgba(123,63,168,.18)" data-lang-en>📊 Origin Tasks — Three-Level Ablation</div>
+    <div class="abl-subsec-eyebrow fade-in" style="color:#7b3fa8;background:rgba(123,63,168,.07);border-color:rgba(123,63,168,.18)" data-lang-cn>📊 Origin 任务 — 三级消融</div>
+
+    <!-- ── Single horizontal stacked bar chart ── -->
+    <div class="abl-chart-card fade-in">
+      <div class="abl-model-header">
+        <span class="abl-model-badge abl-badge-claude">Claude Sonnet 4.6</span>
+        <span class="abl-metric-note" data-lang-en>SR Score + Aesthetic Score &nbsp;(max 32 pts)</span>
+        <span class="abl-metric-note" data-lang-cn>SR得分 + 审美分数 &nbsp;（满分 32 分）</span>
+      </div>
+      <div class="abl-canvas-wrap" style="height:210px;">
+        <canvas id="ablOriginChartTotal"></canvas>
+      </div>
+    </div>
+
+    <!-- ── Legend: Origin ── -->
+    <div class="abl-shared-legend fade-in">
+      <div class="abl-leg-item">
+        <div class="abl-leg-solid" style="background:#7b3fa8"></div>
+        <span data-lang-en>SR Score — file successfully drawn (max 16 pts)</span>
+        <span data-lang-cn>SR得分 — 图像成功生成（最高16分）</span>
+      </div>
+      <div class="abl-leg-item">
+        <div class="abl-leg-solid" style="background:#c090e8"></div>
+        <span data-lang-en>Aesthetic Score — plot quality (max 16 pts)</span>
+        <span data-lang-cn>审美分数 — 绘图质量（最高16分）</span>
       </div>
     </div>
 
@@ -2190,7 +2665,7 @@ function toggleLang() {
 
 /* ── Tab switching ── */
 let currentAccSub = 'score';
-let currentEffSub = 'eff';
+let currentEffSub = 'steps';
 
 function switchMainTab(name) {
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
@@ -2215,41 +2690,85 @@ function switchEffSub(metric) {
   renderEff(metric);
 }
 
-/* ── DATA ── */
+/* ── DATA ──
+   Model column order (by overall SR, strong → weak):
+   0: GPT-5.4        SR 35.4%
+   1: Claude-son-4.6 SR 34.6%
+   2: kimi-k2.5      SR 27.0%
+   3: doubao-seed-1.8 SR 26.3%
+   4: qwen3-vl-235b  SR 13.6%
+   5: qwen-vl-32b    SR 11.1%
+   6: qwen3-vl-8b    SR  7.5%
+*/
 const ACC_DATA = [
-  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage', values:[[44.6,35.0],[32.3,20.0],[41.3,35.0],[32.3,15.0],[30.8,10.0],[26.2,15.0],[18.5,15.0]] },
-  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',     values:[[54.2,25.0],[50.8,25.0],[57.6,25.0],[50.8,20.0],[45.8,10.0],[37.3,10.0],[37.3,5.0]] },
-  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',       values:[[56.7,20.0],[52.2,20.0],[40.3,20.0],[50.7,20.0],[52.2,10.0],[6.0,0.0],[38.8,10.0]] },
-  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',       values:[[47.6,15.0],[35.4,10.0],[52.4,20.0],[56.1,30.0],[43.9,0.0],[26.8,0.0],[20.7,0.0]] },
-  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',    values:[[52.2,20.0],[59.4,25.0],[58.0,25.0],[65.2,20.0],[52.2,10.0],[29.0,10.0],[30.4,10.0]] },
-  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[52.1,24.0],[46.0,20.0],[49.9,25.0],[51.0,21.0],[45.0,8.0],[25.1,7.0],[29.1,8.0]] },
-  { tools:'Origin', domain_en:'XRD',      domain_cn:'XRD',      values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
-  { tools:'Origin', domain_en:'XPS',      domain_cn:'XPS',      values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
-  { tools:'Origin', domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
-  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen', values:[[30.0,30.0],[15.0,15.0],[25.0,25.0],[35.0,35.0],[35.0,35.0],[29.4,29.4],[15.0,15.0]] },
-  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',       values:[[25.0,25.0],[22.5,20.0],[21.9,15.0],[17.5,15.0],[25.0,25.0],[10.0,10.0],[10.0,10.0]] },
-  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',     values:[[33.2,10.0],[50.3,30.0],[60.8,50.0],[58.2,45.0],[26.2,10.0],[11.5,0.0],[18.4,0.0]] },
-  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE', values:[[70.0,70.0],[80.0,80.0],[75.0,75.0],[85.0,85.0],[20.0,20.0],[30.0,30.0],[10.0,10.0]] },
-  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[39.6,33.8],[42.0,36.2],[45.7,41.3],[48.9,45.0],[26.6,22.5],[20.2,17.4],[13.4,8.8]] },
-  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均', values:[[null,null],[null,null],[null,null],[null,null],[null,null],[null,null],[null,null]] },
+  // ── GUI ──
+  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage',
+    values:[[32.3,15.0],[41.3,35.0],[32.3,20.0],[44.6,35.0],[30.8,10.0],[26.2,15.0],[18.5,15.0]] },
+  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',
+    values:[[50.8,20.0],[57.6,25.0],[50.8,25.0],[54.2,25.0],[45.8,10.0],[37.3,10.0],[37.3,5.0]] },
+  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',
+    values:[[50.7,20.0],[40.3,20.0],[52.2,20.0],[56.7,20.0],[52.2,10.0],[6.0,0.0],[38.8,10.0]] },
+  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',
+    values:[[56.1,30.0],[52.4,20.0],[35.4,10.0],[47.6,15.0],[43.9,0.0],[26.8,0.0],[20.7,0.0]] },
+  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',
+    values:[[65.2,20.0],[58.0,25.0],[59.4,25.0],[52.2,20.0],[52.2,10.0],[29.0,10.0],[30.4,10.0]] },
+  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true,
+    values:[[51.0,21.0],[49.9,25.0],[46.0,20.0],[52.1,24.0],[45.0,8.0],[25.1,7.0],[29.1,8.0]] },
+  // ── Origin ──
+  { tools:'Origin', domain_en:'Origin',   domain_cn:'Origin',   isAvg:true,
+    values:[[63.8,68.8],[53.1,56.3],[22.5,25.0],[11.7,12.5],[6.3,6.3],[5.3,6.3],[0.0,0.0]] },
+  // ── Code ──
+  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen',
+    values:[[35.0,35.0],[25.0,25.0],[15.0,15.0],[30.0,30.0],[35.0,35.0],[29.4,29.4],[15.0,15.0]] },
+  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',
+    values:[[17.5,15.0],[21.9,15.0],[22.5,20.0],[25.0,25.0],[25.0,25.0],[10.0,10.0],[10.0,10.0]] },
+  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',
+    values:[[58.2,45.0],[60.8,50.0],[50.3,30.0],[33.2,10.0],[26.2,10.0],[11.5,0.0],[18.4,0.0]] },
+  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE',
+    values:[[85.0,85.0],[75.0,75.0],[80.0,80.0],[70.0,70.0],[20.0,20.0],[30.0,30.0],[10.0,10.0]] },
+  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true,
+    values:[[48.9,45.0],[45.7,41.3],[42.0,36.2],[39.6,33.8],[26.6,22.5],[20.2,17.4],[13.4,8.8]] },
+  // ── Overall ──
+  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均',
+    values:[[51.5,35.4],[48.5,34.6],[42.0,27.0],[42.5,26.3],[33.7,13.6],[21.2,11.1],[19.9,7.5]] },
 ];
 
+/* EFF_DATA: values = [steps, steps*, ftr%]
+   steps / steps*: mean episode steps out of 50 — lower is better
+   ftr:  false-termination rate (%) — lower is better
+   NaN  = metric is undefined (no successful episodes for steps*;
+          no agent-terminated episodes for ftr) — NOT missing data */
 const EFF_DATA = [
-  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage', values:[[27.8,60.3,25.0],[15.3,28.0,60.0],[17.9,47.8,25.0],[21.6,84.4,50.0],[20.6,84.0,71.4],[null,null,null],[10.3,15.3,66.7]] },
-  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',     values:[[30.8,51.6,50.0],[29.4,68.8,44.4],[28.3,69.6,44.4],[null,null,null],[16.4,61.0,71.4],[null,null,null],[2.6,17.3,0.0]] },
-  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',       values:[[23.5,44.8,42.9],[14.2,38.5,40.0],[9.3,42.8,0.0],[21.4,45.4,57.1],[23.8,63.0,77.8],[null,null,null],[0.0,null,null]] },
-  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',       values:[[4.9,16.0,50.0],[2.5,22.0,50.0],[null,null,null],[null,null,null],[0.0,null,100.0],[52.4,null,null],[0.0,null,null]] },
-  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',    values:[[21.9,55.5,50.0],[17.9,26.8,57.1],[17.9,26.8,57.1],[null,null,null],[33.0,79.0,75.0],[39.4,18.4,83.3],[0.0,null,null]] },
-  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[21.8,45.6,43.6],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
-  { tools:'Origin', domain_en:'XRD',      domain_cn:'XRD',      values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
-  { tools:'Origin', domain_en:'XPS',      domain_cn:'XPS',      values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
-  { tools:'Origin', domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
-  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen', values:[[96.0,96.0,70.0],[73.0,96.0,80.0],[null,null,null],[92.3,98.0,55.0],[96.0,96.0,65.0],[null,null,null],[73.0,96.0,81.3]] },
-  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',       values:[[96.0,96.0,75.0],[96.0,96.0,80.0],[96.0,96.0,85.0],[98.0,null,100.0],[95.5,96.0,75.0],[null,null,null],[96.0,96.0,90.0]] },
-  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',     values:[[96.0,96.0,90.0],[39.0,98.0,30.0],[96.0,96.0,96.0],[96.0,96.0,55.0],[96.0,96.0,90.0],[null,null,null],[null,null,null]] },
-  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE', values:[[49.0,null,50.0],[null,null,null],[96.0,96.0,96.0],[96.0,96.0,63.2],[null,null,null],[null,null,null],[null,null,null]] },
-  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true, values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
-  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均', values:[[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null],[null,null,null]] },
+  // ── GUI ──
+  { tools:'GUI',    domain_en:'Avantage', domain_cn:'Avantage',
+    values:[[39.2,7.8,50.0],[41.1,26.1,25.0],[42.4,36.0,60.0],[36.1,19.9,25.0],[39.7,8.0,71.4],[46.2,31.7,60.0],[44.9,42.4,66.7]] },
+  { tools:'GUI',    domain_en:'JADE',     domain_cn:'JADE',
+    values:[[29.0,8.7,85.7],[35.9,15.2,44.4],[35.3,15.6,44.4],[34.6,24.2,50.0],[41.8,19.5,71.4],[42.9,5.1,85.7],[48.7,41.4,0.0]] },
+  { tools:'GUI',    domain_en:'DM',       domain_cn:'DM',
+    values:[[39.3,27.3,57.1],[45.4,28.6,0.0],[42.9,30.8,40.0],[38.3,27.6,42.9],[38.1,18.5,77.8],[50.0,NaN,NaN],[50.0,50.0,NaN]] },
+  { tools:'GUI',    domain_en:'MS',       domain_cn:'MS',
+    values:[[41.6,34.9,37.5],[45.1,42.1,50.0],[48.8,39.0,50.0],[47.6,42.0,50.0],[50.0,NaN,100.0],[50.0,NaN,NaN],[50.0,NaN,NaN]] },
+  { tools:'GUI',    domain_en:'VESTA',    domain_cn:'VESTA',
+    values:[[30.3,40.8,83.3],[41.1,36.6,57.1],[41.1,36.6,57.1],[39.1,22.3,50.0],[33.5,10.5,75.0],[44.1,13.3,33.3],[50.0,50.0,NaN]] },
+  { tools:'GUI',    domain_en:'Avg.',     domain_cn:'平均',     isAvg:true,
+    values:[[35.9,23.9,62.7],[41.7,29.7,35.3],[42.1,31.6,50.3],[39.1,27.2,43.6],[40.6,14.1,79.1],[46.7,16.7,59.7],[48.7,NaN,NaN]] },
+  // ── Origin ──
+  { tools:'Origin', domain_en:'Origin',   domain_cn:'Origin',   isAvg:true,
+    values:[[34.3,23.5,60.0],[32.7,33.7,83.3],[47.2,31.7,50.0],[47.7,NaN,100.0],[48.0,24.5,50.0],[48.6,50.0,100.0],[50.0,NaN,NaN]] },
+  // ── Code ──
+  { tools:'Code',   domain_en:'Pymatgen', domain_cn:'Pymatgen',
+    values:[[4.9,2.0,63.2],[2.2,2.0,75.0],[13.5,2.0,80.0],[2.0,2.0,70.0],[2.0,2.0,65.0],[10.7,3.0,68.8],[13.5,2.0,81.3]] },
+  { tools:'Code',   domain_en:'MP',       domain_cn:'MP',
+    values:[[2.0,2.0,100.0],[2.0,2.0,85.0],[2.0,2.0,80.0],[2.0,2.0,75.0],[2.3,2.0,75.0],[3.4,3.0,90.0],[2.0,2.0,90.0]] },
+  { tools:'Code',   domain_en:'OQMD',     domain_cn:'OQMD',
+    values:[[2.0,2.0,55.0],[2.0,2.0,50.0],[2.0,2.0,20.0],[2.0,2.0,90.0],[2.0,2.0,90.0],[3.1,NaN,100.0],[2.0,NaN,100.0]] },
+  { tools:'Code',   domain_en:'OPTIMADE', domain_cn:'OPTIMADE',
+    values:[[2.0,2.0,15.0],[2.0,2.0,25.0],[2.0,2.0,20.0],[2.0,2.0,30.0],[2.0,2.0,80.0],[3.0,3.0,70.0],[2.0,2.0,90.0]] },
+  { tools:'Code',   domain_en:'Avg.',     domain_cn:'平均',     isAvg:true,
+    values:[[2.7,2.0,58.3],[2.1,2.0,58.8],[4.9,2.0,50.0],[2.0,2.0,66.3],[2.1,2.0,77.5],[5.1,3.0,82.2],[4.9,2.0,90.3]] },
+  // ── Overall (mean of GUI Avg / Origin / Code Avg; NaN if < 2/3 valid) ──
+  { isOverall:true, domain_en:'Overall Avg.', domain_cn:'总平均',
+    values:[[24.3,16.5,60.3],[25.5,21.8,59.1],[31.4,21.8,50.1],[29.6,14.6,70.0],[30.2,13.5,68.9],[33.5,23.2,80.6],[34.5,NaN,NaN]] },
 ];
 
 /* ── Ranking helpers ── */
@@ -2265,17 +2784,15 @@ function rankTop2Low(vals) {
 }
 
 /* Render a score cell in the transposed (model-row) table.
-   score: numeric or null; subLine: pre-formatted sub-text HTML string
-   rank: {best, second} across models for THIS column; mi: model index
-   isAvg: style as avg column; sepLeft: add left-border */
-function scoreCell(score, subLine, rank, mi, isAvg, sepLeft) {
-  let tdCls = (isAvg ? ' avg-col' : '') + (sepLeft ? ' group-sep-l' : '');
+   isOverall: true → use red highlight; false → green/blue highlight */
+function scoreCell(score, subLine, rank, mi, isAvg, sepLeft, extraCls = '', isOverall = false) {
+  let tdCls = (isAvg ? ' avg-col' : '') + (sepLeft ? ' group-sep-l' : '') + (extraCls ? ' ' + extraCls : '');
   if (score === null || score === undefined) {
     return `<td class="val-na-cell${tdCls}"><span class="val-na">—</span></td>`;
   }
   let valCls = 'val';
-  if (!isAvg && rank?.best   === mi) valCls += ' val-best';
-  else if (!isAvg && rank?.second === mi) valCls += ' val-second';
+  if (rank?.best   === mi) valCls += isOverall ? ' val-best-overall'  : ' val-best';
+  else if (rank?.second === mi) valCls += isOverall ? ' val-second-overall' : ' val-second';
   return `<td class="${tdCls}"><span class="${valCls}">${score.toFixed(1)}</span>${subLine}</td>`;
 }
 
@@ -2283,8 +2800,8 @@ function scoreCell(score, subLine, rank, mi, isAvg, sepLeft) {
 function renderAcc(metric = 'score') {
   // metric: 'score' (index 0 primary, index 1 sub) | 'sr' (index 1 primary, index 0 sub)
   const MODELS = [
-    'doubao-seed-1-8','kimi-k2.5','Claude-sonnet-4.6',
-    'GPT-5.4','qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
+    'GPT-5.4','Claude-sonnet-4.6','kimi-k2.5','doubao-seed-1-8',
+    'qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
   ];
 
   const guiRows    = ACC_DATA.filter(r => r.tools === 'GUI');
@@ -2293,16 +2810,10 @@ function renderAcc(metric = 'score') {
   const overallRow = ACC_DATA.find(r => r.isOverall);
   const allDomains = [...guiRows, ...originRows, ...codeRows];
 
-  const primaryIdx   = metric === 'score' ? 0 : 1;
-  const secondaryIdx = metric === 'score' ? 1 : 0;
-  const secondaryLbl = metric === 'score' ? 'SR' : 'Sc';
-  const secondaryFmt = metric === 'score'
-    ? v => `<div class="val-sr">SR:${v.toFixed(0)}%</div>`
-    : v => `<div class="val-sr">Sc:${v.toFixed(1)}</div>`;
+  const primaryIdx = metric === 'score' ? 0 : 1;
 
-  // Per-column rankings based on primary metric
   const colRanks = allDomains.map(d =>
-    d.isAvg ? null : rankTop2(d.values.map(v => v[primaryIdx]))
+    rankTop2(d.values.map(v => v[primaryIdx]))
   );
   const ovRank = overallRow ? rankTop2(overallRow.values.map(v => v[primaryIdx])) : null;
 
@@ -2311,27 +2822,25 @@ function renderAcc(metric = 'score') {
 
   let html = '';
   MODELS.forEach((model, mi) => {
-    html += `<tr><td class="model-cell">${model}</td>`;
-
-    allDomains.forEach((domain, di) => {
-      const vals    = domain.values[mi];
-      const primary = vals[primaryIdx];
-      const secondary = vals[secondaryIdx];
-      const isSepLeft = (di === originStart || di === codeStart);
-      const subLine = (secondary !== null && secondary !== undefined)
-        ? secondaryFmt(secondary) : '';
-      html += scoreCell(primary, subLine, colRanks[di], mi, domain.isAvg, isSepLeft);
-    });
-
+    const rank = mi + 1;
+    html += `<tr><td class="model-cell"><span class="rank-badge">${rank}</span>${model}</td>`;
+    // Overall column first
     if (overallRow) {
-      const vals    = overallRow.values[mi];
-      const primary = vals[primaryIdx];
-      const secondary = vals[secondaryIdx];
-      const subLine = (secondary !== null && secondary !== undefined)
-        ? secondaryFmt(secondary) : '';
-      html += scoreCell(primary, subLine, ovRank, mi, true, true);
+      const primary = overallRow.values[mi][primaryIdx];
+      let valCls = 'val';
+      if (ovRank?.best   === mi) valCls += ' val-best-overall';
+      else if (ovRank?.second === mi) valCls += ' val-second-overall';
+      const disp = (primary === null || primary === undefined) ? `<span class="val-na">—</span>` : `<span class="${valCls}">${primary.toFixed(1)}</span>`;
+      html += `<td class="avg-col overall-col">${disp}</td>`;
     }
-
+    // Domain columns
+    allDomains.forEach((domain, di) => {
+      const vals      = domain.values[mi];
+      const primary   = vals[primaryIdx];
+      const isSepLeft = (di === originStart || di === codeStart) || di === 0;
+      const extra     = (di >= originStart && di < codeStart) ? 'origin-col' : '';
+      html += scoreCell(primary, '', colRanks[di], mi, domain.isAvg, isSepLeft, extra);
+    });
     html += '</tr>';
   });
 
@@ -2339,57 +2848,65 @@ function renderAcc(metric = 'score') {
 }
 
 /* ── Render Efficiency table — rows = models, columns = domains ── */
-function renderEff(metric = 'eff') {
-  // metric: 'eff' (idx 0) | 'effstar' (idx 1) | 'ftr' (idx 2, lower=better)
+function renderEff(metric = 'steps') {
+  // metric: 'steps' (idx 0) | 'stepsstar' (idx 1) | 'ftr' (idx 2)
+  // All three are lower-is-better (fewer steps = more efficient; lower FTR = better)
   const MODELS = [
-    'doubao-seed-1-8','kimi-k2.5','Claude-sonnet-4.6',
-    'GPT-5.4','qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
+    'GPT-5.4','Claude-sonnet-4.6','kimi-k2.5','doubao-seed-1-8',
+    'qwen3-vl-235b','qwen-vl-32b','qwen3-vl-8b'
   ];
 
   const guiRows    = EFF_DATA.filter(r => r.tools === 'GUI');
   const originRows = EFF_DATA.filter(r => r.tools === 'Origin');
   const codeRows   = EFF_DATA.filter(r => r.tools === 'Code');
+  const overallRow = EFF_DATA.find(r => r.isOverall);
   const allDomains = [...guiRows, ...originRows, ...codeRows];
 
-  const metricIdx  = { eff: 0, effstar: 1, ftr: 2 }[metric];
-  const isLowBetter = metric === 'ftr';
+  const metricIdx = { steps: 0, stepsstar: 1, ftr: 2 }[metric];
 
-  const colRanks = allDomains.map(d => {
-    if (d.isAvg) return null;
-    const vals = d.values.map(v => v[metricIdx]);
-    return isLowBetter ? rankTop2Low(vals) : rankTop2(vals);
-  });
+  // All efficiency metrics: lower = better
+  const colRanks = allDomains.map(d =>
+    rankTop2Low(d.values.map(v => v[metricIdx]))
+  );
+  const ovRank = overallRow
+    ? rankTop2Low(overallRow.values.map(v => {
+        const val = v[metricIdx];
+        return (val === null || val === undefined || isNaN(val)) ? null : val;
+      }))
+    : null;
 
   const originStart = guiRows.length;
   const codeStart   = guiRows.length + originRows.length;
 
+  function effCell(primary, tdCls, rankObj, mi, isOv = false) {
+    if (primary === null || primary === undefined)
+      return `<td class="val-na-cell${tdCls}"><span class="val-na">—</span></td>`;
+    if (isNaN(primary))
+      return `<td class="${tdCls}"><span class="val-na" style="font-style:normal;font-size:.75rem">N/A</span></td>`;
+    let valCls = 'val';
+    if (rankObj?.best   === mi) valCls += isOv ? ' val-best-overall'  : ' val-best';
+    else if (rankObj?.second === mi) valCls += isOv ? ' val-second-overall' : ' val-second';
+    return `<td class="${tdCls}"><span class="${valCls}">${primary.toFixed(1)}</span></td>`;
+  }
+
   let html = '';
   MODELS.forEach((model, mi) => {
-    html += `<tr><td class="model-cell">${model}</td>`;
+    const rankNum = mi + 1;
+    html += `<tr><td class="model-cell"><span class="rank-badge">${rankNum}</span>${model}</td>`;
+
+    // ── Overall column first ──
+    if (overallRow) {
+      const primary = overallRow.values[mi][metricIdx];
+      html += effCell(primary, ' avg-col overall-col', ovRank, mi, true);
+    }
+
+    // ── Domain columns ──
     allDomains.forEach((domain, di) => {
-      const vals    = domain.values[mi]; // [eff, effStar, ftr]
-      const primary = vals[metricIdx];
-      const isSepLeft = (di === originStart || di === codeStart);
-
-      // Sub-line: show the complementary metric
-      let subLine = '';
-      if (metric === 'eff' && vals[1] !== null && vals[1] !== undefined)
-        subLine = `<div class="val-sr">Eff*:${vals[1].toFixed(0)}</div>`;
-      else if (metric === 'effstar' && vals[0] !== null && vals[0] !== undefined)
-        subLine = `<div class="val-sr">Eff:${vals[0].toFixed(0)}</div>`;
-      else if (metric === 'ftr' && vals[0] !== null && vals[0] !== undefined)
-        subLine = `<div class="val-sr">Eff:${vals[0].toFixed(0)}</div>`;
-
-      let tdCls = (domain.isAvg ? ' avg-col' : '') + (isSepLeft ? ' group-sep-l' : '');
-      if (primary === null || primary === undefined) {
-        html += `<td class="val-na-cell${tdCls}"><span class="val-na">—</span></td>`;
-        return;
-      }
-      let rank = colRanks[di];
-      let valCls = 'val';
-      if (!domain.isAvg && rank?.best   === mi) valCls += ' val-best';
-      else if (!domain.isAvg && rank?.second === mi) valCls += ' val-second';
-      html += `<td class="${tdCls}"><span class="${valCls}">${primary.toFixed(1)}</span>${subLine}</td>`;
+      const primary   = domain.values[mi][metricIdx];
+      const isSepLeft = (di === originStart || di === codeStart) || di === 0;
+      const isOrigin  = (di >= originStart && di < codeStart);
+      let tdCls = (domain.isAvg ? ' avg-col' : '') + (isSepLeft ? ' group-sep-l' : '') + (isOrigin ? ' origin-col' : '');
+      html += effCell(primary, tdCls, colRanks[di], mi, false);
     });
     html += '</tr>';
   });
@@ -2398,13 +2915,14 @@ function renderEff(metric = 'eff') {
 }
 
 renderAcc('score');
-renderEff('eff');
+renderEff('steps');
 </script>
 
 <!-- ═══════════════════ ABLATION CHARTS ═══════════════════ -->
 <script>
 (function () {
-  /* ── Ablation data: hint = main (with hints), no_hint = ablation run (without hints) ── */
+  /* ── Ablation data: GUI & Code only ── */
+  /* hint = workflow/API instructions injected; no_hint = removed entirely         */
   const ABL = {
     gui: {
       // labels order: Jade, DM, MS
@@ -2459,7 +2977,7 @@ renderEff('eff');
           callbacks: {
             title: items => items[0].label,
             label: c => {
-              const pct = (c.raw * 100).toFixed(1);
+              const pct  = (c.raw * 100).toFixed(1);
               const icon = c.dataset.label === 'hint' ? '●' : '○';
               return `  ${icon} ${c.dataset.label}:  ${pct}%`;
             },
@@ -2500,7 +3018,7 @@ renderEff('eff');
     };
   }
 
-  /* ── Build hint / no_hint dataset pair ── */
+  /* ── Build hint / no_hint dataset pair (GUI & Code) ── */
   function buildDatasets(d, color) {
     const fillColor = color
       .replace('#', '')
@@ -2592,6 +3110,276 @@ renderEff('eff');
     document.addEventListener('DOMContentLoaded', renderCharts);
   else
     renderCharts();
+})();
+</script>
+
+<!-- ═══════════════════ ORIGIN ABLATION CHARTS ═══════════════════ -->
+<script>
+(function () {
+  /* ── Colors ── */
+  const ORIGIN_CLR = { claude: '#7b3fa8' };
+
+  /* ── Origin ablation data ── */
+  /* X-axis = the three origin_mode conditions */
+  const ABL_ORIGIN = {
+    labels: ['script', 'no_script', 'no_hint'],
+
+    /* SR: number of tasks where the output figure was produced (out of 16) */
+    sr: {
+      claude: [9, 8, 3],          /* absolute counts */
+    },
+
+    /* Aesthetic Quality: total aesthetic score across tasks (out of 16) */
+    aesthetic: {
+      claude: [8, 5, 2.2],        /* total_score − sr_count */
+    },
+
+    /* Total Score: SR score + aesthetic score (out of 32) */
+    total: {
+      claude: [17, 13, 5.2],
+    },
+  };
+
+  /* ── Inline plugin: draw segment labels + total labels ── */
+  const originLabelPlugin = {
+    id: 'originLabels',
+    afterDatasetsDraw(chart) {
+      const ctx   = chart.ctx;
+      const SR    = ABL_ORIGIN.sr.claude;        /* [9, 8, 3]      */
+      const AES   = ABL_ORIGIN.aesthetic.claude; /* [8, 5, 2.2]    */
+      const TOT   = ABL_ORIGIN.total.claude;     /* [17, 13, 5.2]  */
+      const meta0 = chart.getDatasetMeta(0);     /* SR bars        */
+      const meta1 = chart.getDatasetMeta(1);     /* Aesthetic bars */
+
+      ctx.save();
+      ctx.textBaseline = 'middle';
+
+      meta0.data.forEach((bar0, i) => {
+        const bar1   = meta1.data[i];
+        const baseX  = bar0.base;          /* x = 0 in chart coords */
+        const srX    = bar0.x;             /* right edge of SR seg  */
+        const aeX    = bar1.x;             /* right edge of Aes seg */
+        const cy     = bar0.y;
+        const barH   = bar0.height;
+        const fs     = Math.min(11.5, barH * 0.46);
+
+        /* ── SR segment label ── */
+        const srW = srX - baseX;
+        if (srW > 52) {
+          ctx.font = `700 ${fs}px Inter, sans-serif`;
+          ctx.fillStyle = '#fff';
+          ctx.textAlign = 'center';
+          ctx.fillText(`SR ${SR[i]}`, baseX + srW / 2, cy);
+        }
+
+        /* ── Aesthetic segment label ── */
+        const aeW = aeX - srX;
+        if (aeW > 52) {
+          ctx.font = `700 ${fs}px Inter, sans-serif`;
+          ctx.fillStyle = '#4a1060';
+          ctx.textAlign = 'center';
+          ctx.fillText(`Aes ${AES[i]}`, srX + aeW / 2, cy);
+        }
+
+        /* ── Total label to the right of bar ── */
+        const pct = (TOT[i] / 32 * 100).toFixed(0);
+        ctx.font = '700 11px Inter, sans-serif';
+        ctx.fillStyle = '#1a3a6e';
+        ctx.textAlign = 'left';
+        ctx.fillText(`${TOT[i]} / 32  (${pct}%)`, aeX + 10, cy);
+      });
+
+      ctx.restore();
+    },
+  };
+
+  /* ── Draw the single horizontal stacked chart ── */
+  function renderOriginCharts() {
+    const clr    = ORIGIN_CLR.claude;   /* '#7b3fa8' */
+    const labels = ABL_ORIGIN.labels;
+
+    new Chart(document.getElementById('ablOriginChartTotal'), {
+      type: 'bar',
+      plugins: [originLabelPlugin],
+      data: {
+        labels,
+        datasets: [
+          {
+            label: 'SR Score (files drawn)',
+            data: ABL_ORIGIN.sr.claude,
+            backgroundColor: clr + 'cc',
+            borderColor:     clr,
+            borderWidth: 1.5,
+            borderSkipped: false,
+            borderRadius: { topLeft: 6, bottomLeft: 6, topRight: 0, bottomRight: 0 },
+          },
+          {
+            label: 'Aesthetic Score (plot quality)',
+            data: ABL_ORIGIN.aesthetic.claude,
+            backgroundColor: '#c090e8aa',
+            borderColor:     '#c090e8',
+            borderWidth: 1.5,
+            borderSkipped: false,
+            borderRadius: { topLeft: 0, bottomLeft: 0, topRight: 6, bottomRight: 6 },
+          },
+        ],
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 520, easing: 'easeOutQuart' },
+        layout: { padding: { right: 110 } },   /* room for total label */
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: 'rgba(10,20,46,.93)',
+            titleColor: '#e8f2ff', bodyColor: '#aac8ee',
+            padding: 13, cornerRadius: 11, caretSize: 6,
+            titleFont: { size: 12, weight: '700' },
+            bodyFont:  { size: 11.5 },
+            callbacks: {
+              title: items => items[0].label,
+              label: c => `  ${c.dataset.label}: ${c.raw} pts`,
+              footer: items => {
+                const tot = items.reduce((s, it) => s + it.raw, 0);
+                return `  Total: ${tot.toFixed(1)} / 32 pts  (${(tot/32*100).toFixed(0)}%)`;
+              },
+            },
+          },
+        },
+        scales: {
+          x: {
+            stacked: true,
+            min: 0, max: 32,
+            grid: { color: 'rgba(26,58,110,.07)' },
+            ticks: {
+              stepSize: 8,
+              font: { size: 10 }, color: '#536278', padding: 4,
+              callback: v => v === 0 ? '0' : v + ' pts',
+            },
+            border: { color: 'rgba(26,58,110,.12)', dash: [4, 3] },
+          },
+          y: {
+            stacked: true,
+            grid: { display: false },
+            ticks: { font: { size: 12, weight: '700' }, color: '#1a3a6e', padding: 8 },
+            border: { display: false },
+          },
+        },
+      },
+    });
+  }
+
+  /* ── Init ── */
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', renderOriginCharts);
+  else
+    renderOriginCharts();
+})();
+</script>
+
+<!-- ═══════════════════ TRAJECTORY VIEWER JS ═══════════════════ -->
+<script>
+(function () {
+  /* ── Tool / task catalogue ─────────────────────────────────────────
+     Image path convention:
+       docs/trajectories/{toolId}/{taskId}/screenshot-step_NNN.png
+     Copy the corresponding folders from:
+       evaluate/results/pyautogui/a11y_tree/gpt-5/0/{toolId}/{taskId}/
+  ──────────────────────────────────────────────────────────────────── */
+  const TOOLS = [
+    {
+      id: 'avantage', label: 'Avantage', color: '#e06c3a',
+      taskId: 'in18', steps: 12,
+      desc_en: "Open Avantage, import 'C1s Scan.VGD', copy the spectrum to window B, add a constant value of 3333 to the spectrum in window B, arrange window A and window B vertically in comparison view, then save the document as 'stacked_3333.vgp'.",
+      desc_cn: "打开 Avantage 软件，导入 'C1s Scan.VGD'，将谱图复制到窗口 B，对窗口 B 中的谱图添加常数 3333，将窗口 A 和窗口 B 纵向排列于对比视图，然后将新活动文档保存为 'stacked_3333.vgp'。"
+    },
+    {
+      id: 'jade', label: 'JADE (XRD)', color: '#3a8ae0',
+      taskId: 'in19', steps: 10,
+      desc_en: "Use JADE to open 'WRT-ZSX-5.txt', smooth once, remove background, search the database for the two best matching phases, and save their PDF cards to 'PDF1.txt' and 'PDF2.txt'.",
+      desc_cn: "使用 JADE 打开 'WRT-ZSX-5.txt'，平滑一次，去除背景，在数据库中搜索最匹配的两个物相，并将其 PDF 卡片分别保存为 'PDF1.txt' 和 'PDF2.txt'。"
+    },
+    {
+      id: 'vesta', label: 'VESTA', color: '#2e8b48',
+      taskId: 'in18', steps: 14,
+      desc_en: "Import 'mp-22862_NaCl.cif', remove the only bond in Bonds, then modify structure parameters: change Na atom coordinate to [1, 1, 1] and Cl to [1, 0.5, 0.5].",
+      desc_cn: "导入 'mp-22862_NaCl.cif'，删除 Bonds 中唯一的键，然后修改结构参数：将 Na 原子坐标改为 [1, 1, 1]，Cl 改为 [1, 0.5, 0.5]。"
+    },
+    {
+      id: 'ms', label: 'MatStudio', color: '#7b3fa8',
+      taskId: 'in18', steps: 11,
+      desc_en: "Use Materials Studio to build a new homopolymer with monomer propylene and chain length 40, select all atoms, open Build Crystal with space group '5 C2', set lattice parameter a to 15, and build the crystal structure.",
+      desc_cn: "使用 Materials Studio 构建以丙烯为单体、链长为 40 的均聚物，选中所有原子，以空间群 '5 C2' 打开 Build Crystal，将晶格参数 a 设为 15，并构建晶体结构。"
+    },
+    {
+      id: 'dm', label: 'Dig. Micrograph', color: '#1a7ab5',
+      taskId: 'in20', steps: 10,
+      desc_en: "Open DigitalMicrograph, import 'dm7.dm3', perform FFT and inverse FFT analysis, adjust Brightness to 0.3 and Contrast to 0.2 on the inverse FFT lattice fringe image, and save the result as 'Contrast_Optimized_IFFT.dm3'.",
+      desc_cn: "打开 DigitalMicrograph，导入 'dm7.dm3'，执行 FFT 及逆 FFT 分析，对逆 FFT 晶格条纹图调整亮度为 0.3、对比度为 0.2，并将结果保存为 'Contrast_Optimized_IFFT.dm3'。"
+    }
+  ];
+
+  let curTool = 0, curStep = 0;
+
+  function imgPath(t, step) {
+    return `trajectories/${t.id}/${t.taskId}/screenshot-step_${String(step).padStart(3, '0')}.png`;
+  }
+
+  function renderTabs() {
+    document.getElementById('trajTabs').innerHTML = TOOLS.map((t, i) => {
+      const act = i === curTool;
+      return `<button class="traj-tab${act ? ' active' : ''}"
+        style="${act ? `background:${t.color};border-color:${t.color}` : ''}"
+        onclick="window._trajTool(${i})">${t.label}</button>`;
+    }).join('');
+  }
+
+  function renderDots() {
+    const t = TOOLS[curTool];
+    document.getElementById('trajDots').innerHTML = Array.from({length: t.steps}, (_, i) => {
+      const act = i === curStep;
+      return `<span class="traj-dot${act ? ' active' : ''}"
+        style="${act ? `background:${TOOLS[curTool].color}` : ''}"
+        onclick="window._trajStep(${i})"></span>`;
+    }).join('');
+  }
+
+  function render() {
+    const t = TOOLS[curTool];
+    const img = document.getElementById('trajImg');
+
+    img.classList.add('fading');
+    setTimeout(() => {
+      img.src = imgPath(t, curStep);
+      img.alt = `${t.label} step ${curStep + 1}`;
+      img.classList.remove('fading');
+    }, 120);
+
+    document.getElementById('trajBadge').textContent = `Step ${curStep + 1} / ${t.steps}`;
+    document.getElementById('trajPrev').disabled = curStep === 0;
+    document.getElementById('trajNext').disabled = curStep === t.steps - 1;
+    document.getElementById('trajTaskLabel').textContent = `${t.label} — Task ${t.taskId.replace('in', '#')}`;
+    document.getElementById('trajTaskDescEn').textContent = t.desc_en;
+    document.getElementById('trajTaskDescCn').textContent = t.desc_cn;
+
+    renderDots();
+  }
+
+  window._trajTool = function(i) { curTool = i; curStep = 0; renderTabs(); render(); };
+  window._trajStep = function(i) { curStep = i; render(); };
+  window.trajNav  = function(d) {
+    const t = TOOLS[curTool];
+    curStep = Math.max(0, Math.min(t.steps - 1, curStep + d));
+    render();
+  };
+
+  function init() { renderTabs(); render(); }
+  if (document.readyState === 'loading')
+    document.addEventListener('DOMContentLoaded', init);
+  else
+    init();
 })();
 </script>
 

@@ -56,7 +56,7 @@
     "evaluator": {
         "func": "exact_match",
         "result": {
-            "type": "check_file_opened",
+            "type": "check_file_opened_jade",
             "expected_filename": "WRT-ZSX-5.txt"
         },
         "expected": {
@@ -65,5 +65,6 @@
                 "expected": true
             }
         }
-    }
+    },
+    "difficulty": "easy"
 }

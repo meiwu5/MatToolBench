@@ -1,91 +1,92 @@
 {
-    "id": "b9fb90e0-018d-4f33-a534-2ad5f0783d7e-wos",
-    "snapshot": "dmlab",
-    "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm4.dm3', use Profile tool to draw a line across lattice region (not exceeding it), set Integration Width to 80 in Change Profile Info.",
-    "source": "https:\\www.example.com/software/dm",
-    "config": [
-        {
-            "type": "launch",
-            "parameters": {
-                "command": [
-                    "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "note": "Wait for DigitalMicrograph to fully load",
-            "parameters": {
-                "seconds": 1
-            }
-        },
-        {
-            "type": "execute",
-            "parameters": {
-                "command": [
-                    "python",
-                    "-c",
-                    "import pyautogui; pyautogui.hotkey('ctrl','o')"
-                ]
-            }
-        },
-        {
-            "type": "sleep",
-            "parameters": {
-                "seconds": 1
-            }
-        }
-    ],
-    "trajectory": "trajectories/dm/",
-    "related_apps": [
-        "Dm"
-    ],
-    "evaluator": {
-        "func": [
-            "exact_match",
-            "exact_match",
-            "exact_match"
-        ],
-        "result": [
-            {
-                "type": "check_file_import",
-                "expected_filename": "dm4.dm3"
-            },
-            {
-                "type": "check_ocr_text",
-                "target_text": [
-                    "Profile Of dm4"
-                ],
-                "region": "whole"
-            },
-            {
-                "type": "check_dialog_opened",
-                "title_keyword": "Change Profile Info",
-                "field_checks": {
-                    "Integration Width": 80
-                }
-            }
-        ],
-        "expected": [
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            },
-            {
-                "type": "rule",
-                "rules": {
-                    "expected": true
-                }
-            }
-        ],
-        "func_conj": "and"
+  "id": "b9fb90e0-018d-4f33-a534-2ad5f0783d7e-wos",
+  "snapshot": "dmlab",
+  "instruction": "Open DigitalMicrograph software, import 'C:\\Users\\Docker\\Desktop\\setup\\dependencies\\DMG\\dm4.dm3', use Profile tool to draw a line across lattice region (not exceeding it), set Integration Width to 80 in Change Profile Info.",
+  "source": "https:\\www.example.com/software/dm",
+  "config": [
+    {
+      "type": "launch",
+      "parameters": {
+        "command": [
+          "C:\\Program Files (x86)\\Gatan\\DigitalMicrograph\\DigitalMicrograph.exe"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "note": "Wait for DigitalMicrograph to fully load",
+      "parameters": {
+        "seconds": 1
+      }
+    },
+    {
+      "type": "execute",
+      "parameters": {
+        "command": [
+          "python",
+          "-c",
+          "import pyautogui; pyautogui.hotkey('ctrl','o')"
+        ]
+      }
+    },
+    {
+      "type": "sleep",
+      "parameters": {
+        "seconds": 1
+      }
     }
+  ],
+  "trajectory": "trajectories/dm/",
+  "related_apps": [
+    "Dm"
+  ],
+  "evaluator": {
+    "func": [
+      "exact_match",
+      "exact_match",
+      "exact_match"
+    ],
+    "result": [
+      {
+        "type": "check_file_import",
+        "expected_filename": "dm4.dm3"
+      },
+      {
+        "type": "check_ocr_text",
+        "target_text": [
+          "Profile Of dm4"
+        ],
+        "region": "whole"
+      },
+      {
+        "type": "check_dialog_opened_dm",
+        "title_keyword": "Change Profile Info",
+        "field_checks": {
+          "Integration Width": 80
+        }
+      }
+    ],
+    "expected": [
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      },
+      {
+        "type": "rule",
+        "rules": {
+          "expected": true
+        }
+      }
+    ],
+    "func_conj": "and"
+  },
+  "difficulty": "easy"
 }

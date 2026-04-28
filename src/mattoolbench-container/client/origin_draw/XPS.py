@@ -1,249 +1,220 @@
+import os
 import originpro as op
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.legend import Legend
-from scipy.signal import find_peaks
+import pandas as pd
 
-# ====================== User Settings (XPS Configuration) ======================
+# ====================== User Settings ======================
 
-# 1. Data Structure Control
-# IMPORTANT: Set according to the actual column structure of your Origin file (book4)!
-# ---
-# If 'book4' contains a Y_BG column (index 3), set to True.
-# If no Y_BG column, set to False.
+# 1. Sheet name
+SHEET_NAME = 'book4'
+
+# Whether Col 3 is a fitted background column (True) or first component (False)
 HAS_BG_COLUMN = True
 
-# --- NEW: Direct Data Loading based on user's input (book4) ---
-# Warning: Ensure the 'book4' sheet exists in Origin and column order matches HAS_BG_COLUMN setting.
+# Spectrum and component labels  ← moved here from data-loading block
+SPECTRUM_LABEL   = 'Zn 2p'
+COMPONENT_LABELS = ['Zn $2p_{1/2}$', 'Zn $2p_{3/2}$']
+
+# 2. Style settings
+raw_color = '#555555'        # raw data scatter
+sum_color = '#C0392B'        # fit total curve (deep red, less saturated)
+bg_color  = '#2C3E50'        # background curve (dark slate)
+
+# Component fill color presets — change ACTIVE_COMP_PALETTE to switch
+COMP_PALETTES = {
+    "two_comp":   ['#AED6F1', '#F9E79F'],                          # blue / yellow (2-comp, e.g. Zn 2p)
+    "three_comp": ['#AED6F1', '#A9DFBF', '#F9E79F'],               # blue / green / yellow
+    "four_comp":  ['#AED6F1', '#A9DFBF', '#F9E79F', '#F1948A'],    # + pink
+    "tol_safe":   ['#77AADD', '#EE8866', '#AAAA00', '#BBCC33',     # Paul Tol colorblind-safe
+                   '#44BB99', '#EEDD88', '#DDDDDD', '#000000'],
+    "nature":     ['#4DBBD5', '#E64B35', '#00A087', '#3C5488',
+                   '#F39B7F', '#8491B4', '#91D1C2', '#DC0000'],
+}
+ACTIVE_COMP_PALETTE = "two_comp"
+component_colors = COMP_PALETTES[ACTIVE_COMP_PALETTE]
+
+save_path = os.path.join('..', 'output_result', 'XPS_Fitted_Spectra_Plot.png')
+save_path = r'C:\Users\wu\Desktop\XPS_Fitted_Spectra_Plot.png' # 图像保存路径
+# 3. Feature flags
+is_fit_total_curve        = True   # draw total fit curve
+is_raw_data               = True   # draw raw data scatter
+is_bg_curve               = True   # draw background curve
+is_residual               = True   # draw residual (Raw − Fit Total) at top
+is_component_labeled_on_peak = False  # annotate labels on peaks instead of legend
+is_sample_legend          = True   # show legend
+
+# 4. X-axis padding (eV)
+X_PADDING = 0.5
+
+# ===========================================================
+
+# Load data from Origin
 try:
-    # Find and read 'book4'
-    wks = op.find_sheet('w', 'book4')
+    wks = op.find_sheet('w', SHEET_NAME)
     if wks is None:
-        raise ValueError("Error: Could not find sheet 'book4'. Please confirm that a sheet named 'book4' exists in Origin.")
+        raise ValueError(f"Sheet '{SHEET_NAME}' not found in Origin.")
     df = wks.to_df()
 
-    # Assumption: Col 0=X, Col 1=Y_Raw, Col 2=Y_Fit_Total
-    X_DATA = df.iloc[:, 0].values.astype(float)
-    Y_RAW = df.iloc[:, 1].values.astype(float)
-    Y_FIT_TOTAL = df.iloc[:, 2].values.astype(float) # Total fit curve (including BG)
+    # 空单元格 → NaN，再删掉 X/Y 为空的行
+    df = df.apply(pd.to_numeric, errors='coerce')
+    df = df.dropna(subset=[df.columns[0], df.columns[1]]).reset_index(drop=True)
 
-    COMPONENTS = []
+    X_DATA      = df.iloc[:, 0].values.astype(float)
+    Y_RAW       = df.iloc[:, 1].values.astype(float)
+    Y_FIT_TOTAL = df.iloc[:, 2].values.astype(float)
 
     if HAS_BG_COLUMN:
-        # Col 3 contains Y_BG (fitted background)
-        Y_BG = df.iloc[:, 3].values.astype(float)
-        COMP_START_COL = 4 # Components start from Col 4 (index 4)
+        Y_BG       = df.iloc[:, 3].values.astype(float)
+        COMP_START = 4
     else:
-        # Col 3 is the first component. Y_BG is set to min of RAW data as fill baseline.
-        Y_BG = np.min(Y_RAW) * np.ones_like(X_DATA)
-        COMP_START_COL = 3 # Components start from Col 3 (index 3)
+        Y_BG       = np.full_like(X_DATA, np.min(Y_RAW))
+        COMP_START = 3
 
-    # Read all fitted components (fix: use df.shape[1] instead of df.shape.length)
-    for col_idx in range(COMP_START_COL, df.shape[1]):
-        COMPONENTS.append(df.iloc[:, col_idx].values.astype(float))
+    # 跳过全为 NaN 的空列
+    COMPONENTS = [df.iloc[:, c].values.astype(float)
+                  for c in range(COMP_START, df.shape[1])
+                  if df.iloc[:, c].notna().any()]
 
-    # Define spectrum info (for legend and labels)
-    SPECTRUM_LABEL = 'Zn 2p'
-    # Fitted component labels; adjust for actual number of components
-    COMPONENT_LABELS = ['Zn $2p_{1/2}$', 'Zn $2p_{3/2}$']
+    if len(COMPONENT_LABELS) != len(COMPONENTS):
+        print(f"Warning: {len(COMPONENT_LABELS)} labels but "
+              f"{len(COMPONENTS)} components — extras labelled Comp N.")
 
-    # Dynamically compute X-axis range
-    padding = 0.5 # add 0.5 eV padding
-    DYNAMIC_XMIN = np.min(X_DATA) - padding
-    DYNAMIC_XMAX = np.max(X_DATA) + padding
+    DYNAMIC_XMIN = np.min(X_DATA) - X_PADDING
+    DYNAMIC_XMAX = np.max(X_DATA) + X_PADDING
 
 except Exception as e:
-    # If data loading fails, set empty data to prevent crash and print error
-    print(f"Error loading data from 'book4': {e}")
-    X_DATA, Y_RAW, Y_FIT_TOTAL, Y_BG, COMPONENTS = np.array([]), np.array([]), np.array([]), np.array([]), []
-    SPECTRUM_LABEL = 'No Data'
-    COMPONENT_LABELS = []
-    # Use default fallback range on failure
+    print(f"Error loading data from '{SHEET_NAME}': {e}")
+    X_DATA = Y_RAW = Y_FIT_TOTAL = Y_BG = np.array([])
+    COMPONENTS   = []
     DYNAMIC_XMIN = 1010.0
     DYNAMIC_XMAX = 1050.0
 
-# ------------------------------------------------------------------------
-
-# 2. Style Settings
-# Colors for raw data and fitted curves
-raw_color = 'gray'
-sum_color = '#EF0000' # red
-bg_color = '#000000'  # new: background curve color (black)
-# Fill colors for fitted components (up to 10)
-component_colors = [
-    '#B4D8E7', '#C2B9DF', '#B2D8BB', '#FFB7B2', '#FFC8DD',
-    '#C4E0F0', '#B0C4DE', '#A3D2CC', '#E8C3B9', '#B7D5D4'
-]
-save_path = r'..\output_result\XPS_Fitted_Spectra_Plot.png' # figure save path
-
-# 3. Plot Feature Control
-is_fit_total_curve = True # whether to draw total fit curve
-is_raw_data = True        # whether to draw raw data points
-is_bg_curve = True        # whether to draw background curve
-# == Final choice: labels placed on peaks ==
-is_component_labeled_on_peak = False # NEW: whether to label directly on peaks (recommended for scientific plots)
-is_sample_legend = True             # whether to show main legend (Raw/Fit Total/BG only)
-
-# 4. Axis Range Settings
-# Minimum binding energy (dynamically determined)
-xmin = DYNAMIC_XMIN
-# Maximum binding energy (dynamically determined)
-xmax = DYNAMIC_XMAX
-
-# ==================== Main Plotting Function ====================
+# ===========================================================
 
 def plot_xps_spectra_fitted():
-    """
-    Plot a single XPS fitted spectrum using pre-loaded X_DATA, Y_RAW,
-    Y_FIT_TOTAL, Y_BG, and COMPONENTS.
-    """
-
     if len(X_DATA) == 0 or len(COMPONENTS) == 0:
-        print("Required XPS data (X, Y_Raw, Components) is missing. Exiting.")
+        print("Required XPS data is missing. Exiting.")
         return
 
-    # 1. Determine plot baseline and range
-    offset = 0.0 # No vertical offset for single-panel plot
-    # base_height used to calculate y-axis margins
     base_height = np.max(Y_RAW) - np.min(Y_RAW)
+    xmin, xmax  = DYNAMIC_XMIN, DYNAMIC_XMAX
 
-    # Y-axis minimum set to lowest point of BG curve
-    total_ymin = np.min(Y_BG)
-    total_ymax = np.max(Y_RAW)
-
-    # ==================== Matplotlib Plot Settings ====================
-    plt.rcParams['font.family'] = 'Times New Roman'
+    plt.rcParams['font.family']       = 'Times New Roman'
     plt.rcParams['axes.unicode_minus'] = False
 
-    # Adjust figsize for single-panel plot
-    fig, ax = plt.subplots(figsize=(10, 6))
+    # ── Layout: optional residual panel on top ──────────────
+    if is_residual:
+        fig, (ax_res, ax) = plt.subplots(
+            2, 1, figsize=(10, 8),
+            gridspec_kw={'height_ratios': [1, 4], 'hspace': 0.05},
+            sharex=True,
+        )
+        residual = Y_RAW - Y_FIT_TOTAL
+        res_range = np.max(np.abs(residual))
+        ax_res.plot(X_DATA, residual, color='#7F8C8D', linewidth=1.0)
+        ax_res.axhline(0, color='black', linewidth=0.8, linestyle='--')
+        ax_res.set_ylim(-res_range * 2.5, res_range * 2.5)
+        ax_res.set_yticks([])
+        ax_res.set_ylabel('Residual', fontsize=13, fontweight='bold', labelpad=8)
+        for spine in ax_res.spines.values():
+            spine.set_linewidth(1.2)
+        ax_res.tick_params(axis='x', bottom=False, labelbottom=False)
+    else:
+        fig, ax = plt.subplots(figsize=(10, 6))
 
-    # 2. Core plot: draw single fitted spectrum
-    all_legend_handles = []
-    all_legend_labels = []
+    # ── Legend lists (built in display order: Raw → Fit → Comp → BG) ──
+    leg_handles, leg_labels = [], []
 
-    # 2.0. Draw BG curve, controlled by is_bg_curve
-    if is_bg_curve:
-        bg_line, = ax.plot(X_DATA, Y_BG,
-                           color=bg_color,
-                           linewidth=1.2,
-                           linestyle='--',
-                           label='BG')
-        all_legend_handles.append(bg_line)
-        all_legend_labels.append('BG')
-
-    # 2.1. Draw component fill regions (curve fitting)
-    # Fill baseline is now Y_BG
-    base_y = Y_BG
-
-    # Assume COMPONENTS data already includes Y_BG (Gross Component)
-    for j, comp_y_gross in enumerate(COMPONENTS):
-        color = component_colors[j % len(component_colors)]
-
-        # fill_between: from baseline (Y_BG) to Gross Component
-        fill_handle = ax.fill_between(X_DATA, base_y, comp_y_gross,
-                                      color=color,
-                                      alpha=0.7,
-                                      linewidth=0)
-
-        comp_label = COMPONENT_LABELS[j] if j < len(COMPONENT_LABELS) else f'Comp {j+1}'
-
-        # Based on setting, annotate label directly on peak
-        if is_component_labeled_on_peak:
-            # Find peak maximum
-            max_index = np.argmax(comp_y_gross)
-            peak_x = X_DATA[max_index]
-            peak_y = comp_y_gross[max_index]
-
-            # Annotate component label on peak
-            # Adjust vertical offset multiplier from 0.015 to 0.030
-            ax.text(peak_x, peak_y + base_height * 0.030, # slightly above peak
-                    comp_label,
-                    ha='center',
-                    va='bottom',
-                    fontsize=12,
-                    color='black',
-                    fontweight='bold')
-        else:
-            # Default: add to legend
-            all_legend_handles.append(fill_handle)
-            all_legend_labels.append(comp_label)
-
-    # 2.2. Draw total fit curve, controlled by is_fit_total_curve
-    if is_fit_total_curve:
-        fit_total_line, = ax.plot(X_DATA, Y_FIT_TOTAL,
-                            color=sum_color,
-                            linewidth=1.5,
-                            label='Fit Total')
-        all_legend_handles.append(fit_total_line)
-        all_legend_labels.append('Fit Total')
-
-    # 2.3. Draw raw data, controlled by is_raw_data
+    # Raw data  (added to legend first)
     if is_raw_data:
-        raw_scatter = ax.plot(X_DATA, Y_RAW,
-                              'o',
-                              markersize=2.5,
-                              markeredgecolor=raw_color,
-                              markerfacecolor='none',
-                              markeredgewidth=0.8,
-                              linewidth=0, # do not draw connecting lines
-                              label='Raw')
-        all_legend_handles.append(raw_scatter[0])
-        all_legend_labels.append('Raw')
+        raw_h, = ax.plot(X_DATA, Y_RAW,
+                         'o', markersize=3.5,
+                         markeredgecolor=raw_color,
+                         markerfacecolor='none',
+                         markeredgewidth=0.9,
+                         linewidth=0,
+                         label='Raw')
+        leg_handles.append(raw_h)
+        leg_labels.append('Raw')
 
-    # 2.4. Annotate spectrum label (as legend/main label)
-    ax.text(xmax, total_ymax + base_height * 0.05,
-            SPECTRUM_LABEL,
-            ha='right', va='center',
-            fontsize=16,
-            fontweight='bold',
-            color='k')
+    # Fit total
+    if is_fit_total_curve:
+        fit_h, = ax.plot(X_DATA, Y_FIT_TOTAL,
+                         color=sum_color, linewidth=1.8,
+                         label='Fit Total')
+        leg_handles.append(fit_h)
+        leg_labels.append('Fit Total')
 
-    # 3. Axis range and labels
+    # Components (fills)
+    for j, comp_y in enumerate(COMPONENTS):
+        color      = component_colors[j % len(component_colors)]
+        comp_label = (COMPONENT_LABELS[j] if j < len(COMPONENT_LABELS)
+                      else f'Comp {j + 1}')
+        fill_h = ax.fill_between(X_DATA, Y_BG, comp_y,
+                                 color=color, alpha=0.75, linewidth=0)
+
+        if is_component_labeled_on_peak:
+            peak_idx = np.argmax(comp_y)
+            ax.text(X_DATA[peak_idx],
+                    comp_y[peak_idx] + base_height * 0.03,
+                    comp_label,
+                    ha='center', va='bottom',
+                    fontsize=12, fontweight='bold', color='black')
+        else:
+            leg_handles.append(fill_h)
+            leg_labels.append(comp_label)
+
+    # Background
+    if is_bg_curve:
+        bg_h, = ax.plot(X_DATA, Y_BG,
+                        color=bg_color, linewidth=1.2,
+                        linestyle='--', label='BG')
+        leg_handles.append(bg_h)
+        leg_labels.append('BG')
+
+    # ── Axes ────────────────────────────────────────────────
     ax.set_xlim(xmin, xmax)
+    ax.invert_xaxis()   # XPS convention: high BE on left
+    ax.set_ylim(np.min(Y_BG) - base_height * 0.10,
+                np.max(Y_RAW) + base_height * 0.22)
 
-    # Key XPS step: invert X-axis (binding energy)
-    ax.invert_xaxis()
-
-    ax.set_xlabel(r'Binding Energy ($\text{eV}$)', fontsize=20, fontweight='bold', labelpad=12)
-    ax.set_ylabel('Intensity (a.u.)', fontsize=20, fontweight='bold', labelpad=18)
-
-    # 4. Tick marks and spine style
-    ax.tick_params(axis='both', labelsize=18, length=8, width=1.5)
-
-    # Hide Y-axis ticks and labels
+    ax.set_xlabel(r'Binding Energy (eV)', fontsize=20, fontweight='bold', labelpad=12)
+    ax.set_ylabel('Intensity (a.u.)',     fontsize=20, fontweight='bold', labelpad=18)
     ax.set_yticks([])
-
-    # Set Y-axis range to ensure spectrum is visible
-    ax.set_ylim(total_ymin - base_height * 0.1, total_ymax + base_height * 0.21)
-
-    # Set spine line width
+    ax.tick_params(axis='both', labelsize=18, length=8, width=1.5)
     for spine in ax.spines.values():
         spine.set_linewidth(1.5)
 
-    # 5. Legend
-    # When is_component_labeled_on_peak=True, legend only contains Raw, Fit Total, BG
-    if is_sample_legend and all_legend_handles:
-        ax.legend(all_legend_handles, all_legend_labels,
-                  loc='upper right',
+    # Spectrum label — axes fraction 坐标，避免受 invert_xaxis 影响
+    ax.text(0.97, 0.95, SPECTRUM_LABEL,
+            transform=ax.transAxes,
+            ha='right', va='top',
+            fontsize=16, fontweight='bold', color='black')
+
+    # ── Legend ──────────────────────────────────────────────
+    if is_sample_legend and leg_handles:
+        # 超过 3 项时换成两列，避免单行过宽
+        ncol = 1 if len(leg_handles) <= 2 else 2
+        ax.legend(leg_handles, leg_labels,
+                  loc='upper left',
                   fontsize=14,
-                  ncol=3,            # use three-column layout to save space
-                  frameon=True,      # show legend box
+                  ncol=ncol,
+                  frameon=True,
+                  framealpha=0.85,
                   handlelength=1.5,
-                  labelspacing=0.5)
+                  labelspacing=0.4,
+                  borderpad=0.6)
 
-
-    # 6. Save figure
+    # ── Save ────────────────────────────────────────────────
     plt.tight_layout(pad=1.2)
     plt.savefig(save_path, dpi=600, bbox_inches='tight', facecolor='white')
-
-    print(f"XPS fitted spectrum plot complete. Saved to: {save_path}")
+    print(f"XPS plot saved: {save_path}")
     plt.show()
 
-# Script entry point
+
 if __name__ == '__main__':
-    # Ensure running in Origin environment
     try:
         plot_xps_spectra_fitted()
     except Exception as e:
-        print(f"An error occurred during execution: {e}")
+        print(f"Error during execution: {e}")

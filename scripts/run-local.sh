@@ -22,10 +22,11 @@ browser_port=8006
 rdp_port=3390
 start_client=true
 agent="auto"
-model="doubao-seed-1-6-thinking-250715"
+model="gpt-5.4"
 som_origin="oss"
 a11y_backend="uia"
 gpu_enabled=false
+origin_eval_model=""
 
 # Parse the command line arguments
 while [[ $# -gt 0 ]]; do
@@ -110,6 +111,10 @@ while [[ $# -gt 0 ]]; do
             mode=$2
             shift 2
             ;;
+        --origin-eval-model)
+            origin_eval_model=$2
+            shift 2
+            ;;
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
@@ -128,11 +133,12 @@ while [[ $# -gt 0 ]]; do
             echo "  --rdp-port <port> : Port to expose for connecting to the VM using RDP (default: 3390)"
             echo "  --start-client <true/false> : Whether to start the arena client process (default: true)"
             echo "  --agent <auto|gui|code|origin|navi> : Agent to use (default: auto — routes by domain)"
-            echo "  --model <model>: The model to use (default: doubao-seed-1-6-thinking-250715, available options are: doubao-seed-1-6-thinking-250715, doubao-seed-1-6-thinking-250715, gpt-5, gpt-4-1106-vision-preview)"
+            echo "  --model <model>: The model to use (default: Qwen/Qwen3-VL-32B-Thinking, available options are: Qwen/Qwen3-VL-32B-Thinking, Qwen/Qwen3-VL-32B-Thinking, gpt-5, gpt-4-1106-vision-preview)"
             echo "  --som-origin <som_origin>: The SoM (Set-of-Mark) origin to use (default: oss, available options are: oss, a11y, mixed-oss, omni, mixed-omni)"
             echo "  --a11y-backend <a11y_backend>: The a11y accessibility backend to use (default: uia, available options are: uia, win32)"
             echo "  --gpu-enabled <true/false> : Enable GPU support (default: false)"
             echo "  --mode <dev/azure> : Mode (default: azure)"
+            echo "  --origin-eval-model <model> : Vision model for evaluating Origin figures (default: from config.json ORIGIN_EVAL_MODEL, falls back to agent model)"
             exit 0
             ;;
         *)
@@ -156,9 +162,18 @@ OPENAI_API_KEY=$(extract_json_field_from_file "OPENAI_API_KEY" "$config_file_pat
 OPENAI_ENDPOINT=$(extract_json_field_from_file "OPENAI_ENDPOINT" "$config_file_path")
 AZURE_API_KEY=$(extract_json_field_from_file "AZURE_API_KEY" "$config_file_path")
 AZURE_ENDPOINT=$(extract_json_field_from_file "AZURE_ENDPOINT" "$config_file_path")
+MP_API_KEY=$(extract_json_field_from_file "MP_API_KEY" "$config_file_path")
 
 # Origin eval model (optional — dedicated vision LLM for evaluating Origin task outputs)
-ORIGIN_EVAL_MODEL=$(extract_json_field_from_file "ORIGIN_EVAL_MODEL" "$config_file_path")
+# CLI --origin-eval-model takes priority; falls back to config.json; then to agent model at runtime
+ORIGIN_EVAL_MODEL_CFG=$(extract_json_field_from_file "ORIGIN_EVAL_MODEL" "$config_file_path")
+if [[ -n "$origin_eval_model" ]]; then
+    ORIGIN_EVAL_MODEL="$origin_eval_model"
+elif [[ -n "$ORIGIN_EVAL_MODEL_CFG" ]]; then
+    ORIGIN_EVAL_MODEL="$ORIGIN_EVAL_MODEL_CFG"
+else
+    ORIGIN_EVAL_MODEL=""
+fi
 ORIGIN_EVAL_API_KEY=$(extract_json_field_from_file "ORIGIN_EVAL_API_KEY" "$config_file_path")
 ORIGIN_EVAL_BASE_URL=$(extract_json_field_from_file "ORIGIN_EVAL_BASE_URL" "$config_file_path")
 
@@ -167,4 +182,4 @@ if [[ (-z "$OPENAI_API_KEY" || -z "$OPENAI_ENDPOINT") && (-z "$AZURE_API_KEY" ||
     log_error_exit "Either OPENAI_API_KEY must be set or both AZURE_API_KEY and AZURE_ENDPOINT must be set: $1"
 fi
 
-./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --openai-endpoint $OPENAI_ENDPOINT --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT --origin-eval-model "$ORIGIN_EVAL_MODEL" --origin-eval-api-key "$ORIGIN_EVAL_API_KEY" --origin-eval-base-url "$ORIGIN_EVAL_BASE_URL"
+./run.sh --mode $mode --prepare-image $prepare_image --container-name $container_name --skip-build $skip_build --interactive $interactive --connect $connect --use-kvm $use_kvm --ram-size $ram_size --cpu-cores $cpu_cores --mount-vm-storage $mount_vm_storage --mount-client $mount_client --mount-server $mount_server --browser-port $browser_port --rdp-port $rdp_port --start-client $start_client --agent $agent --model $model --som-origin $som_origin --a11y-backend $a11y_backend --gpu-enabled $gpu_enabled --openai-api-key $OPENAI_API_KEY --openai-endpoint $OPENAI_ENDPOINT --azure-api-key $AZURE_API_KEY --azure-endpoint $AZURE_ENDPOINT --mp-api-key "$MP_API_KEY" --origin-eval-model "$ORIGIN_EVAL_MODEL" --origin-eval-api-key "$ORIGIN_EVAL_API_KEY" --origin-eval-base-url "$ORIGIN_EVAL_BASE_URL"

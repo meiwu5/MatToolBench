@@ -1,26 +1,27 @@
 {
-  "id": "5f6a7b8c-9d0e-4f1a-3b4c-5d6e7f8091a2-wos",
-  "snapshot": "pymatgen_python_env",
-  "instruction": "Use pymatgen to parse C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\vasprun.xml, extract the Fermi level efermi, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task15.txt.",
-  "source": "https:\\pymatgen.org/",
-  "_comments": "comments_placeholder",
-  "config": [],
-  "trajectory": "trajectories\\pymatgen\\",
-  "related_apps": [
-    "Pymatgen",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_file_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task15.txt",
-      "dest": "task15.txt"
+    "id": "5f6a7b8c-9d0e-4f1a-3b4c-5d6e7f8091a2-wos",
+    "snapshot": "pymatgen_python_env",
+    "instruction": "Use pymatgen to parse C:\\Users\\Docker\\Desktop\\setup\\dependencies\\VASP\\vasprun.xml, extract the Fermi level efermi, and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task15.txt.",
+    "source": "https:\\pymatgen.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\pymatgen\\",
+    "related_apps": [
+        "Pymatgen",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_file_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen\\task15.txt",
+            "dest": "task15.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task15.txt",
+            "dest": "task15_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\pymatgen_right\\task15.txt",
-      "dest": "task15_right.txt"
-    }
-  }
+    "difficulty": "easy"
 }

@@ -4,7 +4,7 @@ from optimade.client import OptimadeClient
 from mp_api.client import MPRester
 
 # ================= 配置区域 =================
-API_KEY = "oUXXrSHjpKWSbjmHP1HT5YNVZCi21rbP"
+API_KEY = "pKWSbjmHP1HT5YNVZCi21rbP"
 DESKTOP = Path(os.path.join(os.path.expanduser("~"), "Desktop"))
 
 # 初始化客户端 - 调高单次获取上限

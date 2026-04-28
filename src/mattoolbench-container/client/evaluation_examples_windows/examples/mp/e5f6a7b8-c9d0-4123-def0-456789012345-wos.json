@@ -1,43 +1,27 @@
 {
-  "id": "e5f6a7b8-c9d0-4123-def0-456789012345-wos",
-  "snapshot": "materials_project_api_env",
-  "instruction": "Use mp_api to query mp-149 phonon method and obtain its phonon band structure; record the maximum phonon frequency (or None if unavailable) and save it to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt.",
-  "source": "https:\\materialsproject.org/",
-  "_comments": "comments_placeholder",
-  "config": [
-    {
-      "type": "command",
-      "parameters": {
-        "command": [
-          "C:\\Users\\Docker\\AppData\\Local\\Programs\\Python\\Python310\\python.exe",
-          "-m",
-          "pip",
-          "install",
-          "--quiet",
-          "--disable-pip-version-check",
-          "mp-api==0.39.5",
-          "emmet-core==0.78.7"
-        ],
-        "shell": false
-      }
-    }
-  ],
-  "trajectory": "trajectories\\materialproject\\",
-  "related_apps": [
-    "MaterialProject",
-    "Python"
-  ],
-  "evaluator": {
-    "func": "detect_kv_match",
-    "result": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt",
-      "dest": "mp_task_13.txt"
+    "id": "e5f6a7b8-c9d0-4123-def0-456789012345-wos",
+    "snapshot": "materials_project_api_env",
+    "instruction": "Use mp_api (MPRester) to query the phonon band structure of mp-149 using the NEW API: `mpr.materials.phonon.get_data_by_id('mp-149')` (do NOT use the deprecated `mpr.phonon` interface). If the result is None or unavailable, treat the maximum phonon frequency as None. Save the result to C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt in the format: `max_phonon_frequency: {value}` (e.g. `max_phonon_frequency: None` if unavailable).",
+    "source": "https:\\materialsproject.org/",
+    "_comments": "comments_placeholder",
+    "config": [],
+    "trajectory": "trajectories\\materialproject\\",
+    "related_apps": [
+        "MaterialProject",
+        "Python"
+    ],
+    "evaluator": {
+        "func": "detect_kv_match",
+        "result": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp\\mp_task_13.txt",
+            "dest": "mp_task_13.txt"
+        },
+        "expected": {
+            "type": "vm_file",
+            "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_13.txt",
+            "dest": "mp_task_13_right.txt"
+        }
     },
-    "expected": {
-      "type": "vm_file",
-      "path": "C:\\Users\\Docker\\Desktop\\setup\\output_result\\mp_right\\mp_task_13.txt",
-      "dest": "mp_task_13_right.txt"
-    }
-  }
+    "difficulty": "medium"
 }
