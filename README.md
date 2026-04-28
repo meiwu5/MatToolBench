@@ -17,9 +17,13 @@
 ## 🎬 Demo
 
 <p align="center">
-  <a href="https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4">
-    <img src="https://raw.githubusercontent.com/meiwu5/MatToolBench/main/assets/demo_cover.png" width="700">
+  <a href="https://meiwu5.github.io/mattoolbench_demo/demo.html">
+    <img src="https://raw.githubusercontent.com/meiwu5/mattoolbench_demo/main/demo_cover.png" width="720">
   </a>
+</p>
+
+<p align="center">
+  👉 Click the image to play the demo
 </p>
 
 > **<span style="color:#d07810">⚡ Sped up</span>** &nbsp;·&nbsp; If the video does not play inline, [download it directly](https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4).
