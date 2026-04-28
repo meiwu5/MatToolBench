@@ -72,10 +72,6 @@ function playVideo() {
 }
 </script>
 
-<p align="center">
-  👉 Click the image to play the demo
-</p>
-
 > **<span style="color:#d07810">⚡ Sped up</span>** &nbsp;·&nbsp; If the video does not play inline, [download it directly](https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4).
 
 ## 📊 Main Results
