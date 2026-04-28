@@ -15,9 +15,9 @@
 
 ## 🎬 演示视频
 
-<video controls src="docs/demo.mp4" style="width:100%;max-width:900px;border-radius:8px"></video>
+<video controls src="https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4" style="width:100%;max-width:900px;border-radius:8px"></video>
 
-> **<span style="color:#d07810">⚡ 视频已加速</span>** &nbsp;·&nbsp; 若视频无法内嵌播放，可[直接下载](docs/demo.mp4)。
+> **<span style="color:#d07810">⚡ 视频已加速</span>** &nbsp;·&nbsp; 若视频无法内嵌播放，可[直接下载](https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4)。
 
 ## 📊 主要结果
 

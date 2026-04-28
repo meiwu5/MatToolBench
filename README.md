@@ -16,9 +16,9 @@
 
 ## 🎬 Demo
 
-<video controls src="docs/demo.mp4" style="width:100%;max-width:900px;border-radius:8px"></video>
+<video controls src="https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4" style="width:100%;max-width:900px;border-radius:8px"></video>
 
-> **<span style="color:#d07810">⚡ Sped up</span>** &nbsp;·&nbsp; If the video does not play inline, [download it directly](docs/demo.mp4).
+> **<span style="color:#d07810">⚡ Sped up</span>** &nbsp;·&nbsp; If the video does not play inline, [download it directly](https://github.com/meiwu5/MatToolBench/releases/download/v1.0/demo.mp4).
 
 ## 📊 Main Results
 
