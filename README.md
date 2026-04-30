@@ -17,13 +17,33 @@
 ## 🎬 Demo Video
 
 <p align="center">
-  <a href="https://mattoolbench.github.io/demo/demo.html">
-    <img src="https://raw.githubusercontent.com/mattoolbench/demo/main/demo_cover.png" width="720">
+  <a href="https://mattoolbench.github.io/demo/">
+    <div style="position: relative; display: inline-block;">
+      <img src="https://raw.githubusercontent.com/mattoolbench/demo/main/demo_cover.png" 
+           width="720" 
+           alt="MatToolBench Demo Video Cover"
+           style="border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+      
+      <!-- 播放三角图标 -->
+      <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); 
+                  background: rgba(0,0,0,0.65); border-radius: 50%; width: 90px; height: 90px; 
+                  display: flex; align-items: center; justify-content: center; 
+                  box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
+        <span style="color: white; font-size: 45px; margin-left: 8px;">▶</span>
+      </div>
+    </div>
   </a>
 </p>
 
 <p align="center">
-  ▶ Click to play the demo &nbsp;·&nbsp; <b><span style="color:#d07810">⚡ Sped up</span></b>
+  <strong>▶ Click the image above to play the demo</strong> &nbsp;·&nbsp; 
+  <b><span style="color:#d07810">⚡ Sped up</span></b>
+</p>
+
+<p align="center">
+  <a href="https://mattoolbench.github.io/demo/demo.mp4" target="_blank">
+    ⬇ Download Video (47MB)
+  </a>
 </p>
 
 ## 📊 Main Results
