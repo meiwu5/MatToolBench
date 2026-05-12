@@ -43,6 +43,41 @@ def _domain_agent_type(domain: str) -> str:
     return "gui"   # safe fallback for unknown domains
 
 
+def _load_skill_content(skill_path: str) -> str:
+    """Load SKILL.md from a skill directory or a direct file path.
+
+    Returns the file content as a string, or empty string if not found.
+    """
+    import pathlib
+    p = pathlib.Path(skill_path)
+    skill_file = (p / "SKILL.md") if p.is_dir() else p
+    if not skill_file.exists():
+        logger.warning("Skill file not found: %s", skill_file)
+        return ""
+    content = skill_file.read_text(encoding="utf-8")
+    logger.info("Loaded skill from %s (%d chars)", skill_file, len(content))
+    return content
+
+
+def _inject_skill(agent, skill_content: str) -> None:
+    """Append skill content to the agent's system prompt.
+
+    Works for GUI/Origin agents (gpt4v_planner.system_prompt) and
+    Code agents (planner.system_prompt).
+    """
+    if not skill_content:
+        return
+    suffix = f"\n\n---\n# Skill: MatToolBench Agent Instructions\n\n{skill_content}"
+    if hasattr(agent, "gpt4v_planner") and hasattr(agent.gpt4v_planner, "system_prompt"):
+        agent.gpt4v_planner.system_prompt += suffix
+        logger.info("Skill injected into gpt4v_planner.system_prompt (%d chars added)", len(suffix))
+    elif hasattr(agent, "planner") and hasattr(agent.planner, "system_prompt"):
+        agent.planner.system_prompt += suffix
+        logger.info("Skill injected into planner.system_prompt (%d chars added)", len(suffix))
+    else:
+        logger.warning("_inject_skill: agent has no recognised system_prompt attribute")
+
+
 def _build_agent(agent_type: str, domain: str, args, som_config, origin_category=None):
     """Instantiate the correct agent for *agent_type* / *domain*.
 
@@ -296,6 +331,18 @@ def config() -> argparse.Namespace:
     parser.add_argument("--diff_lvl", type=str, default="normal", help="Difficulty level of the benchmark")
 
     # ---------------------------------------------------------------------------
+    # Skill injection
+    # ---------------------------------------------------------------------------
+    parser.add_argument(
+        "--skill_path", type=str, default=None,
+        help=(
+            "Path to a Skill directory (containing SKILL.md) or directly to a SKILL.md file.  "
+            "When provided, the Skill content is appended to the agent system prompt before each run.  "
+            "Supports both local paths and Docker-mounted paths (e.g. /client/skills/mattoolbench-agent)."
+        ),
+    )
+
+    # ---------------------------------------------------------------------------
     # Parse, then overlay JSON config file (CLI wins over file)
     # ---------------------------------------------------------------------------
     args, unknownargs = parser.parse_known_args()
@@ -354,6 +401,7 @@ def test(
         "code_hint_mode":   getattr(args, "code_hint_mode",   "hint"),
         "origin_category": getattr(args, "origin_category", "auto"),
         "origin_max_tokens": getattr(args, "origin_max_tokens", 8000),
+        "skill_path": getattr(args, "skill_path", None),
     }
 
     # Base dir for this model/trial – results are organised by domain beneath it.
@@ -377,12 +425,19 @@ def test(
     # Any explicit name (navi / gui / code / origin) → use that for all domains.
     use_auto_routing = cfg_args["agent_name"] == "auto"
 
+    # Load skill content once if --skill_path is provided.
+    _skill_content = ""
+    _skill_path = getattr(args, "skill_path", None)
+    if _skill_path:
+        _skill_content = _load_skill_content(_skill_path)
+
     if not use_auto_routing:
         if cfg_args["agent_name"] == "claude":
             from mm_agents.claude.agent import ClaudeAgent
             agent = ClaudeAgent()
         else:
             agent = _build_agent(cfg_args["agent_name"], "all", args, som_config)
+        _inject_skill(agent, _skill_content)
 
     # Determine action_space without requiring agent to be bound yet.
     # All MatToolBench agents (GUIAgent, CodeAgent, OriginAgent, NaviAgent)
@@ -410,6 +465,7 @@ def test(
             needed_type = _domain_agent_type(domain)
             if needed_type != _current_agent_type:
                 agent = _build_agent(needed_type, domain, args, som_config)
+                _inject_skill(agent, _skill_content)
                 _current_agent_type = needed_type
                 logger.info("Auto-routing: domain=%s → agent=%s", domain, needed_type)
 

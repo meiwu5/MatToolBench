@@ -10,6 +10,7 @@ num_workers="1"
 result_dir="./results"
 json_name="evaluation_examples_windows/record.json"
 diff_lvl="normal"
+skill_path=""
 
 # parse agent argument
 while [[ $# -gt 0 ]]; do
@@ -51,9 +52,13 @@ while [[ $# -gt 0 ]]; do
             shift 2
             ;;
         --diff-lvl)
-            diff_lvl=$2  
-            shift 2  
-            ;;              
+            diff_lvl=$2
+            shift 2
+            ;;
+        --skill-path)
+            skill_path=$2
+            shift 2
+            ;;
         --help)
             echo "Usage: $0 [options]"
             echo "Options:"
@@ -66,7 +71,8 @@ while [[ $# -gt 0 ]]; do
             echo "  --num-workers <num>             The number of workers"
             echo "  --result-dir <dir>              The directory to store the results (default: ./results)"
             echo "  --json-name <name>              The name of the JSON file to use (default: record.json)"
-            echo "  --diff-lvl <level>              The difficulty level of benchmark (default: normal, available options are: normal, hard)"  
+            echo "  --diff-lvl <level>              The difficulty level of benchmark (default: normal, available options are: normal, hard)"
+            echo "  --skill-path <path>             Path to a Skill directory (containing SKILL.md) to inject into the agent system prompt"
             exit 0
             ;;
         *)
@@ -80,4 +86,8 @@ if [ "$clean_results" = true ]; then
 fi
 
 echo "Running agent $agent..."
-python run.py --agent "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl"
+_skill_arg=""
+if [ -n "$skill_path" ]; then
+    _skill_arg="--skill_path $skill_path"
+fi
+python run.py --agent "$agent" --model "$model" --som_origin "$som_origin" --a11y_backend "$a11y_backend" --worker_id "$worker_id" --num_workers "$num_workers" --result_dir "$result_dir" --test_all_meta_path "$json_name" --diff_lvl "$diff_lvl" $_skill_arg
