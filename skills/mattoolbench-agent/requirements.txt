@@ -1,0 +1,22 @@
+# GUI / Origin Agent 依赖
+pyautogui>=0.9.54
+pillow>=10.0.0
+openai>=1.0.0
+anthropic>=0.20.0
+requests>=2.31.0
+tqdm>=4.66.0
+
+# Origin Agent 脚本依赖（在 VM 内运行）
+originpro>=1.1.0
+numpy>=1.24.0
+pandas>=2.0.0
+matplotlib>=3.7.0
+scipy>=1.11.0
+
+# Code Agent 依赖
+mp-api>=0.39.5
+pymatgen>=2023.0.0
+emmet-core>=0.78.7
+
+# 屏幕解析依赖
+easyocr>=1.7.0
