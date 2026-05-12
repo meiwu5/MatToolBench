@@ -1,6 +1,6 @@
 {
   "agent_name": "auto",
-  "model": "gpt-4o",
+  "model": "gpt-5.4",
   "temperature": 1.0,
   "max_tokens": 2048,
   "origin_max_tokens": 8000,
@@ -17,7 +17,7 @@
   "origin_category": "auto",
   "skill_path": "/client/skills/mattoolbench-agent",
   "test_all_meta_path": "evaluation_examples_windows/record.json",
-  "result_dir": "./results/skill_gpt4o",
+  "result_dir": "./results/skill",
   "trial_id": "skill_v1",
   "diff_lvl": "normal",
   "num_workers": 1,

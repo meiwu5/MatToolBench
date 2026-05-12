@@ -23,11 +23,11 @@ description: 控制材料科学软件（OriginLab、Jade、VESTA、Avantage、Ma
 
 ```bash
 # 启用 Skill（传入 skill 目录路径）
-python run.py --agent_name auto --domain origin --model gpt-4o \
+python run.py --agent_name auto --domain origin --model gpt-5.4 \
               --skill_path /path/to/skills/mattoolbench-agent
 
 # 通过 start_client.sh 启动
-bash start_client.sh --agent auto --model gpt-4o \
+bash start_client.sh --agent auto --model gpt-5.4 \
                      --skill-path /path/to/skills/mattoolbench-agent
 ```
 
@@ -38,7 +38,7 @@ bash start_client.sh --agent auto --model gpt-4o \
 ```json
 {
   "agent_name": "auto",
-  "model": "gpt-4o",
+  "model": "gpt-5.4",
   "skill_path": "/client/skills/mattoolbench-agent",
   "origin_mode": "script",
   "origin_hint_mode": "hint",
@@ -49,7 +49,7 @@ bash start_client.sh --agent auto --model gpt-4o \
 
 启动：
 ```bash
-python run.py --config experiment_configs/skill_gpt4o.json --emulator_ip 20.20.20.21
+python run.py --config experiment_configs/skill.json --emulator_ip 20.20.20.21
 ```
 
 ---

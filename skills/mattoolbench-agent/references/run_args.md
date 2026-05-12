@@ -15,7 +15,7 @@ python run.py [参数...]
 |---|---|---|
 | `--agent_name` | `auto` | Agent 类型：`auto`（按 domain 自动选择）、`gui`、`code`、`origin`、`navi` |
 | `--domain` | `all` | 评测领域：`avantage`/`dm`/`jade`/`vesta`/`ms`/`mp`/`oqmd`/`pymatgen`/`optimade`/`origin` |
-| `--model` | `gpt-5.4` | LLM 模型标识符（如 `gpt-4o`、`gpt-4o-mini`） |
+| `--model` | `gpt-5.4` | LLM 模型标识符（如 `gpt-5.4`、`gpt-5.4-mini`） |
 | `--result_dir` | `./results` | 结果输出目录 |
 | `--trial_id` | `0` | 实验编号（用于区分多次运行） |
 
@@ -67,7 +67,7 @@ python run.py [参数...]
 
 ```bash
 # 运行全部 origin 任务，自动选择模板脚本
-python run.py --agent_name auto --domain origin --model gpt-4o \
+python run.py --agent_name auto --domain origin --model gpt-5.4 \
               --result_dir ./results/origin_run1 --trial_id 1
 
 # 只运行 FTIR 类任务
@@ -81,10 +81,10 @@ python run.py --domain origin --origin_mode no_script --trial_id ablation_noscri
 python run.py --domain origin --origin_hint_mode no_hint --trial_id ablation_nohint
 
 # 运行 GUI 任务（Jade + VESTA + Avantage）
-python run.py --domain jade --agent_name gui --model gpt-4o
+python run.py --domain jade --agent_name gui --model gpt-5.4
 
 # 运行代码任务（Materials Project）
-python run.py --domain mp --agent_name code --model gpt-4o
+python run.py --domain mp --agent_name code --model gpt-5.4
 
 # 并行运行（2个 worker）
 python run.py --worker_id 0 --num_workers 2 &
