@@ -27,104 +27,25 @@
 </p>
 
 ## 📊 Main Results
-<p align="center">
-  <strong>Table. Accuracy results on MatToolBench.</strong><br>
-  <strong>Sc.</strong> (Score): normalized task score (%) averaged over sub-criteria;
-  <strong>SR</strong>: success rate (%, all sub-criteria satisfied).
-  <strong>Bold</strong>: best average metric within each category;
-  <strong><em>bold italic</em></strong>: best overall average metric.
-</p>
+**Table. Accuracy results on MatToolBench.**  
+**Sc.** (Score): normalized task score (%) averaged over sub-criteria; **SR**: success rate (%, all sub-criteria satisfied). **Bold**: best average metric within each category; ***bold italic***: best overall average metric.
 
-<table>
-  <thead>
-    <tr>
-      <th rowspan="2">Cat.</th>
-      <th rowspan="2">Domain</th>
-      <th colspan="2">Doubao<br>seed-1-8</th>
-      <th colspan="2">Kimi<br>k2.5</th>
-      <th colspan="2">Claude<br>sonnet-4.6</th>
-      <th colspan="2"><strong><em>GPT<br>5.4</em></strong></th>
-      <th colspan="2">Qwen3-VL<br>235B</th>
-      <th colspan="2">Qwen3-VL<br>32B</th>
-      <th colspan="2">Qwen3-VL<br>8B</th>
-    </tr>
-    <tr>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-      <th>Sc.</th><th>SR</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td rowspan="6"><strong>GUI</strong></td>
-      <td>Avantage</td>
-      <td>44.6</td><td>35.0</td><td>32.3</td><td>20.0</td><td>41.3</td><td>35.0</td><td>32.3</td><td>15.0</td><td>30.8</td><td>10.0</td><td>26.2</td><td>15.0</td><td>18.5</td><td>15.0</td>
-    </tr>
-    <tr>
-      <td>JADE</td>
-      <td>54.2</td><td>25.0</td><td>50.8</td><td>25.0</td><td>57.6</td><td>25.0</td><td>50.8</td><td>20.0</td><td>45.8</td><td>10.0</td><td>37.3</td><td>10.0</td><td>37.3</td><td>5.0</td>
-    </tr>
-    <tr>
-      <td>DM</td>
-      <td>56.7</td><td>20.0</td><td>52.2</td><td>20.0</td><td>40.3</td><td>20.0</td><td>50.7</td><td>20.0</td><td>52.2</td><td>10.0</td><td>6.0</td><td>0.0</td><td>38.8</td><td>10.0</td>
-    </tr>
-    <tr>
-      <td>MS</td>
-      <td>47.6</td><td>15.0</td><td>35.4</td><td>10.0</td><td>52.4</td><td>20.0</td><td>56.1</td><td>30.0</td><td>43.9</td><td>0.0</td><td>26.8</td><td>0.0</td><td>20.7</td><td>0.0</td>
-    </tr>
-    <tr>
-      <td>VESTA</td>
-      <td>52.2</td><td>20.0</td><td>59.4</td><td>25.0</td><td>58.0</td><td>25.0</td><td>65.2</td><td>20.0</td><td>52.2</td><td>10.0</td><td>29.0</td><td>10.0</td><td>30.4</td><td>10.0</td>
-    </tr>
-    <tr>
-      <td><em>Avg.</em></td>
-      <td><strong>52.1</strong></td><td>24.0</td><td>46.0</td><td>20.0</td><td>49.9</td><td><strong>25.0</strong></td><td>51.0</td><td>21.0</td><td>45.0</td><td>8.0</td><td>25.1</td><td>7.0</td><td>29.1</td><td>8.0</td>
-    </tr>
-
-    <tr>
-      <td><strong>Origin</strong></td>
-      <td>OriginPro</td>
-      <td>11.7</td><td>12.5</td><td>22.5</td><td>25.0</td><td>53.1</td><td>56.3</td><td><strong>63.8</strong></td><td><strong>68.8</strong></td><td>6.3</td><td>6.3</td><td>5.3</td><td>6.3</td><td>0.0</td><td>0.0</td>
-    </tr>
-
-    <tr>
-      <td rowspan="5"><strong>Code</strong></td>
-      <td>Pymatgen</td>
-      <td>30.0</td><td>30.0</td><td>15.0</td><td>15.0</td><td>25.0</td><td>25.0</td><td>35.0</td><td>35.0</td><td>35.0</td><td>35.0</td><td>29.4</td><td>29.4</td><td>15.0</td><td>15.0</td>
-    </tr>
-    <tr>
-      <td>MP</td>
-      <td>25.0</td><td>25.0</td><td>22.5</td><td>20.0</td><td>21.9</td><td>15.0</td><td>17.5</td><td>15.0</td><td>25.0</td><td>25.0</td><td>10.0</td><td>10.0</td><td>10.0</td><td>10.0</td>
-    </tr>
-    <tr>
-      <td>OQMD</td>
-      <td>33.2</td><td>10.0</td><td>50.3</td><td>30.0</td><td>60.8</td><td>50.0</td><td>58.2</td><td>45.0</td><td>26.2</td><td>10.0</td><td>11.5</td><td>0.0</td><td>18.4</td><td>0.0</td>
-    </tr>
-    <tr>
-      <td>OPTIMADE</td>
-      <td>70.0</td><td>70.0</td><td>80.0</td><td>80.0</td><td>75.0</td><td>75.0</td><td>85.0</td><td>85.0</td><td>20.0</td><td>20.0</td><td>30.0</td><td>30.0</td><td>10.0</td><td>10.0</td>
-    </tr>
-    <tr>
-      <td><em>Avg.</em></td>
-      <td>39.6</td><td>33.8</td><td>42.0</td><td>36.2</td><td>45.7</td><td>41.3</td><td><strong>48.9</strong></td><td><strong>45.0</strong></td><td>26.6</td><td>22.5</td><td>20.2</td><td>17.4</td><td>13.4</td><td>8.8</td>
-    </tr>
-
-    <tr>
-      <td><strong>Mixed</strong></td>
-      <td>Mixed</td>
-      <td>50.0</td><td>12.5</td><td><strong>60.0</strong></td><td><strong>37.5</strong></td><td>56.7</td><td>25.0</td><td>50.0</td><td>25.0</td><td>50.0</td><td>25.0</td><td>33.3</td><td>25.0</td><td>53.3</td><td><strong>37.5</strong></td>
-    </tr>
-
-    <tr>
-      <td colspan="2"><strong>Overall Avg.</strong></td>
-      <td>43.4</td><td>26.0</td><td>43.1</td><td>27.5</td><td>48.8</td><td>33.8</td><td><strong><em>51.2</em></strong></td><td><strong><em>34.3</em></strong></td><td>34.9</td><td>14.2</td><td>21.9</td><td>11.7</td><td>21.6</td><td>8.8</td>
-    </tr>
-  </tbody>
-</table>
+| Cat. | Domain | Doubao Sc. | Doubao SR | Kimi Sc. | Kimi SR | Claude Sc. | Claude SR | GPT-5.4 Sc. | GPT-5.4 SR | Qwen3-VL 235B Sc. | Qwen3-VL 235B SR | Qwen3-VL 32B Sc. | Qwen3-VL 32B SR | Qwen3-VL 8B Sc. | Qwen3-VL 8B SR |
+|:--|:--|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| **GUI** | Avantage | 44.6 | 35.0 | 32.3 | 20.0 | 41.3 | 35.0 | 32.3 | 15.0 | 30.8 | 10.0 | 26.2 | 15.0 | 18.5 | 15.0 |
+|  | JADE | 54.2 | 25.0 | 50.8 | 25.0 | 57.6 | 25.0 | 50.8 | 20.0 | 45.8 | 10.0 | 37.3 | 10.0 | 37.3 | 5.0 |
+|  | DM | 56.7 | 20.0 | 52.2 | 20.0 | 40.3 | 20.0 | 50.7 | 20.0 | 52.2 | 10.0 | 6.0 | 0.0 | 38.8 | 10.0 |
+|  | MS | 47.6 | 15.0 | 35.4 | 10.0 | 52.4 | 20.0 | 56.1 | 30.0 | 43.9 | 0.0 | 26.8 | 0.0 | 20.7 | 0.0 |
+|  | VESTA | 52.2 | 20.0 | 59.4 | 25.0 | 58.0 | 25.0 | 65.2 | 20.0 | 52.2 | 10.0 | 29.0 | 10.0 | 30.4 | 10.0 |
+|  | *Avg.* | **52.1** | 24.0 | 46.0 | 20.0 | 49.9 | **25.0** | 51.0 | 21.0 | 45.0 | 8.0 | 25.1 | 7.0 | 29.1 | 8.0 |
+| **Origin** | OriginPro | 11.7 | 12.5 | 22.5 | 25.0 | 53.1 | 56.3 | **63.8** | **68.8** | 6.3 | 6.3 | 5.3 | 6.3 | 0.0 | 0.0 |
+| **Code** | Pymatgen | 30.0 | 30.0 | 15.0 | 15.0 | 25.0 | 25.0 | 35.0 | 35.0 | 35.0 | 35.0 | 29.4 | 29.4 | 15.0 | 15.0 |
+|  | MP | 25.0 | 25.0 | 22.5 | 20.0 | 21.9 | 15.0 | 17.5 | 15.0 | 25.0 | 25.0 | 10.0 | 10.0 | 10.0 | 10.0 |
+|  | OQMD | 33.2 | 10.0 | 50.3 | 30.0 | 60.8 | 50.0 | 58.2 | 45.0 | 26.2 | 10.0 | 11.5 | 0.0 | 18.4 | 0.0 |
+|  | OPTIMADE | 70.0 | 70.0 | 80.0 | 80.0 | 75.0 | 75.0 | 85.0 | 85.0 | 20.0 | 20.0 | 30.0 | 30.0 | 10.0 | 10.0 |
+|  | *Avg.* | 39.6 | 33.8 | 42.0 | 36.2 | 45.7 | 41.3 | **48.9** | **45.0** | 26.6 | 22.5 | 20.2 | 17.4 | 13.4 | 8.8 |
+| **Mixed** | Mixed | 50.0 | 12.5 | **60.0** | **37.5** | 56.7 | 25.0 | 50.0 | 25.0 | 50.0 | 25.0 | 33.3 | 25.0 | 53.3 | **37.5** |
+| **Overall Avg.** |  | 43.4 | 26.0 | 43.1 | 27.5 | 48.8 | 33.8 | ***51.2*** | ***34.3*** | 34.9 | 14.2 | 21.9 | 11.7 | 21.6 | 8.8 |
 ---
 
 ## 📚 Task Categories
