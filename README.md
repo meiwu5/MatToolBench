@@ -28,169 +28,129 @@
 
 ## 📊 Main Results
 
-**Sc.** = normalized task score (0–100); **SR** = success rate (%, all sub-criteria satisfied). <b style="color:#c96800">Orange bold</b>: best per domain; <u>underline</u>: second best; <b style="color:#c0392b"><i>Red bold italic</i></b>: best model overall.
+**Sc.** = normalized task score (0–100); **SR** = success rate (%, all sub-criteria satisfied). <font color="#c96800"><b>Orange bold</b></font>: best per domain; <u>underline</u>: second best;
+<font color="#c0392b"><b><i>Red bold italic</i></b></font>: best model overall.
+
 
 <table>
 <thead>
 <tr bgcolor="#1a3a6e">
-<th align="left"><span style="color:white">Cat.</span></th>
-<th align="left"><span style="color:white">Domain</span></th>
-<th colspan="2" align="center"><span style="color:white">Doubao<br>seed-1-8</span></th>
-<th colspan="2" align="center"><span style="color:white">Kimi<br>k2.5</span></th>
-<th colspan="2" align="center"><span style="color:white">Claude<br>sonnet-4.6</span></th>
-<th colspan="2" align="center"><b><i><span style="color:#ffd060">GPT<br>5.4</span></i></b></th>
-<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>235B</span></th>
-<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>32B</span></th>
-<th colspan="2" align="center"><span style="color:white">Qwen3-VL<br>8B</span></th>
+<th align="left"><font color="white">Cat.</font></th>
+<th align="left"><font color="white">Domain</font></th>
+<th colspan="2" align="center"><font color="white">Doubao<br>seed-1-8</font></th>
+<th colspan="2" align="center"><font color="white">Kimi<br>k2.5</font></th>
+<th colspan="2" align="center"><font color="white">Claude<br>sonnet-4.6</font></th>
+<th colspan="2" align="center"><font color="#ffd060"><b><i>GPT<br>5.4</i></b></font></th>
+<th colspan="2" align="center"><font color="white">Qwen3-VL<br>235B</font></th>
+<th colspan="2" align="center"><font color="white">Qwen3-VL<br>32B</font></th>
+<th colspan="2" align="center"><font color="white">Qwen3-VL<br>8B</font></th>
 </tr>
 <tr bgcolor="#2d5580">
 <th></th><th></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
-<th align="center"><span style="color:#b8d4f8">Sc.</span></th><th align="center"><span style="color:#b8d4f8">SR</span></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
+<th align="center"><font color="#b8d4f8">Sc.</font></th><th align="center"><font color="#b8d4f8">SR</font></th>
 </tr>
 </thead>
 <tbody>
 <tr bgcolor="#f0f5ff">
-<td rowspan="6" bgcolor="#2060a8" align="center"><b><span style="color:white">GUI</span></b></td>
+<td rowspan="6" bgcolor="#2060a8" align="center"><font color="white"><b>GUI</b></font></td>
 <td>Avantage</td>
-<td><b style="color:#c96800">44.6</b></td><td><b style="color:#c96800">35.0</b></td>
+<td><font color="#c96800"><b>44.6</b></font></td><td><font color="#c96800"><b>35.0</b></font></td>
 <td>32.3</td><td><u>20.0</u></td>
-<td><u>41.3</u></td><td><b style="color:#c96800">35.0</b></td>
-<td>32.3</td><td>15.0</td>
-<td>30.8</td><td>10.0</td>
-<td>26.2</td><td>15.0</td>
-<td>18.5</td><td>15.0</td>
+<td><u>41.3</u></td><td><font color="#c96800"><b>35.0</b></font></td>
+<td>32.3</td><td>15.0</td><td>30.8</td><td>10.0</td><td>26.2</td><td>15.0</td><td>18.5</td><td>15.0</td>
 </tr>
 <tr bgcolor="#f0f5ff">
 <td>JADE</td>
-<td><u>54.2</u></td><td><b style="color:#c96800">25.0</b></td>
-<td>50.8</td><td><b style="color:#c96800">25.0</b></td>
-<td><b style="color:#c96800">57.6</b></td><td><b style="color:#c96800">25.0</b></td>
-<td>50.8</td><td><u>20.0</u></td>
-<td>45.8</td><td>10.0</td>
-<td>37.3</td><td>10.0</td>
-<td>37.3</td><td>5.0</td>
+<td><u>54.2</u></td><td><font color="#c96800"><b>25.0</b></font></td>
+<td>50.8</td><td><font color="#c96800"><b>25.0</b></font></td>
+<td><font color="#c96800"><b>57.6</b></font></td><td><font color="#c96800"><b>25.0</b></font></td>
+<td>50.8</td><td><u>20.0</u></td><td>45.8</td><td>10.0</td><td>37.3</td><td>10.0</td><td>37.3</td><td>5.0</td>
 </tr>
 <tr bgcolor="#f0f5ff">
 <td>DM</td>
-<td><b style="color:#c96800">56.7</b></td><td><b style="color:#c96800">20.0</b></td>
-<td><u>52.2</u></td><td><b style="color:#c96800">20.0</b></td>
-<td>40.3</td><td><b style="color:#c96800">20.0</b></td>
-<td>50.7</td><td><b style="color:#c96800">20.0</b></td>
-<td><u>52.2</u></td><td><u>10.0</u></td>
-<td>6.0</td><td>0.0</td>
-<td>38.8</td><td><u>10.0</u></td>
+<td><font color="#c96800"><b>56.7</b></font></td><td><font color="#c96800"><b>20.0</b></font></td>
+<td><u>52.2</u></td><td><font color="#c96800"><b>20.0</b></font></td>
+<td>40.3</td><td><font color="#c96800"><b>20.0</b></font></td>
+<td>50.7</td><td><font color="#c96800"><b>20.0</b></font></td>
+<td><u>52.2</u></td><td><u>10.0</u></td><td>6.0</td><td>0.0</td><td>38.8</td><td><u>10.0</u></td>
 </tr>
 <tr bgcolor="#f0f5ff">
 <td>MS</td>
-<td>47.6</td><td>15.0</td>
-<td>35.4</td><td>10.0</td>
+<td>47.6</td><td>15.0</td><td>35.4</td><td>10.0</td>
 <td><u>52.4</u></td><td><u>20.0</u></td>
-<td><b style="color:#c96800">56.1</b></td><td><b style="color:#c96800">30.0</b></td>
-<td>43.9</td><td>0.0</td>
-<td>26.8</td><td>0.0</td>
-<td>20.7</td><td>0.0</td>
+<td><font color="#c96800"><b>56.1</b></font></td><td><font color="#c96800"><b>30.0</b></font></td>
+<td>43.9</td><td>0.0</td><td>26.8</td><td>0.0</td><td>20.7</td><td>0.0</td>
 </tr>
 <tr bgcolor="#f0f5ff">
 <td>VESTA</td>
-<td>52.2</td><td><u>20.0</u></td>
-<td><u>59.4</u></td><td><b style="color:#c96800">25.0</b></td>
-<td>58.0</td><td><b style="color:#c96800">25.0</b></td>
-<td><b style="color:#c96800">65.2</b></td><td><u>20.0</u></td>
-<td>52.2</td><td>10.0</td>
-<td>29.0</td><td>10.0</td>
-<td>30.4</td><td>10.0</td>
+<td>52.2</td><td><u>20.0</u></td><td><u>59.4</u></td><td><font color="#c96800"><b>25.0</b></font></td>
+<td>58.0</td><td><font color="#c96800"><b>25.0</b></font></td>
+<td><font color="#c96800"><b>65.2</b></font></td><td><u>20.0</u></td>
+<td>52.2</td><td>10.0</td><td>29.0</td><td>10.0</td><td>30.4</td><td>10.0</td>
 </tr>
 <tr bgcolor="#dce8ff">
 <td><i>Avg.</i></td>
-<td><b style="color:#c96800">52.1</b></td><td><u>24.0</u></td>
-<td>46.0</td><td>20.0</td>
-<td>49.9</td><td><b style="color:#c96800">25.0</b></td>
-<td><u>51.0</u></td><td>21.0</td>
-<td>45.0</td><td>8.0</td>
-<td>25.1</td><td>7.0</td>
-<td>29.1</td><td>8.0</td>
+<td><font color="#c96800"><b>52.1</b></font></td><td><u>24.0</u></td>
+<td>46.0</td><td>20.0</td><td>49.9</td><td><font color="#c96800"><b>25.0</b></font></td>
+<td><u>51.0</u></td><td>21.0</td><td>45.0</td><td>8.0</td><td>25.1</td><td>7.0</td><td>29.1</td><td>8.0</td>
 </tr>
 <tr bgcolor="#f0f8f3">
-<td bgcolor="#2e8b48" align="center"><b><span style="color:white">Origin</span></b></td>
+<td bgcolor="#2e8b48" align="center"><font color="white"><b>Origin</b></font></td>
 <td>OriginPro</td>
-<td>11.7</td><td>12.5</td>
-<td>22.5</td><td>25.0</td>
+<td>11.7</td><td>12.5</td><td>22.5</td><td>25.0</td>
 <td><u>53.1</u></td><td><u>56.3</u></td>
-<td><b style="color:#c96800">63.8</b></td><td><b style="color:#c96800">68.8</b></td>
-<td>6.3</td><td>6.3</td>
-<td>5.3</td><td>6.3</td>
-<td>0.0</td><td>0.0</td>
+<td><font color="#c96800"><b>63.8</b></font></td><td><font color="#c96800"><b>68.8</b></font></td>
+<td>6.3</td><td>6.3</td><td>5.3</td><td>6.3</td><td>0.0</td><td>0.0</td>
 </tr>
 <tr bgcolor="#fffbf0">
-<td rowspan="5" bgcolor="#d07810" align="center"><b><span style="color:white">Code</span></b></td>
+<td rowspan="5" bgcolor="#d07810" align="center"><font color="white"><b>Code</b></font></td>
 <td>Pymatgen</td>
-<td>30.0</td><td>30.0</td>
-<td>15.0</td><td>15.0</td>
-<td>25.0</td><td>25.0</td>
-<td><b style="color:#c96800">35.0</b></td><td><b style="color:#c96800">35.0</b></td>
-<td><b style="color:#c96800">35.0</b></td><td><b style="color:#c96800">35.0</b></td>
-<td><u>29.4</u></td><td><u>29.4</u></td>
-<td>15.0</td><td>15.0</td>
+<td>30.0</td><td>30.0</td><td>15.0</td><td>15.0</td><td>25.0</td><td>25.0</td>
+<td><font color="#c96800"><b>35.0</b></font></td><td><font color="#c96800"><b>35.0</b></font></td>
+<td><font color="#c96800"><b>35.0</b></font></td><td><font color="#c96800"><b>35.0</b></font></td>
+<td><u>29.4</u></td><td><u>29.4</u></td><td>15.0</td><td>15.0</td>
 </tr>
 <tr bgcolor="#fffbf0">
 <td>MP</td>
-<td><b style="color:#c96800">25.0</b></td><td><b style="color:#c96800">25.0</b></td>
-<td><u>22.5</u></td><td><u>20.0</u></td>
-<td>21.9</td><td>15.0</td>
-<td>17.5</td><td>15.0</td>
-<td><b style="color:#c96800">25.0</b></td><td><b style="color:#c96800">25.0</b></td>
-<td>10.0</td><td>10.0</td>
-<td>10.0</td><td>10.0</td>
+<td><font color="#c96800"><b>25.0</b></font></td><td><font color="#c96800"><b>25.0</b></font></td>
+<td><u>22.5</u></td><td><u>20.0</u></td><td>21.9</td><td>15.0</td><td>17.5</td><td>15.0</td>
+<td><font color="#c96800"><b>25.0</b></font></td><td><font color="#c96800"><b>25.0</b></font></td>
+<td>10.0</td><td>10.0</td><td>10.0</td><td>10.0</td>
 </tr>
 <tr bgcolor="#fffbf0">
 <td>OQMD</td>
-<td>33.2</td><td>10.0</td>
-<td>50.3</td><td>30.0</td>
-<td><b style="color:#c96800">60.8</b></td><td><b style="color:#c96800">50.0</b></td>
-<td><u>58.2</u></td><td><u>45.0</u></td>
-<td>26.2</td><td>10.0</td>
-<td>11.5</td><td>0.0</td>
-<td>18.4</td><td>0.0</td>
+<td>33.2</td><td>10.0</td><td>50.3</td><td>30.0</td>
+<td><font color="#c96800"><b>60.8</b></font></td><td><font color="#c96800"><b>50.0</b></font></td>
+<td><u>58.2</u></td><td><u>45.0</u></td><td>26.2</td><td>10.0</td><td>11.5</td><td>0.0</td><td>18.4</td><td>0.0</td>
 </tr>
 <tr bgcolor="#fffbf0">
 <td>OPTIMADE</td>
-<td>70.0</td><td>70.0</td>
-<td><u>80.0</u></td><td><u>80.0</u></td>
-<td>75.0</td><td>75.0</td>
-<td><b style="color:#c96800">85.0</b></td><td><b style="color:#c96800">85.0</b></td>
-<td>20.0</td><td>20.0</td>
-<td>30.0</td><td>30.0</td>
-<td>10.0</td><td>10.0</td>
+<td>70.0</td><td>70.0</td><td><u>80.0</u></td><td><u>80.0</u></td><td>75.0</td><td>75.0</td>
+<td><font color="#c96800"><b>85.0</b></font></td><td><font color="#c96800"><b>85.0</b></font></td>
+<td>20.0</td><td>20.0</td><td>30.0</td><td>30.0</td><td>10.0</td><td>10.0</td>
 </tr>
 <tr bgcolor="#ffe8c0">
 <td><i>Avg.</i></td>
-<td>39.6</td><td>33.8</td>
-<td>42.0</td><td>36.2</td>
-<td><u>45.7</u></td><td><u>41.3</u></td>
-<td><b style="color:#c96800">48.9</b></td><td><b style="color:#c96800">45.0</b></td>
-<td>26.6</td><td>22.5</td>
-<td>20.2</td><td>17.4</td>
-<td>13.4</td><td>8.8</td>
+<td>39.6</td><td>33.8</td><td>42.0</td><td>36.2</td><td><u>45.7</u></td><td><u>41.3</u></td>
+<td><font color="#c96800"><b>48.9</b></font></td><td><font color="#c96800"><b>45.0</b></font></td>
+<td>26.6</td><td>22.5</td><td>20.2</td><td>17.4</td><td>13.4</td><td>8.8</td>
 </tr>
 <tr bgcolor="#ede8f8">
-<td colspan="2" bgcolor="#3a2a6e"><b><span style="color:white">Overall Avg.</span></b></td>
-<td>42.5</td><td>26.3</td>
-<td>42.0</td><td>27.0</td>
+<td colspan="2" bgcolor="#3a2a6e"><font color="white"><b>Overall Avg.</b></font></td>
+<td>42.5</td><td>26.3</td><td>42.0</td><td>27.0</td>
 <td><u>48.5</u></td><td><u>34.6</u></td>
-<td><b style="color:#c0392b"><i>51.5</i></b></td><td><b style="color:#c0392b"><i>35.4</i></b></td>
-<td>33.7</td><td>13.6</td>
-<td>21.2</td><td>11.1</td>
-<td>19.9</td><td>7.5</td>
+<td><font color="#c0392b"><b><i>51.5</i></b></font></td>
+<td><font color="#c0392b"><b><i>35.4</i></b></font></td>
+<td>33.7</td><td>13.6</td><td>21.2</td><td>11.1</td><td>19.9</td><td>7.5</td>
 </tr>
 </tbody>
 </table>
-
 ---
 
 ## 📚 Task Categories
