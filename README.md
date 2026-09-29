@@ -8,7 +8,11 @@
 [![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
 [![Docker](https://img.shields.io/badge/Docker-mattoolbench%2Fmattoolbench-blue?logo=docker)](https://hub.docker.com/r/mattoolbench/mattoolbench)
 
-[![Visit MatToolBench Website](https://img.shields.io/badge/Visit%20MatToolBench%20Website-FF6B00?style=for-the-badge&logo=googlechrome&logoColor=white)](https://mattoolbench.github.io/)
+<a href="https://mattoolbench.github.io/">
+  <img src="https://img.shields.io/badge/Visit%20MatToolBench%20Website-2060A8?style=for-the-badge&logo=googlechrome&logoColor=white"
+       alt="Visit MatToolBench Website"
+       height="42">
+</a>
 
 </div>
 
