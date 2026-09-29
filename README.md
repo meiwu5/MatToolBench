@@ -933,7 +933,7 @@ Run these at the start of an experiment (e.g., in the VM startup PowerShell scri
 ```bibtex
 @article{mattoolbench2025,
   title   = {MatToolBench: Revealing the Transfer Gap of Multimodal Agents in Professional Materials Science Workflows},
-  year    = {2025},
+  year    = {2026},
 }
 ```
 
